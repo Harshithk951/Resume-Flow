@@ -1,0 +1,8 @@
+{"sessionId":"7d8901","hypothesisId":"A","location":"app/page.tsx:HeroVideo","message":"HeroVideo mounted — checking poster asset","data":{"poster":"/hero-poster.jpg","video":"/hero-demo.mp4"},"timestamp":1781871800638,"runId":"pre-fix"}
+{"sessionId":"7d8901","hypothesisId":"B","location":"app/page.tsx:HeroVideo:onLoadedData","message":"Hero video loaded successfully","data":{"src":"/hero-demo.mp4"},"timestamp":1781871800674,"runId":"pre-fix"}
+{"sessionId":"7d8901","hypothesisId":"A","location":"app/page.tsx:HeroVideo","message":"Poster HEAD request result","data":{"status":404,"ok":false},"timestamp":1781871800725,"runId":"pre-fix"}
+{"sessionId":"7d8901","hypothesisId":"B","location":"app/page.tsx:HeroVideo:onLoadedData","message":"Hero video loaded successfully","data":{"src":"/hero-demo.mp4"},"timestamp":1781871824206,"runId":"pre-fix"}
+{"sessionId":"7d8901","hypothesisId":"A","location":"app/page.tsx:HeroVideo","message":"HeroVideo mounted — checking poster asset","data":{"poster":"/hero-poster.jpg","video":"/hero-demo.mp4"},"timestamp":1781871824213,"runId":"pre-fix"}
+{"sessionId":"7d8901","hypothesisId":"A","location":"app/page.tsx:HeroVideo","message":"HeroVideo mounted — checking poster asset","data":{"poster":"/hero-poster.jpg","video":"/hero-demo.mp4"},"timestamp":1781871824218,"runId":"pre-fix"}
+{"sessionId":"7d8901","hypothesisId":"A","location":"app/page.tsx:HeroVideo","message":"Poster HEAD request result","data":{"status":200,"ok":true},"timestamp":1781871824231,"runId":"pre-fix"}
+{"sessionId":"7d8901","hypothesisId":"A","location":"app/page.tsx:HeroVideo","message":"Poster HEAD request result","data":{"status":200,"ok":true},"timestamp":1781871824231,"runId":"pre-fix"}

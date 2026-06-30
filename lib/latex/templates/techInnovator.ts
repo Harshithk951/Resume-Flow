@@ -1,0 +1,213 @@
+// lib/latex/templates/techInnovator.ts
+//
+// Tech Innovator LaTeX Template
+// Vibe: Modern, clean, tailored for developers and designers.
+// Features a neat tabular skills section, custom bullet spacing, and indigo accents.
+// Uses native, zero-dependency LaTeX macros for maximum compatibility with BasicTeX.
+
+export default function techInnovatorTemplate(data: any): string {
+  const { personalInfo, education, experience, projects, skills, certifications, achievements } = data;
+
+  const escape = (str: string) => str;
+
+  // Personal Info Block
+  const headerLinks = [
+    personalInfo.email ? `\\href{mailto:${escape(personalInfo.email)}}{${escape(personalInfo.email)}}` : null,
+    personalInfo.phone ? escape(personalInfo.phone) : null,
+    personalInfo.linkedin ? `\\href{https://${escape(personalInfo.linkedin)}}{LinkedIn}` : null,
+    personalInfo.github ? `\\href{https://${escape(personalInfo.github)}}{GitHub}` : null,
+    personalInfo.portfolio ? `\\href{https://${escape(personalInfo.portfolio)}}{Portfolio}` : null,
+  ].filter(Boolean).join(" ~$\\cdot$~ ");
+
+  // Education Block
+  const educationSection = education && education.length > 0
+    ? `
+\\resumesection{Education}
+\\resumeSubHeadingListStart
+  ${education.map((edu: any) => `    \\resumeSubheading
+      {${escape(edu.institution)}}{${escape(edu.year)}}
+      {${escape(edu.degree)}}{${edu.gpa ? `GPA: ${escape(edu.gpa)}` : ""}}
+      ${edu.relevantCourses && edu.relevantCourses.length > 0 ? `\\resumeItem{Relevant Courses: ${escape(edu.relevantCourses.join(", "))}}` : ""}
+  `).join("")}
+\\resumeSubHeadingListEnd
+` : "";
+
+  // Experience Block
+  const experienceSection = experience && experience.length > 0
+    ? `
+\\resumesection{Professional Experience}
+\\resumeSubHeadingListStart
+  ${experience.map((exp: any) => `    \\resumeSubheading
+      {${escape(exp.company)}}{${escape(exp.duration)}}
+      {${escape(exp.role)}}{${escape(exp.technologies.join(", "))}}
+      \\resumeItemListStart
+        ${exp.bullets.map((b: string) => `\\resumeItem{${escape(b)}}`).join("\n        ")}
+      \\resumeItemListEnd
+  `).join("")}
+\\resumeSubHeadingListEnd
+` : "";
+
+  // Projects Block
+  const projectsSection = projects && projects.length > 0
+    ? `
+\\resumesection{Projects}
+\\resumeSubHeadingListStart
+  ${projects.map((proj: any) => `    \\resumeProjectHeading
+      {\\textbf{${escape(proj.name)}} ${proj.link ? `$\\cdot$ \\href{https://${escape(proj.link)}}{\\footnotesize Link}` : ""}}{${escape(proj.technologies.join(", "))}}
+      \\resumeItemListStart
+        ${proj.bullets.map((b: string) => `\\resumeItem{${escape(b)}}`).join("\n        ")}
+      \\resumeItemListEnd
+  `).join("")}
+\\resumeSubHeadingListEnd
+` : "";
+
+  // Skills Block (Neat Tabular Layout for Tag style)
+  const skillRows: string[] = [];
+  if (skills) {
+    if (skills.languages && skills.languages.length > 0) {
+      skillRows.push(`\\textbf{Languages} & ${escape(skills.languages.join(", "))} \\\\`);
+    }
+    if (skills.frameworks && skills.frameworks.length > 0) {
+      skillRows.push(`\\textbf{Frameworks} & ${escape(skills.frameworks.join(", "))} \\\\`);
+    }
+    if (skills.tools && skills.tools.length > 0) {
+      skillRows.push(`\\textbf{Tools \\& Platforms} & ${escape(skills.tools.join(", "))} \\\\`);
+    }
+    if (skills.databases && skills.databases.length > 0) {
+      skillRows.push(`\\textbf{Databases} & ${escape(skills.databases.join(", "))} \\\\`);
+    }
+    if (skills.soft && skills.soft.length > 0) {
+      skillRows.push(`\\textbf{Competencies} & ${escape(skills.soft.join(", "))} \\\\`);
+    }
+  }
+
+  const skillsSection = skillRows.length > 0 ? `
+\\resumesection{Skills}
+\\vspace{2pt}
+\\begin{tabular}{r|p{0.82\\textwidth}}
+  ${skillRows.join("\n  ")}
+\\end{tabular}
+\\vspace{-4pt}
+` : "";
+
+  // Certifications Block
+  const certificationsSection = certifications && certifications.length > 0
+    ? `
+\\resumesection{Certifications}
+\\resumeSubHeadingListStart
+  ${certifications.map((cert: any) => `    \\resumeProjectHeading
+      {\\textbf{${escape(cert.name)}} $\\cdot$ \\footnotesize ${escape(cert.issuer)}}{${escape(cert.year)}}
+  `).join("")}
+\\resumeSubHeadingListEnd
+` : "";
+
+  // Achievements Block
+  const achievementsSection = achievements && achievements.length > 0
+    ? `
+\\resumesection{Achievements}
+{\\small
+  \\begin{list}{}{
+    \\setlength{\\leftmargin}{0.15in}
+    \\setlength{\\itemsep}{2pt}
+    \\setlength{\\topsep}{0pt}
+  }
+    ${achievements.map((ach: any) => `\\item \\textbf{${escape(ach.year || "")}}{: ${escape(ach.description)}}`).join("\n    ")}
+  \\end{list}
+}
+` : "";
+
+  return `\\documentclass[letterpaper,10pt]{article}
+
+\\usepackage[margin=0.5in]{geometry}
+\\usepackage[hidelinks]{hyperref}
+\\usepackage{xcolor}
+\\input{glyphtounicode}
+
+% Font selection
+\\renewcommand{\\familydefault}{\\sfdefault}
+
+\\pagestyle{empty}
+\\urlstyle{same}
+
+\\raggedbottom
+\\raggedright
+
+% Accent colors
+\\definecolor{accentColor}{HTML}{4F46E5} % Indigo Accent
+\\definecolor{darkBlack}{HTML}{111827}
+\\definecolor{slateGrey}{HTML}{4B5563}
+
+\\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\\newcommand{\\resumesection}[1]{\\vspace{8pt}\\textbf{\\large\\color{accentColor}\\uppercase{#1}}\\vspace{2pt}{\\color{slateGrey}\\hrule height 0.8pt}\\vspace{4pt}}
+
+\\newenvironment{tightlist}{
+  \\begin{list}{$\\cdot$}{
+    \\setlength{\\topsep}{0.5pt}
+    \\setlength{\\itemsep}{0.5pt}
+    \\setlength{\\parsep}{0pt}
+    \\setlength{\\parskip}{0pt}
+    \\setlength{\\leftmargin}{1.2em}
+  }
+}{
+  \\end{list}
+}
+
+\\newcommand{\\resumeItem}[1]{
+  \\item\\small{
+    {#1 \\vspace{-2pt}}
+  }
+}
+
+\\newcommand{\\resumeSubheading}[4]{
+  \\vspace{-1.5pt}\\item
+    \\begin{tabular*}{0.97\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}
+      \\textbf{\\color{darkBlack}#1} & \\small\\color{slateGrey}#2 \\\\
+      \\textit{\\small\\color{slateGrey}#3} & \\textit{\\small\\color{slateGrey}#4} \\\\
+    \\end{tabular*}\\vspace{-6pt}
+}
+
+\\newcommand{\\resumeProjectHeading}[2]{
+    \\item
+    \\begin{tabular*}{0.97\\textwidth}{l@{\\extracolsep{\\fill}}r}
+      \\small\\textbf{\\color{darkBlack}#1} & \\small\\color{slateGrey}#2 \\\\
+    \\end{tabular*}\\vspace{-6pt}
+}
+
+\\newcommand{\\resumeSubHeadingListStart}{
+  \\begin{list}{}{
+    \\setlength{\\leftmargin}{0.15in}
+    \\setlength{\\topsep}{0pt}
+    \\setlength{\\itemsep}{6pt}
+  }
+}
+\\newcommand{\\resumeSubHeadingListEnd}{\\end{list}}
+
+\\newcommand{\\resumeItemListStart}{\\begin{tightlist}}
+\\newcommand{\\resumeItemListEnd}{\\end{tightlist}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\\begin{document}
+
+%----------HEADING----------
+\\begin{center}
+    {\\Huge \\bfseries \\color{accentColor} ${escape(personalInfo.name)}} \\\\ \\vspace{6pt}
+    \\small \\color{slateGrey} ${headerLinks}
+\\end{center}
+\\vspace{-12pt}
+
+${skillsSection}
+${experienceSection}
+${projectsSection}
+${educationSection}
+${certificationsSection}
+${achievementsSection}
+
+\\end{document}
+`;
+}

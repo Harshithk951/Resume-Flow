@@ -1,0 +1,166 @@
+%-------------------------
+% Resume in LaTeX
+% Author : Harshith Kumar Mannepalli
+% Version: Optimus Information — Software Engineer Trainee (SET) v2
+%------------------------
+
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage[margin=0.4in, top=0.3in, bottom=0.3in, footskip=4pt]{geometry}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{
+  \vspace{-5pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-4pt}]
+
+\pdfgentounicode=1
+
+\newcommand{\resumeItem}[1]{
+  \item\small{
+    {#1 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[label=$\bullet$, leftmargin=0.15in, itemsep=0pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-3pt}}
+
+\begin{document}
+
+%----------HEADER----------
+\begin{center}
+    \textbf{\Huge \scshape HARSHITH KUMAR MANNEPALLI} \\ \vspace{3pt}
+    \small
+    \href{mailto:mharshithkumar6@gmail.com}{\underline{mharshithkumar6@gmail.com}} $|$
+    \href{https://www.linkedin.com/in/harshith-kumar-dev/}{\underline{linkedin.com/in/harshith-kumar-dev}} $|$
+    \href{https://github.com/Harshithk951}{\underline{github.com/Harshithk951}} $|$
+    \href{https://harshithkumar.in}{\underline{harshithkumar.in}}
+\end{center}
+
+%----------PROFESSIONAL SUMMARY----------
+\section{Professional Summary}
+\vspace{2pt}
+\small{
+Python-first software engineer with hands-on experience building AI/ML systems, REST APIs, and full-stack cloud-native applications. Contributed production-grade fixes to open source codebases through Agile-style iterative development; strong fundamentals in OOP, DSA, DBMS, and SDLC. Certified in cloud infrastructure and multi-agent AI systems. Ready to contribute to AI-first cloud engineering teams from Day~1.
+}
+
+%----------EDUCATION----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Uttaranchal University}{Dehradun, India}
+      {Bachelor of Technology in Computer Science (AI \& Machine Learning) $|$ \textbf{CGPA: 7.34/10}}{Expected May 2027}
+  \resumeSubHeadingListEnd
+
+%----------TECHNICAL SKILLS----------
+\section{Technical Skills}
+\vspace{-2pt}
+\begin{itemize}[leftmargin=0.15in, label={}, itemsep=1pt]
+\small{
+  \item \textbf{Languages:} Python, JavaScript, TypeScript, SQL
+  \item \textbf{CS Fundamentals:} Data Structures \& Algorithms, Object-Oriented Programming, DBMS, Operating System Concepts, SDLC, Agile/Scrum
+  \item \textbf{AI/ML \& GenAI:} LLMs, Multi-Agent Systems, Gemini API, Google ADK, Prompt Engineering, Automation Pipelines
+  \item \textbf{Tech Stack:} React.js, Next.js, Node.js, FastAPI, Tailwind CSS, PostgreSQL
+  \item \textbf{Cloud \& DevOps:} Microsoft Azure Fundamentals, Docker, Git, GitHub
+}
+\end{itemize}
+
+%----------EXPERIENCE----------
+\section{Experience}
+  \resumeSubHeadingListStart
+
+    \resumeSubheading
+      {Open Source Contributor --- Cal.com \& freeCodeCamp}{Remote}
+      {\href{https://github.com/calcom/cal.com}{\underline{calcom/cal.com}} $|$ \href{https://github.com/freeCodeCamp/freeCodeCamp}{\underline{freeCodeCamp/freeCodeCamp}}}{March 2026 -- Present}
+      \resumeItemListStart
+        \resumeItem{5 PRs merged into production codebases through Agile-style review cycles --- contributions span core library internals, build pipeline logic, and UI accessibility fixes; each PR reviewed and approved by senior maintainers.}
+        \resumeItem{Cal.com (TypeScript/Node.js): Diagnosed and fixed Day.js UTC/timezone plugin load-order bug causing silent formatting failures across locales in a platform serving 50k+ teams globally; removed unreachable control flow in \texttt{deleteDomain} affecting org-level domain management.}
+        \resumeItem{freeCodeCamp: Extended challenge-parser with automated workshop file structure validation --- enforced editable region marker counts and solution placement rules via directory scanning; fixed high-contrast navbar regression and missing test case in Screaming Snake Case challenge.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%----------PROJECTS----------
+\section{Projects}
+    \resumeSubHeadingListStart
+
+      \resumeProjectHeading
+        {\textbf{Smart Sales Intelligence Agent} $|$ \emph{Python, Gemini 2.0, Google ADK, Next.js, React Flow} $|$ \href{https://github.com/Harshithk951/sales-intelligence-agent}{\underline{GitHub}} $|$ \href{https://sales-intelligence-agent.vercel.app}{\underline{Live}}}{}
+        \resumeItemListStart
+          \resumeItem{Architected a 4-agent AI pipeline (Orchestrator $\rightarrow$ Research $\rightarrow$ Analysis $\rightarrow$ Outreach) using Python OOP class abstractions and a modular tool layer, automating end-to-end B2B sales intelligence on cloud infrastructure.}
+          \resumeItem{Engineered JSON-backed memory bank for persistent session state; implemented per-agent observability logging capturing latency, error severity, and token usage --- deployed as a Next.js 15 dashboard with real-time agent execution timeline and terminal-style log viewer.}
+          \resumeItem{Delivered all 3 required capstone features plus 3 bonus features for Google AI Agents Intensive (Nov 2025); structured full-stack deployment with independent backend service module enabling hot-swap without frontend changes.}
+        \resumeItemListEnd
+
+      \resumeProjectHeading
+          {\textbf{Uni-Connect Hub} $|$ \emph{React, TypeScript, Node.js, PostgreSQL} $|$ \href{https://github.com/Harshithk951/Uni-Connect-Hub-}{\underline{GitHub}} $|$ \href{https://alumni-connect-nu.vercel.app/}{\underline{Live}}}{}
+          \resumeItemListStart
+            \resumeItem{Built alumni-student networking platform selected in Smart India Hackathon (SIH) internal university round; implemented role-based access control (RBAC) for 200+ users across student, alumni, and administrator authentication flows.}
+            \resumeItem{Optimized DBMS queries (PostgreSQL joins and indexing) reducing average data fetch latency from 2.3s to 0.6s --- a 74\% improvement; applied OOP design patterns across controller and service layers.}
+          \resumeItemListEnd
+
+      \resumeProjectHeading
+        {\textbf{InclusiveLMS + Rural EdGame} $|$ \emph{React, TypeScript, Vite, Web Speech API} $|$ \href{https://github.com/Harshithk951/LMS-Portal}{\underline{GitHub}} $|$ \href{https://lms-portal-eosin.vercel.app}{\underline{Live}} $|$ \emph{24-Hour Hackathon}}{}
+        \resumeItemListStart
+          \resumeItem{Delivered two production-ready applications in 24 hours targeting UN SDG 4 (Quality Education) --- an accessibility-first LMS for differently-abled students and an offline educational game for children in rural areas with no internet access.}
+          \resumeItem{Integrated AI-driven automation for quiz generation, captioning, and summaries; implemented voice command navigation via Web Speech API for hands-free course interaction.}
+        \resumeItemListEnd
+
+    \resumeSubHeadingListEnd
+
+%----------CERTIFICATIONS----------
+\section{Certifications}
+\vspace{-2pt}
+  \resumeItemListStart
+     \resumeItem{\textbf{Oracle Cloud Infrastructure Gen AI Professional} --- Oracle (2025) $|$ ID: 322494826OCI25GAIOCP}
+     \resumeItem{\textbf{Google AI Agents Intensive} --- Google for Developers (Nov 2025)}
+     \resumeItem{\textbf{Full Stack Web Development} --- Uplyx Solutions Pvt Ltd $|$ ID: UPXAB1069}
+  \resumeItemListEnd
+
+%----------ACHIEVEMENTS----------
+\section{Achievements}
+\vspace{-2pt}
+  \resumeItemListStart
+     \resumeItem{\textbf{Open Source:} Contributed production-level fixes to 2 enterprise codebases (Cal.com, freeCodeCamp); changes reviewed and merged by senior maintainers, demonstrating strong debugging skills across library internals, build pipelines, and runtime dependency management.}
+     \resumeItem{\textbf{Hackathons:} Selected in Smart India Hackathon (SIH) internal university round with Uni-Connect Hub; built 2 functional, deployed applications within 24 hours at Dev Bhoomi Hackathon.}
+  \resumeItemListEnd
+
+\end{document}

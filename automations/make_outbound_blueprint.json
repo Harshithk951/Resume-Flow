@@ -1,0 +1,22 @@
+{
+  "name": "ResumeFlow Outbound Event Router",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "Outbound Event Webhook"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1
+  }
+}

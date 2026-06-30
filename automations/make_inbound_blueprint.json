@@ -1,0 +1,52 @@
+{
+  "name": "ResumeFlow Inbound Job Import",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "Custom Webhook (Inbound)"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "url": "https://dynamic-warthog-953.convex.site/api/webhooks/make/import-job",
+        "method": "post",
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "name": "Authorization",
+            "value": "Bearer {{YOUR_AUTOMATION_WEBHOOK_SECRET}}"
+          }
+        ],
+        "bodyType": "raw",
+        "contentType": "application/json",
+        "body": "{{1.body}}"
+      },
+      "metadata": {
+        "designer": {
+          "x": 200,
+          "y": 0,
+          "name": "Forward Job to Convex"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "version": 1
+  }
+}
