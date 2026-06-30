@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
+import { jakartaSans, displayFont } from "./fonts";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "ResumeFlow - High-Velocity AI Career Engine",
@@ -27,11 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth">
-      <body className="min-h-screen antialiased">
+    <html lang="en" className={`scroll-smooth ${jakartaSans.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
+      <body className={`min-h-screen antialiased ${jakartaSans.className}`}>
         <ConvexClerkProvider>
           <HydrationProtectionGuard>
-            {children}
+            <SmoothScroll>
+              {children}
+            </SmoothScroll>
           </HydrationProtectionGuard>
         </ConvexClerkProvider>
       </body>

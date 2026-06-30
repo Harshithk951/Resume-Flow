@@ -37,7 +37,7 @@
   --color-focus-outer: #435ee5;
   --color-focus-inner: #ffffff;
 
-  /* ── Spacing ── */
+  /* ── Spacing (Macro-Whitespace) ── */
   --spacing-xxs: 4px;
   --spacing-xs: 6px;
   --spacing-sm: 8px;
@@ -45,7 +45,7 @@
   --spacing-lg: 16px;
   --spacing-xl: 24px;
   --spacing-xxl: 32px;
-  --spacing-section: 64px;
+  --spacing-section: clamp(6rem, 10vw, 10rem);
 
   /* ── Radius (two-radius system + pill) ── */
   --rounded-none: 0px;
@@ -53,14 +53,22 @@
   --rounded-md: 16px;
   --rounded-lg: 32px;
   --rounded-full: 9999px;
+
+  /* ── Font Families ── */
+  --font-body: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-display), 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* ─── Global Base ──────────────────────────────────────────── */
 body {
   background: var(--color-surface-soft);
   color: var(--color-body);
-  font-family: var(--font-inter), -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-body);
+}
+
+/* ─── Display Heading Font ─────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
 }
 
 /* ─── Typography Tokens ────────────────────────────────────── */
@@ -400,3 +408,298 @@ body {
     font-size: 28px;
   }
 }
+
+/* ─── Immersive UI/UX: Vanguard Motion Curve ───────────────── */
+:root {
+  --ease-vanguard: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-base: 0.5s;
+  --duration-fast: 0.3s;
+  --duration-slow: 0.8s;
+}
+
+/* ─── Immersive UI/UX: Double-Bezel Card Architecture ──────── */
+/* Outer shell: soft border glow. Inner shell: content container
+   with concentric radii that optically nest without clipping.   */
+.bezel-card {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8),
+    rgba(246, 246, 243, 0.6)
+  );
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: 2rem;
+  padding: 0.5rem;
+  transition: transform var(--duration-base) var(--ease-vanguard),
+    box-shadow var(--duration-base) var(--ease-vanguard);
+}
+
+.bezel-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 48px -12px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.bezel-card-inner {
+  background: var(--color-canvas);
+  border-radius: calc(2rem - 0.5rem);
+  padding: 2rem 2.5rem;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+/* Compact variant for sidebar and dashboard stat cards */
+.bezel-card-sm {
+  border-radius: 1.25rem;
+  padding: 0.375rem;
+}
+
+.bezel-card-sm .bezel-card-inner {
+  border-radius: calc(1.25rem - 0.375rem);
+  padding: 1.25rem 1.5rem;
+}
+
+/* ─── Immersive UI/UX: Circular Icon Wrappers ──────────────── */
+/* "Island" — a circular icon container used inside CTAs         */
+.icon-island {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--rounded-full);
+  background: rgba(0, 0, 0, 0.08);
+  transition: background var(--duration-fast) var(--ease-vanguard),
+    transform var(--duration-fast) var(--ease-vanguard);
+  flex-shrink: 0;
+}
+
+.icon-island-light {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.group:hover .icon-island,
+a:hover .icon-island,
+button:hover .icon-island {
+  background: rgba(0, 0, 0, 0.12);
+  transform: translateX(2px);
+}
+
+.group:hover .icon-island-light,
+a:hover .icon-island-light,
+button:hover .icon-island-light {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateX(2px);
+}
+
+/* Feature icon wrapper (larger, rose-tinted) */
+.icon-feature {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+  border: 1px solid rgba(225, 29, 72, 0.08);
+  transition: background var(--duration-base) var(--ease-vanguard),
+    transform var(--duration-base) var(--ease-vanguard);
+}
+
+.group:hover .icon-feature {
+  background: linear-gradient(135deg, #ffe4e6, #fecdd3);
+  transform: scale(1.05);
+}
+
+/* ─── Immersive UI/UX: Sidebar Active Indicator ────────────── */
+.nav-item-active-indicator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: 0 var(--rounded-full) var(--rounded-full) 0;
+  background: var(--color-primary);
+  transition: height var(--duration-base) var(--ease-vanguard),
+    opacity var(--duration-base) var(--ease-vanguard);
+}
+
+/* ─── Immersive UI/UX: Stagger Entrance ────────────────────── */
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-enter {
+  animation: stagger-in var(--duration-slow) var(--ease-vanguard) both;
+}
+
+/* ─── Accessibility: Reduced Motion ────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .bezel-card:hover {
+    transform: none;
+  }
+
+  .template-marquee-track {
+    animation: none;
+  }
+}
+
+/* ─── Premium: Film-Grain Noise Overlay ────────────────────── */
+/* Fixed overlay, pointer-events-none, ultra-subtle texture      */
+.noise-overlay::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  mix-blend-mode: overlay;
+}
+
+/* ─── Premium: Eyebrow Pill ────────────────────────────────── */
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: var(--rounded-full);
+  padding: 0.375rem 1rem;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: rgba(225, 29, 72, 0.06);
+  color: #be123c;
+  border: 1px solid rgba(225, 29, 72, 0.12);
+}
+
+/* ─── Premium: Shimmer Border Animation ────────────────────── */
+@keyframes shimmer-border {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.shimmer-pill {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-pill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(225, 29, 72, 0.4) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-border 3s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ─── Premium: Glassmorphism Panel ─────────────────────────── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.04),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* ─── Premium: Mesh Gradient Backgrounds ───────────────────── */
+.mesh-gradient-hero {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(225, 29, 72, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 20% 60%, rgba(59, 130, 246, 0.04), transparent),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(168, 85, 247, 0.03), transparent),
+    var(--color-surface-soft);
+}
+
+.mesh-gradient-section {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(241, 245, 249, 0.8), transparent),
+    radial-gradient(ellipse 50% 40% at 100% 50%, rgba(225, 29, 72, 0.03), transparent),
+    #f8fafc;
+}
+
+/* ─── Premium: Animated CTA Gradient Strip ─────────────────── */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animated-gradient-cta {
+  background: linear-gradient(
+    135deg,
+    #dc2626 0%,
+    #e11d48 25%,
+    #be123c 50%,
+    #e11d48 75%,
+    #dc2626 100%
+  );
+  background-size: 300% 300%;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+/* ─── Premium: Floating Nav Pill ───────────────────────────── */
+.nav-floating-pill {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  transition: all var(--duration-base) var(--ease-vanguard);
+}
+
+.nav-floating-pill.scrolled {
+  top: 1rem;
+  border-radius: var(--rounded-full);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── Premium: Section Divider Gradient ────────────────────── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-hairline) 20%,
+    var(--color-hairline) 80%,
+    transparent 100%
+  );
+}
+

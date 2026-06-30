@@ -1,15 +1,13 @@
 "use client";
 
 import { useState, memo, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 
 // app/page.tsx
 //
-// Premium Landing Page for ResumeFlow — Clean Bento Red Edition
-// Features a high-fidelity Bento-Box layout, Rose/Red gradients, Framer Motion entrance & hover states,
-// and realistic, clean CSS-based UI mockups including:
-// 1. Staggered entrance animations.
-// 2. ATS Score circle ring transitions stroke colors (Red -> Yellow -> Green) in real-time.
-// 3. Before/After text block with strikethrough & green success optimization widget.
+// Premium Landing Page for ResumeFlow — Immersive Awwwards-Tier Edition
+// Features: 3D hero scene, scroll-driven reveals, spring-physics animations,
+// premium typography, double-bezel cards, and cinematic micro-interactions.
 
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
@@ -19,7 +17,18 @@ import { PricingSection } from "@/components/PricingSection";
 import { carouselTemplates } from "@/lib/latex/carouselTemplates";
 import { getTemplatesHref } from "@/lib/templates/navigation";
 import { useAuth } from "@clerk/nextjs";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import {
+  scrollRevealUp,
+  scrollRevealScale,
+  staggerContainer,
+  staggerContainerSlow,
+  wordReveal,
+  magneticHover,
+  accordionContent,
+  iconRotate,
+  EASE_VANGUARD,
+} from "@/lib/animations";
 import {
   Target,
   Globe,
@@ -35,30 +44,18 @@ import {
   Check,
   CheckCircle2,
   Volume2,
+  Plus,
 } from "lucide-react";
 
-// Entrance Animation Variants
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+// Lazy-load 3D scene — desktop only, zero SSR cost
+const Hero3DScene = dynamic(() => import("@/components/Hero3DScene"), {
+  ssr: false,
+  loading: () => null,
+});
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 100,
-      damping: 15,
-    },
-  },
-};
+// Entrance Animation Variants (using centralized library)
+const containerVariants = staggerContainer;
+const itemVariants = wordReveal;
 
 const ATS_RING_CIRCUMFERENCE = 251.2;
 const ATS_RING_TARGET_OFFSET = 5.02;
@@ -70,6 +67,7 @@ function AtsScoreGauge() {
 
   useEffect(() => {
     if (!isInView) return;
+    let rafId: number;
 
     const start = performance.now();
     const duration = 2000;
@@ -77,10 +75,15 @@ function AtsScoreGauge() {
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
       setScore(Math.round(progress * 98));
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick);
+      }
     };
 
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
   }, [isInView]);
 
   return (
@@ -287,74 +290,90 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 font-sans selection:bg-rose-100 selection:text-rose-950 overflow-x-hidden relative">
-      {/* Faint premium blurred radial depth orbs in the background */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose-500/[0.03] rounded-full blur-3xl pointer-events-none -z-10"></div>
-      <div className="absolute top-1/3 left-1/4 w-[400px] h-[400px] bg-blue-500/[0.02] rounded-full blur-3xl pointer-events-none -z-10"></div>
+    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 font-sans selection:bg-rose-100 selection:text-rose-950 overflow-x-hidden relative noise-overlay">
+      {/* Mesh gradient depth orbs */}
+      <div className="absolute top-0 left-0 right-0 h-[80vh] mesh-gradient-hero pointer-events-none -z-10"></div>
 
       {/* ─── Premium Navigation ─── */}
       <Navbar />
 
       {/* ─── Hero Section ─── */}
-      <section className="pt-24 pb-20 px-6 max-w-[1280px] mx-auto text-center relative">
+      <section className="pt-28 pb-24 px-6 max-w-[1280px] mx-auto text-center relative">
+        {/* 3D Scene — desktop only, behind text */}
+        <div className="hidden lg:block">
+          <Hero3DScene />
+        </div>
+
         <motion.div
           variants={containerVariants}
-          initial={false}
+          initial="hidden"
           animate="visible"
-          className="flex flex-col items-center"
+          className="flex flex-col items-center relative z-10"
         >
-          {/* Accent Pill badge */}
+          {/* Animated Shimmer Eyebrow Pill */}
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100 rounded-full px-4 py-1.5 mb-6 shadow-sm"
+            className="eyebrow-pill shimmer-pill mb-8"
           >
-            <Sparkles size={14} className="text-rose-600" />
-            <span className="text-xs font-bold uppercase tracking-wider text-rose-700">
-              Automated Resume Engineering
-            </span>
+            <Sparkles size={12} />
+            <span>AI-Powered Career Intelligence</span>
           </motion.div>
 
           <motion.h1
             variants={itemVariants}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight max-w-[920px] leading-[1.05] mb-6 text-slate-900"
+            className="font-display text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-[-0.03em] max-w-[920px] leading-[1.02] mb-7 text-slate-900"
           >
-            One Profile. Every Resume.{" "}
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-rose-600">
-              Zero Effort.
+            Your career story.{" "}
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-600 via-rose-600 to-red-500">
+              Engineered to land.
             </span>
           </motion.h1>
 
           <motion.p
             variants={itemVariants}
-            className="text-slate-600 text-lg md:text-xl max-w-[620px] leading-relaxed mb-10"
+            className="text-slate-500 text-lg md:text-xl max-w-[600px] leading-relaxed mb-12"
           >
-            Upload your master profile once. Paste any job description. Receive a perfectly
-            tailored, ATS-optimized resume in under 30 seconds — powered by AI with live company research.
+            Build once. Tailor instantly. Every resume, precision-engineered
+            for the role you want — powered by AI with live company research.
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
-            <motion.div whileTap={{ scale: 0.95 }}>
+            <motion.div
+              variants={magneticHover}
+              initial="rest"
+              whileHover="hover"
+              whileTap="tap"
+            >
               <Link
                 href={isSignedIn ? "/dashboard" : "/sign-up"}
-                className="group inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold rounded-full shadow-[0_8px_30px_rgba(225,29,72,0.3)] transition-all px-8 h-12 text-base gap-2"
+                className="group inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold rounded-full shadow-[0_8px_30px_rgba(225,29,72,0.3)] transition-all px-8 h-14 text-base gap-3"
               >
                 {isSignedIn ? "Go to Dashboard" : "Get started — it's free"}
-                <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" />
+                <span className="icon-island icon-island-light">
+                  <ArrowRight size={14} />
+                </span>
               </Link>
             </motion.div>
-            <motion.div whileTap={{ scale: 0.95 }}>
+            <motion.div
+              variants={magneticHover}
+              initial="rest"
+              whileHover="hover"
+              whileTap="tap"
+            >
               <Link
                 href={templatesHref}
-                className="inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 h-12 text-base transition-colors gap-2"
+                className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 h-14 text-base transition-colors gap-2"
               >
                 Browse Templates
-                <ArrowRight size={16} />
+                <span className="icon-island">
+                  <ArrowRight size={14} />
+                </span>
               </Link>
             </motion.div>
             {!isSignedIn && (
               <Link
                 href="/sign-in"
-                className="inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 h-12 text-base transition-colors sm:hidden"
+                className="inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 h-14 text-base transition-colors sm:hidden"
               >
                 I already have an account
               </Link>
@@ -363,69 +382,82 @@ export default function LandingPage() {
 
           {/* Premium Hero Video Embed */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8, type: "spring" as const }}
-            className="w-full max-w-5xl mx-auto mt-16 lg:mt-24 relative aspect-video"
+            initial={{ opacity: 0, y: 60, filter: "blur(12px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ delay: 0.4, duration: 1, ease: EASE_VANGUARD }}
+            className="w-full max-w-5xl mx-auto mt-20 lg:mt-28 relative aspect-video"
           >
             {/* Backlit glow effect */}
-            <div className="bg-rose-500/20 blur-[100px] absolute inset-4 rounded-[2rem] -z-10 pointer-events-none"></div>
+            <div className="bg-rose-500/15 blur-[120px] absolute inset-4 rounded-[2rem] -z-10 pointer-events-none"></div>
             
             {/* Sleek outer wrapper frame */}
-            <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/40 bg-white/40 backdrop-blur-2xl shadow-[0_20px_50px_-20px_rgba(225,29,72,0.25)]">
+            <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/40 bg-white/40 backdrop-blur-2xl shadow-[0_20px_60px_-20px_rgba(225,29,72,0.25)]">
               <HeroVideo />
             </div>
           </motion.div>
         </motion.div>
       </section>
 
+      {/* Section Divider */}
+      <div className="section-divider" />
+
       {/* ─── Bento Grid Section: Staggered Bento Cards ─── */}
-      <section id="features" className="py-16 bg-slate-50 border-y border-slate-200/40">
+      <section id="features" className="mesh-gradient-section border-y border-slate-200/40" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: 'var(--spacing-section)' }}>
         <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-              A premium suite for placement prep
-            </h2>
-            <p className="text-slate-600 mt-2">
+          <motion.div
+            variants={staggerContainerSlow}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-center max-w-2xl mx-auto mb-20"
+          >
+            <motion.div variants={scrollRevealUp} className="mb-4">
+              <span className="eyebrow-pill"><Sparkles size={10} /> Core Capabilities</span>
+            </motion.div>
+            <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
+              Precision tools for career engineers
+            </motion.h2>
+            <motion.p variants={scrollRevealUp} className="text-slate-500 mt-4 text-lg">
               From real-time requirements analysis to instant zero-trust PDF builds.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Bento Card 1: ATS Score (Left Column - 6 Columns) */}
             <motion.div
-              whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
-              className="md:col-span-6 bg-white rounded-[2rem] border border-slate-200/50 p-8 md:p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] flex flex-col justify-between group transition-all h-[520px]"
+              className="md:col-span-6 bezel-card group h-[520px]"
             >
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 mb-6 group-hover:bg-rose-100 transition-colors">
-                  <ScanSearch size={24} />
+              <div className="bezel-card-inner flex flex-col justify-between h-full">
+                <div>
+                  <div className="icon-feature text-rose-600 mb-6">
+                    <ScanSearch size={24} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Instant ATS Verification</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed max-w-md">
+                    Know how your tailored file stacks up against applicant tracking filters. Score keywords, formatting,
+                    and completeness metrics instantly.
+                  </p>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Instant ATS Verification</h3>
-                <p className="text-slate-600 text-sm leading-relaxed max-w-md">
-                  Know how your tailored file stacks up against applicant tracking filters. Score keywords, formatting,
-                  and completeness metrics instantly.
-                </p>
-              </div>
 
-              <AtsScoreGauge />
+                <AtsScoreGauge />
+              </div>
             </motion.div>
 
             {/* Bento Card 2: Instant Tailoring (Right Column - 6 Columns) */}
             <motion.div
-              whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
-              className="md:col-span-6 bg-white rounded-[2rem] border border-slate-200/50 p-8 md:p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] flex flex-col justify-between group transition-all h-[520px]"
+              className="md:col-span-6 bezel-card group h-[520px]"
             >
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 mb-6 group-hover:bg-rose-100 transition-colors">
-                  <Brain size={24} />
+              <div className="bezel-card-inner flex flex-col justify-between h-full">
+                <div>
+                  <div className="icon-feature text-rose-600 mb-6">
+                    <Brain size={24} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">AI-Powered Resume Tailoring</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed max-w-md">
+                    Copy any job description. Our engine reads the specifications, matches core skills,
+                    and intelligently rewrites experience bullet points to show your alignment in real-time.
+                  </p>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">AI-Powered Resume Tailoring</h3>
-                <p className="text-slate-600 text-sm leading-relaxed max-w-md">
-                  Copy any job description. Our engine reads the specifications, matches core skills,
-                  and intelligently rewrites experience bullet points to show your alignment in real-time.
-                </p>
-              </div>
 
               {/* High-Fidelity Tailwind CSS Mockup: Before / After AI Strikethrough Animation with Green Success */}
               <div className="mt-8 bg-gradient-to-br from-slate-50 to-rose-50/20 rounded-2xl p-4 border border-slate-100 flex justify-center items-center h-[220px] overflow-y-auto">
@@ -471,23 +503,24 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
+              </div>
             </motion.div>
 
             {/* Bento Card 3: Live Company Research (Left Column - 5 Columns) */}
             <motion.div
-              whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
-              className="md:col-span-5 bg-white rounded-[2rem] border border-slate-200/50 p-8 md:p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] flex flex-col justify-between group transition-all h-[520px]"
+              className="md:col-span-5 bezel-card group h-[520px]"
             >
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 mb-6 group-hover:bg-rose-100 transition-colors">
-                  <Globe size={24} />
+              <div className="bezel-card-inner flex flex-col justify-between h-full">
+                <div>
+                  <div className="icon-feature text-rose-600 mb-6">
+                    <Globe size={24} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Live Company Research</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed">
+                    Our research agent searches the live internet to extract company culture, tech stack, and values, aligning
+                    every bullet statement.
+                  </p>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Live Company Research</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
-                  Our research agent searches the live internet to extract company culture, tech stack, and values, aligning
-                  every bullet statement.
-                </p>
-              </div>
 
               {/* High-Fidelity Tailwind CSS Mockup: Company Info Panel (Clean off-white look) */}
               <div className="mt-8 bg-gradient-to-br from-slate-50 to-rose-50/20 rounded-2xl p-6 border border-slate-100/80 flex justify-center overflow-hidden h-[220px] relative">
@@ -511,23 +544,24 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
+              </div>
             </motion.div>
 
             {/* Bento Card 4: Zero-Trust WASM (Right Column - 7 Columns) */}
             <motion.div
-              whileHover={{ y: -5, transition: { type: "spring", stiffness: 300 } }}
-              className="md:col-span-7 bg-white rounded-[2rem] border border-slate-200/50 p-8 md:p-10 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] flex flex-col justify-between group transition-all h-[520px]"
+              className="md:col-span-7 bezel-card group h-[520px]"
             >
-              <div>
-                <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 mb-6 group-hover:bg-rose-100 transition-colors">
-                  <Shield size={24} />
+              <div className="bezel-card-inner flex flex-col justify-between h-full">
+                <div>
+                  <div className="icon-feature text-rose-600 mb-6">
+                    <Shield size={24} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Zero-Trust Client Compilation</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed max-w-lg">
+                    Security-first compiler. All LaTeX compilation compiles entirely in your browser using local WebAssembly.
+                    Your private details never hit any third-party PDF generators.
+                  </p>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3">Zero-Trust Client Compilation</h3>
-                <p className="text-slate-600 text-sm leading-relaxed max-w-lg">
-                  Security-first compiler. All LaTeX compilation compiles entirely in your browser using local WebAssembly.
-                  Your private details never hit any third-party PDF generators.
-                </p>
-              </div>
 
               {/* High-Fidelity Tailwind CSS Mockup: WASM Web Worker (Clean terminal look) */}
               <div className="mt-8 bg-gradient-to-tr from-slate-50 to-rose-50/20 rounded-2xl p-6 border border-slate-100/80 flex justify-center overflow-hidden h-[220px] relative">
@@ -542,23 +576,42 @@ export default function LandingPage() {
                   <div className="text-green-600">$ resolve (PDF Blob created successfully)</div>
                 </div>
               </div>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ─── Grid Feature Highlights Section ─── */}
-      <section id="how-it-works" className="py-20 px-6 max-w-[1280px] mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Advanced features for placement drives
-          </h2>
-          <p className="text-slate-600 mt-2">
-            Engineered to streamline corporate hiring drives and personal portfolio adjustments.
-          </p>
-        </div>
+      {/* Section Divider */}
+      <div className="section-divider" />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* ─── Grid Feature Highlights Section ─── */}
+      <section id="how-it-works" className="px-6 max-w-[1280px] mx-auto" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: 'var(--spacing-section)' }}>
+        <motion.div
+          variants={staggerContainerSlow}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          className="text-center max-w-2xl mx-auto mb-20"
+        >
+          <motion.div variants={scrollRevealUp} className="mb-4">
+            <span className="eyebrow-pill"><Zap size={10} /> Advanced Platform</span>
+          </motion.div>
+          <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
+            Built different. Built to win.
+          </motion.h2>
+          <motion.p variants={scrollRevealUp} className="text-slate-500 mt-4 text-lg">
+            Engineered to streamline corporate hiring drives and personal portfolio adjustments.
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4"
+        >
           {[
             {
               icon: <Target className="text-rose-500" />,
@@ -603,17 +656,20 @@ export default function LandingPage() {
           ].map((item, index) => (
             <motion.div
               key={index}
-              whileHover={{ y: -4 }}
-              className="bg-white border border-slate-200/50 rounded-2xl p-6 shadow-sm flex flex-col justify-between"
+              variants={scrollRevealScale}
+              whileHover={{ y: -4, transition: { duration: 0.3, ease: EASE_VANGUARD } }}
+              className="bezel-card bezel-card-sm"
             >
-              <div className="mb-4">{item.icon}</div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-900 mb-1">{item.title}</h4>
-                <p className="text-slate-600 text-xs leading-relaxed">{item.desc}</p>
+              <div className="bezel-card-inner flex flex-col justify-between">
+                <div className="mb-4">{item.icon}</div>
+                <div>
+                  <h4 className="text-sm font-bold text-slate-900 mb-1">{item.title}</h4>
+                  <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
+                </div>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* ─── Templates Showcase — Infinite Carousel ─── */}
@@ -621,17 +677,26 @@ export default function LandingPage() {
 
       <PricingSection />
 
+      {/* Section Divider */}
+      <div className="section-divider" />
+
       {/* ─── FAQ Section ─── */}
-      <section id="faq" className="py-20 bg-slate-50 border-t border-slate-200/40">
+      <section id="faq" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: 'var(--spacing-section)' }}>
         <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-slate-600 mt-2">
-              Everything you need to know about the ResumeFlow pipeline.
-            </p>
-          </div>
+          <motion.div
+            variants={staggerContainerSlow}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
+            <motion.div variants={scrollRevealUp} className="mb-4">
+              <span className="eyebrow-pill"><Check size={10} /> FAQ</span>
+            </motion.div>
+            <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
+              Questions? Answered.
+            </motion.h2>
+          </motion.div>
 
           <div className="max-w-3xl mx-auto space-y-4">
             {[
@@ -660,27 +725,38 @@ export default function LandingPage() {
               return (
                 <div
                   key={i}
-                  className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden transition-all shadow-sm"
+                  className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden transition-all shadow-sm hover:shadow-md"
+                  style={{ transitionTimingFunction: 'var(--ease-vanguard)' }}
                 >
                   <button
                     onClick={() => setOpenFaqIndex(isOpen ? null : i)}
                     className="w-full flex items-center justify-between p-6 text-left font-semibold text-slate-900 hover:bg-slate-50/50 transition-colors"
                   >
                     <span>{faq.q}</span>
-                    <span className="text-slate-400 text-lg transition-transform duration-200 font-bold shrink-0 ml-4">
-                      {isOpen ? "−" : "+"}
-                    </span>
+                    <motion.span
+                      animate={isOpen ? "expanded" : "collapsed"}
+                      variants={iconRotate}
+                      className="text-slate-400 text-lg font-bold shrink-0 ml-4"
+                    >
+                      <Plus size={18} />
+                    </motion.span>
                   </button>
-                  <motion.div
-                    initial={false}
-                    animate={{ height: isOpen ? "auto" : 0 }}
-                    transition={{ duration: 0.2, ease: "easeInOut" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 pt-0 text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                      {faq.a}
-                    </div>
-                  </motion.div>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="faq-content"
+                        initial="collapsed"
+                        animate="expanded"
+                        exit="collapsed"
+                        variants={accordionContent}
+                        className="overflow-hidden"
+                      >
+                        <div className="p-6 pt-0 text-sm text-slate-500 leading-relaxed border-t border-slate-100">
+                          {faq.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}
@@ -688,34 +764,58 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── CTA Strip (Premium Red/Rose theme) ─── */}
-      <section className="bg-gradient-to-r from-red-600 to-rose-700 py-16 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent)]"></div>
-        <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              Ready to win placement drives?
+      {/* Section Divider */}
+      <div className="section-divider" />
+
+      {/* ─── CTA Strip (Animated Gradient) ─── */}
+      <section className="animated-gradient-cta py-24 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent)]"></div>
+        <motion.div
+          variants={staggerContainerSlow}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10"
+        >
+          <motion.div variants={scrollRevealUp}>
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-white tracking-[-0.02em]">
+              Your next career move starts here.
             </h2>
-            <p className="text-rose-100 mt-2 max-w-xl">
+            <p className="text-rose-100/80 mt-3 max-w-xl text-lg">
               Create your Master Profile today, tailor your resume for any role instantly, and land your dream offer.
             </p>
-          </div>
-          <motion.div whileTap={{ scale: 0.95 }} className="shrink-0">
-            <Link
-              href={isSignedIn ? "/dashboard" : "/sign-up"}
-              className="inline-flex items-center justify-center bg-white hover:bg-slate-50 text-rose-700 font-bold rounded-full shadow-xl transition-all px-8 h-12 text-base gap-2"
-            >
-              {isSignedIn ? "Go to Dashboard" : "Sign up — it's free"}
-              <ArrowRight size={16} />
-            </Link>
           </motion.div>
-        </div>
+          <motion.div variants={scrollRevealScale} className="shrink-0">
+            <motion.div
+              variants={magneticHover}
+              initial="rest"
+              whileHover="hover"
+              whileTap="tap"
+            >
+              <Link
+                href={isSignedIn ? "/dashboard" : "/sign-up"}
+                className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-rose-700 font-bold rounded-full shadow-xl transition-all px-8 h-14 text-base gap-3"
+              >
+                {isSignedIn ? "Go to Dashboard" : "Sign up — it's free"}
+                <span className="icon-island">
+                  <ArrowRight size={14} />
+                </span>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* ─── Footer ─── */}
-      <footer className="bg-white border-t border-slate-100 py-12 px-6">
-        <div className="max-w-[1280px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+      {/* ─── Footer (Stagger Reveal) ─── */}
+      <footer className="bg-white border-t border-slate-100 py-16 px-6">
+        <motion.div
+          variants={staggerContainerSlow}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="max-w-[1280px] mx-auto"
+        >
+          <motion.div variants={scrollRevealUp} className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Product</p>
               <ul className="space-y-2 text-sm text-slate-600 flex flex-col items-start">
@@ -831,12 +931,12 @@ export default function LandingPage() {
                 </li>
               </ul>
             </div>
-          </div>
-          <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-slate-100 text-xs text-slate-400 gap-4">
+          </motion.div>
+          <motion.div variants={scrollRevealUp} className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-slate-100 text-xs text-slate-400 gap-4">
             <BrandLogo size="sm" className="gap-2.5" />
             <span>© 2026 ResumeFlow. All rights reserved.</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </footer>
     </div>
   );

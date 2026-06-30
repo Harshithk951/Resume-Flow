@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { KanbanBoard } from "@/components/KanbanBoard";
@@ -18,10 +18,62 @@ import {
   AlertTriangle
 } from "lucide-react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { EASE_VANGUARD, magneticHover, scaleIn } from "@/lib/animations";
 
-// Custom easing from Awwwards guidelines
-const easeOutExpo = [0.16, 1, 0.3, 1] as const;
+// Animated count-up hook
+function useCountUp(target: number, isInView: boolean, duration = 1200) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!isInView) return;
+    let rafId: number;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      // ease-out-expo
+      const eased = 1 - Math.pow(2, -10 * progress);
+      setCount(Math.round(eased * target));
+      if (progress < 1) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(rafId);
+    };
+  }, [isInView, target, duration]);
+  return count;
+}
+
+function AnimatedStat({ value, label, sublabel, icon: Icon, delay }: {
+  value: number; label: string; sublabel: string;
+  icon: React.ComponentType<{ className?: string }>; delay: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const animatedValue = useCountUp(value, isInView);
+
+  return (
+    <div ref={ref} className="bezel-card bezel-card-sm group stagger-enter" style={{ animationDelay: delay }}>
+      <div className="bezel-card-inner relative overflow-hidden">
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
+          {label}
+        </span>
+        <p className="text-4xl font-extrabold text-slate-800 mt-2 tracking-tight tabular-nums">
+          {animatedValue}
+        </p>
+        <span className="text-xs text-slate-500 block mt-1">
+          {sublabel}
+        </span>
+        <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-rose-500 group-hover:scale-110 transition-all duration-300"
+          style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+        >
+          <Icon className="w-4 h-4" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function DashboardCommandCenter() {
   const statsData = useQuery(api.dashboard.getDashboardStats);
@@ -97,7 +149,7 @@ export default function DashboardCommandCenter() {
       {/* Header (Awards Design: Typography Architecture & Micro-details) */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-6">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 leading-tight">
+          <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-slate-900 leading-tight">
             Placement Command Center
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -132,7 +184,8 @@ export default function DashboardCommandCenter() {
           <button
             type="button"
             onClick={() => setIsAddOpen(true)}
-            className="bg-rose-600 hover:bg-rose-700 text-white px-5 h-11 text-xs rounded-full font-bold flex items-center gap-2 shadow-lg shadow-rose-600/20 shrink-0 transition-all duration-200 active:scale-95"
+            className="bg-rose-600 hover:bg-rose-700 text-white px-5 h-11 text-xs rounded-full font-bold flex items-center gap-2 shadow-lg shadow-rose-600/20 shrink-0 transition-all duration-300 active:scale-[0.97]"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             <Plus className="w-4 h-4" />
             <span>Add Company Drive</span>
@@ -147,54 +200,32 @@ export default function DashboardCommandCenter() {
           
           {/* Top Row Stats */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm relative overflow-hidden group">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
-                Tracking Funnel
-              </span>
-              <p className="text-4xl font-extrabold text-slate-800 mt-2 tracking-tight">
-                {metrics.totalCompanies}
-              </p>
-              <span className="text-xs text-slate-500 block mt-1">
-                Active Corporate Pipelines
-              </span>
-              <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-rose-500 transition-colors">
-                <TrendingUp className="w-4 h-4" />
-              </div>
-            </div>
-            
-            <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm relative overflow-hidden group">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
-                Asset Matrix
-              </span>
-              <p className="text-4xl font-extrabold text-slate-800 mt-2 tracking-tight">
-                {metrics.resumesReady}
-              </p>
-              <span className="text-xs text-slate-500 block mt-1">
-                Compiled PDF Artifacts Ready
-              </span>
-              <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-rose-500 transition-colors">
-                <CheckCircle2 className="w-4 h-4" />
-              </div>
-            </div>
-            
-            <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm relative overflow-hidden group">
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
-                Average Alignment
-              </span>
-              <p className="text-4xl font-extrabold text-rose-600 mt-2 tracking-tight">
-                {metrics.avgMatch}%
-              </p>
-              <span className="text-xs text-slate-500 block mt-1">
-                Heuristic ATS Compatibility
-              </span>
-              <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-rose-500">
-                <Sparkles className="w-4 h-4" />
-              </div>
-            </div>
+            <AnimatedStat
+              value={metrics.totalCompanies}
+              label="Tracking Funnel"
+              sublabel="Active Corporate Pipelines"
+              icon={TrendingUp}
+              delay="0ms"
+            />
+            <AnimatedStat
+              value={metrics.resumesReady}
+              label="Asset Matrix"
+              sublabel="Compiled PDF Artifacts Ready"
+              icon={CheckCircle2}
+              delay="100ms"
+            />
+            <AnimatedStat
+              value={metrics.avgMatch}
+              label="ATS Performance"
+              sublabel="Average Optimization Score"
+              icon={Award}
+              delay="200ms"
+            />
           </div>
 
           {/* Funnel Metrics Card */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-4">
+          <div className="bezel-card">
+            <div className="bezel-card-inner space-y-4">
             <h3 className="font-bold text-sm tracking-tight text-slate-800 uppercase">
               Application Funnel Metrics
             </h3>
@@ -244,6 +275,7 @@ export default function DashboardCommandCenter() {
                 </div>
               </div>
             </div>
+            </div>
           </div>
         </div>
 
@@ -251,7 +283,8 @@ export default function DashboardCommandCenter() {
         <div className="lg:col-span-4 space-y-6">
           
           {/* PROFILE COMPLETENESS BENTO CARD (T1.3.6) */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-4">
+          <div className="bezel-card">
+            <div className="bezel-card-inner space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="text-xs font-bold tracking-tight text-slate-800 uppercase flex items-center gap-1.5">
                 <UserCheck className="w-4 h-4 text-rose-500" />
@@ -277,7 +310,7 @@ export default function DashboardCommandCenter() {
                     strokeDasharray="100, 100"
                     initial={{ strokeDashoffset: 100 }}
                     animate={{ strokeDashoffset: 100 - completeness }}
-                    transition={{ ease: easeOutExpo, duration: 1.2 }}
+                    transition={{ ease: EASE_VANGUARD, duration: 1.2 }}
                   />
                 </svg>
                 <span className="absolute text-xs font-bold">{completeness}%</span>
@@ -303,9 +336,11 @@ export default function DashboardCommandCenter() {
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
+          </div>
 
           {/* WARNINGS / NEEDS ATTENTION */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-4">
+          <div className="bezel-card">
+            <div className="bezel-card-inner space-y-4">
             <h3 className="text-xs font-bold tracking-tight text-slate-800 uppercase flex items-center gap-1.5">
               <AlertTriangle className="w-4 h-4 text-amber-500" />
               Attention Required
@@ -347,10 +382,12 @@ export default function DashboardCommandCenter() {
                 ))}
               </div>
             )}
+            </div>
           </div>
 
           {/* RECENT ACTIVITY LEDGER (T1.3.5) */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-4">
+          <div className="bezel-card">
+            <div className="bezel-card-inner space-y-4">
             <h3 className="text-xs font-bold tracking-tight text-slate-800 uppercase flex items-center gap-1.5">
               <Activity className="w-4 h-4 text-rose-500 animate-pulse" />
               Activity Ledger
@@ -375,6 +412,7 @@ export default function DashboardCommandCenter() {
                 ))}
               </div>
             )}
+            </div>
           </div>
 
         </div>
@@ -391,7 +429,8 @@ export default function DashboardCommandCenter() {
       {/* Add Company Drive Dialog */}
       {isAddOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white border border-slate-200 rounded-[32px] p-8 max-w-xl w-full mx-4 shadow-2xl space-y-6">
+          <div className="bezel-card max-w-xl w-full mx-4 shadow-2xl">
+            <div className="bezel-card-inner space-y-6">
             <h2 className="text-xl font-bold tracking-tight text-slate-800">
               Add Company Job Drive
             </h2>
@@ -454,6 +493,7 @@ export default function DashboardCommandCenter() {
                 </button>
               </div>
             </form>
+            </div>
           </div>
         </div>
       )}

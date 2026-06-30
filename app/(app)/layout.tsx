@@ -70,7 +70,7 @@ export default function AuthenticatedLayout({
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-50 text-slate-900">
-      <aside className="w-64 border-r border-slate-200/80 bg-slate-100/40 flex flex-col justify-between p-6 backdrop-blur-md shrink-0">
+      <aside className="w-64 border-r border-slate-200/40 glass-panel flex flex-col justify-between p-6 shrink-0">
         <div className="space-y-8">
           <BrandLogo href="/dashboard" size="sm" className="px-2" />
 
@@ -82,14 +82,19 @@ export default function AuthenticatedLayout({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-200 ${
+                  className={`group relative flex items-center space-x-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
                     isActive
-                      ? "bg-white text-rose-600 shadow-sm border border-slate-200/40 font-semibold"
-                      : "text-slate-600 hover:bg-slate-200/50 hover:text-slate-900"
+                      ? "bg-white text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
+                      : "text-slate-600 hover:bg-white/60 hover:text-slate-900"
                   }`}
+                  style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                 >
+                  {isActive && (
+                    <span className="nav-item-active-indicator" />
+                  )}
                   <Icon
-                    className={`h-4 w-4 ${isActive ? "text-rose-600" : "text-slate-400"}`}
+                    className={`h-4 w-4 transition-all duration-300 group-hover:scale-110 ${isActive ? "text-rose-600" : "text-slate-400 group-hover:text-slate-600"}`}
+                    style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                   />
                   <span>{item.name}</span>
                 </Link>
@@ -121,7 +126,7 @@ export default function AuthenticatedLayout({
       </aside>
 
       <main className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <header className="h-14 border-b border-slate-200/60 bg-white flex items-center justify-between px-6 md:px-8 shadow-sm shadow-slate-100/40 shrink-0">
+        <header className="h-14 border-b border-slate-200/40 bg-gradient-to-r from-white via-white to-slate-50/80 flex items-center justify-between px-6 md:px-8 shadow-sm shadow-slate-100/30 shrink-0">
           <div className="flex items-center gap-3">
             {showBack && (
               <AppBackButton
