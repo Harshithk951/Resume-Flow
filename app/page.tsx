@@ -391,7 +391,7 @@ export default function LandingPage() {
             <div className="bg-rose-500/15 blur-[120px] absolute inset-4 rounded-[2rem] -z-10 pointer-events-none"></div>
             
             {/* Sleek outer wrapper frame */}
-            <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/40 bg-white/40 backdrop-blur-2xl shadow-[0_20px_60px_-20px_rgba(225,29,72,0.25)]">
+            <div className="relative w-full h-full rounded-[2rem] overflow-hidden border border-white/20 bg-slate-950 shadow-[0_20px_60px_-20px_rgba(225,29,72,0.25)]">
               <HeroVideo />
             </div>
           </motion.div>
