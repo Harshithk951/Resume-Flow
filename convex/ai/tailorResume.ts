@@ -282,7 +282,8 @@ Return ONLY a valid JSON block matching this schema:
       });
 
     } catch (err: any) {
-      console.error("Layer 2 tailoring failed. Full error details:", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      // 🛡️ Security: Log only sanitized error (no raw error PII leaked)
+      console.error("Layer 2 tailoring failed:", err instanceof Error ? err.message : "Unknown error");
       const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
       // Graceful error state transition
       await ctx.runMutation(internal.jobs.internalUpdateJobState, {

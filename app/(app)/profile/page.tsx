@@ -265,7 +265,7 @@ export default function ProfilePage() {
       setIsEditing(false);
       router.push("/dashboard");
     } catch (err: any) {
-      alert("Error saving profile: " + err.message);
+      setLocalError(err.message || "Failed to save profile. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -1324,6 +1324,14 @@ export default function ProfilePage() {
                     </div>
                   )}
                 </div>
+
+                {/* Error display when saving fails */}
+                {localError && (
+                  <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 border border-red-100 text-red-700 text-xs">
+                    <AlertTriangle className="w-4 h-4 shrink-0" />
+                    <span>{localError}</span>
+                  </div>
+                )}
 
                 {/* Confirm and Save button */}
                 <div className="border-t border-slate-100 pt-6 mt-8 flex justify-end gap-3">

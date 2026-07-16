@@ -1,15 +1,21 @@
 "use client";
 
-import { Check, Sparkles, Briefcase, GraduationCap, Layout, AlignLeft } from "lucide-react";
+import { Check, Sparkles, Briefcase, GraduationCap, Layout, FileText } from "lucide-react";
 
 interface TemplateSelectTabProps {
   selectedTemplate: string;
   onSelectTemplate: (id: string) => void;
-  spacingPreset: "compact" | "executive";
-  onSpacingPresetChange: (preset: "compact" | "executive") => void;
 }
 
-const masterTemplates = [
+interface MasterTemplate {
+  id: string;
+  label: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  accent: string;
+}
+
+const masterTemplates: MasterTemplate[] = [
   {
     id: "ats_strict",
     label: "ATS Strict (Classic)",
@@ -20,14 +26,14 @@ const masterTemplates = [
   {
     id: "modern_professional",
     label: "Startup Accent",
-    description: "A contemporary design with a stylish sidebar border and vibrant crimson accents. Great for tech startups.",
+    description: "A contemporary design with stylish rose accents. Great for tech startups and modern teams.",
     icon: Sparkles,
     accent: "#e60023",
   },
   {
     id: "modern_executive",
     label: "Finance Classic",
-    description: "Refined serif typography and a centered header layout. Excellent for senior leadership and finance.",
+    description: "Refined serif typography with deep navy accents. Excellent for senior leadership and finance.",
     icon: GraduationCap,
     accent: "#0f172a",
   },
@@ -43,40 +49,23 @@ const masterTemplates = [
 export default function TemplateSelectTab({
   selectedTemplate,
   onSelectTemplate,
-  spacingPreset,
-  onSpacingPresetChange,
 }: TemplateSelectTabProps) {
   return (
     <div className="space-y-6">
-      {/* SPACING PRESET */}
+      {/* SPACING PRESET — Simplified to single option */}
       <div>
         <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
-          <AlignLeft className="w-3.5 h-3.5 text-slate-400" />
-          Spacing Preset
+          <FileText className="w-3.5 h-3.5 text-slate-400" />
+          Layout & Spacing
         </p>
-        <div className="flex bg-slate-100/80 rounded-2xl p-1 border border-slate-200/40 w-full">
-          <button
-            type="button"
-            onClick={() => onSpacingPresetChange("compact")}
-            className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${
-              spacingPreset === "compact"
-                ? "bg-white text-rose-600 shadow-sm border border-slate-200/20"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Compact (Standard)
-          </button>
-          <button
-            type="button"
-            onClick={() => onSpacingPresetChange("executive")}
-            className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all ${
-              spacingPreset === "executive"
-                ? "bg-white text-rose-600 shadow-sm border border-slate-200/20"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Executive (Spacious)
-          </button>
+        <div className="bg-slate-100/80 rounded-2xl p-3 border border-slate-200/40">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-xs font-bold text-slate-700">Compact (Standard)</span>
+              <p className="text-[10px] text-slate-400 mt-0.5">Single-column · 0.5in margins · 10pt type · Tight section spacing</p>
+            </div>
+            <span className="h-5 px-2 rounded-full bg-rose-100 text-rose-700 text-[9px] font-bold flex items-center">Default</span>
+          </div>
         </div>
       </div>
 
@@ -111,25 +100,28 @@ export default function TemplateSelectTab({
                 </div>
 
                 <div className="min-w-0 flex-1 pr-4">
-                  <span className="block text-xs font-bold text-slate-800 transition-colors group-hover:text-slate-900">
-                    {tpl.label}
-                  </span>
-                  <span className="block mt-1 text-[11px] text-slate-500 leading-relaxed">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="block text-xs font-bold text-slate-800 transition-colors group-hover:text-slate-900">
+                      {tpl.label}
+                    </span>
+                    {selected && (
+                      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-white shadow-sm shadow-rose-500/20">
+                        <Check className="w-2.5 h-2.5" />
+                      </span>
+                    )}
+                  </div>
+                  <span className="block text-[11px] text-slate-500 leading-relaxed">
                     {tpl.description}
                   </span>
                 </div>
 
                 {/* Accent indicator */}
-                <div className="absolute top-4 right-4 flex items-center gap-1.5">
+                <div className="absolute top-4 right-4">
                   <span
-                    className="h-2.5 w-2.5 rounded-full border border-white shadow-sm"
+                    className="h-3 w-3 rounded-full border border-white shadow-sm block"
                     style={{ backgroundColor: tpl.accent }}
+                    title={`Accent: ${tpl.accent}`}
                   />
-                  {selected && (
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-white shadow-sm shadow-rose-500/20">
-                      <Check className="w-3.5 h-3.5" />
-                    </span>
-                  )}
                 </div>
               </button>
             );

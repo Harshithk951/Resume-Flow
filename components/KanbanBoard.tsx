@@ -4,111 +4,145 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader2, AlertCircle, CheckCircle2, ChevronRight } from "lucide-react";
+import {
+  Loader2,
+  AlertCircle,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  UserCheck,
+} from "lucide-react";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 
 type JobDoc = Doc<"jobs">;
 
-type ColumnKey = "ingestion" | "gaps" | "tailoring" | "completed" | "failed";
-
-function getColumns(jobs: JobDoc[]) {
-  return {
-    ingestion: jobs.filter(
-      (j) => j.pipelineState === "uploaded" || j.pipelineState === "extracting"
-    ),
-    gaps: jobs.filter((j) => j.pipelineState === "needs_user_input"),
-    tailoring: jobs.filter(
-      (j) => j.pipelineState === "tailoring" || j.pipelineState === "compiling"
-    ),
-    completed: jobs.filter((j) => j.pipelineState === "completed"),
-    failed: jobs.filter((j) => j.pipelineState === "failed"),
-  };
-}
-
-const columnHeaders: { key: ColumnKey; label: string }[] = [
-  { key: "ingestion", label: "Ingestion & Analysis" },
-  { key: "gaps", label: "Gaps Review" },
-  { key: "tailoring", label: "Tailoring Resume" },
-  { key: "completed", label: "Completed Resumes" },
-  { key: "failed", label: "Failed Pipelines" },
-];
+const COLUMNS = [
+  {
+    key: "in_progress" as const,
+    label: "In Progress",
+    description: "Ingesting, tailoring, or compiling",
+    icon: Clock,
+    accent: "bg-amber-500",
+    lightBg: "bg-amber-50/30",
+    filter: (j: JobDoc) =>
+      ["uploaded", "extracting", "tailoring", "compiling"].includes(j.pipelineState),
+  },
+  {
+    key: "needs_input" as const,
+    label: "Needs Input",
+    description: "Waiting on your response",
+    icon: UserCheck,
+    accent: "bg-rose-500",
+    lightBg: "bg-rose-50/30",
+    filter: (j: JobDoc) => j.pipelineState === "needs_user_input",
+  },
+  {
+    key: "resolved" as const,
+    label: "Resolved",
+    description: "Completed or failed pipelines",
+    icon: CheckCircle2,
+    accent: "bg-emerald-500",
+    lightBg: "bg-emerald-50/30",
+    filter: (j: JobDoc) => ["completed", "failed"].includes(j.pipelineState),
+  },
+] as const;
 
 function statusLabel(state: JobDoc["pipelineState"]): string {
   switch (state) {
-    case "extracting":
-      return "Analyzing JD...";
-    case "needs_user_input":
-      return "Gaps pending";
-    case "tailoring":
-      return "Optimizing bullets...";
-    case "compiling":
-      return "Building PDF...";
-    case "completed":
-      return "Ready to download";
-    case "failed":
-      return "Failed";
-    default:
-      return "Queued";
+    case "uploaded": return "Queued for analysis";
+    case "extracting": return "Analyzing JD...";
+    case "needs_user_input": return "Gaps pending";
+    case "tailoring": return "Optimizing bullets...";
+    case "compiling": return "Building PDF...";
+    case "completed": return "Ready to download";
+    case "failed": return "Failed";
+    default: return "Processing";
   }
 }
 
 export function KanbanBoard() {
   const jobs = useQuery(api.jobs.getMyJobs) ?? [];
-  const columns = getColumns(jobs);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mt-8 overflow-x-auto pb-6">
-      {columnHeaders.map((col) => (
-        <div
-          key={col.key}
-          className="flex flex-col bg-slate-100/50 rounded-3xl p-4 border border-slate-100 min-h-[500px]"
-        >
-          <div className="flex items-center justify-between mb-4 px-2">
-            <h3 className="font-bold text-sm text-slate-800 tracking-tight">
-              {col.label}
-            </h3>
-            <span className="text-xs bg-slate-200/80 px-2 py-1 rounded-lg text-slate-600 font-semibold">
-              {columns[col.key].length}
-            </span>
-          </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {COLUMNS.map((col) => {
+        const columnJobs = jobs.filter(col.filter);
+        const Icon = col.icon;
 
-          <div className="flex-1 space-y-4">
-            {columns[col.key].map((job) => (
-              <motion.div
-                key={job._id}
-                layoutId={`job-${job._id}`}
-                transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer relative group"
-              >
-                <Link href={`/company/${job._id}`} className="block">
-                  <div className="flex items-start justify-between mb-2">
-                    <span className="text-xs font-bold text-rose-600 uppercase tracking-wider">
-                      {job.companyName}
-                    </span>
-                    <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-                  </div>
-                  <h4 className="font-bold text-slate-800 text-sm tracking-tight line-clamp-1">
-                    {job.jobTitle}
-                  </h4>
+        return (
+          <div
+            key={col.key}
+            className={`rounded-2xl border border-slate-200/60 ${col.lightBg} p-4 min-h-[300px]`}
+          >
+            {/* Column Header */}
+            <div className="flex items-center justify-between mb-4 px-1">
+              <div className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full ${col.accent}`} />
+                <div>
+                  <h3 className="font-bold text-sm text-slate-800">{col.label}</h3>
+                  <p className="text-[10px] text-slate-400">{col.description}</p>
+                </div>
+              </div>
+              <span className="text-xs font-bold bg-white border border-slate-200/60 px-2 py-0.5 rounded-lg text-slate-600">
+                {columnJobs.length}
+              </span>
+            </div>
 
-                  <div className="mt-4 flex items-center justify-between">
-                    <span className="text-xs text-slate-500">
-                      {statusLabel(job.pipelineState)}
-                    </span>
-                    {job.pipelineState === "completed" ? (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    ) : job.pipelineState === "failed" ? (
-                      <AlertCircle className="w-4 h-4 text-rose-500" />
-                    ) : (
-                      <Loader2 className="w-4 h-4 text-rose-500 animate-spin" />
-                    )}
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+            {/* Cards */}
+            <div className="space-y-3">
+              {columnJobs.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-8 text-slate-400 text-xs">
+                  <Icon className="w-6 h-6 mb-2 opacity-40" />
+                  <span>No jobs</span>
+                </div>
+              ) : (
+                columnJobs.map((job) => (
+                  <motion.div
+                    key={job._id}
+                    layoutId={`job-${job._id}`}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  >
+                    <Link href={`/company/${job._id}`} className="block">
+                      <Card className="hover:shadow-md transition-all duration-200 group">
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="min-w-0 flex-1">
+                              <span className="text-[10px] font-bold text-rose-600 uppercase tracking-wider block truncate">
+                                {job.companyName}
+                              </span>
+                              <h4 className="font-bold text-sm text-slate-800 tracking-tight truncate mt-0.5">
+                                {job.jobTitle}
+                              </h4>
+                            </div>
+                            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0 ml-2" />
+                          </div>
+
+                          <div className="flex items-center justify-between mt-3">
+                            <span className="text-[11px] text-slate-500">
+                              {statusLabel(job.pipelineState)}
+                            </span>
+                            {job.pipelineState === "completed" ? (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                            ) : job.pipelineState === "failed" ? (
+                              <Badge variant="destructive" className="text-[9px]">Failed</Badge>
+                            ) : job.pipelineState === "needs_user_input" ? (
+                              <Badge variant="warning" className="text-[9px]">Action</Badge>
+                            ) : (
+                              <Loader2 className="w-4 h-4 text-amber-500 animate-spin" />
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </motion.div>
+                ))
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

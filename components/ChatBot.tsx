@@ -15,6 +15,7 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { MessageSquare, X, Send, Loader2, Maximize2, Minimize2, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import DOMPurify from "dompurify";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -261,7 +262,13 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
   }, []);
 
   const parseChatMessage = (text: string, isUser = false) => {
-    let html = text;
+    // 🛡️ Security: Escape HTML entities before markdown processing to prevent XSS
+    let html = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
     html = html.replace(/\r/g, "");
     html = html.replace(/\n{3,}/g, "\n\n");
     html = html.replace(
@@ -283,10 +290,16 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
     html = html.replace(/\n\n/g, '<div class="h-2"></div>');
     html = html.replace(/\n/g, " ");
 
+    // 🛡️ Security: Final sanitization via DOMPurify before rendering HTML
+    const sanitizedHtml = DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: ["h4", "strong", "li", "div"],
+      ALLOWED_ATTR: ["class"],
+    });
+
     return (
       <span
         className={`block ${isUser ? "text-white" : "text-slate-800"} leading-relaxed`}
-        dangerouslySetInnerHTML={{ __html: html }}
+        dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
       />
     );
   };
@@ -371,7 +384,8 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Failed to send message. Please try again.";
-      console.error("Failed to send message:", err);
+      // 🛡️ Security: Log sanitized error only (no raw error details exposed)
+      console.error("Failed to send message.");
       setChatError(message);
       setIsGenerating(false);
     }

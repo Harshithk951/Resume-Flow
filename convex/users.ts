@@ -2,7 +2,10 @@
 // User management — syncs Clerk users into the Convex database.
 
 import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
+
+const MAX_CREDITS = 2000;
+const CREDITS_PER_RESUME = 200;
 
 export const createFromClerk = mutation({
   args: {
@@ -26,7 +29,8 @@ export const createFromClerk = mutation({
       email: args.email,
       name: args.name,
       tenantId,
-      credits: 50, // initial credit grant
+      credits: MAX_CREDITS,
+      plan: "free",
       onboardingComplete: false,
     });
 
@@ -66,7 +70,8 @@ export const createOrGetUser = mutation({
       email: identity.email ?? "",
       name: identity.name ?? "",
       tenantId,
-      credits: 50,
+      credits: MAX_CREDITS,
+      plan: "free",
       onboardingComplete: false,
     });
 
@@ -92,6 +97,7 @@ export const getUser = query({
       _id: user._id,
       name: user.name,
       credits: user.credits,
+      plan: user.plan,
       imageUrl: user.imageUrl,
       tenantId: user.tenantId,
       onboardingComplete: user.onboardingComplete,
@@ -101,20 +107,28 @@ export const getUser = query({
 
 import { requireAuth } from "./lib/auth";
 
+/**
+ * Deducts credits for any operation. Skips deduction for Pro/Campus users.
+ * Throws ConvexError if free user has insufficient credits.
+ */
 export const checkAndDeductCredits = mutation({
   args: { amount: v.number() },
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx);
-    let currentCredits = user.credits ?? 0;
-    
-    if (currentCredits < args.amount) {
-      currentCredits += 100;
-      await ctx.db.patch(user._id, {
-        credits: currentCredits,
-      });
-      console.log(`Auto-granted 100 credits to user ${user._id} to prevent block.`);
+
+    // Pro/Campus users: skip deduction entirely (unlimited)
+    if (user.plan === "pro" || user.plan === "campus") {
+      return user._id;
     }
-    
+
+    let currentCredits = user.credits ?? 0;
+    if (currentCredits < args.amount) {
+      throw new ConvexError(
+        `Insufficient credits (${currentCredits}/${MAX_CREDITS}). ` +
+        `Upgrade to Pro for unlimited resume generation.`
+      );
+    }
+
     await ctx.db.patch(user._id, {
       credits: currentCredits - args.amount,
     });
@@ -122,15 +136,32 @@ export const checkAndDeductCredits = mutation({
   },
 });
 
-export const grantFreeCredits = mutation({
+/**
+ * Deducts exactly CREDITS_PER_RESUME (200) for a resume tailoring.
+ * Convenience wrapper — no args needed.
+ */
+export const deductResumeCredit = mutation({
   args: {},
   handler: async (ctx) => {
     const user = await requireAuth(ctx);
-    const newBalance = (user.credits || 0) + 100;
+
+    if (user.plan === "pro" || user.plan === "campus") {
+      return user._id;
+    }
+
+    const currentCredits = user.credits ?? 0;
+    if (currentCredits < CREDITS_PER_RESUME) {
+      throw new ConvexError(
+        `Insufficient credits. You have ${currentCredits} credits remaining. ` +
+        `Each resume costs ${CREDITS_PER_RESUME} credits. ` +
+        `Upgrade to Pro for unlimited generation.`
+      );
+    }
+
     await ctx.db.patch(user._id, {
-      credits: newBalance,
+      credits: currentCredits - CREDITS_PER_RESUME,
     });
-    return newBalance;
+    return user._id;
   },
 });
 

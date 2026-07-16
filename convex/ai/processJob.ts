@@ -374,7 +374,8 @@ Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary 
 
       await commitAnalysisResult(ctx, args.jobId, validatedResult);
     } catch (err: any) {
-      console.error("Layer 1 pipeline failed. Full error details:", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      // 🛡️ Security: Log only sanitized error (no raw error PII leaked)
+      console.error("Layer 1 pipeline failed:", err instanceof Error ? err.message : "Unknown error");
       const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
       // Graceful error state transition
       await ctx.runMutation(internal.jobs.internalUpdateJobState, {

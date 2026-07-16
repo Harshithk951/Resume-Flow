@@ -4,6 +4,12 @@
 // Features a clean sans-serif layout with slate grey headers and modern geometric styling.
 // Uses native, zero-dependency LaTeX macros for maximum compatibility with BasicTeX.
 
+function ensureUrl(url: string | undefined): string {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
 export default function modernProfessionalTemplate(data: any): string {
   const { personalInfo, education, experience, projects, skills, certifications, achievements } = data;
 
@@ -13,9 +19,9 @@ export default function modernProfessionalTemplate(data: any): string {
   const headerLinks = [
     personalInfo.email ? `\\href{mailto:${escape(personalInfo.email)}}{${escape(personalInfo.email)}}` : null,
     personalInfo.phone ? escape(personalInfo.phone) : null,
-    personalInfo.linkedin ? `\\href{https://${escape(personalInfo.linkedin)}}{LinkedIn}` : null,
-    personalInfo.github ? `\\href{https://${escape(personalInfo.github)}}{GitHub}` : null,
-    personalInfo.portfolio ? `\\href{https://${escape(personalInfo.portfolio)}}{Portfolio}` : null,
+    personalInfo.linkedin ? `\\href{${ensureUrl(escape(personalInfo.linkedin))}}{LinkedIn}` : null,
+    personalInfo.github ? `\\href{${ensureUrl(escape(personalInfo.github))}}{GitHub}` : null,
+    personalInfo.portfolio ? `\\href{${ensureUrl(escape(personalInfo.portfolio))}}{Portfolio}` : null,
   ].filter(Boolean).join(" ~$\\cdot$~ ");
 
   // Education Block
@@ -55,7 +61,7 @@ export default function modernProfessionalTemplate(data: any): string {
 \\resumeSubHeadingListStart
   ${projects.map((proj: any) => `
     \\resumeProjectHeading
-      {\\textbf{${escape(proj.name)}} ${proj.link ? `$\\cdot$ \\href{https://${escape(proj.link)}}{\\footnotesize Link}` : ""}}{${escape(proj.technologies.join(", "))}}
+      {\\textbf{${escape(proj.name)}} ${proj.link ? `$\\cdot$ \\href{${ensureUrl(escape(proj.link))}}{\\footnotesize Link}` : ""}}{${escape(proj.technologies.join(", "))}}
       \\resumeItemListStart
         ${proj.bullets.map((b: string) => `\\resumeItem{${escape(b)}}`).join("\n        ")}
       \\resumeItemListEnd

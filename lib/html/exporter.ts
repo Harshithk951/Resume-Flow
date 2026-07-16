@@ -44,7 +44,7 @@ export function exportToHtml(
   // Define template-specific variables/styles
   let bodyClass = "bg-white text-slate-900 antialiased p-8 mx-auto my-0 max-w-[800px] min-h-[1123px] shadow-[0_0_20px_rgba(0,0,0,0.05)]";
   let headingStyleClass = layout.headingClass;
-  let accentColor = "#e60023"; // default primary red
+  const LINK_COLOR = "#3b82f6";
 
   if (templateId === "ats_strict") {
     bodyClass = "bg-white text-black antialiased p-8 mx-auto my-0 max-w-[800px] min-h-[1123px]";
@@ -58,7 +58,6 @@ export function exportToHtml(
   } else if (templateId === "tech_innovator") {
     bodyClass = "bg-white text-slate-800 antialiased p-10 mx-auto my-0 max-w-[800px] min-h-[1123px] shadow-[0_0_25px_rgba(0,0,0,0.08)]";
     headingStyleClass = "text-md font-extrabold text-indigo-600 uppercase tracking-widest border-b border-indigo-100 pb-1.5 mt-5 mb-3";
-    accentColor = "#4f46e5"; // Indigo
   }
 
   // Header render helpers
@@ -85,12 +84,12 @@ export function exportToHtml(
             <p class="text-sm font-semibold text-rose-600 mt-1 uppercase tracking-wider">Software Engineer</p>
           </div>
           <div class="text-right text-xs space-y-1 text-slate-500">
-            ${personalInfo.email ? `<div><a href="mailto:${personalInfo.email}" class="hover:text-rose-600 transition-colors">${escapeHtml(personalInfo.email)}</a></div>` : ""}
+            ${personalInfo.email ? `<div><a href="mailto:${personalInfo.email}" class="link">${escapeHtml(personalInfo.email)}</a></div>` : ""}
             ${personalInfo.phone ? `<div>${escapeHtml(personalInfo.phone)}</div>` : ""}
             <div class="space-x-2 mt-1.5">
-              ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="text-rose-600 hover:underline">LinkedIn</a>` : ""}
-              ${personalInfo.github ? `<a href="${personalInfo.github}" class="text-rose-600 hover:underline">GitHub</a>` : ""}
-              ${personalInfo.portfolio ? `<a href="${personalInfo.portfolio}" class="text-rose-600 hover:underline">Portfolio</a>` : ""}
+              ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="link">LinkedIn</a>` : ""}
+              ${personalInfo.github ? `<a href="${personalInfo.github}" class="link">GitHub</a>` : ""}
+              ${personalInfo.portfolio ? `<a href="${personalInfo.portfolio}" class="link">Portfolio</a>` : ""}
             </div>
           </div>
         </div>
@@ -104,8 +103,8 @@ export function exportToHtml(
           <div class="flex justify-center gap-4 text-xs mt-3 text-slate-600 font-sans tracking-wide">
             ${personalInfo.email ? `<a href="mailto:${personalInfo.email}" class="hover:underline">${escapeHtml(personalInfo.email)}</a>` : ""}
             ${personalInfo.phone ? `<span>${escapeHtml(personalInfo.phone)}</span>` : ""}
-            ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="hover:underline">LinkedIn</a>` : ""}
-            ${personalInfo.github ? `<a href="${personalInfo.github}" class="hover:underline">GitHub</a>` : ""}
+            ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="link">LinkedIn</a>` : ""}
+            ${personalInfo.github ? `<a href="${personalInfo.github}" class="link">GitHub</a>` : ""}
           </div>
         </div>
       `;
@@ -122,8 +121,8 @@ export function exportToHtml(
           ${personalInfo.email ? `<div>${escapeHtml(personalInfo.email)}</div>` : ""}
           ${personalInfo.phone ? `<div>${escapeHtml(personalInfo.phone)}</div>` : ""}
           <div class="space-x-2 mt-1">
-            ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="text-indigo-600 hover:underline">in</a>` : ""}
-            ${personalInfo.github ? `<a href="${personalInfo.github}" class="text-indigo-600 hover:underline">git</a>` : ""}
+            ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="link">in</a>` : ""}
+            ${personalInfo.github ? `<a href="${personalInfo.github}" class="link">git</a>` : ""}
           </div>
         </div>
       </div>
@@ -153,7 +152,7 @@ export function exportToHtml(
               <div>
                 <span class="font-bold text-slate-900">${escapeHtml(edu.institution)}</span>
                 <span class="text-slate-500"> — ${escapeHtml(edu.degree)}</span>
-                ${edu.gpa ? `<span class="ml-2 font-semibold text-rose-600">CGPA: ${escapeHtml(edu.gpa)}</span>` : ""}
+                ${edu.gpa ? `<span class="ml-2 font-semibold text-slate-900">CGPA: ${escapeHtml(edu.gpa)}</span>` : ""}
               </div>
               <span class="text-slate-500 whitespace-nowrap ml-4">${escapeHtml(edu.year)}</span>
             </div>
@@ -211,7 +210,7 @@ export function exportToHtml(
                   <span class="font-bold text-slate-900">${escapeHtml(proj.name)}</span>
                   ${proj.technologies ? `<span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded ml-2 font-mono">${escapeHtml(proj.technologies.join(", "))}</span>` : ""}
                 </div>
-                ${proj.link ? `<a href="${proj.link}" class="text-[10px] text-rose-600 hover:underline">Link</a>` : ""}
+                ${proj.link ? `<a href="${proj.link}" class="text-[10px] link">Link</a>` : ""}
               </div>
               <ul class="list-disc list-inside space-y-0.5 text-slate-600 text-xs pl-2">
                 ${(proj.bullets ?? [])
@@ -330,8 +329,14 @@ export function exportToHtml(
             color: inherit;
             text-decoration: none;
           }
+          a.link {
+            color: ${LINK_COLOR} !important;
+          }
+          a.link:hover {
+            text-decoration: underline;
+          }
           li::marker {
-            color: ${accentColor};
+            color: #1e293b;
             font-size: 0.8em;
           }
         </style>

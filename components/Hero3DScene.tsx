@@ -6,7 +6,7 @@
 // Features a floating resume card with parallax tilt and particle field.
 // Lazy-loaded, desktop-only, with performance auto-downgrade.
 
-import { useRef, useMemo, Suspense } from "react";
+import { useRef, useMemo, useEffect, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Float, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
@@ -126,6 +126,15 @@ function CameraRig() {
   const { camera } = useThree();
   const mouse = useRef({ x: 0, y: 0 });
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   useFrame(() => {
     // Gentle parallax tilt based on mouse
     camera.position.x = THREE.MathUtils.lerp(
@@ -141,29 +150,46 @@ function CameraRig() {
     camera.lookAt(0, 0, 0);
   });
 
-  // Track mouse movement
-  if (typeof window !== "undefined") {
-    const handleMouseMove = (e: MouseEvent) => {
-      mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouse.current.y = -(e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    if (typeof window !== "undefined") {
-      window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    }
-  }
-
   return null;
 }
 
+// ─── WebGL Support Detection Helper ─────────────────────
+function checkWebGLSupport(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"))
+    );
+  } catch (e) {
+    return false;
+  }
+}
+
 // ─── Main Scene ──────────────────────────────────────────
-export default function Hero3DScene() {
+export default function Hero3DScene({ inView = true }: { inView?: boolean }) {
+  const isSupported = useMemo(() => checkWebGLSupport(), []);
+  const isMobile = useMemo(() => {
+    if (typeof window === "undefined") return false;
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+  }, []);
+
+  if (!isSupported) {
+    // Elegant fallback layout: simple clean gradient orb
+    return (
+      <div className="absolute inset-0 -z-10 opacity-30 pointer-events-none bg-radial from-rose-500/10 to-transparent blur-3xl"></div>
+    );
+  }
+
   return (
     <div className="absolute inset-0 -z-10 opacity-60 pointer-events-none">
       <Canvas
         camera={{ position: [0, 0.2, 5.5], fov: 35 }}
-        dpr={[1, 1.5]}
+        dpr={isMobile ? 1 : 1.5}
+        frameloop={inView ? "always" : "never"}
         gl={{
-          antialias: true,
+          antialias: !isMobile,
           alpha: true,
           powerPreference: "high-performance",
         }}
@@ -183,7 +209,7 @@ export default function Hero3DScene() {
           <group rotation={[0.05, -0.15, 0.02]}>
             <ResumeCardContent />
           </group>
-          <ParticleField count={100} />
+          <ParticleField count={isMobile ? 30 : 80} />
 
           {/* Camera parallax */}
           <CameraRig />

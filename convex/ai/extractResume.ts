@@ -381,7 +381,8 @@ If any section or field is completely missing in the resume, return an empty arr
       return validatedData;
     } catch (error) {
       const err = error as any;
-      console.error("Extraction failed. Full error details:", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      // 🛡️ Security: Log only sanitized error (no raw error/PII leaked)
+      console.error("Extraction failed:", err instanceof Error ? err.message : "Unknown error");
       if (profileId) {
         try {
           await ctx.runMutation(internal.profiles.markExtractionFailed, {

@@ -1,0 +1,21 @@
+{
+  "name": "21st-dev-mcp-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "21st.dev Magic MCP server for AI-powered UI component generation",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "open": "^10.1.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "typescript": "^5.8.2"
+  }
+}

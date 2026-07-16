@@ -5,7 +5,7 @@
 // Actions call these mutations to transition states and write progress safely.
 
 import { mutation, query, internalQuery, internalMutation } from "./_generated/server";
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
 import { requireAuth, requireOwnership } from "./lib/auth";
 import { api, internal } from "./_generated/api";
 import { enforceRateLimit } from "./lib/rateLimit";
@@ -139,12 +139,27 @@ export const submitGapAnswers = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx);
     const job = await ctx.db.get(args.jobId);
     if (!job) throw new Error("Job not found");
     await requireOwnership(ctx, job);
 
     if (job.pipelineState !== "needs_user_input") {
       throw new Error("Job is not awaiting user response.");
+    }
+
+    // Deduct 200 credits for free users before scheduling AI tailoring
+    if (user.plan === "free") {
+      const currentCredits = user.credits ?? 0;
+      if (currentCredits < 200) {
+        throw new ConvexError(
+          `Insufficient credits (${currentCredits}/2000). Each resume costs 200 credits. ` +
+          `Upgrade to Pro for unlimited generation.`
+        );
+      }
+      await ctx.db.patch(user._id, {
+        credits: currentCredits - 200,
+      });
     }
 
     const updatedQuestions = job.skillGapQuestions?.map((q: any) => {
@@ -471,6 +486,25 @@ export const internalSetExtractedRequirements = internalMutation({
     requirements: v.any(),
   },
   handler: async (ctx, args) => {
+    const job = await ctx.db.get(args.jobId);
+    if (!job) throw new Error("Job not found");
+
+    // Deduct 200 credits for free users before AI tailoring
+    const user = await ctx.db.get(job.userId);
+    if (user && user.plan === "free") {
+      const currentCredits = user.credits ?? 0;
+      if (currentCredits < 200) {
+        await ctx.db.patch(args.jobId, {
+          pipelineState: "failed",
+          pipelineError: "Insufficient credits. Upgrade to Pro for unlimited generation.",
+        });
+        return;
+      }
+      await ctx.db.patch(user._id, {
+        credits: currentCredits - 200,
+      });
+    }
+
     await ctx.db.patch(args.jobId, {
       extractedRequirements: args.requirements,
       pipelineState: "tailoring",

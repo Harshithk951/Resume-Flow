@@ -177,13 +177,18 @@ export const getDashboardSummary = query({
       .sort((a, b) => b.timestamp - a.timestamp)
       .slice(0, 5);
 
+    // 4. Count total resumes ever generated (across all jobs)
+    const totalResumesGenerated = tailoredResumes.length;
+
     return {
       completeness,
       statusCounts,
       recentActivities,
+      totalResumesGenerated,
       user: {
         name: user.name,
         credits: user.credits,
+        plan: user.plan,
         onboardingComplete: user.onboardingComplete ?? false,
       },
     };

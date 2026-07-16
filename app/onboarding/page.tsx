@@ -237,7 +237,7 @@ export default function OnboardingPage() {
         });
 
         // Set user-scoped local cookie synchronously to bypass Clerk JWT propagation latency
-        document.cookie = `onboarding_complete_${user.id}=true; path=/; max-age=31536000; SameSite=Lax`;
+        document.cookie = `onboarding_complete_${user.id}=true; path=/; max-age=31536000; SameSite=Lax; Secure`;
 
         // Force refresh Clerk session token to include onboardingComplete claim
         try {
@@ -261,7 +261,7 @@ export default function OnboardingPage() {
   const handleEnterDashboard = async () => {
     try {
       if (user) {
-        document.cookie = `onboarding_complete_${user.id}=true; path=/; max-age=31536000; SameSite=Lax`;
+        document.cookie = `onboarding_complete_${user.id}=true; path=/; max-age=31536000; SameSite=Lax; Secure`;
       }
       if (session) {
         await session.reload();
@@ -330,7 +330,7 @@ export default function OnboardingPage() {
                       Begin your placement journey.
                     </h1>
                     <p className="type-body-md text-[var(--color-mute)]">
-                      Connect your academic profile, auto-extract resume fields with Qwen 3.5 AI, and gain access to the campus recruiter CRM.
+                      Connect your academic profile, auto-extract resume fields with AI, and gain access to the campus recruiter CRM.
                     </p>
                   </motion.div>
                 )}
@@ -346,7 +346,7 @@ export default function OnboardingPage() {
                       AI Profile Extraction.
                     </h1>
                     <p className="type-body-md text-[var(--color-mute)]">
-                      Upload your current PDF resume. Our NVIDIA NIM-powered pipeline will securely extract your education, skills, and projects.
+                      Upload your current PDF resume. Our AI pipeline will securely extract your education, skills, and projects.
                     </p>
                   </motion.div>
                 )}
@@ -378,7 +378,7 @@ export default function OnboardingPage() {
                       You are fully verified.
                     </h1>
                     <p className="type-body-md text-[var(--color-mute)]">
-                      Your profile has been created. You have been granted 50 complimentary credits to tailor resumes and draft outreach copy.
+                      Your profile has been created. You have been granted 2,000 credits (10 resume generations) to get started.
                     </p>
                   </motion.div>
                 )}
@@ -412,8 +412,9 @@ export default function OnboardingPage() {
                       <Sparkles className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="type-body-strong">Complimentary Initial Credits</h4>
-                      <p className="type-body-sm mt-1">Get 50 credits instantly to generate resume drafts and match jobs.</p>
+                      <h4 className="type-body-strong">Welcome Credits
+                      </h4>
+                      <p className="type-body-sm mt-1">2,000 credits included — enough for 10 tailored resumes.</p>
                     </div>
                   </div>
 
@@ -655,10 +656,11 @@ export default function OnboardingPage() {
 
                   <div className="w-full p-4 rounded-2xl bg-[var(--color-surface-soft)] border border-[var(--color-hairline-soft)] flex justify-between items-center text-left">
                     <div>
-                      <h4 className="type-body-strong">Granted Balance</h4>
-                      <p className="type-caption-sm text-[var(--color-mute)]">Can be used for resume tuning and letters</p>
-                    </div>
-                    <span className="text-3xl font-extrabold text-[var(--color-primary)]">50 Credits</span>
+                      <h4 className="type-body-strong">Granted Balance
+                    </h4>
+                    <p className="type-caption-sm text-[var(--color-mute)]">2,000 credits = 10 tailored resumes</p>
+                  </div>
+                  <span className="text-3xl font-extrabold text-[var(--color-primary)]">2,000</span>
                   </div>
 
                   <button

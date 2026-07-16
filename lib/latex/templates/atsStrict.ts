@@ -3,7 +3,7 @@
 // High-Fidelity ATS-Strict LaTeX Template based on Overleaf's Jake's Resume Layout.
 // Every LaTeX command is double-escaped (\\) in TypeScript; row breaks use \\\\.
 
-const escapeLatex = (str: string | undefined): string => {
+function escapeLatex(str: string | undefined): string {
   if (!str) return "";
   return str
     .replace(/&/g, "\\&")
@@ -15,22 +15,29 @@ const escapeLatex = (str: string | undefined): string => {
     .replace(/}/g, "\\}")
     .replace(/~/g, "\\textasciitilde ")
     .replace(/\^/g, "\\textasciicircum ");
-};
+}
 
-const getLinkedinUsername = (url: string | undefined): string => {
+/** Normalize a URL: if it already has a protocol, use as-is; otherwise prepend https:// */
+function ensureUrl(url: string | undefined): string {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
+function getLinkedinUsername(url: string | undefined): string {
   if (!url) return "";
   return url.replace(/https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "");
-};
+}
 
-const getGithubUsername = (url: string | undefined): string => {
+function getGithubUsername(url: string | undefined): string {
   if (!url) return "";
   return url.replace(/https?:\/\/(www\.)?github\.com\//, "").replace(/\/$/, "");
-};
+}
 
-const cleanUrl = (url: string | undefined): string => {
+function cleanUrl(url: string | undefined): string {
   if (!url) return "";
   return url.replace(/https?:\/\/(www\.)?/, "").replace(/\/$/, "");
-};
+}
 
 export function generateAtsStrictTemplate(data: any): string {
   const education = data.education ?? [];
@@ -107,9 +114,9 @@ export function generateAtsStrictTemplate(data: any): string {
     \\textbf{\\Huge \\scshape ${escapeLatex(personalInfo.name)}} \\\\ \\vspace{3pt}
     \\small
     ${personalInfo.email ? `\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}} $|$` : ""}
-    ${personalInfo.linkedin ? `\\href{${personalInfo.linkedin}}{\\underline{linkedin.com/in/${escapeLatex(getLinkedinUsername(personalInfo.linkedin))}}} $|$` : ""}
-    ${personalInfo.github ? `\\href{${personalInfo.github}}{\\underline{github.com/${escapeLatex(getGithubUsername(personalInfo.github))}}} $|$` : ""}
-    ${personalInfo.portfolio ? `\\href{${personalInfo.portfolio}}{\\underline{${escapeLatex(cleanUrl(personalInfo.portfolio))}}}` : ""}
+    ${personalInfo.linkedin ? `\\href{${ensureUrl(personalInfo.linkedin)}}{\\underline{linkedin.com/in/${escapeLatex(getLinkedinUsername(personalInfo.linkedin))}}} $|$` : ""}
+    ${personalInfo.github ? `\\href{${ensureUrl(personalInfo.github)}}{\\underline{github.com/${escapeLatex(getGithubUsername(personalInfo.github))}}} $|$` : ""}
+    ${personalInfo.portfolio ? `\\href{${ensureUrl(personalInfo.portfolio)}}{\\underline{${escapeLatex(cleanUrl(personalInfo.portfolio))}}}` : ""}
 \\end{center}
 
 \\section{Professional Summary}
@@ -174,7 +181,7 @@ ${escapeLatex(data.summary)}
         const link = proj.github || proj.link || "";
         return `
     \\resumeProjectHeading
-      {\\textbf{${escapeLatex(proj.name)}} $|$ \\emph{${escapeLatex(proj.technologies?.join(", "))}} $|$ \\href{${link}}{\\underline{GitHub}}}{}
+      {\\textbf{${escapeLatex(proj.name)}} $|$ \\emph{${escapeLatex(proj.technologies?.join(", "))}} $|$ \\href{${ensureUrl(link)}}{\\underline{GitHub}}}{}
       \\resumeItemListStart
         ${bullets
           .map(

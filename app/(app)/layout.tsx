@@ -28,7 +28,7 @@ const navigationItems = [
     isActive: (pathname: string) => pathname === "/templates",
   },
   {
-    name: "Operations",
+    name: "Settings",
     href: "/ops/dead-letter",
     icon: Settings,
     isActive: (pathname: string) => pathname.startsWith("/ops"),
@@ -69,12 +69,30 @@ export default function AuthenticatedLayout({
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-50 text-slate-900">
-      <aside className="w-64 border-r border-slate-200/40 glass-panel flex flex-col justify-between p-6 shrink-0">
-        <div className="space-y-8">
-          <BrandLogo href="/dashboard" size="sm" className="px-2" />
+    <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-surface-soft)] text-slate-900">
+      {/* ─── COLLAPSIBLE SIDEBAR ───────────────────────
+           Pure CSS hover mechanism: collapsed w-[72px] by default,
+           expands to w-64 on hover. All labels fade in with opacity.
+           Uses group/sidebar naming for scoped hover children. */}
+      <aside className="group/sidebar relative z-10 w-[72px] hover:w-64 border-r border-white/40 glass-panel flex flex-col justify-between py-6 shrink-0 transition-all duration-500"
+        style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+      >
+        <div className="space-y-8 overflow-hidden">
+          {/* Brand — always shows icon, text appears on hover */}
+          <BrandLogo
+            href="/dashboard"
+            size="sm"
+            showText={false}
+            className="px-4"
+          />
+          {/* Hover label for brand name */}
+          <span className="absolute top-[22px] left-14 text-xs font-bold text-slate-500 whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-200 pointer-events-none"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+          >
+            ResumeFlow
+          </span>
 
-          <nav className="space-y-1.5">
+          <nav className="space-y-1.5 px-2">
             {navigationItems.map((item) => {
               const isActive = item.isActive(pathname ?? "");
               const Icon = item.icon;
@@ -82,7 +100,8 @@ export default function AuthenticatedLayout({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`group relative flex items-center space-x-3 px-4 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
+                  title={item.name}
+                  className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
                     isActive
                       ? "bg-white text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
                       : "text-slate-600 hover:bg-white/60 hover:text-slate-900"
@@ -92,21 +111,36 @@ export default function AuthenticatedLayout({
                   {isActive && (
                     <span className="nav-item-active-indicator" />
                   )}
-                  <Icon
-                    className={`h-4 w-4 transition-all duration-300 group-hover:scale-110 ${isActive ? "text-rose-600" : "text-slate-400 group-hover:text-slate-600"}`}
+                  <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
+                    <Icon
+                      className={`h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 ${
+                        isActive ? "text-rose-600" : "text-slate-400 group-hover/nav:text-slate-600"
+                      }`}
+                      style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+                    />
+                    {/* Active dot below icon when collapsed */}
+                    {isActive && (
+                      <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-rose-500 group-hover/sidebar:hidden" />
+                    )}
+                  </div>
+                  {/* Nav label — hidden on collapse, fades in on hover */}
+                  <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
                     style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
-                  />
-                  <span>{item.name}</span>
+                  >
+                    {item.name}
+                  </span>
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        <div className="space-y-3 border-t border-slate-200/60 pt-4 px-2">
-          <div className="flex items-center space-x-3">
+        <div className="space-y-3 border-t border-slate-200/60 pt-4 px-3 overflow-hidden">
+          <div className="flex items-center gap-3">
             <UserButton />
-            <div className="flex flex-col min-w-0">
+            <div className="flex flex-col min-w-0 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+            >
               <span className="text-xs font-semibold text-slate-700 truncate">
                 {user?.fullName || "Placement Sync"}
               </span>
@@ -116,17 +150,21 @@ export default function AuthenticatedLayout({
           <SignOutButton redirectUrl="/sign-in?from=logout">
             <button
               type="button"
-              className="flex w-full items-center space-x-3 rounded-2xl px-4 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-rose-50 hover:text-rose-600"
+              className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-rose-50 hover:text-rose-600 active:scale-[0.98]"
             >
-              <LogOut className="h-4 w-4 text-slate-400" />
-              <span>Log out</span>
+              <LogOut className="h-4 w-4 shrink-0 text-slate-400" />
+              <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
+                style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+              >
+                Log out
+              </span>
             </button>
           </SignOutButton>
         </div>
       </aside>
 
       <main className="flex-1 flex flex-col overflow-hidden min-w-0">
-        <header className="h-14 border-b border-slate-200/40 bg-gradient-to-r from-white via-white to-slate-50/80 flex items-center justify-between px-6 md:px-8 shadow-sm shadow-slate-100/30 shrink-0">
+        <header className="h-14 border-b border-white/40 glass-panel flex items-center justify-between px-6 md:px-8 shadow-sm shrink-0">
           <div className="flex items-center gap-3">
             {showBack && (
               <AppBackButton
@@ -135,8 +173,8 @@ export default function AuthenticatedLayout({
               />
             )}
           </div>
-          <div className="text-xs font-medium px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200/40">
-            Active Session Verified
+          <div className="text-[10px] font-bold px-3 py-1.5 rounded-full bg-rose-50 text-rose-600 border border-rose-100/60">
+            Placement Active
           </div>
         </header>
         <div className="flex-1 overflow-y-auto p-6 md:p-8 focus:outline-none">

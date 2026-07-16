@@ -5,21 +5,27 @@
 // Features a solid dark slate header bar and colored horizontal rules.
 // Uses native, zero-dependency LaTeX macros for maximum compatibility with BasicTeX.
 
+function ensureUrl(url: string | undefined): string {
+  if (!url) return "";
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
 export default function modernExecutiveTemplate(data: any): string {
   const { personalInfo, education, experience, projects, skills, certifications, achievements } = data;
 
   const escape = (str: string) => str;
 
-  // Personal Info Block (to fit inside the colored header minipage)
+  // Personal Info Block (colored text on white background — ATS-safe)
   const headerLinksList = [
-    personalInfo.email ? `\\href{mailto:${escape(personalInfo.email)}}{\\color{slateLight}${escape(personalInfo.email)}}` : null,
-    personalInfo.phone ? `\\color{white}${escape(personalInfo.phone)}` : null,
-    personalInfo.linkedin ? `\\href{https://${escape(personalInfo.linkedin)}}{\\color{slateLight}LinkedIn}` : null,
-    personalInfo.github ? `\\href{https://${escape(personalInfo.github)}}{\\color{slateLight}GitHub}` : null,
-    personalInfo.portfolio ? `\\href{https://${escape(personalInfo.portfolio)}}{\\color{slateLight}Portfolio}` : null,
+    personalInfo.email ? `\\href{mailto:${escape(personalInfo.email)}}{\\color{executiveLine}${escape(personalInfo.email)}}` : null,
+    personalInfo.phone ? `\\color{executiveLine}${escape(personalInfo.phone)}` : null,
+    personalInfo.linkedin ? `\\href{${ensureUrl(escape(personalInfo.linkedin))}}{\\color{executiveLine}LinkedIn}` : null,
+    personalInfo.github ? `\\href{${ensureUrl(escape(personalInfo.github))}}{\\color{executiveLine}GitHub}` : null,
+    personalInfo.portfolio ? `\\href{${ensureUrl(escape(personalInfo.portfolio))}}{\\color{executiveLine}Portfolio}` : null,
   ].filter(Boolean);
 
-  const headerLinks = headerLinksList.join(" ~\\color{slateLight}$\\cdot$~ ");
+  const headerLinks = headerLinksList.join(" ~\\color{executiveLine}$\\cdot$~ ");
 
   // Education Block
   const educationSection = education && education.length > 0
@@ -55,7 +61,7 @@ export default function modernExecutiveTemplate(data: any): string {
 \\resumesection{Selected Projects}
 \\resumeSubHeadingListStart
   ${projects.map((proj: any) => `    \\resumeProjectHeading
-      {\\textbf{${escape(proj.name)}} ${proj.link ? `$\\cdot$ \\href{https://${escape(proj.link)}}{\\footnotesize Link}` : ""}}{${escape(proj.technologies.join(", "))}}
+      {\\textbf{${escape(proj.name)}} ${proj.link ? `$\\cdot$ \\href{${ensureUrl(escape(proj.link))}}{\\footnotesize Link}` : ""}}{${escape(proj.technologies.join(", "))}}
       \\resumeItemListStart
         ${proj.bullets.map((b: string) => `\\resumeItem{${escape(b)}}`).join("\n        ")}
       \\resumeItemListEnd
@@ -193,19 +199,12 @@ export default function modernExecutiveTemplate(data: any): string {
 
 \\begin{document}
 
-%----------HEADER BAR----------
+%----------HEADER (ATS-Safe: colored text only, no background box)----------
 \\begin{center}
-  \\colorbox{executiveDark}{
-    \\begin{minipage}{\\dimexpr\\textwidth+0.2in\\relax}
-      \\centering
-      \\vspace{10pt}
-      {\\Huge \\bfseries \\color{white} ${escape(personalInfo.name)}} \\\\ \\vspace{6pt}
-      {\\small ${headerLinks}}
-      \\vspace{10pt}
-    \\end{minipage}
-  }
+  {\\Huge \\bfseries \\color{executiveDark} ${escape(personalInfo.name)}} \\\\ \\vspace{6pt}
+  {\\small \\color{executiveLine} ${headerLinks}}
 \\end{center}
-\\vspace{-10pt}
+\\vspace{-6pt}
 
 ${educationSection}
 ${experienceSection}

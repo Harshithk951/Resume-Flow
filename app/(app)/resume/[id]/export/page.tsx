@@ -162,9 +162,18 @@ export default function ExportPage({ params }: PageProps) {
     ? normalizeStructuredContent(resume.structuredContent)
     : null;
 
+  const triggerDownload = (url: string, filename: string) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
   const handleDownloadPdf = () => {
     if (pdfUrl) {
-      window.open(pdfUrl, "_blank");
+      triggerDownload(pdfUrl, `${job.companyName}-tailored-resume.pdf`);
     } else {
       setExportError("PDF is not compiled yet. Please click Re-compile on the workspace page first.");
     }
@@ -172,7 +181,7 @@ export default function ExportPage({ params }: PageProps) {
 
   const handleDownloadDocx = async () => {
     if (docxUrl) {
-      window.open(docxUrl, "_blank");
+      triggerDownload(docxUrl, `${job.companyName}-resume.docx`);
       return;
     }
 
@@ -181,7 +190,7 @@ export default function ExportPage({ params }: PageProps) {
     try {
       const url = await generateDocxAction({ jobId });
       if (url) {
-        window.open(url, "_blank");
+        triggerDownload(url, `${job.companyName}-resume.docx`);
       } else {
         throw new Error("Failed to retrieve generated Word document download URL.");
       }

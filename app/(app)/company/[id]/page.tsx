@@ -19,6 +19,7 @@ import {
   Check,
   Mail,
   FileSpreadsheet,
+  RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -71,6 +72,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   );
   const [activeTemplate, setActiveTemplate] = useState<TemplateId>("ats_strict");
   const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   if (authLoading || (isAuthenticated && job === undefined)) {
     return (
@@ -117,9 +119,22 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
     }
   };
 
+  const triggerDownload = (url: string, filename: string) => {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    // Also revoke blob URLs after a brief delay
+    if (url.startsWith("blob:")) {
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
+  };
+
   const handleDownload = async () => {
     if (pdfUrl) {
-      window.open(pdfUrl, "_blank");
+      triggerDownload(pdfUrl, `${job.companyName}-tailored.pdf`);
       return;
     }
     if (!structuredContent || !latexSource) return;
@@ -136,15 +151,12 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
         throw new Error("PDF compilation failed.");
       }
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${job.companyName}-tailored.pdf`;
-      a.click();
-      URL.revokeObjectURL(url);
+      triggerDownload(url, `${job.companyName}-tailored.pdf`);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Download failed.";
-      alert(message);
+      setDownloadError(message);
+      setTimeout(() => setDownloadError(null), 6000);
     } finally {
       setIsDownloading(false);
     }
@@ -152,66 +164,86 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
   return (
     <div
-      className={`grid h-[calc(100vh-4rem)] w-full transition-[grid-template-columns] duration-500 bg-slate-50 ${
+      className={`grid h-[calc(100vh-4rem)] w-full transition-[grid-template-columns] duration-500 bg-[var(--color-surface-soft)] ${
         isWorkspaceMaximized
           ? "grid-cols-1 lg:grid-cols-[0fr_1fr] overflow-hidden"
-          : "grid-cols-1 lg:grid-cols-[45fr_55fr]"
+          : "grid-cols-1 lg:grid-cols-[40fr_60fr]"
       }`}
     >
-      {/* ─── COLUMN A: JOB INTEL & INLINE GAPS (45%) ─── */}
+      {/* ─── COLUMN A: JOB INTEL & INLINE GAPS (40%) ─── */}
       <div
-        className={`border-r border-slate-200/80 bg-white flex flex-col h-full overflow-y-auto p-8 transition-opacity duration-300 ${
-          isWorkspaceMaximized ? "opacity-0 pointer-events-none" : "opacity-100"
+        className={`border-r border-slate-200/40 bg-white/80 flex flex-col h-full overflow-y-auto p-8 transition-all duration-300 ${
+          isWorkspaceMaximized ? "opacity-0 pointer-events-none w-0 p-0 border-0" : "opacity-100"
         }`}
       >
         <Link
           href="/dashboard"
-          className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-rose-600 transition-colors mb-6"
+          className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-rose-600 transition-all duration-200 group mb-6"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-1" />
           <span>Back to Dashboard</span>
         </Link>
 
         <div className="space-y-6">
-          <div>
-            <span className="text-xs font-bold text-rose-600 uppercase tracking-wider">
-              {job.companyName}
-            </span>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 mt-1">
-              {job.jobTitle}
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-1.5 p-3 bg-slate-50 border border-slate-200/40 rounded-2xl text-xs font-medium text-slate-600">
-            <span className="font-bold text-rose-600 uppercase">State:</span>
-            <span>{job.pipelineState}</span>
+          {/* Company Hero */}
+          <div className="flex items-start gap-5">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 font-bold text-xl shrink-0 shadow-sm">
+              {job.companyName.charAt(0).toUpperCase()}
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="text-[11px] font-bold text-rose-600 uppercase tracking-wider">
+                {job.companyName}
+              </span>
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900 mt-0.5">
+                {job.jobTitle}
+              </h1>
+              <div className="flex items-center gap-2 mt-2">
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border transition-colors ${
+                  job.pipelineState === "completed" ? "border-emerald-100 bg-emerald-50 text-emerald-700" :
+                  job.pipelineState === "failed" ? "border-red-100 bg-red-50 text-red-700" :
+                  job.pipelineState === "needs_user_input" ? "border-amber-100 bg-amber-50 text-amber-700" :
+                  job.pipelineState === "compiling" ? "border-blue-100 bg-blue-50 text-blue-700" :
+                  "border-slate-200 bg-slate-100 text-slate-600"
+                }`}>
+                  <span className={`w-1.5 h-1.5 rounded-full ${
+                    job.pipelineState === "completed" ? "bg-emerald-500" :
+                    job.pipelineState === "failed" ? "bg-red-500" :
+                    job.pipelineState === "needs_user_input" ? "bg-amber-500 animate-pulse" :
+                    job.pipelineState === "compiling" ? "bg-blue-500 animate-pulse" :
+                    "bg-slate-400"
+                  }`} />
+                  {job.pipelineState.replace("_", " ")}
+                </span>
+              </div>
+            </div>
           </div>
 
           {job.pipelineState === "needs_user_input" && job.skillGapQuestions ? (
-            <SkillGapQuestionnaire
-              jobId={job._id}
-              questions={job.skillGapQuestions}
-            />
+            <div className="card-bloom border border-amber-100/60 bg-amber-50/30 rounded-2xl p-5">
+              <SkillGapQuestionnaire
+                jobId={job._id}
+                questions={job.skillGapQuestions}
+              />
+            </div>
           ) : null}
 
           {job.pipelineState === "tailoring" ? (
-            <div className="p-6 border border-slate-100 rounded-3xl bg-slate-50/50 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="card-bloom p-6 border border-slate-200/60 rounded-2xl bg-white/50 flex flex-col items-center justify-center text-center space-y-4">
               <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
               <p className="text-sm font-semibold text-slate-800">
                 Optimizing Bullet Points...
               </p>
               <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-                Applying Google XYZ layouts to your experience statements in
-                real-time.
+                Applying ATS keyword matching to your experience statements in real-time.
               </p>
             </div>
           ) : null}
 
           {job.pipelineState === "failed" ? (
-            <div className="p-6 border border-rose-100 rounded-3xl bg-rose-50/20 flex flex-col items-center justify-center text-center space-y-4">
-              <AlertTriangle className="w-8 h-8 text-rose-500" />
+            <div className="card-bloom p-6 border border-red-100 rounded-2xl bg-red-50/20 flex flex-col items-center justify-center text-center space-y-4">
+              <AlertTriangle className="w-8 h-8 text-red-500" />
               <p className="text-sm font-bold text-slate-800">Pipeline Failed</p>
-              <p className="text-xs text-rose-600 leading-relaxed max-w-xs">
+              <p className="text-xs text-red-600 leading-relaxed max-w-xs">
                 {job.pipelineError}
               </p>
             </div>
@@ -221,14 +253,15 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           job.pipelineState !== "tailoring" &&
           job.extractedRequirements?.hardSkills ? (
             <div className="space-y-4">
-              <h3 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
-                Extracted Job Requirements
+              <h3 className="font-bold text-sm text-slate-800 uppercase tracking-tight flex items-center gap-2">
+                <Code className="w-4 h-4 text-rose-500" />
+                Required Skills
               </h3>
               <div className="flex flex-wrap gap-1.5">
                  {job.extractedRequirements.hardSkills.map((s: string) => (
                   <span
                     key={s}
-                    className="text-[11px] bg-slate-100 border border-slate-200/40 px-2.5 py-1 rounded-lg text-slate-700 font-medium"
+                    className="text-[11px] bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg text-slate-700 font-medium shadow-sm"
                   >
                     {s}
                   </span>
@@ -237,11 +270,9 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             </div>
           ) : null}
         </div>
-      </div>
-
-      {/* ─── COLUMN B (55% Width — Visual Workspace) ─── */}
-      <div className="flex flex-col h-full overflow-hidden bg-white p-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 mb-6 gap-4">
+      </div>      {/* ─── COLUMN B (60% — Visual Workspace) ─── */}
+      <div className="flex flex-col h-full overflow-hidden bg-[var(--color-surface-soft)] p-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200/40 pb-4 mb-6 gap-4">
           <div className="flex items-center gap-3 flex-wrap">
             <select
               value={activeTemplate}
@@ -256,7 +287,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   setActiveTemplate(next);
                 }
               }}
-              className="text-xs border border-slate-200 p-2.5 rounded-xl font-bold bg-white text-slate-700 focus:outline-none focus:border-rose-500"
+              className="text-xs border border-slate-200 p-2.5 rounded-xl font-bold bg-white text-slate-700 focus:outline-none focus:border-rose-500 transition-all shadow-sm cursor-pointer"
             >
               <option value="ats_strict">ATS Strict (Classic)</option>
               <option value="modern_professional">Startup Accent</option>
@@ -264,28 +295,29 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               <option value="tech_innovator">Tech Modern</option>
             </select>
 
-
           </div>
 
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleRecompile}
-              className="px-4 h-10 border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl flex items-center gap-2"
+              className="px-4 h-10 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl flex items-center gap-2 transition-all active:scale-[0.97] shadow-sm"
             >
-              Re-compile PDF
+              <RefreshCw className="w-3.5 h-3.5" />
+              Re-compile
             </button>
             <Link
               href={`/resume/${jobId}/export`}
-              className="px-4 h-10 border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl flex items-center justify-center gap-2"
+              className="px-4 h-10 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.97] shadow-sm"
             >
-              Export Options
+              <FileText className="w-3.5 h-3.5" />
+              Export
             </Link>
             <button
               type="button"
               onClick={handleDownload}
               disabled={isDownloading || (!pdfUrl && !structuredContent)}
-              className="px-4 h-10 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-rose-600/20"
+              className="px-4 h-10 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-rose-600/20 transition-all active:scale-[0.97]"
             >
               {isDownloading ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -295,8 +327,8 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <button
               type="button"
               onClick={() => setIsWorkspaceMaximized(!isWorkspaceMaximized)}
-              className="p-2.5 hover:bg-slate-100 rounded-xl text-slate-400 hover:text-slate-700"
-              title="Maximize Canvas"
+              className="p-2.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-slate-400 hover:text-slate-700 transition-all shadow-sm"
+              title={isWorkspaceMaximized ? "Restore split" : "Maximize canvas"}
             >
               {isWorkspaceMaximized ? (
                 <Minimize2 className="w-4 h-4" />
@@ -307,55 +339,35 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-6 border-b pb-3 mb-6">
-          <button
-            type="button"
-            onClick={() => setActiveTab("PREVIEW")}
-            className={`text-xs font-bold flex items-center gap-2 pb-1.5 border-b-2 transition-all ${
-              activeTab === "PREVIEW"
-                ? "border-rose-600 text-rose-600"
-                : "border-transparent text-slate-400 hover:text-slate-600"
-            }`}
-          >
-            <FileText className="w-4 h-4" />
-            <span>Visual Resume</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("LATEX")}
-            className={`text-xs font-bold flex items-center gap-2 pb-1.5 border-b-2 transition-all ${
-              activeTab === "LATEX"
-                ? "border-rose-600 text-rose-600"
-                : "border-transparent text-slate-400 hover:text-slate-600"
-            }`}
-          >
-            <Code className="w-4 h-4" />
-            <span>LaTeX Source</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("JSON")}
-            className={`text-xs font-bold flex items-center gap-2 pb-1.5 border-b-2 transition-all ${
-              activeTab === "JSON"
-                ? "border-rose-600 text-rose-600"
-                : "border-transparent text-slate-400 hover:text-slate-600"
-            }`}
-          >
-            <Settings className="w-4 h-4" />
-            <span>JSON Payload</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("OUTREACH")}
-            className={`text-xs font-bold flex items-center gap-2 pb-1.5 border-b-2 transition-all ${
-              activeTab === "OUTREACH"
-                ? "border-rose-600 text-rose-600"
-                : "border-transparent text-slate-400 hover:text-slate-600"
-            }`}
-          >
-            <Sparkles className="w-4 h-4" />
-            <span>Outreach & Letter</span>
-          </button>
+        {/* Download error toast */}
+        {downloadError && (
+          <div className="-mt-4 mb-4 flex items-center gap-2 px-4 py-2 rounded-xl bg-red-50 border border-red-100 text-xs text-red-700 font-medium animate-[fadeIn_0.3s_ease-out]">
+            <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+            <span>{downloadError}</span>
+          </div>
+        )}
+
+        {/* Tab bar with glass styling */}
+        <div className="flex items-center gap-1 bg-white/60 border border-slate-200/40 rounded-2xl p-1 mb-6 shadow-sm">
+          {([{ id: "PREVIEW" as const, label: "Visual Resume", icon: FileText },
+             { id: "LATEX" as const, label: "LaTeX Source", icon: Code },
+             { id: "JSON" as const, label: "JSON Payload", icon: Settings },
+             { id: "OUTREACH" as const, label: "Outreach & Letter", icon: Sparkles }
+          ]).map(({ id, label, icon: TabIcon }) => (
+            <button
+              key={id}
+              type="button"
+              onClick={() => setActiveTab(id)}
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[11px] font-bold transition-all ${
+                activeTab === id
+                  ? "bg-white text-rose-600 shadow-sm border border-slate-200/40"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-white/50"
+              }`}
+            >
+              <TabIcon className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          ))}
         </div>
 
         <div className="flex-1 overflow-y-auto">
@@ -374,19 +386,21 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   templateId={resolvedTemplate}
                 />
               ) : (
-                <div className="h-[600px] w-full rounded-2xl border border-slate-200/50 flex flex-col items-center justify-center bg-slate-50 text-slate-400 text-xs">
-                  No compiled PDF found. Complete tailoring to generate a resume.
+                <div className="h-[600px] w-full rounded-2xl border border-slate-200/50 flex flex-col items-center justify-center bg-white text-slate-400 text-xs gap-3 elevation-medium">
+                  <FileText className="w-10 h-10 text-slate-300" />
+                  <p className="font-semibold">No PDF available yet</p>
+                  <p className="text-[10px] text-slate-400">Complete tailoring to generate a resume preview.</p>
                 </div>
               )}
             </div>
           ) : null}
 
           {activeTab === "LATEX" ? (
-            <div className="h-[600px] bg-slate-950 p-6 rounded-2xl font-mono text-xs text-emerald-400 overflow-auto relative group">
+            <div className="h-[600px] bg-slate-950 p-6 rounded-2xl font-mono text-xs text-emerald-400 overflow-auto relative group shadow-lg">
               <button
                 type="button"
                 onClick={() => navigator.clipboard.writeText(latexSource)}
-                className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-lg px-3 py-1.5 font-bold transition-all"
+                className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white rounded-lg px-3 py-1.5 font-bold transition-all backdrop-blur-sm"
               >
                 Copy Code
               </button>
@@ -397,7 +411,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           ) : null}
 
           {activeTab === "JSON" ? (
-            <div className="h-[600px] bg-slate-950 p-6 rounded-2xl font-mono text-xs text-blue-400 overflow-auto">
+            <div className="h-[600px] bg-slate-950 p-6 rounded-2xl font-mono text-xs text-blue-400 overflow-auto shadow-lg">
               <pre>
                 {structuredContent
                   ? JSON.stringify(

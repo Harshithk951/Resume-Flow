@@ -33,7 +33,7 @@ export default function ResumeBuilderPage() {
 
   const [activeSection, setActiveSection] = useState<Section>("contact");
   const [activeTemplate, setActiveTemplate] = useState<string>("ats_strict");
-  const [spacingPreset, setSpacingPreset] = useState<"compact" | "executive">("compact");
+  const spacingPreset = "compact";
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -772,34 +772,11 @@ export default function ResumeBuilderPage() {
               <option value="tech_innovator">Tech Modern</option>
             </select>
 
-            <div className="flex bg-slate-100 rounded-xl p-0.5 border border-slate-200/40">
-              <button
-                type="button"
-                onClick={() => setSpacingPreset("compact")}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all ${
-                  spacingPreset === "compact"
-                    ? "bg-white text-rose-600 shadow-sm"
-                    : "text-slate-600"
-                }`}
-              >
-                Compact
-              </button>
-              <button
-                type="button"
-                onClick={() => setSpacingPreset("executive")}
-                className={`px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all ${
-                  spacingPreset === "executive"
-                    ? "bg-white text-rose-600 shadow-sm"
-                    : "text-slate-600"
-                }`}
-              >
-                Executive
-              </button>
+            <div className="bg-slate-100 rounded-xl px-3 py-1.5 border border-slate-200/40">
+              <span className="text-[10px] font-bold text-slate-600">Compact</span>
             </div>
           </div>
-          <span className="text-[10px] font-mono font-semibold bg-slate-50 text-slate-500 border border-slate-200/40 px-2.5 py-1 rounded-full uppercase tracking-wider">
-            Live Preview
-          </span>
+
         </div>
 
         {/* Interactive sandboxed visual preview */}

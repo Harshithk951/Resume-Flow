@@ -3,7 +3,7 @@ import "./globals.css";
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
 import { jakartaSans, displayFont } from "./fonts";
-import SmoothScroll from "@/components/SmoothScroll";
+
 
 export const metadata: Metadata = {
   title: "ResumeFlow - High-Velocity AI Career Engine",
@@ -33,9 +33,7 @@ export default function RootLayout({
       <body className={`min-h-screen antialiased ${jakartaSans.className}`}>
         <ConvexClerkProvider>
           <HydrationProtectionGuard>
-            <SmoothScroll>
               {children}
-            </SmoothScroll>
           </HydrationProtectionGuard>
         </ConvexClerkProvider>
       </body>

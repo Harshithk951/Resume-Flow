@@ -35,7 +35,6 @@ export default function TemplateBrowser() {
   const [mainMode, setMainMode] = useState<MainMode>("customize");
   const [activeSection, setActiveSection] = useState<Section>("contact");
   const [activeTemplate, setActiveTemplate] = useState<string>("ats_strict");
-  const [spacingPreset, setSpacingPreset] = useState<"compact" | "executive">("compact");
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -78,12 +77,12 @@ export default function TemplateBrowser() {
   // Compute live compiled HTML dynamically on form changes
   const compiledHtml = useMemo(() => {
     try {
-      return exportToHtml(profile, activeTemplate, spacingPreset);
+      return exportToHtml(profile, activeTemplate, "compact");
     } catch (err) {
       console.error("Failed to compile HTML preview:", err);
       return "<h1>Preview compilation failed</h1>";
     }
-  }, [profile, activeTemplate, spacingPreset]);
+  }, [profile, activeTemplate]);
 
   const handleSaveProfile = async () => {
     setIsSaving(true);
@@ -318,8 +317,6 @@ export default function TemplateBrowser() {
               <TemplateSelectTab
                 selectedTemplate={activeTemplate}
                 onSelectTemplate={setActiveTemplate}
-                spacingPreset={spacingPreset}
-                onSpacingPresetChange={setSpacingPreset}
               />
             ) : (
               <AnimatePresence mode="wait">
@@ -812,17 +809,8 @@ export default function TemplateBrowser() {
           </div>
         </aside>
 
-        {/* LIVE PREVIEW CANVAS */}
+        {/* PREVIEW CANVAS */}
         <main className="flex-1 flex flex-col overflow-hidden bg-slate-100/50 p-4 md:p-6 lg:p-8 min-h-0">
-          <div className="flex items-center justify-between border-b border-slate-200/60 pb-3 mb-4 shrink-0">
-            <div>
-              <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">Visual Workspace</p>
-              <p className="text-[10px] text-slate-400 font-medium">Real-time compilation playground</p>
-            </div>
-            <div className="text-[10px] font-semibold bg-slate-200/50 border border-slate-200 text-slate-500 px-2.5 py-1 rounded-full uppercase tracking-wider font-mono">
-              HTML5 Renderer
-            </div>
-          </div>
 
           {/* Sandboxed visual preview */}
           <div className="flex-1 min-h-0 relative rounded-2xl shadow-lg bg-white overflow-hidden border border-slate-200/80">

@@ -8,6 +8,7 @@ export default defineSchema({
     email: v.string(),
     name: v.string(),
     credits: v.number(),
+    plan: v.union(v.literal("free"), v.literal("pro"), v.literal("campus")),
     imageUrl: v.optional(v.string()),
     onboardingComplete: v.optional(v.boolean()),
   })

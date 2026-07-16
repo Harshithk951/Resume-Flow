@@ -13,7 +13,9 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import { BrandLogo } from "@/components/BrandLogo";
 import TemplateCarousel from "@/components/TemplateCarousel";
-import { PricingSection } from "@/components/PricingSection";
+import { BentoGrid } from "@/components/grids/BentoGrid";
+import { FeatureGrid } from "@/components/grids/FeatureGrid";
+import { PricingSection, type Tier } from "@/components/blocks/pricing-section";
 import { carouselTemplates } from "@/lib/latex/carouselTemplates";
 import { getTemplatesHref } from "@/lib/templates/navigation";
 import { useAuth } from "@clerk/nextjs";
@@ -30,19 +32,9 @@ import {
   EASE_VANGUARD,
 } from "@/lib/animations";
 import {
-  Target,
-  Globe,
-  FileText,
-  Zap,
-  Shield,
-  BarChart3,
-  Briefcase,
   ArrowRight,
   Sparkles,
-  ScanSearch,
-  Brain,
   Check,
-  CheckCircle2,
   Volume2,
   Plus,
 } from "lucide-react";
@@ -56,86 +48,6 @@ const Hero3DScene = dynamic(() => import("@/components/Hero3DScene"), {
 // Entrance Animation Variants (using centralized library)
 const containerVariants = staggerContainer;
 const itemVariants = wordReveal;
-
-const ATS_RING_CIRCUMFERENCE = 251.2;
-const ATS_RING_TARGET_OFFSET = 5.02;
-
-function AtsScoreGauge() {
-  const gaugeRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(gaugeRef, { once: true, amount: 0.45 });
-  const [score, setScore] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-    let rafId: number;
-
-    const start = performance.now();
-    const duration = 2000;
-
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / duration, 1);
-      setScore(Math.round(progress * 98));
-      if (progress < 1) {
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-
-    rafId = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(rafId);
-    };
-  }, [isInView]);
-
-  return (
-    <div
-      ref={gaugeRef}
-      className="mt-8 bg-gradient-to-tr from-slate-50 to-rose-50/20 rounded-2xl p-6 border border-slate-100 flex justify-center items-center h-[220px] relative"
-    >
-      <div className="relative w-36 h-36 flex items-center justify-center">
-        <div
-          className={`absolute inset-0 bg-rose-500/5 rounded-full blur-xl transition-opacity duration-500 ${
-            isInView ? "animate-pulse opacity-100" : "opacity-0"
-          }`}
-        />
-        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="40" stroke="#f1f5f9" strokeWidth="6" fill="transparent" />
-          <motion.circle
-            cx="50"
-            cy="50"
-            r="40"
-            strokeWidth="7"
-            fill="transparent"
-            strokeDasharray={ATS_RING_CIRCUMFERENCE}
-            initial={{
-              strokeDashoffset: ATS_RING_CIRCUMFERENCE,
-              stroke: "#EF4444",
-            }}
-            animate={
-              isInView
-                ? {
-                    strokeDashoffset: ATS_RING_TARGET_OFFSET,
-                    stroke: ["#EF4444", "#EAB308", "#22C55E"],
-                  }
-                : {
-                    strokeDashoffset: ATS_RING_CIRCUMFERENCE,
-                    stroke: "#EF4444",
-                  }
-            }
-            transition={{ duration: 2.0, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="absolute flex flex-col items-center justify-center text-center px-2">
-          <span className="text-3xl font-black text-slate-800 leading-none tabular-nums">
-            {score}%
-          </span>
-          <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-            ATS Compatible
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 const HeroVideo = memo(function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -267,6 +179,8 @@ export default function LandingPage() {
   const { isSignedIn } = useAuth();
   const templatesHref = getTemplatesHref(isSignedIn);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const isHeroInView = useInView(heroRef, { amount: 0.1 });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -298,10 +212,10 @@ export default function LandingPage() {
       <Navbar />
 
       {/* ─── Hero Section ─── */}
-      <section className="pt-28 pb-24 px-6 max-w-[1280px] mx-auto text-center relative">
+      <section className="pt-28 pb-24 px-6 max-w-[1280px] mx-auto text-center relative" ref={heroRef}>
         {/* 3D Scene — desktop only, behind text */}
         <div className="hidden lg:block">
-          <Hero3DScene />
+          <Hero3DScene inView={isHeroInView} />
         </div>
 
         <motion.div
@@ -401,281 +315,112 @@ export default function LandingPage() {
       {/* Section Divider */}
       <div className="section-divider" />
 
-      {/* ─── Bento Grid Section: Staggered Bento Cards ─── */}
-      <section id="features" className="mesh-gradient-section border-y border-slate-200/40" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: 'var(--spacing-section)' }}>
-        <div className="max-w-[1280px] mx-auto px-6">
-          <motion.div
-            variants={staggerContainerSlow}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="text-center max-w-2xl mx-auto mb-20"
-          >
-            <motion.div variants={scrollRevealUp} className="mb-4">
-              <span className="eyebrow-pill"><Sparkles size={10} /> Core Capabilities</span>
-            </motion.div>
-            <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
-              Precision tools for career engineers
-            </motion.h2>
-            <motion.p variants={scrollRevealUp} className="text-slate-500 mt-4 text-lg">
-              From real-time requirements analysis to instant zero-trust PDF builds.
-            </motion.p>
-          </motion.div>
+      {/* ─── Bento Grid Section: 21st.dev-Inspired ─── */}
+      <BentoGrid />
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            {/* Bento Card 1: ATS Score (Left Column - 6 Columns) */}
-            <motion.div
-              className="md:col-span-6 bezel-card group h-[520px]"
-            >
-              <div className="bezel-card-inner flex flex-col justify-between h-full">
-                <div>
-                  <div className="icon-feature text-rose-600 mb-6">
-                    <ScanSearch size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Instant ATS Verification</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed max-w-md">
-                    Know how your tailored file stacks up against applicant tracking filters. Score keywords, formatting,
-                    and completeness metrics instantly.
-                  </p>
-                </div>
-
-                <AtsScoreGauge />
-              </div>
-            </motion.div>
-
-            {/* Bento Card 2: Instant Tailoring (Right Column - 6 Columns) */}
-            <motion.div
-              className="md:col-span-6 bezel-card group h-[520px]"
-            >
-              <div className="bezel-card-inner flex flex-col justify-between h-full">
-                <div>
-                  <div className="icon-feature text-rose-600 mb-6">
-                    <Brain size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">AI-Powered Resume Tailoring</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed max-w-md">
-                    Copy any job description. Our engine reads the specifications, matches core skills,
-                    and intelligently rewrites experience bullet points to show your alignment in real-time.
-                  </p>
-                </div>
-
-              {/* High-Fidelity Tailwind CSS Mockup: Before / After AI Strikethrough Animation with Green Success */}
-              <div className="mt-8 bg-gradient-to-br from-slate-50 to-rose-50/20 rounded-2xl p-4 border border-slate-100 flex justify-center items-center h-[220px] overflow-y-auto">
-                <div className="w-full max-w-[280px] bg-white rounded-xl shadow-md border border-slate-150 p-3.5 space-y-2.5">
-                  {/* Before State */}
-                  <div className="space-y-0.5">
-                    <span className="text-[8px] font-bold uppercase tracking-wider text-slate-400">Before (Generic)</span>
-                    <div className="bg-slate-50 border border-slate-100 rounded-md p-2 text-[10px] text-slate-400">
-                      <motion.p
-                        initial={{ textDecorationLine: "none" }}
-                        whileInView={{ textDecorationLine: "line-through" }}
-                        transition={{ delay: 0.8, duration: 0.6 }}
-                        className="leading-snug"
-                      >
-                        Responsible for building web apps and fixing bugs.
-                      </motion.p>
-                    </div>
-                  </div>
-
-                  {/* Down Arrow */}
-                  <div className="flex justify-center text-rose-500 text-[10px] leading-none">
-                    <motion.div animate={{ y: [0, 3, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
-                      ↓
-                    </motion.div>
-                  </div>
-
-                  {/* After State — Green Success Theme */}
-                  <div className="space-y-0.5">
-                    <span className="text-[8px] font-bold uppercase tracking-wider text-green-700">After (Tailored)</span>
-                    <div className="bg-green-50 border border-green-200 rounded-md p-2 text-[10px] text-green-700 shadow-sm relative overflow-hidden">
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        transition={{ delay: 1.4, duration: 0.6 }}
-                        className="flex gap-1.5 items-start"
-                      >
-                        <CheckCircle2 size={12} className="text-green-600 shrink-0 mt-0.5" />
-                        <p className="leading-snug text-green-700">
-                          <span className="font-semibold text-green-700">Architected and deployed</span> dynamic web applications using React, <span className="font-semibold text-green-700">reducing page load latency by 24%</span>.
-                        </p>
-                      </motion.div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              </div>
-            </motion.div>
-
-            {/* Bento Card 3: Live Company Research (Left Column - 5 Columns) */}
-            <motion.div
-              className="md:col-span-5 bezel-card group h-[520px]"
-            >
-              <div className="bezel-card-inner flex flex-col justify-between h-full">
-                <div>
-                  <div className="icon-feature text-rose-600 mb-6">
-                    <Globe size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Live Company Research</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed">
-                    Our research agent searches the live internet to extract company culture, tech stack, and values, aligning
-                    every bullet statement.
-                  </p>
-                </div>
-
-              {/* High-Fidelity Tailwind CSS Mockup: Company Info Panel (Clean off-white look) */}
-              <div className="mt-8 bg-gradient-to-br from-slate-50 to-rose-50/20 rounded-2xl p-6 border border-slate-100/80 flex justify-center overflow-hidden h-[220px] relative">
-                <div className="w-full max-w-[210px] bg-slate-50 text-slate-800 rounded-xl shadow-md p-4 border border-slate-200 flex flex-col justify-between">
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-                      <span className="text-[8px] font-black uppercase text-slate-400">Culture Agent</span>
-                      <span className="text-[8px] font-black text-rose-600">Google Inc.</span>
-                    </div>
-                    <div className="text-[8px] font-bold text-slate-500 uppercase tracking-wider">Tech Stack</div>
-                    <div className="flex flex-wrap gap-1">
-                      {["React", "AWS", "Python"].map((tech) => (
-                        <span key={tech} className="text-[8px] font-bold bg-white text-rose-600 px-1.5 py-0.5 rounded border border-slate-200">
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="text-[8px] text-slate-700 font-semibold bg-rose-50/30 p-1.5 rounded border border-rose-100">
-                    💡 Prefers: "Impact and scale metrics"
-                  </div>
-                </div>
-              </div>
-              </div>
-            </motion.div>
-
-            {/* Bento Card 4: Zero-Trust WASM (Right Column - 7 Columns) */}
-            <motion.div
-              className="md:col-span-7 bezel-card group h-[520px]"
-            >
-              <div className="bezel-card-inner flex flex-col justify-between h-full">
-                <div>
-                  <div className="icon-feature text-rose-600 mb-6">
-                    <Shield size={24} />
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-3">Zero-Trust Client Compilation</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed max-w-lg">
-                    Security-first compiler. All LaTeX compilation compiles entirely in your browser using local WebAssembly.
-                    Your private details never hit any third-party PDF generators.
-                  </p>
-                </div>
-
-              {/* High-Fidelity Tailwind CSS Mockup: WASM Web Worker (Clean terminal look) */}
-              <div className="mt-8 bg-gradient-to-tr from-slate-50 to-rose-50/20 rounded-2xl p-6 border border-slate-100/80 flex justify-center overflow-hidden h-[220px] relative">
-                <div className="w-full max-w-[280px] bg-slate-50 rounded-xl shadow-md p-4 border border-slate-200 text-left font-mono text-[9px] text-slate-600 space-y-1.5 leading-relaxed">
-                  <div className="text-green-600 font-bold flex items-center gap-1.5 mb-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping"></span>
-                    [WASM Worker Init]
-                  </div>
-                  <div>$ loading busytex-compiler.wasm... ok</div>
-                  <div>$ running client-side compilation...</div>
-                  <div className="text-rose-600">$ compiling resume.tex -{">"} document.pdf [100%]</div>
-                  <div className="text-green-600">$ resolve (PDF Blob created successfully)</div>
-                </div>
-              </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Section Divider */}
-      <div className="section-divider" />
-
-      {/* ─── Grid Feature Highlights Section ─── */}
-      <section id="how-it-works" className="px-6 max-w-[1280px] mx-auto" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: 'var(--spacing-section)' }}>
-        <motion.div
-          variants={staggerContainerSlow}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          className="text-center max-w-2xl mx-auto mb-20"
-        >
-          <motion.div variants={scrollRevealUp} className="mb-4">
-            <span className="eyebrow-pill"><Zap size={10} /> Advanced Platform</span>
-          </motion.div>
-          <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
-            Built different. Built to win.
-          </motion.h2>
-          <motion.p variants={scrollRevealUp} className="text-slate-500 mt-4 text-lg">
-            Engineered to streamline corporate hiring drives and personal portfolio adjustments.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4"
-        >
-          {[
-            {
-              icon: <Target className="text-rose-500" />,
-              title: "ATS Scoring Check",
-              desc: "Deep heuristics checks for keyword, formats, and sections.",
-            },
-            {
-              icon: <Globe className="text-rose-500" />,
-              title: "Web Research Agent",
-              desc: "Ingests live engineering culture information directly.",
-            },
-            {
-              icon: <FileText className="text-rose-500" />,
-              title: "Smart Selectors",
-              desc: "Instantly toggle layout options (ATS-Strict or Sans-Serif).",
-            },
-            {
-              icon: <Zap className="text-rose-500" />,
-              title: "Fast Generation",
-              desc: "Generates aligned resume profiles in under 30 seconds.",
-            },
-            {
-              icon: <Brain className="text-rose-500" />,
-              title: "AI Optimizer",
-              desc: "Experience bullets parsed and rewritten contextually.",
-            },
-            {
-              icon: <Shield className="text-rose-500" />,
-              title: "Privacy Isolation",
-              desc: "All personal details are masked prior to external LLM calls.",
-            },
-            {
-              icon: <BarChart3 className="text-rose-500" />,
-              title: "Skill Gaps Form",
-              desc: "Highlights missing targets with context-aware responses.",
-            },
-            {
-              icon: <Briefcase className="text-rose-500" />,
-              title: "Kanban Board Tracker",
-              desc: "Real-time, reactive stepper status dashboard pipelines.",
-            },
-          ].map((item, index) => (
-            <motion.div
-              key={index}
-              variants={scrollRevealScale}
-              whileHover={{ y: -4, transition: { duration: 0.3, ease: EASE_VANGUARD } }}
-              className="bezel-card bezel-card-sm"
-            >
-              <div className="bezel-card-inner flex flex-col justify-between">
-                <div className="mb-4">{item.icon}</div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 mb-1">{item.title}</h4>
-                  <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </section>
+      {/* ─── Feature Grid Section: 21st.dev Animated Cards ─── */}
+      <FeatureGrid />
 
       {/* ─── Templates Showcase — Infinite Carousel ─── */}
       <TemplateCarousel templates={carouselTemplates} />
 
-      <PricingSection />
+      <PricingSection
+        title="Simple Pricing"
+        subtitle="Start free for placement season. Upgrade when you need unlimited tailoring, premium templates, and priority AI-Powered Assistant access."
+        frequencies={["monthly", "yearly"]}
+        allFeatures={[
+          "Unlimited resume tailoring",
+          "Unlimited AI Assistant messages",
+          "All 4 premium LaTeX templates",
+          "Live company research",
+          "Priority ATS audit queue",
+          "Skill gap questionnaire",
+          "Client-side PDF compilation",
+          "Shared placement dashboards",
+          "Bulk job Kanban tracker",
+          "Dedicated onboarding support",
+          "Custom branding & export",
+        ]}
+        tiers={
+          [
+            {
+              id: "starter",
+              name: "Starter",
+              price: { monthly: 0, yearly: 0 },
+              description: "Ideal for students exploring placement prep. No credit card required.",
+              availableFeatures: [
+                "Skill gap questionnaire",
+                "Client-side PDF compilation",
+              ],
+              cta: "Start for Free",
+              href: isSignedIn ? "/dashboard" : "/sign-up",
+            },
+            {
+              id: "pro",
+              name: "Pro",
+              price: { monthly: 19, yearly: 15 },
+              description: "For active job seekers running multiple company drives. 30-day trial on yearly billing.",
+              availableFeatures: [
+                "Unlimited resume tailoring",
+                "Unlimited AI Assistant messages",
+                "All 4 premium LaTeX templates",
+                "Live company research",
+                "Priority ATS audit queue",
+                "Skill gap questionnaire",
+                "Client-side PDF compilation",
+              ],
+              cta: isSignedIn ? "Upgrade in Dashboard" : "Get Started",
+              href: "/dashboard",
+              popular: true,
+            },
+            {
+              id: "campus",
+              name: "Campus",
+              price: { monthly: 79, yearly: 65 },
+              description: "For placement cells and training partners managing cohorts at scale.",
+              availableFeatures: [
+                "Unlimited resume tailoring",
+                "Unlimited AI Assistant messages",
+                "All 4 premium LaTeX templates",
+                "Live company research",
+                "Priority ATS audit queue",
+                "Skill gap questionnaire",
+                "Client-side PDF compilation",
+                "Shared placement dashboards",
+                "Bulk job Kanban tracker",
+                "Dedicated onboarding support",
+                "Custom branding & export",
+              ],
+              cta: "Coming Soon",
+              href: "#",
+              comingSoon: true,
+            },
+            {
+              id: "enterprise",
+              name: "Enterprise",
+              price: { monthly: "Custom", yearly: "Custom" },
+              description: "For multiple teams across your organization.",
+              availableFeatures: [
+                "Unlimited resume tailoring",
+                "Unlimited AI Assistant messages",
+                "All 4 premium LaTeX templates",
+                "Live company research",
+                "Priority ATS audit queue",
+                "Skill gap questionnaire",
+                "Client-side PDF compilation",
+                "Shared placement dashboards",
+                "Bulk job Kanban tracker",
+                "Dedicated onboarding support",
+                "Custom branding & export",
+              ],
+              cta: "Coming Soon",
+              href: "#",
+              highlighted: true,
+              comingSoon: true,
+            },
+          ] satisfies Tier[]
+        }
+      />
 
       {/* Section Divider */}
       <div className="section-divider" />

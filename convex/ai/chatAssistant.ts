@@ -146,7 +146,8 @@ Role-playing Guidelines:
       });
 
     } catch (err: any) {
-      console.error("Chatbot assistant response generation failed. Full error details:", JSON.stringify(err, Object.getOwnPropertyNames(err)));
+      // 🛡️ Security: Log only sanitized error (no raw error PII leaked)
+      console.error("Chatbot assistant response generation failed:", err instanceof Error ? err.message : "Unknown error");
       const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
       // Graceful error response save
       await ctx.runMutation(internal.chat.saveAssistantMessage, {

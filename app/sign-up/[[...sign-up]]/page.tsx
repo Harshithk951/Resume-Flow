@@ -6,6 +6,7 @@ export default function SignUpPage() {
       className="flex min-h-screen items-center justify-center"
       style={{ background: "var(--color-surface-soft)" }}
     >
+      <style>{`[data-clerk-dev-mode-notice]{display:none!important}`}</style>
       <SignUp
         appearance={{
           elements: {

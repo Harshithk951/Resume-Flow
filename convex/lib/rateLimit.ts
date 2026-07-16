@@ -1,7 +1,8 @@
 // convex/lib/rateLimit.ts
 //
 // Database-Backed Rate Limiting Helper
-// Enforces strict limits: 5 resumes/day and 50 chat messages/day.
+// Enforces chat message limit (50/day). Resume generation is now credit-based
+// (200 credits/resume, replaces the old 5/day limit).
 // Automatically resets counters daily.
 
 import { ConvexError } from "convex/values";
@@ -51,16 +52,8 @@ export async function enforceRateLimit(
   }
 
   // Validate and increment counters
-  if (type === "resume") {
-    if (record.resumesGeneratedToday >= 5) {
-      throw new ConvexError(
-        "You have reached your daily limit for this action. Please try again tomorrow."
-      );
-    }
-    await ctx.db.patch(record._id, {
-      resumesGeneratedToday: record.resumesGeneratedToday + 1,
-    });
-  } else if (type === "chat") {
+  // Note: Resume type is no longer enforced here — moved to credit-based (200 credits/resume)
+  if (type === "chat") {
     if (record.chatMessagesSentToday >= 50) {
       throw new ConvexError(
         "You have reached your daily limit for this action. Please try again tomorrow."

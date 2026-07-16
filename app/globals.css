@@ -563,17 +563,17 @@ button:hover .icon-island-light {
 }
 
 /* ─── Premium: Film-Grain Noise Overlay ────────────────────── */
-/* Fixed overlay, pointer-events-none, ultra-subtle texture      */
+/* Hardware-accelerated static repeating PNG noise overlay.       */
+/* No mix-blend-mode or dynamic filters used for 120fps scrolling. */
 .noise-overlay::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  opacity: 0.018;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAV45c1AAAAElBMVEUAAAAAAAAAAAAAAAAAAAAAAADgKx7OAAAABnRSTlMAf4C/gH/H19Y4AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAQ0lEQVR42uXPMQ4AIAgCQMn+/8vdBicOaEw35qpqGgqE2RNgqXo9jBwO8n6LzG3B1B15o+Psnv4nL7vC9pE0XgO9kQU/w0dC5Hw3pQAAAABJRU5ErkJggg==");
   background-repeat: repeat;
-  mix-blend-mode: overlay;
 }
 
 /* ─── Premium: Eyebrow Pill ────────────────────────────────── */
@@ -637,6 +637,52 @@ button:hover .icon-island-light {
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.04),
     inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* ─── Premium: Medium Elevation Card ───────────────────────── */
+.elevation-medium {
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.elevation-high {
+  box-shadow:
+    0 12px 48px -12px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ─── Premium: Card Hover Bloom (matching BentoGrid) ──────── */
+.card-bloom {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1),
+              box-shadow 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.card-bloom:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px -12px rgba(225, 29, 72, 0.12),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.card-bloom::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+              transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  transform: scale(0.6);
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 40%, rgba(225, 29, 72, 0.06) 0%, transparent 70%);
+}
+
+.card-bloom:hover::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* ─── Premium: Mesh Gradient Backgrounds ───────────────────── */
