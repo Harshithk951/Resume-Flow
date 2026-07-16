@@ -670,9 +670,9 @@ export default function LandingPage() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/legal/cookies" className="hover:text-slate-900 transition-colors">
+                  <a href="#" id="open_preferences_center" className="hover:text-slate-900 transition-colors">
                     Cookie settings
-                  </Link>
+                  </a>
                 </li>
               </ul>
             </div>
