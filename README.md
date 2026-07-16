@@ -55,7 +55,7 @@ ResumeFlow is a **full-stack, real-time resume tailoring platform** built for pl
 | Layer | Technology | Responsibility |
 |-------|------------|----------------|
 | **Presentation** | Next.js 16 App Router, Framer Motion, Tailwind v4 | Landing, command-center dashboard, company cockpit, template browser |
-| **Auth & Edge** | Clerk + `proxy.ts` middleware | JWT sessions, route protection, SSO |
+| **Auth & Edge** | Clerk + `middleware.ts` middleware | JWT sessions, route protection, SSO |
 | **Application Logic** | Convex queries, mutations, actions | State machine, RLS, scheduled AI jobs |
 | **Intelligence** | NVIDIA NIM (OpenAI-compatible), Tavily | JD extraction, company research, resume tailoring, AI-Powered Assistant |
 | **Document Engine** | LaTeX + `pdflatex` API route | ATS-strict PDF generation with template resolution |
@@ -131,7 +131,7 @@ flowchart TB
   end
 
   subgraph edgeTier [Edge Tier — Next.js 16]
-    Proxy[proxy.ts Clerk Middleware]
+    Proxy[middleware.ts Clerk Middleware]
     LaTeXAPI["/api/compile-latex"]
     StaticAssets[public/ assets]
   end
@@ -213,7 +213,7 @@ sequenceDiagram
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         TIER 1 — EDGE / CDN                             │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐ │
-│  │ Clerk JWT   │  │ proxy.ts    │  │ Static CDN  │  │ SSR / RSC       │ │
+│  │ Clerk JWT   │  │ middleware.ts    │  │ Static CDN  │  │ SSR / RSC       │ │
 │  │ Validation  │  │ Route Guard │  │ public/*    │  │ App Router      │ │
 │  └──────┬──────┘  └──────┬──────┘  └─────────────┘  └────────┬────────┘ │
 └─────────┼────────────────┼────────────────────────────────────┼─────────┘
@@ -415,7 +415,7 @@ new → applied → interview → offered → rejected
 flowchart LR
   subgraph auth [Authentication Chain]
     JWT[Clerk JWT]
-    Proxy[proxy.ts protect]
+    Proxy[middleware.ts protect]
     ConvexAuth[Convex useAuth]
     RequireAuth[requireAuth]
     RequireOwner[requireOwnership]
@@ -429,7 +429,7 @@ flowchart LR
 
 | Control | Implementation | File |
 |---------|----------------|------|
-| **Route protection** | Clerk `auth.protect()` on `/dashboard`, `/profile`, `/company`, `/templates` | `proxy.ts` |
+| **Route protection** | Clerk `auth.protect()` on `/dashboard`, `/profile`, `/company`, `/templates` | `middleware.ts` |
 | **Row-Level Security** | `requireAuth` + `requireOwnership` on every mutation | `convex/lib/auth.ts` |
 | **PII firewall** | Mask before LLM, re-inject after tailoring | `convex/lib/piiMask.ts` |
 | **Rate limiting** | 5 resumes/day · 50 chat messages/day | `convex/lib/rateLimit.ts` |
@@ -550,7 +550,7 @@ ResumeFlow/
 │   ├── images/                   # Template previews + feature art
 │   ├── hero-demo.mp4             # Landing hero video
 │   └── hero-poster.jpg           # Video poster frame
-└── proxy.ts                      # Clerk middleware (Next.js 16)
+└── middleware.ts                      # Clerk middleware (Next.js 16)
 ```
 
 ---
