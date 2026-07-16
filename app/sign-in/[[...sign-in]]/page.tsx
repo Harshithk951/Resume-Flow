@@ -43,6 +43,7 @@ export default function SignInPage() {
       </Link>
 
       <SignIn
+        path="/sign-in"
         appearance={{
           elements: {
             rootBox: "mx-auto",
