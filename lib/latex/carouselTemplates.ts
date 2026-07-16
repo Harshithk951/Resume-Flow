@@ -2,66 +2,25 @@ import type { CarouselTemplate } from "@/components/TemplateCarousel";
 
 export const carouselTemplates: CarouselTemplate[] = [
   {
-    id: "academic-cv",
-    label: "Academic CV",
-    image: "/images/template-academic-cv.png",
-    twoColumn: true,
-  },
-  {
-    id: "entry-level",
-    label: "Entry Level",
-    image: "/images/template-entry-level.png",
-    ats: true,
-  },
-  {
-    id: "modern-professional",
-    label: "Classic",
-    image: "/images/template-modern-professional.png",
-  },
-  {
-    id: "traditional",
-    label: "Traditional",
-    image: "/images/template-traditional.png",
-    ats: true,
-  },
-  {
-    id: "sidebar-pro",
-    label: "Professional",
-    image: "/images/template-sidebar-pro.png",
-    withPhoto: true,
-    twoColumn: true,
-  },
-  {
-    id: "ats-strict",
-    label: "ATS Strict",
+    id: "ats_strict",
+    label: "ATS Strict (Classic)",
     image: "/images/template-ats-strict.png",
     ats: true,
   },
   {
-    id: "prime-ats",
-    label: "Prime ATS",
-    image: "/images/template-prime-ats.png",
-    ats: true,
+    id: "modern_professional",
+    label: "Startup Accent",
+    image: "/images/template-modern-professional.png",
   },
   {
-    id: "modern-executive",
-    label: "Modern Executive",
+    id: "modern_executive",
+    label: "Finance Classic",
     image: "/images/template-modern-executive.png",
-    withPhoto: true,
-    twoColumn: true,
   },
   {
-    id: "tech-innovator",
-    label: "Tech Innovator",
+    id: "tech_innovator",
+    label: "Tech Modern",
     image: "/images/template-tech-innovator.png",
-    creative: true,
-  },
-  {
-    id: "creative-minimalist",
-    label: "Creative Minimalist",
-    image: "/images/template-creative-minimalist.png",
-    creative: true,
-    withPhoto: true,
   },
 ];
 
