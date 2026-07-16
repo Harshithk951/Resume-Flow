@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, Building2, Cpu } from "lucide-react";
 import { getTemplatesHref } from "@/lib/templates/navigation";
 
 export interface CarouselTemplate {
@@ -20,10 +19,30 @@ interface TemplateCarouselProps {
   templates: CarouselTemplate[];
 }
 
+const templateIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  ats_strict: Shield,
+  modern_professional: Sparkles,
+  modern_executive: Building2,
+  tech_innovator: Cpu,
+};
+
+const templateBgColors: Record<string, string> = {
+  ats_strict: "bg-slate-50 text-slate-800 hover:bg-slate-100",
+  modern_professional: "bg-rose-50 text-rose-800 hover:bg-rose-100",
+  modern_executive: "bg-blue-50 text-blue-800 hover:bg-blue-100",
+  tech_innovator: "bg-indigo-50 text-indigo-800 hover:bg-indigo-100",
+};
+
 function TemplateCard({ tpl }: { tpl: CarouselTemplate }) {
+  const Icon = templateIcons[tpl.id] || Shield;
   return (
-    <div className="flex items-center justify-center shrink-0 bg-white/60 hover:bg-white/80 backdrop-blur-md border border-slate-200/50 px-6 py-3 rounded-full shadow-sm hover:shadow-md transition-all duration-300 group cursor-pointer">
-      <span className="text-sm md:text-base font-bold text-slate-800 tracking-tight group-hover:text-rose-600 transition-colors">
+    <div
+      className={`flex flex-col items-center justify-center gap-4 px-10 py-8 rounded-2xl border-2 transition-all duration-300 group cursor-pointer shadow-sm hover:shadow-xl ${templateBgColors[tpl.id] || "bg-slate-50 text-slate-800 hover:bg-slate-100"}`}
+    >
+      <div className="w-14 h-14 rounded-xl flex items-center justify-center shadow-sm bg-white/80">
+        <Icon className="w-7 h-7" />
+      </div>
+      <span className="text-xl md:text-2xl font-extrabold tracking-tight group-hover:scale-105 transition-transform duration-300">
         {tpl.label}
       </span>
     </div>
@@ -31,23 +50,20 @@ function TemplateCard({ tpl }: { tpl: CarouselTemplate }) {
 }
 
 export default function TemplateCarousel({ templates }: TemplateCarouselProps) {
-  const [isPaused, setIsPaused] = useState(false);
   const { isSignedIn } = useAuth();
   const templatesHref = getTemplatesHref(isSignedIn);
-
-  const loopItems = [...templates, ...templates, ...templates];
 
   return (
     <section
       id="templates"
-      className="py-16 md:py-20 bg-[#f0f0f0] border-t border-slate-200/60 overflow-hidden"
+      className="py-20 md:py-28 bg-[#f0f0f0] border-t border-slate-200/60"
     >
-      <div className="text-center max-w-2xl mx-auto px-6 mb-10 md:mb-14">
+      <div className="text-center max-w-2xl mx-auto px-6 mb-12 md:mb-16">
         <h2 className="text-2xl md:text-[2rem] font-extrabold text-slate-900 tracking-tight leading-tight">
           Use the templates recruiters like.
         </h2>
         <p className="text-slate-600 mt-2 text-sm md:text-base">
-          Download to PDF. Toggle layouts instantly — your content stays the source of truth.
+          Choose from four purpose-built layouts — each optimized for different industries and roles.
         </p>
         <Link
           href={templatesHref}
@@ -58,24 +74,11 @@ export default function TemplateCarousel({ templates }: TemplateCarouselProps) {
         </Link>
       </div>
 
-      <div className="relative max-w-[100vw]">
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-[#f0f0f0] to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-[#f0f0f0] to-transparent z-10" />
-
-        <div
-          className="overflow-hidden py-4"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div
-            className={`flex w-max gap-6 md:gap-10 px-8 template-marquee-track ${
-              isPaused ? "template-marquee-paused" : ""
-            }`}
-          >
-            {loopItems.map((tpl, i) => (
-              <TemplateCard key={`${tpl.id}-${i}`} tpl={tpl} />
-            ))}
-          </div>
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {templates.map((tpl) => (
+            <TemplateCard key={tpl.id} tpl={tpl} />
+          ))}
         </div>
       </div>
     </section>

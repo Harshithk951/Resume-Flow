@@ -3,23 +3,23 @@ import type { CarouselTemplate } from "@/components/TemplateCarousel";
 export const carouselTemplates: CarouselTemplate[] = [
   {
     id: "ats_strict",
-    label: "ATS Strict (Classic)",
+    label: "ATS",
     image: "/images/template-ats-strict.png",
     ats: true,
   },
   {
     id: "modern_professional",
-    label: "Startup Accent",
+    label: "Modern",
     image: "/images/template-modern-professional.png",
   },
   {
     id: "modern_executive",
-    label: "Finance Classic",
+    label: "Finance",
     image: "/images/template-modern-executive.png",
   },
   {
     id: "tech_innovator",
-    label: "Tech Modern",
+    label: "Tech",
     image: "/images/template-tech-innovator.png",
   },
 ];
