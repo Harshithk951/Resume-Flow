@@ -1,0 +1,2 @@
+✖ Failed to run function "onboarding:extractProfileFromPdf":
+Error

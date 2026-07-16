@@ -20,10 +20,10 @@ export const extractProfileFromPdf = action({
         fileSize: args.fileSize,
       });
       return result;
-    } catch (err) {
+    } catch (err: any) {
       // 3. Refund credits on error
       await ctx.runMutation((api as any).users.refundCredits, { userId, amount: 5 });
-      throw err;
+      throw new ConvexError(err.message || String(err));
     }
   },
 });

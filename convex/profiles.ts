@@ -246,8 +246,9 @@ export const updateExtractionStatus = mutation({
       await ctx.db.patch(existingProfile._id, {
         extractionStatus: args.status,
       });
+      return existingProfile._id;
     } else {
-      await ctx.db.insert("masterProfiles", {
+      const insertedId = await ctx.db.insert("masterProfiles", {
         userId: user._id,
         extractionStatus: args.status,
         personalInfo: {
@@ -260,6 +261,7 @@ export const updateExtractionStatus = mutation({
         projects: [],
         skills: {},
       });
+      return insertedId;
     }
   },
 });
