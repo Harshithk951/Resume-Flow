@@ -237,9 +237,9 @@ export default function LandingPage() {
             variants={itemVariants}
             className="font-display text-5xl md:text-7xl lg:text-[80px] font-extrabold tracking-[-0.03em] max-w-[920px] leading-[1.02] mb-7 text-slate-900"
           >
-            Your career story.{" "}
+            BEAT THE ATS{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-600 via-rose-600 to-red-500">
-              Engineered to land.
+              GET THE JOB
             </span>
           </motion.h1>
 

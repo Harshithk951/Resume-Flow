@@ -3,7 +3,7 @@ import "./globals.css";
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
 import { jakartaSans, displayFont } from "./fonts";
-import Script from "next/script";
+import TermsFeedConsent from "@/components/TermsFeedConsent";
 
 
 export const metadata: Metadata = {
@@ -32,31 +32,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${jakartaSans.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
       <body className={`min-h-screen antialiased ${jakartaSans.className}`}>
-        {/* ─── TermsFeed Cookie Consent ──────────────────────────── */}
-        <Script
-          src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js"
-          strategy="afterInteractive"
-          type="text/javascript"
-          charSet="UTF-8"
-          onLoad={() => {
-            (window as any).cookieconsent?.run({
-              notice_banner_type: "simple",
-              consent_type: "express",
-              palette: "light",
-              language: "en",
-              page_load_consent_levels: ["strictly-necessary"],
-              notice_banner_reject_button_hide: false,
-              preferences_center_close_button_hide: false,
-              page_refresh_confirmation_buttons: false,
-              website_name: "Resume Flow",
-              website_privacy_policy_url: "https://resume-flow-bay.vercel.app/legal/privacy",
-            });
-          }}
-        />
-        <noscript>
-          Free cookie consent management tool by{" "}
-          <a href="https://www.termsfeed.com/">TermsFeed Generator</a>
-        </noscript>
+        {/* ─── TermsFeed Cookie Consent (Client Component) ──────── */}
+        <TermsFeedConsent />
 
         <ConvexClerkProvider>
           <HydrationProtectionGuard>
