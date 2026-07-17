@@ -72,11 +72,11 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
   return (
     <section
       id="templates"
-      className="py-24 md:py-32 bg-[#FAF9F5] border-t border-slate-200/50 relative overflow-hidden"
+      className="py-24 md:py-32 bg-[#FAF1F8]/30 border-t border-slate-200/50 relative overflow-hidden"
     >
       {/* Visual background ambient gradient orbs */}
-      <div className="absolute top-0 right-0 w-[45vw] h-[45vw] bg-rose-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute bottom-0 left-0 w-[35vw] h-[35vw] bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute top-0 right-0 w-[45vw] h-[45vw] bg-purple-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute bottom-0 left-0 w-[35vw] h-[35vw] bg-fuchsia-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
 
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Header */}

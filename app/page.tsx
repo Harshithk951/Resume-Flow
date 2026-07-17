@@ -208,7 +208,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FDFDFD] text-slate-900 font-sans selection:bg-rose-100 selection:text-rose-950 overflow-x-hidden relative noise-overlay">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFFFFF] via-[#FAF1F8] to-[#FFFFFF] text-slate-900 font-sans selection:bg-rose-100 selection:text-rose-950 overflow-x-hidden relative noise-overlay">
       {/* Mesh gradient depth orbs */}
       <div className="absolute top-0 left-0 right-0 h-[80vh] mesh-gradient-hero pointer-events-none -z-10"></div>
 

@@ -688,8 +688,8 @@ button:hover .icon-island-light {
 /* ─── Premium: Mesh Gradient Backgrounds ───────────────────── */
 .mesh-gradient-hero {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(225, 29, 72, 0.08), transparent),
-    radial-gradient(ellipse 60% 40% at 20% 60%, rgba(59, 130, 246, 0.04), transparent),
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(168, 85, 247, 0.05), transparent),
+    radial-gradient(ellipse 60% 40% at 20% 60%, rgba(59, 130, 246, 0.02), transparent),
     radial-gradient(ellipse 50% 50% at 80% 80%, rgba(168, 85, 247, 0.03), transparent),
     var(--color-surface-soft);
 }
@@ -697,7 +697,7 @@ button:hover .icon-island-light {
 .mesh-gradient-section {
   background:
     radial-gradient(ellipse 70% 50% at 50% 0%, rgba(241, 245, 249, 0.8), transparent),
-    radial-gradient(ellipse 50% 40% at 100% 50%, rgba(225, 29, 72, 0.03), transparent),
+    radial-gradient(ellipse 50% 40% at 100% 50%, rgba(168, 85, 247, 0.02), transparent),
     #f8fafc;
 }
 
