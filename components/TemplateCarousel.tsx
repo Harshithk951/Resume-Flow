@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
-import { ArrowRight, ChevronLeft, ChevronRight, Layers } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ArrowRight, Layers } from "lucide-react";
+import { motion } from "framer-motion";
 import { EASE_VANGUARD } from "@/lib/animations";
 
 export interface CarouselTemplate {
@@ -29,46 +29,37 @@ const templateDetails: Record<string, TemplateDetail> = {
   ats_strict: {
     id: "ats_strict",
     label: "ATS Strict",
-    subtitle: "Classic Single-Column Layout (Highly Optimized)",
+    subtitle: "Classic Single-Column Layout",
     accentColor: "#0f172a",
     image: "/images/template-ats-strict.png",
   },
   modern_professional: {
     id: "modern_professional",
     label: "Startup Accent",
-    subtitle: "Modern Creative Professional (Accent Color-Focused)",
+    subtitle: "Modern Creative Professional",
     accentColor: "#e60023",
     image: "/images/template-modern-professional.png",
   },
   modern_executive: {
     id: "modern_executive",
     label: "Finance Classic",
-    subtitle: "Elite Leadership & Corporate Executive Style",
+    subtitle: "Elite Leadership & Corporate",
     accentColor: "#1e3a5f",
     image: "/images/template-modern-executive.png",
   },
   tech_innovator: {
     id: "tech_innovator",
     label: "Tech Modern",
-    subtitle: "Software & Systems Engineer (Modern Two-Column Layout)",
+    subtitle: "Software & Systems Engineer",
     accentColor: "#4f46e5",
     image: "/images/template-tech-innovator.png",
   },
 };
 
-const templatesData = [
-  templateDetails.ats_strict,
-  templateDetails.modern_professional,
-  templateDetails.modern_executive,
-  templateDetails.tech_innovator,
-];
-
 export default function TemplateCarousel({ templates }: { templates: CarouselTemplate[] }) {
   const { isSignedIn } = useAuth();
+  const [isPaused, setIsPaused] = useState(false);
   const [templatesHref, setTemplatesHref] = useState("/sign-up");
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (isSignedIn) {
@@ -76,13 +67,7 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
     }
   }, [isSignedIn]);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => Math.min(templatesData.length - 1, prev + 1));
-  };
+  const marqueeItems = templates && templates.length > 0 ? templates : Object.values(templateDetails);
 
   return (
     <section
@@ -93,180 +78,115 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
       <div className="absolute top-0 right-0 w-[45vw] h-[45vw] bg-rose-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
       <div className="absolute bottom-0 left-0 w-[35vw] h-[35vw] bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
 
-      <div className="max-w-[1280px] mx-auto px-6 text-center z-10 flex flex-col items-center">
+      <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Header */}
-        <div className="mb-4">
-          <span className="eyebrow-pill">
-            <Layers size={10} className="text-rose-600" />
-            Purpose-Built Layouts
-          </span>
-        </div>
-        <h2 className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em] leading-tight">
-          Use the templates recruiters like.
-        </h2>
-
-        {/* Active Template details description */}
-        <div className="h-16 mt-6 overflow-hidden flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.25, ease: EASE_VANGUARD }}
-              className="text-center"
-            >
-              <h3
-                className="font-display text-xl md:text-2xl font-extrabold transition-colors duration-300"
-                style={{ color: templatesData[currentIndex].accentColor }}
-              >
-                {templatesData[currentIndex].label}
-              </h3>
-              <p className="text-slate-500 mt-1 text-xs md:text-sm font-semibold">
-                {templatesData[currentIndex].subtitle}
-              </p>
-            </motion.div>
-          </AnimatePresence>
+        <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE_VANGUARD }}
+            className="mb-4"
+          >
+            <span className="eyebrow-pill">
+              <Layers size={10} className="text-rose-600" />
+              Purpose-Built Layouts
+            </span>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease: EASE_VANGUARD }}
+            className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em] leading-tight"
+          >
+            Use the templates recruiters like.
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE_VANGUARD }}
+            className="text-slate-500 mt-4 text-sm md:text-base leading-relaxed animate-fade-in"
+          >
+            Choose from purpose-built layouts — each optimized for different industries and roles.
+            Hover to pause and click any template to get started instantly.
+          </motion.p>
         </div>
       </div>
 
-      {/* Carousel Core Area */}
-      <div className="relative w-full mt-10 md:mt-16 flex flex-col items-center">
-        {/* Left/Right Glassmorphic Navigation Buttons */}
-        <div className="absolute inset-y-0 left-4 md:left-12 z-20 flex items-center">
-          <button
-            onClick={handlePrev}
-            disabled={currentIndex === 0}
-            className={`h-12 w-12 rounded-full border border-slate-200/80 bg-white/70 backdrop-blur-md text-slate-800 shadow-lg flex items-center justify-center transition-all duration-300 ${
-              currentIndex === 0
-                ? "opacity-30 cursor-not-allowed"
-                : "opacity-100 hover:bg-white hover:scale-105 active:scale-95"
+      {/* Marquee Flow Bounded Container */}
+      <div className="max-w-[1280px] mx-auto px-6">
+        <div
+          className="w-full relative overflow-hidden py-8 select-none cursor-pointer rounded-3xl border border-slate-200/50 bg-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-[1px]"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          {/* Soft edge fade overlays restricted inside the container */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none rounded-l-3xl" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none rounded-r-3xl" />
+
+          <div
+            className={`flex w-max template-marquee-track ${
+              isPaused ? "template-marquee-paused" : ""
             }`}
-            aria-label="Previous Template"
           >
-            <ChevronLeft size={24} />
-          </button>
-        </div>
+            {/* Render three identical sets of template items to form an infinite marquee loop */}
+            {[0, 1, 2].map((setIndex) => (
+              <div key={setIndex} className="flex gap-10 pr-10 shrink-0">
+                {marqueeItems.map((tpl) => {
+                  const details = templateDetails[tpl.id];
+                  const displayLabel = details ? details.label : tpl.label;
 
-        <div className="absolute inset-y-0 right-4 md:right-12 z-20 flex items-center">
-          <button
-            onClick={handleNext}
-            disabled={currentIndex === templatesData.length - 1}
-            className={`h-12 w-12 rounded-full border border-slate-200/80 bg-white/70 backdrop-blur-md text-slate-800 shadow-lg flex items-center justify-center transition-all duration-300 ${
-              currentIndex === templatesData.length - 1
-                ? "opacity-30 cursor-not-allowed"
-                : "opacity-100 hover:bg-white hover:scale-105 active:scale-95"
-            }`}
-            aria-label="Next Template"
-          >
-            <ChevronRight size={24} />
-          </button>
-        </div>
+                  return (
+                    <Link
+                      key={`${tpl.id}-${setIndex}`}
+                      href="/sign-up"
+                      className="group flex flex-col w-[320px] md:w-[400px] shrink-0"
+                    >
+                      {/* Template name displayed directly above the card */}
+                      <div className="text-center mb-4">
+                        <span className="inline-block font-display text-sm md:text-base font-extrabold text-slate-800 group-hover:text-rose-600 transition-colors duration-300">
+                          {displayLabel}
+                        </span>
+                      </div>
 
-        {/* Viewport Mask */}
-        <div className="w-full overflow-hidden py-4">
-          <motion.div
-            className="flex gap-4 md:gap-8 w-max"
-            animate={{
-              x: shouldReduceMotion
-                ? 0
-                : `calc(50vw - (var(--card-width) / 2) - (${currentIndex} * (var(--card-width) + var(--gap))))`,
-            }}
-            transition={{ type: "spring", stiffness: 280, damping: 28 }}
-            style={
-              {
-                "--card-width": "280px",
-                "--gap": "16px",
-                // Responsive variables passed to CSS transform
-                "@media (min-width: 768px)": {
-                  "--card-width": "400px",
-                  "--gap": "32px",
-                },
-              } as React.CSSProperties
-            }
-          >
-            {/* Custom responsive media stylesheet injector to handle CSS variables dynamically */}
-            <style jsx>{`
-              div {
-                --card-width: 280px;
-                --gap: 16px;
-              }
-              @media (min-width: 768px) {
-                div {
-                  --card-width: 400px;
-                  --gap: 32px;
-                }
-              }
-            `}</style>
+                      {/* Resume image mockup */}
+                      <div className="relative aspect-[1/1.414] w-full rounded-2xl border border-slate-200/80 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden transition-all duration-500 group-hover:shadow-[0_24px_54px_rgba(0,0,0,0.15)] group-hover:scale-[1.02]">
+                        <img
+                          src={tpl.image}
+                          alt={displayLabel}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none block"
+                          loading="eager"
+                          decoding="sync"
+                        />
 
-            {templatesData.map((tpl, idx) => {
-              const isActive = idx === currentIndex;
-              return (
-                <div
-                  key={tpl.id}
-                  className={`w-[280px] md:w-[400px] shrink-0 transition-all duration-500 origin-center ${
-                    isActive
-                      ? "scale-[1.02] opacity-100"
-                      : "scale-[0.94] opacity-50 pointer-events-none"
-                  }`}
-                >
-                  <Link
-                    href="/sign-up"
-                    className="group relative flex flex-col w-full aspect-[1/1.414] rounded-2xl border border-slate-200/80 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden transition-shadow duration-500 hover:shadow-[0_24px_54px_rgba(0,0,0,0.15)]"
-                  >
-                    <img
-                      src={tpl.image}
-                      alt={tpl.label}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none block"
-                      loading="eager"
-                      decoding="sync"
-                    />
-
-                    {/* Glassmorphic Hover Overlay */}
-                    <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                      <span className="bg-white text-slate-900 font-extrabold text-xs px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform duration-300 scale-90 group-hover:scale-100">
-                        <span>Use this template</span>
-                        <ArrowRight size={15} className="text-rose-600" />
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-              );
-            })}
-          </motion.div>
-        </div>
-
-        {/* Indicators & Actions */}
-        <div className="mt-12 flex flex-col items-center gap-6 z-10">
-          {/* Navigation Dots */}
-          <div className="flex gap-2.5 items-center">
-            {templatesData.map((tpl, idx) => {
-              const isActive = idx === currentIndex;
-              return (
-                <button
-                  key={tpl.id}
-                  onClick={() => setCurrentIndex(idx)}
-                  className="group relative flex items-center cursor-pointer bg-transparent border-none p-1 focus:outline-none"
-                >
-                  <span
-                    className={`h-2.5 rounded-full transition-all duration-300 ${
-                      isActive ? "w-8" : "w-2.5 bg-slate-300 hover:bg-slate-400"
-                    }`}
-                    style={{ backgroundColor: isActive ? tpl.accentColor : undefined }}
-                  />
-                </button>
-              );
-            })}
+                        {/* Glassmorphic Overlay showing "Use this Template" on hover */}
+                        <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                          <span className="bg-white text-slate-900 font-extrabold text-xs px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform duration-300 scale-90 group-hover:scale-100">
+                            <span>Use this template</span>
+                            <ArrowRight size={15} className="text-rose-600" />
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
           </div>
-
-          <Link
-            href={templatesHref}
-            className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 py-3.5 text-xs tracking-wider uppercase gap-2 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
-          >
-            <span>Browse All Templates</span>
-            <ArrowRight size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
-          </Link>
         </div>
+      </div>
+
+      {/* Footer Browse Action */}
+      <div className="mt-16 text-center">
+        <Link
+          href={templatesHref}
+          className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 py-3.5 text-xs tracking-wider uppercase gap-2 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
+        >
+          <span>Browse All Templates</span>
+          <ArrowRight size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
       </div>
     </section>
   );
