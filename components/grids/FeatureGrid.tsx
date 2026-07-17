@@ -72,21 +72,19 @@ interface ScrollDrivenCardProps {
 }
 
 function ScrollDrivenCard({ feature, index, scrollYProgress }: ScrollDrivenCardProps) {
-  const col = index % 4;
+  // Odd cards (0, 2, 4, 6) slide Left to Right, Even cards (1, 3, 5, 7) slide Right to Left
+  const isOdd = index % 2 === 0;
+  const startX = isOdd ? -140 : 140;
+  const endX = isOdd ? 140 : -140;
 
-  // Asymmetrical opposite-direction drift speeds to create a powerful parallax effect
-  // Column 0 and 2 drift upwards (fast parallax), Column 1 and 3 drift downwards (slow parallax)
-  const startY = col === 0 ? 120 : col === 1 ? -100 : col === 2 ? 80 : -140;
-  const endY = col === 0 ? -120 : col === 1 ? 100 : col === 2 ? -80 : 140;
-
-  // Transform elements continuously along the scroll progress path
-  const y = useTransform(scrollYProgress, [0, 1], [startY, endY]);
+  // Transform horizontal translation (x) continuously along the scroll progress path
+  const x = useTransform(scrollYProgress, [0, 1], [startX, endX]);
   const opacity = useTransform(scrollYProgress, [0.05, 0.45], [0, 1]);
   const scale = useTransform(scrollYProgress, [0.05, 0.45], [0.92, 1]);
 
   return (
     <motion.div
-      style={{ y, opacity, scale, willChange: "transform" }}
+      style={{ x, opacity, scale, willChange: "transform" }}
       className="w-full flex"
     >
       <AnimatedFeatureCard
