@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import {
@@ -35,6 +36,20 @@ export default function TemplateBrowser() {
   const [mainMode, setMainMode] = useState<MainMode>("customize");
   const [activeSection, setActiveSection] = useState<Section>("contact");
   const [activeTemplate, setActiveTemplate] = useState<string>("ats_strict");
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const templateParam = searchParams.get("template");
+    if (
+      templateParam &&
+      ["ats_strict", "modern_professional", "modern_executive", "tech_innovator"].includes(
+        templateParam
+      )
+    ) {
+      setActiveTemplate(templateParam);
+    }
+  }, [searchParams]);
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);

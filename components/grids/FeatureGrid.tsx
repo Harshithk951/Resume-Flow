@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { AnimatedFeatureCard } from "./FeatureCard";
 import {
   Target,
@@ -64,45 +65,115 @@ const features = [
   },
 ];
 
-export function FeatureGrid() {
-  return (
-    <section id="how-it-works" className="py-24 px-6">
-      <div className="max-w-[1280px] mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          className="text-center max-w-2xl mx-auto mb-16"
-        >
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100 mb-4">
-            <Zap size={10} /> Advanced Platform
-          </span>
-          <h2 className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
-            Built different. Built to win.
-          </h2>
-          <p className="text-slate-500 mt-4 text-lg">
-            Engineered to streamline corporate hiring drives and personal portfolio adjustments.
-          </p>
-        </motion.div>
+interface ScrollDrivenCardProps {
+  feature: typeof features[0];
+  index: number;
+  scrollYProgress: any;
+}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {features.map((feature, index) => (
-            <motion.div
-              key={feature.tag}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.06, ease: [0.32, 0.72, 0, 1] }}
-            >
-              <AnimatedFeatureCard
-                index={`${String(index + 1).padStart(2, "0")}`}
-                tag={feature.tag}
-                title={feature.title}
-                icon={feature.icon}
-                color={feature.color}
+function ScrollDrivenCard({ feature, index, scrollYProgress }: ScrollDrivenCardProps) {
+  // Define asymmetrical parallax speeds based on grid columns to create a wave depth effect
+  const col = index % 4;
+  const startY = col === 0 ? 50 : col === 1 ? 80 : col === 2 ? 40 : 70;
+  const endY = col === 0 ? -30 : col === 1 ? -60 : col === 2 ? -20 : -50;
+
+  // Transform elements continuously along the scroll progress path
+  const y = useTransform(scrollYProgress, [0, 1], [startY, endY]);
+  const opacity = useTransform(scrollYProgress, [0.05, 0.35], [0, 1]);
+  const scale = useTransform(scrollYProgress, [0.05, 0.35], [0.94, 1]);
+
+  return (
+    <motion.div
+      style={{ y, opacity, scale, willChange: "transform" }}
+      className="w-full flex"
+    >
+      <AnimatedFeatureCard
+        index={`${String(index + 1).padStart(2, "0")}`}
+        tag={feature.tag}
+        title={feature.title}
+        icon={feature.icon}
+        color={feature.color}
+      />
+    </motion.div>
+  );
+}
+
+export function FeatureGrid() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  // Scroll tracking container
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Header scroll transitions
+  const headerY = useTransform(scrollYProgress, [0, 0.3], [30, -10]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
+  const headerScale = useTransform(scrollYProgress, [0, 0.3], [0.97, 1]);
+
+  return (
+    <section ref={containerRef} id="how-it-works" className="py-24 px-6 relative overflow-hidden">
+      <div className="max-w-[1280px] mx-auto">
+        {shouldReduceMotion ? (
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100 mb-4">
+              <Zap size={10} /> Advanced Platform
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
+              Built different. Built to win.
+            </h2>
+            <p className="text-slate-500 mt-4 text-lg">
+              Engineered to streamline corporate hiring drives and personal portfolio adjustments.
+            </p>
+          </div>
+        ) : (
+          <motion.div
+            style={{ y: headerY, opacity: headerOpacity, scale: headerScale, willChange: "transform" }}
+            className="text-center max-w-2xl mx-auto mb-16"
+          >
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100 mb-4">
+              <Zap size={10} /> Advanced Platform
+            </span>
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
+              Built different. Built to win.
+            </h2>
+            <p className="text-slate-500 mt-4 text-lg">
+              Engineered to streamline corporate hiring drives and personal portfolio adjustments.
+            </p>
+          </motion.div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {features.map((feature, index) => {
+            const displayIndex = `${String(index + 1).padStart(2, "0")}`;
+            return shouldReduceMotion ? (
+              <motion.div
+                key={feature.tag}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.05, ease: [0.32, 0.72, 0, 1] }}
+                className="w-full flex"
+              >
+                <AnimatedFeatureCard
+                  index={displayIndex}
+                  tag={feature.tag}
+                  title={feature.title}
+                  icon={feature.icon}
+                  color={feature.color}
+                />
+              </motion.div>
+            ) : (
+              <ScrollDrivenCard
+                key={feature.tag}
+                feature={feature}
+                index={index}
+                scrollYProgress={scrollYProgress}
               />
-            </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

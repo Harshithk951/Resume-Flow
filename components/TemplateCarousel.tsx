@@ -1,9 +1,12 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
-import { ArrowRight, Sparkles, Shield, Building2, Cpu } from "lucide-react";
+import { ArrowRight, Layers } from "lucide-react";
+import { motion } from "framer-motion";
 import { getTemplatesHref } from "@/lib/templates/navigation";
+import { EASE_VANGUARD } from "@/lib/animations";
 
 export interface CarouselTemplate {
   id: string;
@@ -15,71 +18,174 @@ export interface CarouselTemplate {
   creative?: boolean;
 }
 
-interface TemplateCarouselProps {
-  templates: CarouselTemplate[];
+interface TemplateDetail {
+  id: string;
+  label: string;
+  subtitle: string;
+  accentColor: string;
+  image: string;
 }
 
-const templateIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  ats_strict: Shield,
-  modern_professional: Sparkles,
-  modern_executive: Building2,
-  tech_innovator: Cpu,
+const templateDetails: Record<string, TemplateDetail> = {
+  ats_strict: {
+    id: "ats_strict",
+    label: "ATS Strict",
+    subtitle: "Classic Single-Column Layout",
+    accentColor: "#0f172a",
+    image: "/images/template-ats-strict.png",
+  },
+  modern_professional: {
+    id: "modern_professional",
+    label: "Startup Accent",
+    subtitle: "Modern Creative Professional",
+    accentColor: "#e60023",
+    image: "/images/template-modern-professional.png",
+  },
+  modern_executive: {
+    id: "modern_executive",
+    label: "Finance Classic",
+    subtitle: "Elite Leadership & Corporate",
+    accentColor: "#1e3a5f",
+    image: "/images/template-modern-executive.png",
+  },
+  tech_innovator: {
+    id: "tech_innovator",
+    label: "Tech Modern",
+    subtitle: "Software & Systems Engineer",
+    accentColor: "#4f46e5",
+    image: "/images/template-tech-innovator.png",
+  },
 };
 
-const templateBgColors: Record<string, string> = {
-  ats_strict: "bg-slate-50 text-slate-800 hover:bg-slate-100",
-  modern_professional: "bg-rose-50 text-rose-800 hover:bg-rose-100",
-  modern_executive: "bg-blue-50 text-blue-800 hover:bg-blue-100",
-  tech_innovator: "bg-indigo-50 text-indigo-800 hover:bg-indigo-100",
-};
-
-function TemplateCard({ tpl }: { tpl: CarouselTemplate }) {
-  const Icon = templateIcons[tpl.id] || Shield;
-  return (
-    <div
-      className={`flex flex-col items-center justify-center gap-4 px-10 py-8 rounded-2xl border-2 transition-all duration-300 group cursor-pointer shadow-sm hover:shadow-xl ${templateBgColors[tpl.id] || "bg-slate-50 text-slate-800 hover:bg-slate-100"}`}
-    >
-      <div className="w-14 h-14 rounded-xl flex items-center justify-center shadow-sm bg-white/80">
-        <Icon className="w-7 h-7" />
-      </div>
-      <span className="text-xl md:text-2xl font-extrabold tracking-tight group-hover:scale-105 transition-transform duration-300">
-        {tpl.label}
-      </span>
-    </div>
-  );
-}
-
-export default function TemplateCarousel({ templates }: TemplateCarouselProps) {
+export default function TemplateCarousel({ templates }: { templates: CarouselTemplate[] }) {
   const { isSignedIn } = useAuth();
-  const templatesHref = getTemplatesHref(isSignedIn);
+  const [isPaused, setIsPaused] = useState(false);
+  const [templatesHref, setTemplatesHref] = useState("/sign-up");
+
+  useEffect(() => {
+    if (isSignedIn) {
+      setTemplatesHref("/templates");
+    }
+  }, [isSignedIn]);
+
+  const marqueeItems = templates && templates.length > 0 ? templates : Object.values(templateDetails);
 
   return (
     <section
       id="templates"
-      className="py-20 md:py-28 bg-[#f0f0f0] border-t border-slate-200/60"
+      className="py-24 md:py-32 bg-[#FAF9F5] border-t border-slate-200/50 relative overflow-hidden"
     >
-      <div className="text-center max-w-2xl mx-auto px-6 mb-12 md:mb-16">
-        <h2 className="text-2xl md:text-[2rem] font-extrabold text-slate-900 tracking-tight leading-tight">
-          Use the templates recruiters like.
-        </h2>
-        <p className="text-slate-600 mt-2 text-sm md:text-base">
-          Choose from four purpose-built layouts — each optimized for different industries and roles.
-        </p>
-        <Link
-          href={templatesHref}
-          className="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-6 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition-colors hover:border-slate-400 hover:bg-slate-50"
-        >
-          Browse Templates
-          <ArrowRight size={14} />
-        </Link>
+      {/* Visual background ambient gradient orbs */}
+      <div className="absolute top-0 right-0 w-[45vw] h-[45vw] bg-rose-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+      <div className="absolute bottom-0 left-0 w-[35vw] h-[35vw] bg-indigo-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+
+      <div className="max-w-[1280px] mx-auto px-6">
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: EASE_VANGUARD }}
+            className="mb-4"
+          >
+            <span className="eyebrow-pill">
+              <Layers size={10} className="text-rose-600" />
+              Purpose-Built Layouts
+            </span>
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1, ease: EASE_VANGUARD }}
+            className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em] leading-tight"
+          >
+            Use the templates recruiters like.
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2, ease: EASE_VANGUARD }}
+            className="text-slate-500 mt-4 text-sm md:text-base leading-relaxed"
+          >
+            Choose from purpose-built layouts — each optimized for different industries and roles.
+            Hover to pause and click any template to get started instantly.
+          </motion.p>
+        </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {templates.map((tpl) => (
-            <TemplateCard key={tpl.id} tpl={tpl} />
+      {/* Marquee Flow Container */}
+      <div
+        className="w-full relative overflow-hidden py-6 select-none cursor-pointer"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Soft edge fade overlays */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#FAF9F5] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#FAF9F5] to-transparent z-10 pointer-events-none" />
+
+        <div
+          className={`flex w-max template-marquee-track ${
+            isPaused ? "template-marquee-paused" : ""
+          }`}
+        >
+          {/* Render three identical sets of template items to form an infinite marquee loop */}
+          {[0, 1, 2].map((setIndex) => (
+            <div key={setIndex} className="flex gap-10 pr-10 shrink-0">
+              {marqueeItems.map((tpl) => {
+                const details = templateDetails[tpl.id];
+                const displayLabel = details ? details.label : tpl.label;
+
+                return (
+                  <Link
+                    key={`${tpl.id}-${setIndex}`}
+                    href="/sign-up"
+                    className="group flex flex-col w-[320px] md:w-[400px] shrink-0"
+                  >
+                    {/* Template name displayed directly above the card */}
+                    <div className="text-center mb-4">
+                      <span className="inline-block font-display text-sm md:text-base font-extrabold text-slate-800 group-hover:text-rose-600 transition-colors duration-300">
+                        {displayLabel}
+                      </span>
+                    </div>
+
+                    {/* Resume image mockup */}
+                    <div className="relative aspect-[1/1.414] w-full rounded-2xl border border-slate-200/80 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden transition-all duration-500 group-hover:shadow-[0_24px_54px_rgba(0,0,0,0.15)] group-hover:scale-[1.02]">
+                      <img
+                        src={tpl.image}
+                        alt={displayLabel}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none block"
+                        loading="eager"
+                        decoding="sync"
+                      />
+
+                      {/* Glassmorphic Overlay showing "Use this Template" on hover */}
+                      <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                        <span className="bg-white text-slate-900 font-extrabold text-xs px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform duration-300 scale-90 group-hover:scale-100">
+                          <span>Use this template</span>
+                          <ArrowRight size={15} className="text-rose-600" />
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           ))}
         </div>
+      </div>
+
+      {/* Footer Browse Action */}
+      <div className="mt-16 text-center">
+        <Link
+          href={templatesHref}
+          className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 py-3.5 text-xs tracking-wider uppercase gap-2 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
+        >
+          <span>Browse All Templates</span>
+          <ArrowRight size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
       </div>
     </section>
   );

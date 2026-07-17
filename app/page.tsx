@@ -177,7 +177,11 @@ const HeroVideo = memo(function HeroVideo() {
 
 export default function LandingPage() {
   const { isSignedIn } = useAuth();
-  const templatesHref = getTemplatesHref(isSignedIn);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const templatesHref = mounted && isSignedIn ? "/templates" : "/sign-up";
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   const heroRef = useRef<HTMLElement>(null);
   const isHeroInView = useInView(heroRef, { amount: 0.1 });

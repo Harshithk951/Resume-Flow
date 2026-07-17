@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
@@ -24,5 +24,15 @@ export default function TemplatesPage() {
     );
   }
 
-  return <TemplateBrowser />;
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-full w-full items-center justify-center bg-white min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin text-[var(--color-primary)]" />
+        </div>
+      }
+    >
+      <TemplateBrowser />
+    </Suspense>
+  );
 }

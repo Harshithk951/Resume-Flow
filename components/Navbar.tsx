@@ -12,7 +12,13 @@ export default function Navbar() {
   const [templatesOpen, setTemplatesOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const templatesHref = getTemplatesHref(isSignedIn);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const templatesHref = mounted && isSignedIn ? "/templates" : "/sign-up";
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {

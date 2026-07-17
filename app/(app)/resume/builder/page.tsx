@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import {
@@ -25,7 +26,7 @@ import { LiveSandboxPreview } from "@/components/LiveSandboxPreview";
 
 type Section = "contact" | "education" | "experience" | "projects" | "skills" | "extras";
 
-export default function ResumeBuilderPage() {
+function ResumeBuilderPageContent() {
   const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
 
   const myProfile = useQuery(api.profiles.getMyProfile, isAuthenticated ? {} : "skip");
@@ -34,6 +35,20 @@ export default function ResumeBuilderPage() {
   const [activeSection, setActiveSection] = useState<Section>("contact");
   const [activeTemplate, setActiveTemplate] = useState<string>("ats_strict");
   const spacingPreset = "compact";
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const templateParam = searchParams.get("template");
+    if (
+      templateParam &&
+      ["ats_strict", "modern_professional", "modern_executive", "tech_innovator"].includes(
+        templateParam
+      )
+    ) {
+      setActiveTemplate(templateParam);
+    }
+  }, [searchParams]);
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -785,5 +800,19 @@ export default function ResumeBuilderPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResumeBuilderPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-[50vh] w-full flex items-center justify-center bg-slate-50">
+          <Loader2 className="h-6 w-6 animate-spin text-rose-600" />
+        </div>
+      }
+    >
+      <ResumeBuilderPageContent />
+    </Suspense>
   );
 }
