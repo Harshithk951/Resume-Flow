@@ -54,11 +54,20 @@ export async function enforceRateLimit(
   // Validate and increment counters
   // Note: Resume type is no longer enforced here — moved to credit-based (200 credits/resume)
   if (type === "chat") {
-    if (record.chatMessagesSentToday >= 50) {
-      throw new ConvexError(
-        "You have reached your daily limit for this action. Please try again tomorrow."
-      );
+    const user = await ctx.db.get(userId);
+    if (!user) {
+      throw new ConvexError("User not found.");
     }
+    const isPro = user.plan === "pro" || user.plan === "campus";
+
+    if (!isPro) {
+      if (record.chatMessagesSentToday >= 5) {
+        throw new ConvexError(
+          "You have reached your daily free limit for this action. Upgrade to Pro for unlimited AI chatting!"
+        );
+      }
+    }
+
     await ctx.db.patch(record._id, {
       chatMessagesSentToday: record.chatMessagesSentToday + 1,
     });
