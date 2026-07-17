@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { Check } from "lucide-react";
@@ -89,6 +89,11 @@ export function PricingSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.15 });
   const { isSignedIn } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <section
@@ -154,13 +159,13 @@ export function PricingSection() {
           {PLANS.map((plan, index) => {
             const price =
               billing === "monthly" ? plan.monthlyPrice : plan.yearlyPrice;
-            const ctaHref = isSignedIn && plan.id !== "campus"
+            const ctaHref = mounted && isSignedIn && plan.id !== "campus"
               ? "/dashboard"
               : plan.href;
             const ctaLabel =
-              isSignedIn && plan.id === "starter"
+              mounted && isSignedIn && plan.id === "starter"
                 ? "Go to Dashboard"
-                : isSignedIn && plan.id === "pro"
+                : mounted && isSignedIn && plan.id === "pro"
                   ? "Upgrade in Dashboard"
                   : plan.cta;
 

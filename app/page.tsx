@@ -263,10 +263,10 @@ export default function LandingPage() {
               whileTap="tap"
             >
               <Link
-                href={isSignedIn ? "/dashboard" : "/sign-up"}
+                href={mounted && isSignedIn ? "/dashboard" : "/sign-up"}
                 className="group inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold rounded-full shadow-[0_8px_30px_rgba(225,29,72,0.3)] transition-all px-8 h-14 text-base gap-3"
               >
-                {isSignedIn ? "Go to Dashboard" : "Get started — it's free"}
+                {mounted && isSignedIn ? "Go to Dashboard" : "Get started — it's free"}
                 <span className="icon-island icon-island-light">
                   <ArrowRight size={14} />
                 </span>
@@ -288,7 +288,7 @@ export default function LandingPage() {
                 </span>
               </Link>
             </motion.div>
-            {!isSignedIn && (
+            {mounted && !isSignedIn && (
               <Link
                 href="/sign-in"
                 className="inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 h-14 text-base transition-colors sm:hidden"
@@ -363,7 +363,7 @@ export default function LandingPage() {
                 "Client-side PDF compilation",
               ],
               cta: "Start for Free",
-              href: isSignedIn ? "/dashboard" : "/sign-up",
+              href: mounted && isSignedIn ? "/dashboard" : "/sign-up",
             },
             {
               id: "pro",
@@ -379,7 +379,7 @@ export default function LandingPage() {
                 "Skill gap questionnaire",
                 "Client-side PDF compilation",
               ],
-              cta: isSignedIn ? "Upgrade in Dashboard" : "Get Started",
+              cta: mounted && isSignedIn ? "Upgrade in Dashboard" : "Get Started",
               href: "/dashboard",
               popular: true,
             },
@@ -548,10 +548,10 @@ export default function LandingPage() {
               whileTap="tap"
             >
               <Link
-                href={isSignedIn ? "/dashboard" : "/sign-up"}
+                href={mounted && isSignedIn ? "/dashboard" : "/sign-up"}
                 className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-rose-700 font-bold rounded-full shadow-xl transition-all px-8 h-14 text-base gap-3"
               >
-                {isSignedIn ? "Go to Dashboard" : "Sign up — it's free"}
+                {mounted && isSignedIn ? "Go to Dashboard" : "Sign up — it's free"}
                 <span className="icon-island">
                   <ArrowRight size={14} />
                 </span>

@@ -123,7 +123,7 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          {isSignedIn ? (
+          {mounted && isSignedIn ? (
             <Link
               href="/dashboard"
               className="inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-[0_8px_30px_rgba(225,29,72,0.25)] transition-all duration-300 px-6 py-2 text-sm active:scale-[0.97]"
