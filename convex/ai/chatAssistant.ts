@@ -20,6 +20,92 @@ function formatChatMessages(messages: any[]): any[] {
   }));
 }
 
+// ─── Guardrails: Prompt Injection & Topic Enforcement ─────────────
+
+/**
+ * Patterns that indicate prompt injection or jailbreak attempts.
+ * The chatbot will refuse these topics entirely.
+ * Patterns are intentionally narrow to avoid blocking legitimate placement prep.
+ */
+const INJECTION_PATTERNS = [
+  /ignore\s+(all\s+)?(previous|above|prior)/i,
+  /forget\s+(all\s+)?(previous|above|prior|instructions)/i,
+  /disregard\s+(all\s+)?(previous|above|prior)/i,
+  /reveal\s+(your|the)\s+(prompt|system|instructions)/i,
+  /output\s+(your|the)\s+(prompt|system|instructions)/i,
+  /print\s+(your|the)\s+(prompt|system|instructions)/i,
+  /show\s+(me\s+)?(your|the)\s+(prompt|system|instructions)/i,
+  /you\s+have\s+been\s+(hacked|compromised|overridden)/i,
+  /simulate\s+(a\s+)?(hack|breach|override)/i,
+  /DAN|do\s+anything\s+now/i,
+  /jailbr(ea|ei)k/i,
+];
+
+/**
+ * Checks if a message contains a prompt injection attempt.
+ * Returns the matched pattern or null if clean.
+ */
+function detectInjection(text: string): string | null {
+  for (const pattern of INJECTION_PATTERNS) {
+    if (pattern.test(text)) {
+      return pattern.source;
+    }
+  }
+  return null;
+}
+
+/**
+ * Detects off-topic requests that are outside ResumeFlow's scope.
+ * Kept narrow to avoid blocking legitimate prep (coding questions, mock interviews).
+ */
+const OFF_TOPIC_PATTERNS = [
+  /write\s+(me\s+)?a\s+(poem|song|story|novel|script|play)/i,
+  /generate\s+(me\s+)?(image|art|picture|drawing|video|music)/i,
+  /create\s+(me\s+)?(image|art|picture|drawing|video|music)/i,
+  /tell\s+(me\s+)?a\s+(joke|story|riddle)/i,
+  /play\s+(a\s+)?game/i,
+];
+
+/**
+ * Validates user input and returns a guardrail violation message if triggered.
+ * Returns null if the message passes all guardrails.
+ */
+function checkGuardrails(userMessage: string): string | null {
+  // Check for prompt injection
+  const injectionMatch = detectInjection(userMessage);
+  if (injectionMatch) {
+    console.warn("[guardrails] Blocked injection attempt — matched pattern:", injectionMatch);
+    return "I'm here to help with placement preparation, resume building, and interview practice. Let's keep our conversation focused on your career goals! How can I help you with your job search or interview prep?";
+  }
+
+  // Check for off-topic content
+  const offTopicMatch = OFF_TOPIC_PATTERNS.find((p) => p.test(userMessage));
+  if (offTopicMatch) {
+    console.warn("[guardrails] Blocked off-topic request — matched pattern:", offTopicMatch.source);
+    return "I'm your ResumeFlow placement assistant — I specialize in resume tailoring, interview preparation, and career guidance. I'll need to pass on that request, but I'm happy to help with your placement prep! What role or company are you targeting?";
+  }
+
+  return null;
+}
+
+/**
+ * Scans assistant response for PII leakage before saving to the database.
+ * Masks any detected email addresses or phone numbers.
+ */
+function sanitizeResponse(text: string): string {
+  // Mask email addresses (match existing codebase convention)
+  let sanitized = text.replace(
+    /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+    "[CANDIDATE_EMAIL]"
+  );
+  // Mask phone numbers (10+ digits with optional formatting)
+  sanitized = sanitized.replace(
+    /(\+?[0-9][0-9\-\s\(\)]{7,15}[0-9])/g,
+    "[CANDIDATE_PHONE]"
+  );
+  return sanitized;
+}
+
 export const generateResponse = action({
   args: {
     userId: v.id("users"),
@@ -118,11 +204,28 @@ Role-playing Guidelines:
 3. If they ask how to pitch a project, rewrite bullet points, or explain a skill gap, provide concise, professional responses they can use.
 4. Keep your answers brief, action-oriented, and highly encouraging. Use clean Markdown formatting.`;
 
-      // 5. Build conversation message stack
+      // 5. Guardrails: Check latest user message for injection / off-topic content
+      const lastUserMessage = [...chatHistory]
+        .reverse()
+        .find((m: any) => m.role === "user");
+
+      if (lastUserMessage) {
+        const guardrailViolation = checkGuardrails(lastUserMessage.content);
+        if (guardrailViolation) {
+          await ctx.runMutation(internal.chat.saveAssistantMessage, {
+            userId: args.userId,
+            jobId: args.jobId,
+            content: guardrailViolation,
+          });
+          return;
+        }
+      }
+
+      // 6. Build conversation message stack
       const formattedHistory = formatChatMessages(chatHistory);
       const messages = [{ role: "system", content: systemPrompt }, ...formattedHistory];
 
-      // 6. Invoke Llama 3.3 NIM
+      // 7. Invoke Llama 3.2 11B NIM
       const apiKey = process.env.NVIDIA_NIM_API_KEY;
       if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not configured.");
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
@@ -138,11 +241,14 @@ Role-playing Guidelines:
         completion.choices[0]?.message?.content ||
         "I'm sorry, I encountered an issue generating a response. Please try again.";
 
-      // 7. Write response to DB via internal mutation
+      // 8. Output guardrails: sanitize PII before saving
+      const sanitizedResponse = sanitizeResponse(assistantResponse);
+
+      // 9. Write response to DB via internal mutation
       await ctx.runMutation(internal.chat.saveAssistantMessage, {
         userId: args.userId,
         jobId: args.jobId,
-        content: assistantResponse,
+        content: sanitizedResponse,
       });
 
     } catch (err: any) {
