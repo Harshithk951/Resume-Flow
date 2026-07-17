@@ -469,7 +469,7 @@ export default function LandingPage() {
               },
               {
                 q: "What are the daily quota restrictions?",
-                a: "To prevent API budget abuse, free tier accounts are restricted to 5 resume compiles and 50 chatbot prep messages per 24 hours. The daily limits reset automatically at midnight relative to your timezone.",
+                a: "To prevent API budget abuse, free tier accounts are restricted to 5 resume compiles and 20 AI assistant messages per 24 hours. Pro and Campus users enjoy unlimited access. The daily limits reset automatically at midnight relative to your timezone.",
               },
               {
                 q: "Are the templates compatible with common automated parsing filters?",

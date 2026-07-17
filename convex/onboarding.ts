@@ -22,7 +22,7 @@ export const extractProfileFromPdf = action({
       return result;
     } catch (err: any) {
       // 3. Refund credits on error
-      await ctx.runMutation((api as any).users.refundCredits, { userId, amount: 5 });
+      await ctx.runMutation(internal.users.refundCredits, { userId, amount: 5 });
       throw new ConvexError(err.message || String(err));
     }
   },

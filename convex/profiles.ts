@@ -1,5 +1,5 @@
 import { query, mutation, internalMutation, internalQuery } from "./_generated/server";
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
 import { requireAuth } from "./lib/auth";
 
 export const getMyProfile = query({
@@ -211,7 +211,30 @@ export const internalGetProfileOnly = internalQuery({
 export const generateUploadUrl = mutation({
   args: {},
   handler: async (ctx) => {
-    await requireAuth(ctx);
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new ConvexError("Unauthenticated");
+    }
+
+    // Ensure user record exists (handles race condition during onboarding)
+    let user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      const tenantId = process.env.DEFAULT_TENANT_ID ?? "default";
+      await ctx.db.insert("users", {
+        clerkId: identity.subject,
+        email: identity.email ?? "",
+        name: identity.name ?? "",
+        tenantId,
+        credits: 2000,
+        plan: "free",
+        onboardingComplete: false,
+      });
+    }
+
     return await ctx.storage.generateUploadUrl();
   },
 });

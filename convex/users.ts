@@ -1,7 +1,7 @@
 // convex/users.ts
 // User management — syncs Clerk users into the Convex database.
 
-import { mutation, query } from "./_generated/server";
+import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { v, ConvexError } from "convex/values";
 
 const MAX_CREDITS = 2000;
@@ -165,16 +165,20 @@ export const deductResumeCredit = mutation({
   },
 });
 
-export const refundCredits = mutation({
+// 🛡️ Security: internalMutation — only callable server-side (prevents client credit manipulation)
+export const refundCredits = internalMutation({
   args: { userId: v.id("users"), amount: v.number() },
   handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    if (!user) throw new ConvexError("User not found for credit refund.");
     await ctx.db.patch(args.userId, {
-      credits: (await ctx.db.get(args.userId))!.credits + args.amount,
+      credits: user.credits + args.amount,
     });
   },
 });
 
-export const getTestUserByClerkId = query({
+// 🛡️ Security: internalQuery — prevents client-side user data exposure by clerkId
+export const getTestUserByClerkId = internalQuery({
   args: { clerkId: v.string() },
   handler: async (ctx, args) => {
     return await ctx.db
