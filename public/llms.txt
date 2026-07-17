@@ -1,8 +1,13 @@
 # ResumeFlow
-> High-Velocity AI Career Engine & Resume Tailoring Platform
+> AI-Powered Resume Builder & ATS Optimization Platform
 
 ## Main Section
-- [Home Page](https://resumeflow.harshithkumar.in) - Secure, real-time automated resume engineering platform.
-- [Resume Templates](https://resumeflow.harshithkumar.in/templates) - Browse ATS-compatible templates.
-- [Privacy Policy](https://resumeflow.harshithkumar.in/legal/privacy-policy) - Privacy policy.
-- [Terms of Service](https://resumeflow.harshithkumar.in/legal/terms-of-service) - Terms of service.
+- [Home Page](https://resumeflow.harshithkumar.in) — Free AI resume builder with ATS optimization. Build once, tailor instantly.
+- [Resume Templates](https://resumeflow.harshithkumar.in/templates) — Browse ATS-compatible premium LaTeX templates.
+- [Resume Handbook](https://resumeflow.harshithkumar.in/resources/handbook) — Comprehensive resume writing guide with Google XYZ formula.
+- [ATS Best Practices](https://resumeflow.harshithkumar.in/resources/ats-best-practices) — Optimize your resume for Applicant Tracking Systems.
+- [Interview Prep Guide](https://resumeflow.harshithkumar.in/resources/interview-prep) — Master technical and behavioral interviews with STAR method.
+- [AI Placement Blog](https://resumeflow.harshithkumar.in/info/blog) — Expert articles on tech recruitment, AI resumes, and career advancement.
+- [Developer API Docs](https://resumeflow.harshithkumar.in/resources/api-docs) — Integrate ResumeFlow tailoring engine into your pipelines.
+- [Privacy Policy](https://resumeflow.harshithkumar.in/legal/privacy) — Data protection and privacy information.
+- [Terms of Service](https://resumeflow.harshithkumar.in/legal/terms) — Terms governing platform usage.

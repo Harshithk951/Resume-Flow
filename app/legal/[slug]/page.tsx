@@ -1,9 +1,10 @@
-"use client";
-
 import React from "react";
-import { notFound, useParams } from "next/navigation";
+import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { StaticPageWrapper } from "@/components/StaticPageWrapper";
 import { ShieldAlert, FileText, Cookie } from "lucide-react";
+
+const SITE_URL = "https://resumeflow.harshithkumar.in";
 
 interface ContentBlock {
   title: string;
@@ -13,8 +14,23 @@ interface ContentBlock {
   body: React.ReactNode;
 }
 
+const titleMeta: Record<string, string> = {
+  privacy: "Privacy Policy — ResumeFlow AI Resume Builder",
+  terms: "Terms of Service — ResumeFlow AI Resume Builder",
+  cookies: "Cookie Policy — ResumeFlow AI Resume Builder",
+};
+
+const descriptionMeta: Record<string, string> = {
+  privacy:
+    "Read the ResumeFlow privacy policy. Learn how we collect, protect, and process your personal data when you use our AI resume builder platform.",
+  terms:
+    "Read the ResumeFlow terms of service. Understand the rules and guidelines governing your use of our AI-powered resume engineering platform.",
+  cookies:
+    "Learn how ResumeFlow uses cookies and local storage to provide a secure, seamless resume building experience.",
+};
+
 const legalContent: Record<string, ContentBlock> = {
-  "privacy": {
+  privacy: {
     category: "Legal & Privacy",
     title: "Privacy Policy",
     subtitle: "How we collect, protect, and process your personal data when you use ResumeFlow.",
@@ -204,7 +220,7 @@ const legalContent: Record<string, ContentBlock> = {
       </div>
     ),
   },
-  "terms": {
+  terms: {
     category: "Legal Agreements",
     title: "Terms of Service",
     subtitle: "The rules and guidelines governing your use of the ResumeFlow platform.",
@@ -309,7 +325,7 @@ const legalContent: Record<string, ContentBlock> = {
       </div>
     ),
   },
-  "cookies": {
+  cookies: {
     category: "Legal & Settings",
     title: "Cookie Policy & Settings",
     subtitle: "Manage how local storage and session markers are utilized to enhance your workspace.",
@@ -336,9 +352,38 @@ const legalContent: Record<string, ContentBlock> = {
   },
 };
 
-export default function LegalSlugPage() {
-  const { slug } = useParams();
-  const pageData = legalContent[slug as string];
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const title = titleMeta[slug] || "Legal — ResumeFlow";
+  const description =
+    descriptionMeta[slug] ||
+    "Legal documentation for ResumeFlow AI resume builder platform.";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/legal/${slug}`,
+    },
+    alternates: {
+      canonical: `${SITE_URL}/legal/${slug}`,
+    },
+  };
+}
+
+export default async function LegalSlugPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const pageData = legalContent[slug];
 
   if (!pageData) {
     notFound();

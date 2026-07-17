@@ -5,7 +5,14 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard', '/profile', '/sign-in', '/sign-up', '/ops', '/resume/'],
+      disallow: [
+        '/dashboard',    // Authenticated app pages — no SEO value
+        '/profile',      // User profile — private
+        '/sign-in',      // Auth pages
+        '/sign-up',      // Auth pages
+        '/onboarding',   // User onboarding flow
+        '/ops',          // Admin/dead-letter ops
+      ],
     },
     sitemap: 'https://resumeflow.harshithkumar.in/sitemap.xml',
   };

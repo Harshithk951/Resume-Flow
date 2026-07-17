@@ -8,6 +8,39 @@ const devAllowedOrigins =
     .map((origin) => origin.trim())
     .filter(Boolean) ?? [];
 
+const cspDirectives = [
+  // Default: restrict to same-origin
+  "default-src 'self'",
+  // Scripts: self + inline (for JSON-LD + consent mode) + GTM + GA4 + AdSense
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval'
+    https://www.googletagmanager.com
+    https://www.google-analytics.com
+    https://analytics.google.com
+    https://pagead2.googlesyndication.com
+    https://www.termsfeed.com`,
+  // Styles: inline allowed for Tailwind + Framer Motion
+  "style-src 'self' 'unsafe-inline'",
+  // Images: self + GA4 collect endpoint
+  `img-src 'self' data: blob:
+    https://www.google-analytics.com
+    https://analytics.google.com`,
+  // Frames: Clerk auth, Cloudflare challenges, AdSense, reCAPTCHA, GTM
+  `frame-src 'self' blob:
+    https://challenges.cloudflare.com
+    https://*.clerk.accounts.dev
+    https://clerk.resumeflow.harshithkumar.in
+    https://googleads.g.doubleclick.net
+    https://www.google.com
+    https://ep2.adtrafficquality.google
+    https://www.googletagmanager.com
+    https://analytics.google.com`,
+  // Connections: GA4, GTM, AdSense
+  `connect-src 'self'
+    https://www.google-analytics.com
+    https://analytics.google.com
+    https://pagead2.googlesyndication.com`,
+];
+
 const securityHeaders = [
   { key: "X-DNS-Prefetch-Control", value: "on" },
   ...(isProd
@@ -27,7 +60,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    value: "frame-src 'self' blob: https://challenges.cloudflare.com https://*.clerk.accounts.dev https://clerk.resumeflow.harshithkumar.in https://googleads.g.doubleclick.net https://www.google.com https://ep2.adtrafficquality.google;",
+    value: cspDirectives.join("; "),
   },
 ];
 
