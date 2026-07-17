@@ -495,7 +495,7 @@ export default function LandingPage() {
               return (
                 <div
                   key={i}
-                  className="bg-white border border-slate-200/60 rounded-2xl overflow-hidden transition-all shadow-sm hover:shadow-md"
+                  className="bg-white border border-slate-300/50 rounded-2xl overflow-hidden transition-all shadow-sm hover:shadow-md"
                   style={{ transitionTimingFunction: 'var(--ease-vanguard)' }}
                 >
                   <button
@@ -521,7 +521,7 @@ export default function LandingPage() {
                         variants={accordionContent}
                         className="overflow-hidden"
                       >
-                        <div className="p-6 pt-0 text-sm text-slate-500 leading-relaxed border-t border-slate-100">
+                        <div className="p-6 pt-0 text-sm text-slate-500 leading-relaxed border-t border-slate-200">
                           {faq.a}
                         </div>
                       </motion.div>
@@ -583,7 +583,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Footer (Stagger Reveal) ─── */}
-      <footer className="bg-white border-t border-slate-900/10 py-16 px-6">
+      <footer className="bg-white border-t border-slate-200 py-16 px-6">
         <motion.div
           variants={staggerContainerSlow}
           initial="hidden"
@@ -708,7 +708,7 @@ export default function LandingPage() {
               </ul>
             </div>
           </motion.div>
-          <motion.div variants={scrollRevealUp} className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-slate-100 text-xs text-slate-400 gap-4">
+          <motion.div variants={scrollRevealUp} className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-slate-200 text-xs text-slate-400 gap-4">
             <BrandLogo size="sm" className="gap-2.5" />
             <span>© 2026 ResumeFlow. All rights reserved.</span>
           </motion.div>
