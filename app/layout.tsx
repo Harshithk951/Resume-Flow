@@ -4,6 +4,7 @@ import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider"
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
 import { jakartaSans, displayFont } from "./fonts";
 import TermsFeedConsent from "@/components/TermsFeedConsent";
+import { Analytics } from "@vercel/analytics/next";
 
 const SITE_URL = "https://resumeflow.harshithkumar.in";
 
@@ -148,6 +149,7 @@ export default function RootLayout({
               {children}
           </HydrationProtectionGuard>
         </ConvexClerkProvider>
+        <Analytics />
       </body>
     </html>
   );
