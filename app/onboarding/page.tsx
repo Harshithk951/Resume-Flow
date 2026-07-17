@@ -602,7 +602,7 @@ export default function OnboardingPage() {
                       <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-semibold text-[var(--color-mute)]">LinkedIn URL (opt)</label>
                         <input
-                          type="url"
+                          type="text"
                           value={linkedin}
                           onChange={(e) => setLinkedin(e.target.value)}
                           className="w-full px-3 py-2 rounded-xl border border-[var(--color-hairline)] bg-[var(--color-surface-soft)] focus:outline-none focus:border-[var(--color-primary)] transition-all text-sm"
@@ -614,7 +614,7 @@ export default function OnboardingPage() {
                       <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-semibold text-[var(--color-mute)]">GitHub URL (opt)</label>
                         <input
-                          type="url"
+                          type="text"
                           value={github}
                           onChange={(e) => setGithub(e.target.value)}
                           className="w-full px-3 py-2 rounded-xl border border-[var(--color-hairline)] bg-[var(--color-surface-soft)] focus:outline-none focus:border-[var(--color-primary)] transition-all text-sm"

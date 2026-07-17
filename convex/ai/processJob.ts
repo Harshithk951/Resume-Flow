@@ -215,7 +215,7 @@ export const processJob = action({
         const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
         const ocrCompletion = await openai.chat.completions.create({
-          model: "qwen/qwen3.5-397b-a17b",
+          model: "meta/llama-3.2-11b-vision-instruct",
           messages: [
             {
               role: "user",
@@ -353,14 +353,14 @@ Instructions:
 Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary or text.`;
 
       const nimCompletion = await openai.chat.completions.create({
-        model: "meta/llama-3.3-70b-instruct",
+        model: "meta/llama-3.2-11b-vision-instruct",
         messages: [
           { role: "system", content: jobSearchSkill },
           { role: "user", content: prompt }
         ],
         response_format: { type: "json_object" },
         temperature: 0.1,
-        max_tokens: 4096,
+        max_tokens: 2048,
       });
 
       const responseText = nimCompletion.choices[0]?.message?.content || "";

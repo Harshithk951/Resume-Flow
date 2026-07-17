@@ -128,10 +128,10 @@ Role-playing Guidelines:
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
       const completion = await openai.chat.completions.create({
-        model: "meta/llama-3.3-70b-instruct",
+        model: "meta/llama-3.2-11b-vision-instruct",
         messages: messages as any,
         temperature: 0.5,
-        max_tokens: 2048,
+        max_tokens: 1536,
       });
 
       const assistantResponse =
