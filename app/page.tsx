@@ -332,6 +332,8 @@ export default function LandingPage() {
       {/* ─── Templates Showcase — Infinite Carousel ─── */}
       <TemplateCarousel templates={carouselTemplates} />
 
+      <div className="section-divider" />
+
       <PricingSection
         title="Simple Pricing"
         subtitle="Start free for placement season. Upgrade when you need unlimited tailoring, premium templates, and priority AI-Powered Assistant access."
@@ -560,7 +562,7 @@ export default function LandingPage() {
       </section>
 
       {/* ─── Footer (Stagger Reveal) ─── */}
-      <footer className="bg-white border-t border-slate-100 py-16 px-6">
+      <footer className="bg-white border-t border-slate-900/10 py-16 px-6">
         <motion.div
           variants={staggerContainerSlow}
           initial="hidden"

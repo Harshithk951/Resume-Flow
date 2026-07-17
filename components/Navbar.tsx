@@ -44,7 +44,7 @@ export default function Navbar() {
       className={`sticky top-0 z-50 transition-all duration-500 ${
         scrolled
           ? "mx-4 mt-3 rounded-2xl glass-panel shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
-          : "bg-white/70 backdrop-blur-md border-b border-slate-100/85"
+          : "bg-white/70 backdrop-blur-md border-b border-slate-900/10"
       }`}
       style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
     >
