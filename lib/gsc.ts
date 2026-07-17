@@ -101,17 +101,14 @@ async function getAccessToken(): Promise<string> {
 
   const signatureInput = `${base64Url(header)}.${base64Url(payload)}`;
 
-  // Import the private key and sign
-  const keyData = privateKey.includes('-----BEGIN PRIVATE KEY-----')
-    ? privateKey
-    : `-----BEGIN PRIVATE KEY-----\n${privateKey}\n-----END PRIVATE KEY-----`;
-
-  const pemHeader = '-----BEGIN PRIVATE KEY-----';
-  const pemFooter = '-----END PRIVATE KEY-----';
-  const pemContents = keyData.substring(
-    pemHeader.length,
-    keyData.indexOf(pemFooter),
-  );
+  // Extract base64 content from PEM — handles any PEM header format
+  // (e.g. `-----BEGIN PRIVATE KEY-----`, `-----BEGIN RSA PRIVATE KEY-----`,
+  //  or keys with `Proc-Type: 4,ENCRYPTED` metadata headers from GCP).
+  const pemContents = privateKey
+    .replace(/^[\s\S]*?(?=-----BEGIN)/, '')  // Strip metadata before BEGIN
+    .replace(/-----BEGIN[^-]+-----/g, '')     // Strip BEGIN header
+    .replace(/-----END[^-]+-----/g, '')       // Strip END footer
+    .replace(/\s/g, '');                      // Strip all whitespace
   const binaryDer = Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0));
 
   const cryptoKey = await crypto.subtle.importKey(
