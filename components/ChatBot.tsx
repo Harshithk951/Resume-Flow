@@ -307,7 +307,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
   const chatJobId = jobId as Id<"jobs"> | undefined;
   const { isSignedIn } = useAuth();
   const { isAuthenticated } = useConvexAuth();
-  const isGuest = guestMode && !isSignedIn;
+  const isGuest = guestMode && (!isSignedIn || !isAuthenticated);
 
   const [guestMessages, setGuestMessages] = useState<ChatMessage[]>([]);
   const [guestUserCount, setGuestUserCount] = useState(0);
