@@ -23,7 +23,7 @@ export default function TermsFeedConsent() {
             page_refresh_confirmation_buttons: false,
             website_name: "Resume Flow",
             website_privacy_policy_url:
-              "https://resume-flow-bay.vercel.app/legal/privacy",
+              "https://resumeflow.harshithkumar.in/legal/privacy",
           });
         }}
       />
