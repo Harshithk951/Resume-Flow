@@ -14,7 +14,6 @@ import {
   Sparkles,
   ShieldCheck,
   FileText,
-  Lock,
   Award,
   CheckCircle2,
   XCircle,
@@ -125,16 +124,6 @@ const STAT_CARDS: StatCard[] = [
     description: "Zero formatting rejections",
     icon: <ShieldCheck className="w-5 h-5" />,
     gradient: "from-emerald-500 to-green-600",
-  },
-  {
-    value: 0,
-    suffix: "",
-    prefix: "Z",
-    decimals: 0,
-    label: "Data Left on Server",
-    description: "100% client-side compilation",
-    icon: <Lock className="w-5 h-5" />,
-    gradient: "from-rose-500 to-pink-600",
   },
 ];
 
@@ -417,7 +406,7 @@ export function WhyResumeFlow() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-4xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 max-w-4xl mx-auto"
         >
           {STAT_CARDS.map((stat, idx) => (
             <motion.div
@@ -429,7 +418,7 @@ export function WhyResumeFlow() {
               <div className="absolute -inset-2 bg-gradient-to-br from-white/40 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10" />
 
               {/* Card */}
-              <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/50 p-5 lg:p-6 text-center transition-all duration-300 hover:border-slate-300/60 hover:shadow-lg hover:-translate-y-1">
+              <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/50 p-5 lg:p-6 text-center transition-all duration-300 hover:border-slate-300/60 hover:shadow-lg hover:-translate-y-1 h-full flex flex-col items-center justify-center">
                 {/* Icon */}
                 <div
                   className={`mx-auto mb-4 w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center text-white shadow-lg`}
