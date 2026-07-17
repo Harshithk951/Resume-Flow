@@ -27,7 +27,7 @@ const securityHeaders = [
   },
   {
     key: "Content-Security-Policy",
-    value: "frame-src 'self' blob: https://challenges.cloudflare.com https://*.clerk.accounts.dev https://clerk.resumeflow.harshithkumar.in;",
+    value: "frame-src 'self' blob: https://challenges.cloudflare.com https://*.clerk.accounts.dev https://clerk.resumeflow.harshithkumar.in https://googleads.g.doubleclick.net https://www.google.com https://ep2.adtrafficquality.google;",
   },
 ];
 
