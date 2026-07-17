@@ -32,6 +32,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`scroll-smooth ${jakartaSans.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
       <body className={`min-h-screen antialiased ${jakartaSans.className}`}>
+        {/* ─── Google AdSense Verification ──────── */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7941579236760268"
+          crossOrigin="anonymous"
+        />
+
         {/* ─── TermsFeed Cookie Consent (Client Component) ──────── */}
         <TermsFeedConsent />
 
