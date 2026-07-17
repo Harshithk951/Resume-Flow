@@ -1,0 +1,8 @@
+# ResumeFlow
+> High-Velocity AI Career Engine & Resume Tailoring Platform
+
+## Main Section
+- [Home Page](https://resumeflow.harshithkumar.in) - Secure, real-time automated resume engineering platform.
+- [Resume Templates](https://resumeflow.harshithkumar.in/templates) - Browse ATS-compatible templates.
+- [Privacy Policy](https://resumeflow.harshithkumar.in/legal/privacy-policy) - Privacy policy.
+- [Terms of Service](https://resumeflow.harshithkumar.in/legal/terms-of-service) - Terms of service.
