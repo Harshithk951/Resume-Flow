@@ -118,7 +118,7 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
       {/* Marquee Flow Bounded Container */}
       <div className="max-w-[1280px] mx-auto px-6">
         <div
-          className="w-full relative overflow-hidden py-8 select-none cursor-pointer rounded-3xl border border-slate-200/50 bg-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-[1px]"
+          className="w-full relative overflow-hidden py-8 select-none cursor-pointer rounded-3xl border-2 border-slate-900/25 bg-white/40 shadow-[0_8px_30px_rgba(0,0,0,0.02)] backdrop-blur-[1px]"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
