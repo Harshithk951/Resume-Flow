@@ -737,15 +737,9 @@ button:hover .icon-island-light {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
-/* ─── Premium: Section Divider Gradient ────────────────────── */
 .section-divider {
   height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--color-hairline) 20%,
-    var(--color-hairline) 80%,
-    transparent 100%
-  );
+  background-color: rgba(15, 23, 42, 0.08);
+  width: 100%;
 }
 

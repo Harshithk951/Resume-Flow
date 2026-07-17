@@ -228,7 +228,7 @@ export function BentoGrid() {
   const sectionRef = useRef<HTMLElement>(null);
 
   return (
-    <section id="features" className="py-24 px-6 border-y border-slate-200/40 bg-gradient-to-b from-white/80 to-[#FAF1F8]/40" ref={sectionRef}>
+    <section id="features" className="py-24 px-6 bg-gradient-to-b from-white/80 to-[#FAF1F8]/40" ref={sectionRef}>
       <div className="max-w-[1280px] mx-auto">
         <motion.div
           variants={staggerContainerSlow}

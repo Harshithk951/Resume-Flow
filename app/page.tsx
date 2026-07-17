@@ -322,8 +322,12 @@ export default function LandingPage() {
       {/* ─── Bento Grid Section: 21st.dev-Inspired ─── */}
       <BentoGrid />
 
+      <div className="section-divider" />
+
       {/* ─── Feature Grid Section: 21st.dev Animated Cards ─── */}
       <FeatureGrid />
+
+      <div className="section-divider" />
 
       {/* ─── Templates Showcase — Infinite Carousel ─── */}
       <TemplateCarousel templates={carouselTemplates} />
