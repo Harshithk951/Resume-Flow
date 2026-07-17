@@ -16,6 +16,7 @@ import TemplateCarousel from "@/components/TemplateCarousel";
 import { BentoGrid } from "@/components/grids/BentoGrid";
 import { FeatureGrid } from "@/components/grids/FeatureGrid";
 import { PricingSection, type Tier } from "@/components/blocks/pricing-section";
+import { WhyResumeFlow } from "@/components/WhyResumeFlow";
 import { carouselTemplates } from "@/lib/latex/carouselTemplates";
 import { getTemplatesHref } from "@/lib/templates/navigation";
 import { useAuth } from "@clerk/nextjs";
@@ -536,109 +537,8 @@ export default function LandingPage() {
       {/* Section Divider */}
       <div className="section-divider" />
 
-      {/* ─── Why ResumeFlow — SEO Content Block ─── */}
-      <section className="py-24 px-6 bg-white/50" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: 'var(--spacing-section)' }}>
-        <div className="max-w-[1280px] mx-auto">
-          <motion.div
-            variants={staggerContainerSlow}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            className="text-center max-w-3xl mx-auto mb-16"
-          >
-            <motion.div variants={scrollRevealUp} className="mb-4">
-              <span className="eyebrow-pill"><Sparkles size={10} /> Why ResumeFlow</span>
-            </motion.div>
-            <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em] mb-6">
-              The Best Free AI Resume Generator
-            </motion.h2>
-            <motion.p variants={scrollRevealUp} className="text-slate-500 text-lg leading-relaxed">
-              Most resume builders compromise on privacy, charge for basic features, or produce ATS-unfriendly PDFs.
-              ResumeFlow is different. Every resume is precision-engineered for both human recruiters and automated
-              tracking systems — and your data never leaves your browser.
-            </motion.p>
-          </motion.div>
-
-          {/* ─── Feature Comparison Table ─── */}
-          <motion.div
-            variants={scrollRevealUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="overflow-hidden rounded-2xl border border-slate-200/60 bg-white shadow-sm mb-12"
-          >
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200/60 bg-slate-50/80">
-                    <th className="text-left p-4 font-bold text-slate-800">Feature</th>
-                    <th className="text-center p-4 font-bold text-rose-600 bg-rose-50/50">ResumeFlow</th>
-                    <th className="text-center p-4 font-semibold text-slate-500">Teal</th>
-                    <th className="text-center p-4 font-semibold text-slate-500">Zety</th>
-                    <th className="text-center p-4 font-semibold text-slate-500">Canva</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {[
-                    { feature: 'Free Tier', values: ['✅ 5 compiles/day', '✅ Limited', '❌ Paywall', '✅ Basic'] },
-                    { feature: 'ATS Optimization', values: ['✅ AI-Powered', '✅', '❌', '❌'] },
-                    { feature: 'Client-Side Privacy', values: ['✅ WASM Compiler', '❌', '❌', '❌'] },
-                    { feature: 'LaTeX Templates', values: ['✅ 4 Premium', '❌', '❌', '❌'] },
-                    { feature: 'Live Company Research', values: ['✅ Real-Time', '✅', '❌', '❌'] },
-                    { feature: 'AI Chat Assistant', values: ['✅ Unlimited*', '✅', '❌', '❌'] },
-                    { feature: 'Skill Gap Analysis', values: ['✅ AI-Driven', '❌', '❌', '❌'] },
-                    { feature: 'Zero-Trust PDF', values: ['✅ WASM in Browser', '❌', '❌', '❌'] },
-                  ].map((row, i) => (
-                    <tr key={i} className="hover:bg-slate-50/50 transition-colors">
-                      <td className="p-4 font-semibold text-slate-700">{row.feature}</td>
-                      {row.values.map((val, j) => (
-                        <td
-                          key={j}
-                          className={`p-4 text-center text-xs ${
-                            j === 0
-                              ? 'bg-rose-50/30 font-semibold text-rose-700'
-                              : 'text-slate-500'
-                          }`}
-                        >
-                          {val}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
-
-          {/* ─── Stats / Trust Badges ─── */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
-          >
-            {[
-              { value: '150+', label: 'Resumes Compiled Daily', icon: '📄' },
-              { value: '4.8/5', label: 'User Rating', icon: '⭐' },
-              { value: '100%', label: 'ATS Compatible', icon: '✅' },
-              { value: 'Zero', label: 'Data Left on Server', icon: '🔒' },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                variants={scrollRevealScale}
-                className="bezel-card bezel-card-sm text-center"
-              >
-                <div className="bezel-card-inner !py-6 !px-4">
-                  <span className="text-2xl mb-1 block">{stat.icon}</span>
-                  <p className="text-2xl font-extrabold text-slate-900 font-display">{stat.value}</p>
-                  <p className="text-xs text-slate-500 mt-1">{stat.label}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      {/* ─── Why ResumeFlow — Premium Redesign ─── */}
+      <WhyResumeFlow />
 
       {/* Section Divider */}
       <div className="section-divider" />
