@@ -25,7 +25,7 @@ export default clerkMiddleware(async (auth, req) => {
     }
   }
   return NextResponse.next();
-}, { debug: process.env.NODE_ENV === "development" ? false : true });
+});
 
 export const config = {
   matcher: [
