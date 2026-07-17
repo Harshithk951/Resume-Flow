@@ -72,15 +72,17 @@ interface ScrollDrivenCardProps {
 }
 
 function ScrollDrivenCard({ feature, index, scrollYProgress }: ScrollDrivenCardProps) {
-  // Define asymmetrical parallax speeds based on grid columns to create a wave depth effect
   const col = index % 4;
-  const startY = col === 0 ? 50 : col === 1 ? 80 : col === 2 ? 40 : 70;
-  const endY = col === 0 ? -30 : col === 1 ? -60 : col === 2 ? -20 : -50;
+
+  // Asymmetrical opposite-direction drift speeds to create a powerful parallax effect
+  // Column 0 and 2 drift upwards (fast parallax), Column 1 and 3 drift downwards (slow parallax)
+  const startY = col === 0 ? 120 : col === 1 ? -100 : col === 2 ? 80 : -140;
+  const endY = col === 0 ? -120 : col === 1 ? 100 : col === 2 ? -80 : 140;
 
   // Transform elements continuously along the scroll progress path
   const y = useTransform(scrollYProgress, [0, 1], [startY, endY]);
-  const opacity = useTransform(scrollYProgress, [0.05, 0.35], [0, 1]);
-  const scale = useTransform(scrollYProgress, [0.05, 0.35], [0.94, 1]);
+  const opacity = useTransform(scrollYProgress, [0.05, 0.45], [0, 1]);
+  const scale = useTransform(scrollYProgress, [0.05, 0.45], [0.92, 1]);
 
   return (
     <motion.div
@@ -109,9 +111,9 @@ export function FeatureGrid() {
   });
 
   // Header scroll transitions
-  const headerY = useTransform(scrollYProgress, [0, 0.3], [30, -10]);
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
-  const headerScale = useTransform(scrollYProgress, [0, 0.3], [0.97, 1]);
+  const headerY = useTransform(scrollYProgress, [0, 0.35], [50, -20]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+  const headerScale = useTransform(scrollYProgress, [0, 0.35], [0.95, 1]);
 
   return (
     <section ref={containerRef} id="how-it-works" className="py-24 px-6 relative overflow-hidden">
