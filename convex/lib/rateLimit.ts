@@ -61,7 +61,7 @@ export async function enforceRateLimit(
     const isPro = user.plan === "pro" || user.plan === "campus";
 
     if (!isPro) {
-      if (record.chatMessagesSentToday >= 5) {
+      if (record.chatMessagesSentToday >= 20) {
         throw new ConvexError(
           "You have reached your daily free limit for this action. Upgrade to Pro for unlimited AI chatting!"
         );
