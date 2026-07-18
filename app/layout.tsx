@@ -6,6 +6,7 @@ import { jakartaSans, displayFont } from "./fonts";
 import TermsFeedConsent from "@/components/TermsFeedConsent";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { WebVitals } from "@/components/WebVitals";
+import { Analytics } from "@vercel/analytics/next";
 
 const SITE_URL = "https://resumeflow.harshithkumar.in";
 
@@ -226,6 +227,9 @@ export default function RootLayout({
 
         {/* ─── Core Web Vitals RUM reporting (Client Component) ──────── */}
         <WebVitals />
+
+        {/* ─── Vercel Web Analytics ──────── */}
+        <Analytics />
 
         <ConvexClerkProvider>
           <HydrationProtectionGuard>
