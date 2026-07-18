@@ -19,10 +19,15 @@ const OutreachPayloadSchema = z.object({
 
 function cleanAndParseJSON(text: string): any {
   let cleaned = text.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```[a-zA-Z]*\n/, "").replace(/\n```$/, "");
+  
+  // Extract JSON block using first '{' and last '}'
+  const startIdx = cleaned.indexOf("{");
+  const endIdx = cleaned.lastIndexOf("}");
+  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+    cleaned = cleaned.substring(startIdx, endIdx + 1);
   }
   cleaned = cleaned.trim();
+  
   try {
     return JSON.parse(cleaned);
   } catch (e: any) {
@@ -91,7 +96,7 @@ Return ONLY a valid JSON block matching this schema:
 
       // 3. Call Llama 3.3 NIM
       const completion = await openai.chat.completions.create({
-        model: "meta/llama-3.2-11b-vision-instruct",
+        model: "meta/llama-3.2-90b-vision-instruct",
         messages: [
           { role: "system", content: "You are a professional outreach copywriter. You output only valid JSON." },
           { role: "user", content: prompt }

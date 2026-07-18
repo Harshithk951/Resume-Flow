@@ -134,8 +134,12 @@ async function commitAnalysisResult(
 // Helper to clean Markdown tags and parse JSON with robust fallbacks
 function cleanAndParseJSON(text: string): any {
   let cleaned = text.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```[a-zA-Z]*\n/, "").replace(/\n```$/, "");
+  
+  // Extract JSON block using first '{' and last '}'
+  const startIdx = cleaned.indexOf("{");
+  const endIdx = cleaned.lastIndexOf("}");
+  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+    cleaned = cleaned.substring(startIdx, endIdx + 1);
   }
   cleaned = cleaned.trim();
   
@@ -215,7 +219,7 @@ export const processJob = action({
         const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
         const ocrCompletion = await openai.chat.completions.create({
-          model: "meta/llama-3.2-11b-vision-instruct",
+          model: "meta/llama-3.2-90b-vision-instruct",
           messages: [
             {
               role: "user",
@@ -353,7 +357,7 @@ Instructions:
 Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary or text.`;
 
       const nimCompletion = await openai.chat.completions.create({
-        model: "meta/llama-3.2-11b-vision-instruct",
+        model: "meta/llama-3.2-90b-vision-instruct",
         messages: [
           { role: "system", content: jobSearchSkill },
           { role: "user", content: prompt }

@@ -21,12 +21,12 @@ export const test = action({
     try {
       const start = Date.now();
       const response = await client.chat.completions.create({
-        model: "meta/llama-3.2-11b-vision-instruct",
+        model: "meta/llama-3.2-90b-vision-instruct",
         messages: [{ role: "user", content: "Ping" }],
         max_tokens: 5,
       });
       const duration = Date.now() - start;
-      console.log(`✅ Llama-3.3-70b response in ${duration}ms:`, response.choices[0].message.content);
+      console.log(`✅ Llama-3.2-90b response in ${duration}ms:`, response.choices[0].message.content);
       
       console.log("✅ DIAGNOSTIC SUCCESS: Connected cleanly to NVIDIA NIM!");
       console.log("Response:", response.choices[0].message.content);

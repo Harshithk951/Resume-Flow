@@ -302,7 +302,7 @@ If any section or field is completely missing in the resume, return an empty arr
         console.log("Step 4: Sending payload to model");
 
         const completion = await openai.chat.completions.create({
-          model: "meta/llama-3.2-11b-vision-instruct",
+          model: "meta/llama-3.2-90b-vision-instruct",
           messages: [
             { role: "system", content: systemPrompt },
             {
@@ -333,7 +333,7 @@ If any section or field is completely missing in the resume, return an empty arr
         console.log("Step 4: Sending image payload to model");
 
         const completion = await openai.chat.completions.create({
-          model: "meta/llama-3.2-11b-vision-instruct",
+          model: "meta/llama-3.2-90b-vision-instruct",
           messages: [
             { role: "system", content: systemPrompt },
             {

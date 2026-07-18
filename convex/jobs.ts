@@ -704,3 +704,23 @@ export const resetToCompilingAdmin = mutation({
     });
   },
 });
+
+export const retryJobAdmin = mutation({
+  args: { jobId: v.id("jobs") },
+  handler: async (ctx, args) => {
+    const job = await ctx.db.get(args.jobId);
+    if (!job) throw new Error("Job not found");
+
+    await ctx.db.patch(args.jobId, {
+      pipelineState: "uploaded",
+      pipelineError: undefined,
+    });
+
+    try {
+      await ctx.scheduler.runAfter(0, api.ai.processJob.processJob, { jobId: args.jobId });
+    } catch (error) {
+      console.error("Failed to schedule retry processJob");
+      throw error;
+    }
+  },
+});
