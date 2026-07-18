@@ -78,7 +78,7 @@ export function exportToHtml(
 
     if (templateId === "modern_professional") {
       return `
-        <div class="flex justify-between items-start border-b border-slate-100 pb-6 mb-6">
+        <div class="flex justify-between items-start border-b border-slate-300 pb-6 mb-6">
           <div>
             <h1 class="text-3xl font-extrabold tracking-tight text-slate-950">${escapeHtml(personalInfo.name)}</h1>
             <p class="text-sm font-semibold text-rose-600 mt-1 uppercase tracking-wider">Software Engineer</p>
@@ -98,7 +98,7 @@ export function exportToHtml(
 
     if (templateId === "modern_executive") {
       return `
-        <div class="text-center border-b border-slate-200 pb-6 mb-6">
+        <div class="text-center border-b border-slate-300 pb-6 mb-6">
           <h1 class="text-3xl font-light tracking-wide text-slate-950 font-serif">${escapeHtml(personalInfo.name)}</h1>
           <div class="flex justify-center gap-4 text-xs mt-3 text-slate-600 font-sans tracking-wide">
             ${personalInfo.email ? `<a href="mailto:${personalInfo.email}" class="hover:underline">${escapeHtml(personalInfo.email)}</a>` : ""}
@@ -112,7 +112,7 @@ export function exportToHtml(
 
     // tech_innovator
     return `
-      <div class="flex justify-between items-center border-b-2 border-slate-100 pb-6 mb-6">
+      <div class="flex justify-between items-center border-b-2 border-slate-300 pb-6 mb-6">
         <div>
           <h1 class="text-3xl font-black tracking-tight text-slate-900">${escapeHtml(personalInfo.name)}</h1>
           <p class="text-xs font-mono text-indigo-600 mt-1">&lt;developer /&gt;</p>
