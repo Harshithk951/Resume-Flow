@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
+import { Analytics } from "@vercel/analytics/next";
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
 import { jakartaSans, displayFont } from "./fonts";
 import TermsFeedConsent from "@/components/TermsFeedConsent";
@@ -226,6 +227,9 @@ export default function RootLayout({
 
         {/* ─── Core Web Vitals RUM reporting (Client Component) ──────── */}
         <WebVitals />
+
+        {/* ─── Vercel Analytics ──────── */}
+        <Analytics />
 
         <ConvexClerkProvider>
           <HydrationProtectionGuard>
