@@ -21,7 +21,7 @@ export const test = action({
     try {
       const start = Date.now();
       const response = await client.chat.completions.create({
-        model: "meta/llama-3.3-70b-instruct",
+        model: "meta/llama-3.2-11b-vision-instruct",
         messages: [{ role: "user", content: "Ping" }],
         max_tokens: 5,
       });
