@@ -65,6 +65,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   );
 
   const resetToCompiling = useMutation(api.jobs.resetToCompiling);
+  const retryJob = useMutation(api.jobs.retryJob);
 
   const [isWorkspaceMaximized, setIsWorkspaceMaximized] = useState(false);
   const [activeTab, setActiveTab] = useState<"PREVIEW" | "LATEX" | "JSON" | "OUTREACH">(
@@ -113,7 +114,11 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
   const handleRecompile = async () => {
     try {
-      await resetToCompiling({ jobId });
+      if (job?.pipelineState === "failed" && !structuredContent) {
+        await retryJob({ jobId });
+      } else {
+        await resetToCompiling({ jobId });
+      }
     } catch (e) {
       console.error(e);
     }
@@ -246,6 +251,19 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               <p className="text-xs text-red-600 leading-relaxed max-w-xs">
                 {job.pipelineError}
               </p>
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await retryJob({ jobId });
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+                className="w-full sm:w-auto px-5 py-2.5 bg-red-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-red-600/10 transition-all active:scale-[0.97]"
+              >
+                Retry Full Pipeline
+              </button>
             </div>
           ) : null}
 

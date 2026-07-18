@@ -686,3 +686,21 @@ export const getMyJobsTest = query({
       .collect();
   },
 });
+
+export const getAllFailedJobs = query({
+  args: {},
+  handler: async (ctx) => {
+    const all = await ctx.db.query("jobs").collect();
+    return all.map(j => ({ id: j._id, company: j.companyName, state: j.pipelineState, error: j.pipelineError }));
+  }
+});
+
+export const resetToCompilingAdmin = mutation({
+  args: { jobId: v.id("jobs") },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.jobId, {
+      pipelineState: "compiling",
+      pipelineError: undefined,
+    });
+  },
+});
