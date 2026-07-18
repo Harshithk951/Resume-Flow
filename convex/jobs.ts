@@ -148,17 +148,17 @@ export const submitGapAnswers = mutation({
       throw new Error("Job is not awaiting user response.");
     }
 
-    // Deduct 200 credits for free users before scheduling AI tailoring
+    // Deduct 10 credits for free users before scheduling AI tailoring
     if (user.plan === "free") {
       const currentCredits = user.credits ?? 0;
-      if (currentCredits < 200) {
+      if (currentCredits < 10) {
         throw new ConvexError(
-          `Insufficient credits (${currentCredits}/2000). Each resume costs 200 credits. ` +
+          `Insufficient credits (${currentCredits}/100000). Each resume costs 10 credits. ` +
           `Upgrade to Pro for unlimited generation.`
         );
       }
       await ctx.db.patch(user._id, {
-        credits: currentCredits - 200,
+        credits: currentCredits - 10,
       });
     }
 
@@ -489,11 +489,11 @@ export const internalSetExtractedRequirements = internalMutation({
     const job = await ctx.db.get(args.jobId);
     if (!job) throw new Error("Job not found");
 
-    // Deduct 200 credits for free users before AI tailoring
+    // Deduct 10 credits for free users before AI tailoring
     const user = await ctx.db.get(job.userId);
     if (user && user.plan === "free") {
       const currentCredits = user.credits ?? 0;
-      if (currentCredits < 200) {
+      if (currentCredits < 10) {
         await ctx.db.patch(args.jobId, {
           pipelineState: "failed",
           pipelineError: "Insufficient credits. Upgrade to Pro for unlimited generation.",
@@ -501,7 +501,7 @@ export const internalSetExtractedRequirements = internalMutation({
         return;
       }
       await ctx.db.patch(user._id, {
-        credits: currentCredits - 200,
+        credits: currentCredits - 10,
       });
     }
 

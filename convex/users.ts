@@ -4,8 +4,8 @@
 import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { v, ConvexError } from "convex/values";
 
-const MAX_CREDITS = 2000;
-const CREDITS_PER_RESUME = 200;
+const MAX_CREDITS = 100000;
+const CREDITS_PER_RESUME = 10;
 
 export const createFromClerk = mutation({
   args: {
@@ -185,5 +185,20 @@ export const getTestUserByClerkId = internalQuery({
       .query("users")
       .withIndex("by_clerkId", (q) => q.eq("clerkId", args.clerkId))
       .unique();
+  },
+});
+
+export const addCreditsAdmin = mutation({
+  args: { email: v.string(), amount: v.number() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("email"), args.email))
+      .unique();
+    if (!user) throw new Error("User not found with email " + args.email);
+    await ctx.db.patch(user._id, {
+      credits: user.credits + args.amount,
+    });
+    console.log(`Successfully added ${args.amount} credits to user ${args.email}. New total: ${user.credits + args.amount}`);
   },
 });

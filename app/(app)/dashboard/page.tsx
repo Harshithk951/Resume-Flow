@@ -189,16 +189,16 @@ export default function DashboardCommandCenter() {
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm font-extrabold text-slate-800 tabular-nums">{user.credits}</span>
-                  <span className="text-[10px] text-slate-400 font-medium">/ 2,000</span>
+                  <span className="text-[10px] text-slate-400 font-medium">/ 100,000</span>
                 </div>
                 <div className="w-20 h-1 bg-slate-200/60 rounded-full overflow-hidden mt-1">
                   <motion.div
                     initial={{ width: 0 }}
-                    animate={{ width: `${(user.credits / 2000) * 100}%` }}
+                    animate={{ width: `${(user.credits / 100000) * 100}%` }}
                     transition={{ duration: 1, ease: "easeOut" }}
                     className={`h-full rounded-full ${
-                      user.credits > 500 ? "bg-gradient-to-r from-emerald-400 to-emerald-500" :
-                      user.credits > 200 ? "bg-gradient-to-r from-amber-400 to-amber-500" :
+                      user.credits > 25000 ? "bg-gradient-to-r from-emerald-400 to-emerald-500" :
+                      user.credits > 10000 ? "bg-gradient-to-r from-amber-400 to-amber-500" :
                       "bg-gradient-to-r from-rose-400 to-rose-500"
                     }`}
                   />
