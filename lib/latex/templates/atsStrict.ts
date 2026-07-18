@@ -48,6 +48,15 @@ export function generateAtsStrictTemplate(data: any): string {
   const achievements = data.achievements ?? [];
   const personalInfo = data.personalInfo ?? { name: "" };
 
+  const headerParts = [
+    personalInfo.phone ? escapeLatex(personalInfo.phone) : null,
+    personalInfo.email ? `\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}` : null,
+    personalInfo.linkedin ? `\\href{${ensureUrl(personalInfo.linkedin)}}{\\underline{linkedin.com/in/${escapeLatex(getLinkedinUsername(personalInfo.linkedin))}}}` : null,
+    personalInfo.github ? `\\href{${ensureUrl(personalInfo.github)}}{\\underline{github.com/${escapeLatex(getGithubUsername(personalInfo.github))}}}` : null,
+    personalInfo.portfolio ? `\\href{${ensureUrl(personalInfo.portfolio)}}{\\underline{${escapeLatex(cleanUrl(personalInfo.portfolio))}}}` : null,
+  ].filter((p): p is string => !!p && p.trim().length > 0);
+  const headerLinks = headerParts.join(" $|$ ");
+
   return `
 \\documentclass[letterpaper,10pt]{article}
 
@@ -112,11 +121,7 @@ export function generateAtsStrictTemplate(data: any): string {
 
 \\begin{center}
     \\textbf{\\Huge \\scshape ${escapeLatex(personalInfo.name)}} \\\\ \\vspace{10pt}
-    \\small
-    ${personalInfo.email ? `\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}} $|$` : ""}
-    ${personalInfo.linkedin ? `\\href{${ensureUrl(personalInfo.linkedin)}}{\\underline{linkedin.com/in/${escapeLatex(getLinkedinUsername(personalInfo.linkedin))}}} $|$` : ""}
-    ${personalInfo.github ? `\\href{${ensureUrl(personalInfo.github)}}{\\underline{github.com/${escapeLatex(getGithubUsername(personalInfo.github))}}} $|$` : ""}
-    ${personalInfo.portfolio ? `\\href{${ensureUrl(personalInfo.portfolio)}}{\\underline{${escapeLatex(cleanUrl(personalInfo.portfolio))}}}` : ""}
+    \\small ${headerLinks}
 \\end{center}
 
 \\section{Professional Summary}

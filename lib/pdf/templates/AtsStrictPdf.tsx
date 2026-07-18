@@ -44,12 +44,12 @@ function getStyles(templateId: string) {
       textAlign: isLeftAlign ? "left" : "center",
       textTransform: "uppercase",
       color: accentColor !== "#000000" ? accentColor : "#000000",
-      marginBottom: 4,
+      marginBottom: 14,
     },
     headerContact: {
       fontSize: 9,
       textAlign: isLeftAlign ? "left" : "center",
-      marginBottom: 10,
+      marginBottom: 12,
       color: "#475569",
     },
     sectionTitle: {
@@ -122,16 +122,16 @@ export function AtsStrictPdf({
 }) {
   const styles = getStyles(templateId);
   const contactParts = [
-    data.personalInfo.phone,
-    data.personalInfo.email,
+    data.personalInfo.phone?.trim(),
+    data.personalInfo.email?.trim(),
     data.personalInfo.linkedin
-      ? stripUrl(data.personalInfo.linkedin)
+      ? stripUrl(data.personalInfo.linkedin).trim()
       : null,
-    data.personalInfo.github ? stripUrl(data.personalInfo.github) : null,
+    data.personalInfo.github ? stripUrl(data.personalInfo.github).trim() : null,
     data.personalInfo.portfolio
-      ? stripUrl(data.personalInfo.portfolio)
+      ? stripUrl(data.personalInfo.portfolio).trim()
       : null,
-  ].filter(Boolean);
+  ].filter((part): part is string => !!part && part.trim().length > 0);
 
   return (
     <Document>
