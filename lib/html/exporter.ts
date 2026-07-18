@@ -51,7 +51,7 @@ export function exportToHtml(
     headingStyleClass = "text-sm font-bold uppercase tracking-wider border-b border-black pb-0.5 mt-4 mb-2";
   } else if (templateId === "modern_professional") {
     bodyClass = "bg-white text-slate-800 antialiased p-10 mx-auto my-0 max-w-[800px] min-h-[1123px] border-t-8 border-rose-600 shadow-[0_0_25px_rgba(0,0,0,0.08)]";
-    headingStyleClass = "text-md font-bold text-rose-600 uppercase tracking-wide border-b border-rose-200 pb-1 mt-5 mb-2.5";
+    headingStyleClass = "text-md font-bold text-rose-600 uppercase tracking-wide border-b-2 border-rose-600 pb-1 mt-5 mb-2.5";
   } else if (templateId === "modern_executive") {
     bodyClass = "bg-white text-slate-900 antialiased p-10 mx-auto my-0 max-w-[800px] min-h-[1123px] font-serif shadow-[0_0_25px_rgba(0,0,0,0.08)]";
     headingStyleClass = "text-lg font-semibold text-slate-900 border-b border-slate-300 pb-1.5 mt-6 mb-3";
@@ -121,8 +121,8 @@ export function exportToHtml(
           ${personalInfo.email ? `<div>${escapeHtml(personalInfo.email)}</div>` : ""}
           ${personalInfo.phone ? `<div>${escapeHtml(personalInfo.phone)}</div>` : ""}
           <div class="space-x-2 mt-1">
-            ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="link">in</a>` : ""}
-            ${personalInfo.github ? `<a href="${personalInfo.github}" class="link">git</a>` : ""}
+            ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="link">LinkedIn</a>` : ""}
+            ${personalInfo.github ? `<a href="${personalInfo.github}" class="link">GitHub</a>` : ""}
           </div>
         </div>
       </div>
@@ -148,13 +148,15 @@ export function exportToHtml(
           ${education
             .map(
               (edu) => `
-            <div class="flex justify-between items-start text-xs">
-              <div>
+            <div>
+              <div class="flex justify-between items-baseline text-xs">
                 <span class="font-bold text-slate-900">${escapeHtml(edu.institution)}</span>
-                <span class="text-slate-500"> — ${escapeHtml(edu.degree)}</span>
-                ${edu.gpa ? `<span class="ml-2 font-semibold text-slate-900">CGPA: ${escapeHtml(edu.gpa)}</span>` : ""}
+                <span class="text-slate-500 whitespace-nowrap ml-4">${escapeHtml(edu.year)}</span>
               </div>
-              <span class="text-slate-500 whitespace-nowrap ml-4">${escapeHtml(edu.year)}</span>
+              <div class="flex justify-between items-baseline text-xs mt-0.5">
+                <span class="text-slate-500 italic">${escapeHtml(edu.degree)}</span>
+                ${edu.gpa ? `<span class="font-semibold text-slate-900 whitespace-nowrap ml-4">CGPA: ${escapeHtml(edu.gpa)}</span>` : ""}
+              </div>
             </div>
           `
             )
