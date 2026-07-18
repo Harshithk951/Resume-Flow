@@ -22,6 +22,7 @@ import {
   AlertCircle
 } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
+import { triggerSideCannons } from "@/lib/confetti";
 
 // Custom Cubic Bezier Easing from Awards Design Guidelines
 const easeOutExpo = [0.16, 1, 0.3, 1] as const;
@@ -96,6 +97,13 @@ export default function OnboardingPage() {
       });
     }
   }, [isClerkLoaded, user, createOrGetUser]);
+
+  // Trigger confetti celebration when onboarding finishes (Step 3)
+  useEffect(() => {
+    if (step === 3) {
+      triggerSideCannons();
+    }
+  }, [step]);
 
   // Staggered loading messages to delight users (Awards Design: details & craft)
   useEffect(() => {

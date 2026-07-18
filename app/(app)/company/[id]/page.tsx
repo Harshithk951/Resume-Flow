@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useConvexAuth, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -28,6 +28,7 @@ import { compileLatexToPdf } from "@/lib/latex/compiler";
 import { normalizeStructuredContent } from "@/lib/pdf/types";
 import { redactStructuredContentForDisplay } from "@/lib/redactResumeData";
 import { resolveTemplate, type TemplateId } from "@/lib/latex/resolveTemplate";
+import { triggerSideCannons } from "@/lib/confetti";
 
 const ReactPdfPreview = dynamic(
   () =>
@@ -74,6 +75,18 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   const [activeTemplate, setActiveTemplate] = useState<TemplateId>("ats_strict");
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+
+  const prevPipelineStateRef = useRef<string | undefined>(undefined);
+
+  useEffect(() => {
+    if (
+      job?.pipelineState === "completed" &&
+      prevPipelineStateRef.current === "compiling"
+    ) {
+      triggerSideCannons();
+    }
+    prevPipelineStateRef.current = job?.pipelineState;
+  }, [job?.pipelineState]);
 
   if (authLoading || (isAuthenticated && job === undefined)) {
     return (
