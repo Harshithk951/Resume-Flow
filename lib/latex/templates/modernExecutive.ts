@@ -201,7 +201,7 @@ export default function modernExecutiveTemplate(data: any): string {
 
 %----------HEADER (ATS-Safe: colored text only, no background box)----------
 \\begin{center}
-  {\\Huge \\bfseries \\color{executiveDark} ${escape(personalInfo.name)}} \\\\ \\vspace{6pt}
+  {\\Huge \\bfseries \\color{executiveDark} ${escape(personalInfo.name)}} \\\\ \\vspace{10pt}
   {\\small \\color{executiveLine} ${headerLinks}}
 \\end{center}
 \\vspace{-6pt}

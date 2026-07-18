@@ -17,6 +17,7 @@ export function triggerSideCannons() {
       startVelocity: 60,
       origin: { x: 0, y: 0.5 },
       colors: colors,
+      zIndex: 9999,
     });
     confetti({
       particleCount: 2,
@@ -25,6 +26,7 @@ export function triggerSideCannons() {
       startVelocity: 60,
       origin: { x: 1, y: 0.5 },
       colors: colors,
+      zIndex: 9999,
     });
 
     requestAnimationFrame(frame);

@@ -111,7 +111,7 @@ export function generateAtsStrictTemplate(data: any): string {
 \\begin{document}
 
 \\begin{center}
-    \\textbf{\\Huge \\scshape ${escapeLatex(personalInfo.name)}} \\\\ \\vspace{3pt}
+    \\textbf{\\Huge \\scshape ${escapeLatex(personalInfo.name)}} \\\\ \\vspace{10pt}
     \\small
     ${personalInfo.email ? `\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}} $|$` : ""}
     ${personalInfo.linkedin ? `\\href{${ensureUrl(personalInfo.linkedin)}}{\\underline{linkedin.com/in/${escapeLatex(getLinkedinUsername(personalInfo.linkedin))}}} $|$` : ""}

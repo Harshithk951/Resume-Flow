@@ -96,7 +96,7 @@ Return ONLY a valid JSON block matching this schema:
 
       // 3. Call Llama 3.3 NIM
       const completion = await openai.chat.completions.create({
-        model: "meta/llama-3.2-90b-vision-instruct",
+        model: "meta/llama-3.1-8b-instruct",
         messages: [
           { role: "system", content: "You are a professional outreach copywriter. You output only valid JSON." },
           { role: "user", content: prompt }

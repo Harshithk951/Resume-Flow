@@ -201,7 +201,7 @@ export default function modernProfessionalTemplate(data: any): string {
 
 %----------HEADING----------
 \\begin{center}
-    {\\Huge \\bfseries \\color{darkBlack} ${escape(personalInfo.name)}} \\\\ \\vspace{6pt}
+    {\\Huge \\bfseries \\color{darkBlack} ${escape(personalInfo.name)}} \\\\ \\vspace{10pt}
     \\small \\color{slateGrey} ${headerLinks}
 \\end{center}
 

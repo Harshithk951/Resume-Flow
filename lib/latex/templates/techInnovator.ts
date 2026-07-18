@@ -202,7 +202,7 @@ export default function techInnovatorTemplate(data: any): string {
 
 %----------HEADING----------
 \\begin{center}
-    {\\Huge \\bfseries \\color{accentColor} ${escape(personalInfo.name)}} \\\\ \\vspace{6pt}
+    {\\Huge \\bfseries \\color{accentColor} ${escape(personalInfo.name)}} \\\\ \\vspace{10pt}
     \\small \\color{slateGrey} ${headerLinks}
 \\end{center}
 \\vspace{-12pt}
