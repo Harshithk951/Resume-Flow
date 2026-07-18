@@ -229,7 +229,7 @@ export const generateUploadUrl = mutation({
         email: identity.email ?? "",
         name: identity.name ?? "",
         tenantId,
-        credits: 100000,
+        credits: 10000,
         plan: "free",
         onboardingComplete: false,
       });

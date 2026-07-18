@@ -4,8 +4,8 @@
 import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { v, ConvexError } from "convex/values";
 
-const MAX_CREDITS = 100000;
-const CREDITS_PER_RESUME = 10;
+const MAX_CREDITS = 10000;
+const CREDITS_PER_RESUME = 500;
 
 export const createFromClerk = mutation({
   args: {

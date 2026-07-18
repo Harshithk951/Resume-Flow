@@ -33,8 +33,8 @@ export default function SettingsPage() {
 
   const { user: appUser } = summaryData;
   const isFree = (appUser?.plan || "free") === "free";
-  const maxResumes = 10000;
-  const resumesUsed = Math.floor((100000 - (appUser?.credits ?? 0)) / 10);
+  const maxResumes = 20;
+  const resumesUsed = Math.floor((10000 - (appUser?.credits ?? 0)) / 500);
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
@@ -107,19 +107,19 @@ export default function SettingsPage() {
                 Available Credits
               </span>
               <span className="text-xs font-bold text-slate-700 tabular-nums">
-                {appUser?.credits ?? 0} / 100,000
+                {appUser?.credits ?? 0} / 10,000
               </span>
             </div>
             <div className="w-full h-3 bg-slate-100/80 rounded-full overflow-hidden relative z-10">
               <div
                   className={`h-full rounded-full transition-all duration-1000 ease-out ${
-                    (appUser?.credits ?? 0) > 25000
+                    (appUser?.credits ?? 0) > 2500
                       ? "bg-gradient-to-r from-emerald-400 to-emerald-500"
-                      : (appUser?.credits ?? 0) > 10000
+                      : (appUser?.credits ?? 0) > 1000
                         ? "bg-gradient-to-r from-amber-400 to-amber-500"
                         : "bg-gradient-to-r from-rose-400 to-rose-500"
                   }`}
-                  style={{ width: `${((appUser?.credits ?? 0) / 100000) * 100}%` }}
+                  style={{ width: `${((appUser?.credits ?? 0) / 10000) * 100}%` }}
               />
             </div>
             {isFree && (
