@@ -10,8 +10,9 @@ const devAllowedOrigins =
 
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://www.termsfeed.com https://*.clerk.accounts.dev",
-  "style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://www.termsfeed.com https://*.clerk.accounts.dev https://cdn.tailwindcss.com",
+  "style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://fonts.googleapis.com",
+  "font-src 'self' data: https://fonts.gstatic.com",
   "img-src 'self' data: blob: https://www.google-analytics.com https://analytics.google.com https://img.clerk.com https://pagead2.googlesyndication.com",
   "worker-src 'self' blob:",
   "frame-src 'self' blob: https://challenges.cloudflare.com https://*.clerk.accounts.dev https://clerk.resumeflow.harshithkumar.in https://googleads.g.doubleclick.net https://www.google.com https://ep2.adtrafficquality.google https://www.googletagmanager.com https://analytics.google.com",

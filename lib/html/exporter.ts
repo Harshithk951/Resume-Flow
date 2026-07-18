@@ -14,12 +14,12 @@ function escapeHtml(str: string | undefined): string {
 
 function getLinkedinUsername(url: string | undefined): string {
   if (!url) return "";
-  return url.replace(/https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "");
+  return url.replace(/^(https?:\/\/)?(www\.)?linkedin\.com\/in\//i, "").replace(/\/$/, "");
 }
 
 function getGithubUsername(url: string | undefined): string {
   if (!url) return "";
-  return url.replace(/https?:\/\/(www\.)?github\.com\//, "").replace(/\/$/, "");
+  return url.replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "").replace(/\/$/, "");
 }
 
 function cleanUrl(url: string | undefined): string {
