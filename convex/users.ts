@@ -137,7 +137,8 @@ export const checkAndDeductCredits = mutation({
 });
 
 /**
- * Deducts exactly CREDITS_PER_RESUME (200) for a resume tailoring.
+ * Deducts exactly CREDITS_PER_RESUME (500) for a resume tailoring.
+ * This covers the full pipeline: tailoring + compilation + outreach letter.
  * Convenience wrapper — no args needed.
  */
 export const deductResumeCredit = mutation({

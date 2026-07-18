@@ -2,7 +2,7 @@
 //
 // Database-Backed Rate Limiting Helper
 // Enforces chat message limit (50/day). Resume generation is now credit-based
-// (200 credits/resume, replaces the old 5/day limit).
+// (500 credits/resume, replaces the old 5/day limit).
 // Automatically resets counters daily.
 
 import { ConvexError } from "convex/values";
@@ -52,7 +52,7 @@ export async function enforceRateLimit(
   }
 
   // Validate and increment counters
-  // Note: Resume type is no longer enforced here — moved to credit-based (200 credits/resume)
+  // Note: Resume type is no longer enforced here — moved to credit-based (500 credits/resume, includes outreach)
   if (type === "chat") {
     const user = await ctx.db.get(userId);
     if (!user) {
