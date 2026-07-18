@@ -57,7 +57,7 @@ export function exportToHtml(
     headingStyleClass = "text-lg font-semibold text-slate-900 border-b border-slate-300 pb-1.5 mt-6 mb-3";
   } else if (templateId === "tech_innovator") {
     bodyClass = "bg-white text-slate-800 antialiased p-10 mx-auto my-0 max-w-[800px] min-h-[1123px] shadow-[0_0_25px_rgba(0,0,0,0.08)]";
-    headingStyleClass = "text-md font-extrabold text-indigo-600 uppercase tracking-widest border-b border-indigo-100 pb-1.5 mt-5 mb-3";
+    headingStyleClass = "text-md font-extrabold text-indigo-600 uppercase tracking-widest border-b-2 border-indigo-600/35 pb-1.5 mt-5 mb-3";
   }
 
   // Header render helpers
@@ -115,14 +115,15 @@ export function exportToHtml(
       <div class="flex justify-between items-center border-b-2 border-slate-300 pb-6 mb-6">
         <div>
           <h1 class="text-3xl font-black tracking-tight text-slate-900">${escapeHtml(personalInfo.name)}</h1>
-          <p class="text-xs font-mono text-indigo-600 mt-1">&lt;developer /&gt;</p>
+          <p class="text-xs font-mono text-indigo-600 mt-1 uppercase tracking-wider">Software Engineer</p>
         </div>
         <div class="text-right text-xs font-mono space-y-1 text-slate-500">
           ${personalInfo.email ? `<div>${escapeHtml(personalInfo.email)}</div>` : ""}
           ${personalInfo.phone ? `<div>${escapeHtml(personalInfo.phone)}</div>` : ""}
-          <div class="space-x-2 mt-1">
+          <div class="space-x-2 mt-1.5">
             ${personalInfo.linkedin ? `<a href="${personalInfo.linkedin}" class="link">LinkedIn</a>` : ""}
             ${personalInfo.github ? `<a href="${personalInfo.github}" class="link">GitHub</a>` : ""}
+            ${personalInfo.portfolio ? `<a href="${personalInfo.portfolio}" class="link">Portfolio</a>` : ""}
           </div>
         </div>
       </div>
@@ -212,7 +213,7 @@ export function exportToHtml(
                   <span class="font-bold text-slate-900">${escapeHtml(proj.name)}</span>
                   ${proj.technologies ? `<span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded ml-2 font-mono">${escapeHtml(proj.technologies.join(", "))}</span>` : ""}
                 </div>
-                ${proj.link ? `<a href="${proj.link}" class="text-[10px] link">Link</a>` : ""}
+                ${proj.link ? `<a href="${proj.link}" class="text-[10px] link">${templateId === "tech_innovator" ? "GitHub / Demo" : "Link"}</a>` : ""}
               </div>
               <ul class="list-disc list-inside space-y-0.5 text-slate-600 text-xs pl-2">
                 ${(proj.bullets ?? [])
@@ -317,7 +318,7 @@ export function exportToHtml(
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Resume Preview</title>
         <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
         <style>
           body {
             font-family: 'Inter', sans-serif;
@@ -326,6 +327,9 @@ export function exportToHtml(
           }
           .font-serif {
             font-family: 'Playfair Display', Georgia, serif;
+          }
+          .font-mono {
+            font-family: 'JetBrains Mono', monospace;
           }
           a {
             color: inherit;
