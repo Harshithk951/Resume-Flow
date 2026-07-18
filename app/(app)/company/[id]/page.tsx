@@ -76,6 +76,43 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
 
+  const [loadingStep, setLoadingStep] = useState(0);
+
+  useEffect(() => {
+    if (job?.pipelineState !== "tailoring" && job?.pipelineState !== "compiling") {
+      setLoadingStep(0);
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setLoadingStep((prev) => prev + 1);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [job?.pipelineState]);
+
+  const tailoringMessages = [
+    "Analyzing job description requirements...",
+    "Matching your master profile with required hard skills...",
+    "Rewriting experience bullet points with active action verbs...",
+    "Injecting business metrics and performance impact percentages...",
+    "Integrating answered skill gaps into your project details...",
+    "Computing real-time ATS compatibility scores...",
+    "Validating structured JSON schemas...",
+    "Almost finished, saving tailored resume..."
+  ];
+
+  const compilingMessages = [
+    "Initializing LaTeX compiler sandbox...",
+    "Parsing tailored resume JSON structure...",
+    "Rendering dynamic template markup...",
+    "Loading high-fidelity typography styles...",
+    "Compiling document layout pages...",
+    "Generating vector PDF bytes...",
+    "Uploading compiled document to storage...",
+    "Almost finished, rendering resume preview..."
+  ];
+
   const prevPipelineStateRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
@@ -251,8 +288,8 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               <p className="text-sm font-semibold text-slate-800">
                 Optimizing Bullet Points...
               </p>
-              <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-                Applying ATS keyword matching to your experience statements in real-time.
+              <p className="text-xs text-slate-500 max-w-xs leading-relaxed min-h-[32px] flex items-center justify-center">
+                {tailoringMessages[loadingStep % tailoringMessages.length]}
               </p>
             </div>
           ) : null}
@@ -407,8 +444,8 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               {job.pipelineState === "compiling" ? (
                 <div className="h-[600px] w-full rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 animate-pulse border border-slate-200/50 flex flex-col items-center justify-center space-y-3">
                   <Loader2 className="w-6 h-6 animate-spin text-rose-600" />
-                  <span className="text-xs text-slate-500 font-medium">
-                    Silent compiler compiling PDF...
+                  <span className="text-xs text-slate-500 font-medium min-h-[16px] flex items-center justify-center">
+                    {compilingMessages[loadingStep % compilingMessages.length]}
                   </span>
                 </div>
               ) : structuredContent ? (

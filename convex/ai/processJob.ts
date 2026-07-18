@@ -264,7 +264,7 @@ export const processJob = action({
       try {
         const researchRes = await tvly.search(
           `What is the engineering culture, tech stack, and values of ${job.companyName}?`,
-          { searchDepth: "advanced", maxResults: 3 }
+          { searchDepth: "basic", maxResults: 3 }
         );
         companyResearch = researchRes.results
           .map((r) => `[${r.title}]: ${r.content}`)
