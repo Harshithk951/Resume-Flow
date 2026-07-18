@@ -74,7 +74,7 @@ export function KanbanBoard() {
         return (
           <div
             key={col.key}
-            className={`rounded-2xl border border-slate-200/60 ${col.lightBg} p-4 min-h-[300px]`}
+            className={`rounded-2xl border border-slate-300 ${col.lightBg} p-4 min-h-[300px]`}
           >
             {/* Column Header */}
             <div className="flex items-center justify-between mb-4 px-1">
@@ -85,7 +85,7 @@ export function KanbanBoard() {
                   <p className="text-[10px] text-slate-400">{col.description}</p>
                 </div>
               </div>
-              <span className="text-xs font-bold bg-white border border-slate-200/60 px-2 py-0.5 rounded-lg text-slate-600">
+              <span className="text-xs font-bold bg-white border border-slate-300 px-2 py-0.5 rounded-lg text-slate-600">
                 {columnJobs.length}
               </span>
             </div>
@@ -105,7 +105,7 @@ export function KanbanBoard() {
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
                   >
                     <Link href={`/company/${job._id}`} className="block">
-                      <Card className="hover:shadow-md transition-all duration-200 group">
+                      <Card className="hover:shadow-md border-slate-300 transition-all duration-200 group">
                         <CardContent className="p-4">
                           <div className="flex items-start justify-between mb-2">
                             <div className="min-w-0 flex-1">

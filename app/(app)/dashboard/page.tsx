@@ -71,7 +71,7 @@ function AnimatedStat({ value, label, sublabel, icon: Icon, colorKey, delay }: {
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ delay: parseInt(delay) / 1000, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
     >
-      <Card variant="elevated" className="group cursor-default relative overflow-hidden">
+      <Card variant="elevated" className="group cursor-default relative overflow-hidden border-slate-300">
         {/* Subtle gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <CardContent className="p-5 relative">
@@ -234,8 +234,8 @@ export default function DashboardCommandCenter() {
       </div>
 
       {/* ─── Company Drives Section ─── */}
-      <Card variant="elevated" className="overflow-hidden">
-        <CardHeader className="pb-4 border-b border-slate-100/80">
+      <Card variant="elevated" className="overflow-hidden border-slate-300">
+        <CardHeader className="pb-4 border-b border-slate-200">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-600">
@@ -247,14 +247,14 @@ export default function DashboardCommandCenter() {
               </div>
             </div>
             {/* Filter Pills - pill-style toggle */}
-            <div className="inline-flex items-center bg-slate-100/80 rounded-xl p-1 border border-slate-200/40 shadow-inner">
+            <div className="inline-flex items-center bg-slate-100/80 rounded-xl p-1 border border-slate-300/80 shadow-inner">
               {FILTERS.map((f) => (
                 <button
                   key={f.key}
                   onClick={() => setActiveFilter(f.key)}
                   className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all duration-200 ${
                     activeFilter === f.key
-                      ? "bg-white text-rose-600 shadow-sm border border-slate-200/40"
+                      ? "bg-white text-rose-600 shadow-sm border border-slate-300"
                       : "text-slate-500 hover:text-slate-700"
                   }`}
                   title={f.desc}
@@ -277,7 +277,7 @@ export default function DashboardCommandCenter() {
               </Button>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-200">
               {filteredDrives.map((drive: any, idx: number) => {
                 const isFailed = drive.pipelineState === "failed";
                 const isCompleted = drive.pipelineState === "completed";
@@ -289,7 +289,7 @@ export default function DashboardCommandCenter() {
                     key={drive.id}
                     onClick={() => router.push(`/company/${drive.id}`)}
                     className={`flex items-center justify-between px-6 py-4 group transition-all duration-200 hover:bg-gradient-to-r hover:from-rose-50/50 hover:to-transparent cursor-pointer ${
-                      idx % 2 === 0 ? "bg-white" : "bg-slate-50/30"
+                      idx % 2 === 0 ? "bg-white" : "bg-slate-50/70"
                     }`}
                   >
                     <div className="flex items-center gap-4 min-w-0 flex-1">
