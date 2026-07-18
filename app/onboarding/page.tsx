@@ -386,7 +386,7 @@ export default function OnboardingPage() {
                       You are fully verified.
                     </h1>
                     <p className="type-body-md text-[var(--color-mute)]">
-                      Your profile has been created. You have been granted 2,000 credits (10 resume generations) to get started.
+                      Your profile has been created. You have been granted 10,000 credits (20 resume generations) to get started.
                     </p>
                   </motion.div>
                 )}
@@ -422,7 +422,7 @@ export default function OnboardingPage() {
                     <div>
                       <h4 className="type-body-strong">Welcome Credits
                       </h4>
-                      <p className="type-body-sm mt-1">2,000 credits included — enough for 10 tailored resumes.</p>
+                      <p className="type-body-sm mt-1">10,000 credits included — enough for 20 tailored resumes.</p>
                     </div>
                   </div>
 
@@ -666,9 +666,9 @@ export default function OnboardingPage() {
                     <div>
                       <h4 className="type-body-strong">Granted Balance
                     </h4>
-                    <p className="type-caption-sm text-[var(--color-mute)]">2,000 credits = 10 tailored resumes</p>
+                    <p className="type-caption-sm text-[var(--color-mute)]">10,000 credits = 20 tailored resumes</p>
                   </div>
-                  <span className="text-3xl font-extrabold text-[var(--color-primary)]">2,000</span>
+                  <span className="text-3xl font-extrabold text-[var(--color-primary)]">10,000</span>
                   </div>
 
                   <button

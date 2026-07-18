@@ -36,7 +36,7 @@ const PLANS: PricingPlan[] = [
     cta: "Start for Free",
     href: "/sign-up",
     features: [
-      { text: "2,000 credits · 10 tailored resumes total" },
+      { text: "10,000 credits · 20 tailored resumes total" },
       { text: "50 AI-Powered Assistant messages daily" },
       { text: "ATS Strict template access" },
       { text: "Skill gap questionnaire" },

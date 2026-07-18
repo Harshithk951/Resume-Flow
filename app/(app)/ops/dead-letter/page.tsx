@@ -95,7 +95,7 @@ export default function SettingsPage() {
           </div>
           <CardDescription>
             {isFree
-              ? `${resumesUsed} of ${maxResumes} resumes used · ${appUser?.credits ?? 0} / 2,000 credits remaining`
+              ? `${resumesUsed} of ${maxResumes} resumes used · ${appUser?.credits ?? 0} / 10,000 credits remaining`
               : 'Unlimited resume generations'}
           </CardDescription>
         </CardHeader>
@@ -144,8 +144,8 @@ export default function SettingsPage() {
           )}
 
           <div className="text-[11px] text-slate-400 leading-relaxed bg-slate-50 rounded-xl px-4 py-3 border border-slate-200/60">
-            Each AI-powered resume tailoring consumes <strong className="text-slate-600">200 credits</strong>.
-            Free users start with 2,000 credits (10 resumes). Pro and Campus users have unlimited generation.
+            Each AI-powered resume tailoring consumes <strong className="text-slate-600">500 credits</strong>.
+            Free users start with 10,000 credits (20 resumes). Pro and Campus users have unlimited generation.
           </div>
         </CardContent>
       </Card>
