@@ -24,8 +24,6 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
     }
   }, [isClerkLoaded, isSignedIn, syncUserCredits]);
 
-
-
   const isPublicRoute =
     pathname === "/" ||
     pathname?.startsWith("/sign-in") ||
@@ -34,16 +32,28 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
     pathname?.startsWith("/info") ||
     pathname?.startsWith("/resources");
 
-  // Only sync Convex profile on authenticated app routes (avoids token refresh
-  // conflicts when browsing the public landing page via LAN / alternate hosts).
+  const shouldFetch =
+    isClerkLoaded && isSignedIn && !isPublicRoute;
+
+  // Fetch user record to check onboarding completion status.
+  // This is the authoratative check — NOT profile.extractionStatus.
+  const user = useQuery(
+    api.users.getUser,
+    shouldFetch ? {} : "skip"
+  );
+
+  // Also fetch profile for authenticated-tool rendering (ChatBot, compiler).
   const profile = useQuery(
     api.profiles.getMyProfile,
-    isClerkLoaded && isSignedIn && !isPublicRoute ? {} : "skip"
+    shouldFetch ? {} : "skip"
   );
 
   const jobPathMatch = pathname?.match(/^\/company\/([^/]+)/);
   const activeJobId = jobPathMatch ? jobPathMatch[1] : undefined;
 
+  // ──────────────────────────────────────────────────────────
+  // Routing: use onboardingComplete, NOT extractionStatus
+  // ──────────────────────────────────────────────────────────
   useEffect(() => {
     if (!isClerkLoaded) return;
 
@@ -52,17 +62,17 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
       return;
     }
 
-    if (profile === undefined || isPublicRoute) return;
+    if (user === undefined || isPublicRoute) return;
 
-    if (
-      profile === null ||
-      profile.extractionStatus === "failed" ||
-      profile.extractionStatus === "extracting"
-    ) {
+    const onboardingComplete = user?.onboardingComplete ?? false;
+
+    if (!onboardingComplete) {
+      // User has NOT completed onboarding → send them there
       if (pathname !== "/onboarding") {
         router.replace("/onboarding");
       }
-    } else if (profile.extractionStatus === "success") {
+    } else {
+      // User HAS completed onboarding → never show /onboarding
       if (pathname === "/onboarding") {
         router.replace("/dashboard");
       } else if (pathname === "/profile") {
@@ -72,8 +82,11 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
         }
       }
     }
-  }, [profile, pathname, router, isClerkLoaded, isSignedIn, isPublicRoute]);
+  }, [user, pathname, router, isClerkLoaded, isSignedIn, isPublicRoute]);
 
+  // ──────────────────────────────────────────────────────────
+  // Loading skeletons while auth / data is pending
+  // ──────────────────────────────────────────────────────────
   if (!isClerkLoaded) {
     if (!isPublicRoute) {
       return <GlobalAppLoadingSkeleton />;
@@ -82,10 +95,14 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
     return <GlobalAppLoadingSkeleton />;
   }
 
-  if (profile === undefined && isSignedIn && !isPublicRoute) {
+  if (user === undefined && isSignedIn && !isPublicRoute) {
     return <GlobalAppLoadingSkeleton />;
   }
 
+  // ──────────────────────────────────────────────────────────
+  // Authenticated tools — still driven by profile extraction
+  // status since these tools need a parsed resume to work.
+  // ──────────────────────────────────────────────────────────
   const showAuthenticatedTools =
     !isPublicRoute && profile?.extractionStatus === "success";
 
