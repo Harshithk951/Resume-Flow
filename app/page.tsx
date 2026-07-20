@@ -337,6 +337,12 @@ export default function LandingPage() {
       {/* Section Divider */}
       <div className="section-divider" />
 
+      {/* ─── Why ResumeFlow — Premium Redesign ─── */}
+      <WhyResumeFlow />
+
+      {/* Section Divider */}
+      <div className="section-divider" />
+
       {/* ─── Bento Grid Section: 21st.dev-Inspired ─── */}
       <BentoGrid />
 
@@ -537,15 +543,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Section Divider */}
-      <div className="section-divider" />
-
-      {/* ─── Why ResumeFlow — Premium Redesign ─── */}
-      <WhyResumeFlow />
-
-      {/* Section Divider */}
-      <div className="section-divider" />
-
       {/* ─── CTA Strip (Animated Gradient) ─── */}
       <section className="animated-gradient-cta py-24 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent)]"></div>
@@ -707,6 +704,11 @@ export default function LandingPage() {
                   <a href="#" id="open_preferences_center" className="hover:text-slate-900 transition-colors">
                     Cookie settings
                   </a>
+                </li>
+                <li>
+                  <Link href="/sitemap.xml" className="hover:text-slate-900 transition-colors">
+                    Sitemap
+                  </Link>
                 </li>
               </ul>
             </div>

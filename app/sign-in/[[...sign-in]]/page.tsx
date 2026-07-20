@@ -30,15 +30,15 @@ export default function SignInPage() {
 
   return (
     <div
-      className="relative flex min-h-screen flex-col items-center justify-center px-4 overflow-hidden"
+      className="relative flex min-h-screen flex-col items-center justify-center px-4 overflow-hidden bg-[#FDFDFD]"
     >
       {/* Lavender mesh gradient background — same as hero section */}
-      <div className="absolute inset-0 mesh-gradient-hero pointer-events-none" />
+      <div className="absolute inset-0 mesh-gradient-hero pointer-events-none" style={{ '--color-surface-soft': '#fbfbf9' } as React.CSSProperties} />
 
       <style>{`[data-clerk-dev-mode-notice]{display:none!important}`}</style>
       <Link
         href="/"
-        className="absolute left-6 top-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-mute)] transition-colors hover:text-rose-600 z-10"
+        className="absolute left-6 top-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-500 transition-colors hover:text-rose-600 z-10"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to home
@@ -52,7 +52,7 @@ export default function SignInPage() {
               rootBox: "mx-auto",
               card: "shadow-none border-none",
               cardBox:
-                "bg-[var(--color-canvas)] rounded-[32px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
+                "bg-white rounded-[32px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
               headerTitle: "text-[22px] font-semibold text-[#000000]",
               headerSubtitle: "text-[16px] text-[#33332e]",
               formButtonPrimary:
