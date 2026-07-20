@@ -40,14 +40,14 @@ const tierAccents: Record<string, {
   shadow: string;
 }> = {
   starter: {
-    border: "border-slate-200/80",
+    border: "border-[var(--color-hairline)]/80",
     ring: "",
     badge: "",
     badgeText: "",
-    checkBg: "bg-slate-100",
-    checkText: "text-slate-600",
-    ctaBg: "border border-slate-300 bg-white",
-    ctaHover: "hover:border-slate-400 hover:bg-slate-50",
+    checkBg: "bg-[var(--color-surface-card)]",
+    checkText: "text-[var(--color-mute)]",
+    ctaBg: "border border-[var(--color-secondary-bg)] bg-[var(--color-canvas)]",
+    ctaHover: "hover:border-slate-400 hover:bg-[var(--color-surface-soft)]",
     shadow: "shadow-sm hover:shadow-md",
   },
   pro: {
@@ -68,7 +68,7 @@ const tierAccents: Record<string, {
     badgeText: "text-white",
     checkBg: "bg-blue-50",
     checkText: "text-blue-600",
-    ctaBg: "border border-blue-300 bg-white",
+    ctaBg: "border border-blue-300 bg-[var(--color-canvas)]",
     ctaHover: "hover:border-blue-400 hover:bg-blue-50",
     shadow: "shadow-sm hover:shadow-md hover:shadow-blue-500/5",
   },
@@ -79,7 +79,7 @@ const tierAccents: Record<string, {
     badgeText: "text-white",
     checkBg: "bg-amber-50",
     checkText: "text-amber-600",
-    ctaBg: "border border-amber-300 bg-white",
+    ctaBg: "border border-amber-300 bg-[var(--color-canvas)]",
     ctaHover: "hover:border-amber-400 hover:bg-amber-50",
     shadow: "shadow-md",
   },
@@ -141,10 +141,10 @@ export function PricingSection({
             <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100 mb-4">
               Pricing
             </span>
-            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+            <h2 className="font-display text-3xl md:text-4xl font-extrabold text-[var(--color-ink)] tracking-tight">
               {title}
             </h2>
-            <p className="text-slate-600 mt-3 text-base leading-relaxed">
+            <p className="text-[var(--color-mute)] mt-3 text-base leading-relaxed">
               {subtitle}
             </p>
           </motion.div>
@@ -152,7 +152,7 @@ export function PricingSection({
 
         {/* Frequency Toggle */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-100/80 p-1 shadow-inner">
+          <div className="inline-flex items-center rounded-full border border-[var(--color-hairline)] bg-[var(--color-surface-card)]/80 p-1 shadow-inner">
             {frequencies.map((freq) => {
               const active = activeFrequency === freq;
               return (
@@ -163,8 +163,8 @@ export function PricingSection({
                   className={cn(
                     "relative rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-200 min-w-[100px] capitalize",
                     active
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-500 hover:text-slate-700"
+                      ? "bg-[var(--color-canvas)] text-[var(--color-ink)] shadow-sm"
+                      : "text-[var(--color-ash)] hover:text-[var(--color-charcoal)]"
                   )}
                 >
                   {freq}
@@ -195,8 +195,8 @@ export function PricingSection({
                 transition={{ duration: 0.4, delay: index * 0.08 }}
                 whileHover={{ y: -6, boxShadow: "0 20px 40px -12px rgba(0,0,0,0.12)", transition: { type: "spring", stiffness: 250, damping: 18, mass: 0.8 } }}
                 className={cn(
-                    "relative flex flex-col rounded-2xl border-2 bg-white p-6",
-                    tierAccents[tier.id]?.border || "border-slate-200/80",
+                    "relative flex flex-col rounded-2xl border-2 bg-[var(--color-canvas)] p-6",
+                    tierAccents[tier.id]?.border || "border-[var(--color-hairline)]/80",
                     tierAccents[tier.id]?.ring || "",
                     tierAccents[tier.id]?.shadow || "shadow-sm",
                     isPopular && "scale-[1.02] z-10",
@@ -243,12 +243,12 @@ export function PricingSection({
                   <div className="mb-6 pt-3">
                     <h3 className={cn(
                       "text-base font-bold",
-                      tier.id === "pro" ? "text-rose-700" : tier.id === "campus" ? "text-blue-700" : tier.id === "enterprise" ? "text-amber-700" : "text-slate-900"
+                      tier.id === "pro" ? "text-rose-700" : tier.id === "campus" ? "text-blue-700" : tier.id === "enterprise" ? "text-amber-700" : "text-[var(--color-ink)]"
                     )}>{tier.name}</h3>
                     <div className="mt-4 flex items-end gap-1">
                       <motion.span
                         key={`price-${tier.id}`}
-                        className="text-4xl font-extrabold tracking-tight text-slate-900 tabular-nums"
+                        className="text-4xl font-extrabold tracking-tight text-[var(--color-ink)] tabular-nums"
                         initial={{ opacity: 0.6, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ type: "spring", stiffness: 80, damping: 14, mass: 1 }}
@@ -258,7 +258,7 @@ export function PricingSection({
                       {typeof price === "number" && (
                         <motion.span
                           key={`unit-${tier.id}`}
-                          className="text-sm font-medium text-slate-500 mb-1"
+                          className="text-sm font-medium text-[var(--color-ash)] mb-1"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3, duration: 0.3 }}
@@ -267,7 +267,7 @@ export function PricingSection({
                         </motion.span>
                       )}
                     </div>
-                    <p className="mt-2 text-sm text-slate-500 leading-relaxed">
+                    <p className="mt-2 text-sm text-[var(--color-ash)] leading-relaxed">
                       {tier.description}
                     </p>
                   </div>
@@ -276,7 +276,7 @@ export function PricingSection({
                     <div
                       className={cn(
                         "mb-6 inline-flex h-11 w-full items-center justify-center rounded-xl text-sm font-bold transition-all",
-                        "border border-dashed border-slate-300 bg-slate-50 text-slate-400 cursor-not-allowed"
+                        "border border-dashed border-[var(--color-secondary-bg)] bg-[var(--color-surface-soft)] text-[var(--color-stone)] cursor-not-allowed"
                       )}
                     >
                       <span className="flex items-center gap-1.5">
@@ -289,17 +289,17 @@ export function PricingSection({
                       href={tier.href || "#"}
                       className={cn(
                         "mb-6 inline-flex h-11 w-full items-center justify-center rounded-xl text-sm font-bold transition-all active:scale-[0.98]",
-                        tierAccents[tier.id]?.ctaBg || "border border-slate-300 bg-white",
-                        tierAccents[tier.id]?.ctaHover || "hover:border-slate-400 hover:bg-slate-50",
-                        isPopular ? "text-white shadow-md" : "text-slate-900"
+                        tierAccents[tier.id]?.ctaBg || "border border-[var(--color-secondary-bg)] bg-[var(--color-canvas)]",
+                        tierAccents[tier.id]?.ctaHover || "hover:border-slate-400 hover:bg-[var(--color-surface-soft)]",
+                        isPopular ? "text-white shadow-md" : "text-[var(--color-ink)]"
                       )}
                     >
                       {tier.cta}
                     </Link>
                   )}
 
-                  <div className="mt-auto border-t border-slate-200/80 pt-5">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-3.5">
+                  <div className="mt-auto border-t border-[var(--color-hairline)]/80 pt-5">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-stone)] mb-3.5">
                       Features
                     </p>
                     <ul className="space-y-2.5">
@@ -311,20 +311,20 @@ export function PricingSection({
                               <span
                                 className={cn(
                                   "mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full",
-                                  tierAccents[tier.id]?.checkBg || "bg-slate-100",
-                                  tierAccents[tier.id]?.checkText || "text-slate-600"
+                                  tierAccents[tier.id]?.checkBg || "bg-[var(--color-surface-card)]",
+                                  tierAccents[tier.id]?.checkText || "text-[var(--color-mute)]"
                                 )}
                               >
                                 <Check className="h-2.5 w-2.5" strokeWidth={3} />
                               </span>
                             ) : (
-                              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-300">
+                              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-card)] text-slate-300">
                                 <X className="h-2.5 w-2.5" strokeWidth={2.5} />
                               </span>
                             )}
                             <span className={cn(
                               "leading-snug text-xs",
-                              isAvailable ? "text-slate-700" : "text-slate-400"
+                              isAvailable ? "text-[var(--color-charcoal)]" : "text-[var(--color-stone)]"
                             )}>
                               {feature}
                             </span>

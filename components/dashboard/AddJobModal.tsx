@@ -130,7 +130,7 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="w-full max-w-xl mx-4"
       >
-        <Card className="shadow-2xl border-slate-200/80 overflow-hidden bg-white">
+        <Card className="shadow-2xl border-[var(--color-hairline)]/80 overflow-hidden bg-[var(--color-canvas)]">
           {/* Dialog header with gradient */}
           <div className="bg-gradient-to-r from-rose-500 to-rose-600 px-6 py-4">
             <div className="flex items-center justify-between">
@@ -167,7 +167,7 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
               {/* Core Details */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Company Name</label>
+                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">Company Name</label>
                   <Input
                     type="text"
                     required
@@ -178,7 +178,7 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Role Title</label>
+                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">Role Title</label>
                   <Input
                     type="text"
                     required
@@ -193,19 +193,19 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
               {/* Tab Content */}
               {activeTab === "text" ? (
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Job Description</label>
+                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">Job Description</label>
                   <textarea
                     required
                     rows={6}
                     value={jdText}
                     onChange={(e) => setJdText(e.target.value)}
-                    className="w-full p-4 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all resize-none bg-white placeholder:text-slate-400"
+                    className="w-full p-4 border border-[var(--color-hairline)] rounded-xl text-sm focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all resize-none bg-[var(--color-canvas)] placeholder:text-[var(--color-stone)]"
                     placeholder="Paste raw requirements here (minimum 50 characters)..."
                   />
                 </div>
               ) : (
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">
                     {activeTab === "pdf" ? "Upload Job PDF" : "Upload Screenshot"}
                   </label>
                   <FileUpload
@@ -230,12 +230,12 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
               )}
 
               {/* Bottom Actions */}
-              <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+              <div className="flex items-center justify-between pt-2 border-t border-[var(--color-hairline-soft)]">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center">
-                    <Coins className="w-3.5 h-3.5 text-slate-500" />
+                  <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-card)] flex items-center justify-center">
+                    <Coins className="w-3.5 h-3.5 text-[var(--color-ash)]" />
                   </div>
-                  <span className="text-[11px] text-slate-500 font-semibold tabular-nums">
+                  <span className="text-[11px] text-[var(--color-ash)] font-semibold tabular-nums">
                     Cost: 500 Credits
                   </span>
                   {credits < 500 && (

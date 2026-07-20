@@ -8,7 +8,7 @@ interface SectionLabelProps {
 
 export function SectionLabel({ children }: SectionLabelProps) {
   return (
-    <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
+    <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-stone)] mb-2">
       {children}
     </p>
   );
@@ -29,7 +29,7 @@ export function SelectField({ label, value, options, onChange }: SelectFieldProp
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full appearance-none rounded-lg border border-slate-200 bg-white px-3 py-2.5 pr-9 text-sm text-slate-800 focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15"
+          className="w-full appearance-none rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] px-3 py-2.5 pr-9 text-sm text-[var(--color-ink-soft)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15"
         >
           {options.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -39,7 +39,7 @@ export function SelectField({ label, value, options, onChange }: SelectFieldProp
         </select>
         <ChevronDown
           size={16}
-          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+          className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-stone)]"
         />
       </div>
     </div>
@@ -69,7 +69,7 @@ export function SliderField({
     <div>
       <div className="mb-2 flex items-center justify-between">
         <SectionLabel>{label}</SectionLabel>
-        <span className="text-xs font-medium text-slate-600">
+        <span className="text-xs font-medium text-[var(--color-mute)]">
           {value}
           {unit}
         </span>
@@ -81,7 +81,7 @@ export function SliderField({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-[var(--color-primary)]"
+        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-[var(--color-secondary-bg)] accent-[var(--color-primary)]"
       />
     </div>
   );
@@ -109,7 +109,7 @@ export function RadioGroup({ label, value, options, onChange }: RadioGroupProps)
               className={`rounded-lg border px-3 py-2 text-xs font-medium transition-colors ${
                 selected
                   ? "border-[var(--color-primary)] bg-rose-50 text-[var(--color-primary)]"
-                  : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                  : "border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-mute)] hover:border-[var(--color-secondary-bg)]"
               }`}
             >
               {opt.label}
@@ -144,7 +144,7 @@ export function TextInput({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15"
+        className="w-full rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] px-3 py-2.5 text-sm text-[var(--color-ink-soft)] placeholder:text-[var(--color-stone)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15"
       />
     </div>
   );

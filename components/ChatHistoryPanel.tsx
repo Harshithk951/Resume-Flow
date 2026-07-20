@@ -96,22 +96,22 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -320, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
-            className="fixed left-[72px] md:left-[72px] top-0 bottom-0 w-80 bg-white border-r border-slate-200/60 shadow-2xl z-50 flex flex-col"
+            className="fixed left-[72px] md:left-[72px] top-0 bottom-0 w-80 bg-[var(--color-canvas)] border-r border-[var(--color-hairline)]/60 shadow-2xl z-50 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-hairline-soft)]">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-rose-500 to-rose-600 flex items-center justify-center shadow-sm">
                   <History className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-slate-800">Chat History</p>
-                  <p className="text-[10px] text-slate-400">{sessions.length} conversation{sessions.length !== 1 ? "s" : ""}</p>
+                  <p className="text-sm font-bold text-[var(--color-ink-soft)]">Chat History</p>
+                  <p className="text-[10px] text-[var(--color-stone)]">{sessions.length} conversation{sessions.length !== 1 ? "s" : ""}</p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors"
+                className="p-1.5 rounded-lg hover:bg-[var(--color-surface-card)] text-[var(--color-stone)] hover:text-[var(--color-charcoal)] transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -121,16 +121,16 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
             <div className="flex-1 overflow-y-auto py-2">
               {sessions.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-48 text-center px-6">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+                  <div className="w-12 h-12 rounded-full bg-[var(--color-surface-card)] flex items-center justify-center mb-3">
                     <MessageSquare className="w-5 h-5 text-slate-300" />
                   </div>
-                  <p className="text-sm font-semibold text-slate-500">No conversations yet</p>
-                  <p className="text-xs text-slate-400 mt-1">Start chatting with the AI assistant</p>
+                  <p className="text-sm font-semibold text-[var(--color-ash)]">No conversations yet</p>
+                  <p className="text-xs text-[var(--color-stone)] mt-1">Start chatting with the AI assistant</p>
                 </div>
               ) : (
                 Object.entries(grouped).map(([dateLabel, groupSessions]) => (
                   <div key={dateLabel}>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-5 pt-4 pb-1.5">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-stone)] px-5 pt-4 pb-1.5">
                       {dateLabel}
                     </p>
                     {groupSessions.map((session) => {
@@ -141,7 +141,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
                       return (
                         <div
                           key={key}
-                          className="group mx-2 mb-1 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-200/60 transition-all duration-150"
+                          className="group mx-2 mb-1 rounded-xl hover:bg-[var(--color-surface-soft)] border border-transparent hover:border-[var(--color-hairline)]/60 transition-all duration-150"
                         >
                           <div className="flex items-start gap-3 px-3 py-3">
                             {/* Icon */}
@@ -151,10 +151,10 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
 
                             {/* Content */}
                             <div className="flex-1 min-w-0">
-                              <p className="text-xs font-semibold text-slate-700 truncate">
+                              <p className="text-xs font-semibold text-[var(--color-charcoal)] truncate">
                                 {session.jobId ? "Job Interview Prep" : "General Chat"}
                               </p>
-                              <p className="text-[11px] text-slate-400 truncate mt-0.5 leading-relaxed">
+                              <p className="text-[11px] text-[var(--color-stone)] truncate mt-0.5 leading-relaxed">
                                 {session.lastMessage}
                               </p>
                               <p className="text-[10px] text-slate-300 mt-1">
@@ -167,7 +167,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
                               {/* Open button */}
                               <button
                                 onClick={() => handleOpen(session)}
-                                className="p-1.5 rounded-lg hover:bg-rose-50 text-slate-400 hover:text-rose-600 transition-colors"
+                                className="p-1.5 rounded-lg hover:bg-rose-50 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
                                 title="Open this conversation"
                               >
                                 <ExternalLink className="w-3.5 h-3.5" />
@@ -190,7 +190,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
                                   </button>
                                   <button
                                     onClick={() => setConfirmKey(null)}
-                                    className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 transition-colors"
+                                    className="p-1.5 rounded-lg hover:bg-[var(--color-surface-card)] text-[var(--color-stone)] transition-colors"
                                     title="Cancel"
                                   >
                                     <X className="w-3.5 h-3.5" />
@@ -199,7 +199,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
                               ) : (
                                 <button
                                   onClick={(e) => { e.stopPropagation(); setConfirmKey(key); }}
-                                  className="p-1.5 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors"
+                                  className="p-1.5 rounded-lg hover:bg-red-50 text-[var(--color-stone)] hover:text-red-500 transition-colors"
                                   title="Delete conversation"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -241,8 +241,8 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
             </div>
 
             {/* Footer hint */}
-            <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50">
-              <p className="text-[10px] text-slate-400 text-center">
+            <div className="px-5 py-3 border-t border-[var(--color-hairline-soft)] bg-[var(--color-surface-soft)]/50">
+              <p className="text-[10px] text-[var(--color-stone)] text-center">
                 Click any conversation to resume it in the chat widget
               </p>
             </div>

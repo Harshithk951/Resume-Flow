@@ -37,7 +37,7 @@ const ReactPdfPreview = dynamic(
       (mod) => mod.WorkspacePdfPreview
     ),
   { ssr: false, loading: () => (
-    <div className="h-[600px] w-full rounded-2xl bg-slate-100 animate-pulse flex items-center justify-center">
+    <div className="h-[600px] w-full rounded-2xl bg-[var(--color-surface-card)] animate-pulse flex items-center justify-center">
       <Loader2 className="w-6 h-6 animate-spin text-rose-600" />
     </div>
   ) }
@@ -133,7 +133,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
   if (authLoading || (isAuthenticated && job === undefined)) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-slate-50">
+      <div className="h-screen w-full flex items-center justify-center bg-[var(--color-surface-soft)]">
         <Loader2 className="h-6 w-6 animate-spin text-rose-500" />
       </div>
     );
@@ -141,8 +141,8 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
   if (!job) {
     return (
-      <div className="h-screen w-full flex flex-col items-center justify-center bg-slate-50 gap-3">
-        <p className="text-sm font-semibold text-slate-700">Job not found</p>
+      <div className="h-screen w-full flex flex-col items-center justify-center bg-[var(--color-surface-soft)] gap-3">
+        <p className="text-sm font-semibold text-[var(--color-charcoal)]">Job not found</p>
         <Link
           href="/dashboard"
           className="text-xs font-bold text-rose-600 hover:underline"
@@ -233,14 +233,14 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
     >
       {/* ─── COLUMN A: JOB INTEL & INLINE GAPS (40%) ─── */}
       <div
-        className={`border-r border-slate-200/40 bg-white/80 flex flex-col h-full overflow-y-auto p-8 transition-all duration-300 ${
+        className={`border-r border-[var(--color-hairline)]/40 bg-white/80 flex flex-col h-full overflow-y-auto p-8 transition-all duration-300 ${
           isWorkspaceMaximized ? "opacity-0 pointer-events-none w-0 p-0 border-0" : "opacity-100"
         }`}
       >
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/dashboard"
-            className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-rose-600 transition-all duration-200 group"
+            className="flex items-center gap-2 text-xs font-semibold text-[var(--color-ash)] hover:text-rose-600 transition-all duration-200 group"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-1" />
             <span>Back to Dashboard</span>
@@ -251,7 +251,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <button
               type="button"
               onClick={() => setShowDeleteConfirm(true)}
-              className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-red-100 transition-all duration-200"
+              className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--color-stone)] hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-red-100 transition-all duration-200"
               title="Delete this drive and its resume"
             >
               <Trash2 className="w-3.5 h-3.5" />
@@ -281,7 +281,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
-                className="text-[10px] font-bold px-2.5 py-1 bg-white border border-red-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                className="text-[10px] font-bold px-2.5 py-1 bg-[var(--color-canvas)] border border-red-200 text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)] rounded-lg transition-colors"
               >
                 Cancel
               </button>
@@ -299,7 +299,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               <span className="text-[11px] font-bold text-rose-600 uppercase tracking-wider">
                 {job.companyName}
               </span>
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 mt-0.5">
+              <h1 className="text-2xl font-bold tracking-tight text-[var(--color-ink)] mt-0.5">
                 {job.jobTitle}
               </h1>
               <div className="flex items-center gap-2 mt-2">
@@ -308,7 +308,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   job.pipelineState === "failed" ? "border-red-100 bg-red-50 text-red-700" :
                   job.pipelineState === "needs_user_input" ? "border-amber-100 bg-amber-50 text-amber-700" :
                   job.pipelineState === "compiling" ? "border-blue-100 bg-blue-50 text-blue-700" :
-                  "border-slate-200 bg-slate-100 text-slate-600"
+                  "border-[var(--color-hairline)] bg-[var(--color-surface-card)] text-[var(--color-mute)]"
                 }`}>
                   <span className={`w-1.5 h-1.5 rounded-full ${
                     job.pipelineState === "completed" ? "bg-emerald-500" :
@@ -345,7 +345,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                       job.crmStatus === "Interviewing" ? "bg-amber-50 text-amber-700 border-amber-200 focus:ring-amber-500/20" :
                       job.crmStatus === "Offered" ? "bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500/20" :
                       job.crmStatus === "Rejected" ? "bg-red-50 text-red-700 border-red-200 focus:ring-red-500/20" :
-                      "bg-slate-50 text-slate-700 border-slate-200 focus:ring-slate-500/20"
+                      "bg-[var(--color-surface-soft)] text-[var(--color-charcoal)] border-[var(--color-hairline)] focus:ring-slate-500/20"
                     }`}
                   >
                     <option value="new">Saved</option>
@@ -369,12 +369,12 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           ) : null}
 
           {job.pipelineState === "tailoring" ? (
-            <div className="card-bloom p-6 border border-slate-200/60 rounded-2xl bg-white/50 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="card-bloom p-6 border border-[var(--color-hairline)]/60 rounded-2xl bg-white/50 flex flex-col items-center justify-center text-center space-y-4">
               <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
-              <p className="text-sm font-semibold text-slate-800">
+              <p className="text-sm font-semibold text-[var(--color-ink-soft)]">
                 Optimizing Bullet Points...
               </p>
-              <p className="text-xs text-slate-500 max-w-xs leading-relaxed min-h-[32px] flex items-center justify-center">
+              <p className="text-xs text-[var(--color-ash)] max-w-xs leading-relaxed min-h-[32px] flex items-center justify-center">
                 {tailoringMessages[loadingStep % tailoringMessages.length]}
               </p>
             </div>
@@ -383,7 +383,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           {job.pipelineState === "failed" ? (
             <div className="card-bloom p-6 border border-red-100 rounded-2xl bg-red-50/20 flex flex-col items-center justify-center text-center space-y-4">
               <AlertTriangle className="w-8 h-8 text-red-500" />
-              <p className="text-sm font-bold text-slate-800">Pipeline Failed</p>
+              <p className="text-sm font-bold text-[var(--color-ink-soft)]">Pipeline Failed</p>
               <p className="text-xs text-red-600 leading-relaxed max-w-xs">
                 {job.pipelineError}
               </p>
@@ -407,7 +407,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           job.pipelineState !== "tailoring" &&
           job.extractedRequirements?.hardSkills ? (
             <div className="space-y-4">
-              <h3 className="font-bold text-sm text-slate-800 uppercase tracking-tight flex items-center gap-2">
+              <h3 className="font-bold text-sm text-[var(--color-ink-soft)] uppercase tracking-tight flex items-center gap-2">
                 <Code className="w-4 h-4 text-rose-500" />
                 Required Skills
               </h3>
@@ -415,7 +415,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                  {job.extractedRequirements.hardSkills.map((s: string) => (
                   <span
                     key={s}
-                    className="text-[11px] bg-white border border-slate-200/60 px-2.5 py-1 rounded-lg text-slate-700 font-medium shadow-sm"
+                    className="text-[11px] bg-[var(--color-canvas)] border border-[var(--color-hairline)]/60 px-2.5 py-1 rounded-lg text-[var(--color-charcoal)] font-medium shadow-sm"
                   >
                     {s}
                   </span>
@@ -426,7 +426,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
         </div>
       </div>      {/* ─── COLUMN B (60% — Visual Workspace) ─── */}
       <div className="flex flex-col h-full overflow-hidden bg-[var(--color-surface-soft)] p-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200/40 pb-4 mb-6 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--color-hairline)]/40 pb-4 mb-6 gap-4">
           <div className="flex items-center gap-3 flex-wrap">
             <select
               value={activeTemplate}
@@ -441,7 +441,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   setActiveTemplate(next);
                 }
               }}
-              className="text-xs border border-slate-200 p-2.5 rounded-xl font-bold bg-white text-slate-700 focus:outline-none focus:border-rose-500 transition-all shadow-sm cursor-pointer"
+              className="text-xs border border-[var(--color-hairline)] p-2.5 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-charcoal)] focus:outline-none focus:border-rose-500 transition-all shadow-sm cursor-pointer"
             >
               <option value="ats_strict">ATS Strict (Classic)</option>
               <option value="modern_professional">Startup Accent</option>
@@ -455,14 +455,14 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <button
               type="button"
               onClick={handleRecompile}
-              className="px-4 h-10 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl flex items-center gap-2 transition-all active:scale-[0.97] shadow-sm"
+              className="px-4 h-10 border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-charcoal)] hover:bg-[var(--color-surface-soft)] text-xs font-bold rounded-xl flex items-center gap-2 transition-all active:scale-[0.97] shadow-sm"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Re-compile
             </button>
             <Link
               href={`/resume/${jobId}/export`}
-              className="px-4 h-10 border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.97] shadow-sm"
+              className="px-4 h-10 border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-charcoal)] hover:bg-[var(--color-surface-soft)] text-xs font-bold rounded-xl flex items-center justify-center gap-2 transition-all active:scale-[0.97] shadow-sm"
             >
               <FileText className="w-3.5 h-3.5" />
               Export
@@ -481,7 +481,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <button
               type="button"
               onClick={() => setIsWorkspaceMaximized(!isWorkspaceMaximized)}
-              className="p-2.5 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl text-slate-400 hover:text-slate-700 transition-all shadow-sm"
+              className="p-2.5 bg-[var(--color-canvas)] border border-[var(--color-hairline)] hover:bg-[var(--color-surface-soft)] rounded-xl text-[var(--color-stone)] hover:text-[var(--color-charcoal)] transition-all shadow-sm"
               title={isWorkspaceMaximized ? "Restore split" : "Maximize canvas"}
             >
               {isWorkspaceMaximized ? (
@@ -502,7 +502,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
         )}
 
         {/* Tab bar with glass styling */}
-        <div className="flex items-center gap-1 bg-white/60 border border-slate-200/40 rounded-2xl p-1 mb-6 shadow-sm">
+        <div className="flex items-center gap-1 bg-white/60 border border-[var(--color-hairline)]/40 rounded-2xl p-1 mb-6 shadow-sm">
           {([{ id: "PREVIEW" as const, label: "Visual Resume", icon: FileText },
              { id: "LATEX" as const, label: "LaTeX Source", icon: Code },
              { id: "JSON" as const, label: "JSON Payload", icon: Settings },
@@ -514,8 +514,8 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               onClick={() => setActiveTab(id)}
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[11px] font-bold transition-all ${
                 activeTab === id
-                  ? "bg-white text-rose-600 shadow-sm border border-slate-200/40"
-                  : "text-slate-500 hover:text-slate-700 hover:bg-white/50"
+                  ? "bg-[var(--color-canvas)] text-rose-600 shadow-sm border border-[var(--color-hairline)]/40"
+                  : "text-[var(--color-ash)] hover:text-[var(--color-charcoal)] hover:bg-white/50"
               }`}
             >
               <TabIcon className="w-3.5 h-3.5" />
@@ -528,9 +528,9 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           {activeTab === "PREVIEW" ? (
             <div className="h-full w-full">
               {job.pipelineState === "compiling" ? (
-                <div className="h-[600px] w-full rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 animate-pulse border border-slate-200/50 flex flex-col items-center justify-center space-y-3">
+                <div className="h-[600px] w-full rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 animate-pulse border border-[var(--color-hairline)]/50 flex flex-col items-center justify-center space-y-3">
                   <Loader2 className="w-6 h-6 animate-spin text-rose-600" />
-                  <span className="text-xs text-slate-500 font-medium min-h-[16px] flex items-center justify-center">
+                  <span className="text-xs text-[var(--color-ash)] font-medium min-h-[16px] flex items-center justify-center">
                     {compilingMessages[loadingStep % compilingMessages.length]}
                   </span>
                 </div>
@@ -540,10 +540,10 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   templateId={resolvedTemplate}
                 />
               ) : (
-                <div className="h-[600px] w-full rounded-2xl border border-slate-200/50 flex flex-col items-center justify-center bg-white text-slate-400 text-xs gap-3 elevation-medium">
+                <div className="h-[600px] w-full rounded-2xl border border-[var(--color-hairline)]/50 flex flex-col items-center justify-center bg-[var(--color-canvas)] text-[var(--color-stone)] text-xs gap-3 elevation-medium">
                   <FileText className="w-10 h-10 text-slate-300" />
                   <p className="font-semibold">No PDF available yet</p>
-                  <p className="text-[10px] text-slate-400">Complete tailoring to generate a resume preview.</p>
+                  <p className="text-[10px] text-[var(--color-stone)]">Complete tailoring to generate a resume preview.</p>
                 </div>
               )}
             </div>
@@ -575,7 +575,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                     )
                   : "{}"}
               </pre>
-              <p className="mt-4 text-[10px] text-slate-500">
+              <p className="mt-4 text-[10px] text-[var(--color-ash)]">
                 Contact details are masked in this preview. Full data is only used
                 server-side for tailoring and compilation.
               </p>
@@ -616,9 +616,9 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
 
   if (!resume) {
     return (
-      <div className="h-[400px] flex flex-col items-center justify-center text-center p-6 border border-slate-200/60 rounded-3xl bg-slate-50/30">
+      <div className="h-[400px] flex flex-col items-center justify-center text-center p-6 border border-[var(--color-hairline)]/60 rounded-3xl bg-[var(--color-surface-soft)]/30">
         <Loader2 className="w-8 h-8 animate-spin text-rose-500 mb-3" />
-        <p className="text-sm font-semibold text-slate-700">Loading resume variant...</p>
+        <p className="text-sm font-semibold text-[var(--color-charcoal)]">Loading resume variant...</p>
       </div>
     );
   }
@@ -643,10 +643,10 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
 
   if (generating) {
     return (
-      <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border border-slate-100 rounded-3xl bg-slate-50/50 space-y-4">
+      <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border border-[var(--color-hairline-soft)] rounded-3xl bg-[var(--color-surface-soft)]/50 space-y-4">
         <Loader2 className="w-10 h-10 animate-spin text-rose-600" />
-        <p className="text-sm font-bold text-slate-800">Drafting Outreach Materials...</p>
-        <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
+        <p className="text-sm font-bold text-[var(--color-ink-soft)]">Drafting Outreach Materials...</p>
+        <p className="text-xs text-[var(--color-ash)] max-w-xs leading-relaxed">
           Our AI copywriter is analyzing the job description and your tailored experience to draft formal and casual templates.
         </p>
       </div>
@@ -655,13 +655,13 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
 
   if (!hasGenerated) {
     return (
-      <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border border-slate-200/85 rounded-[32px] bg-white space-y-5 shadow-sm max-w-xl mx-auto my-6">
+      <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border border-[var(--color-hairline)]/85 rounded-[32px] bg-[var(--color-canvas)] space-y-5 shadow-sm max-w-xl mx-auto my-6">
         <div className="w-14 h-14 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 shadow-sm shadow-rose-500/5">
           <Sparkles className="w-7 h-7" />
         </div>
         <div className="space-y-2">
-          <h3 className="text-lg font-bold text-slate-800">Generate Tailored Outreach Copy</h3>
-          <p className="text-xs text-slate-500 leading-relaxed max-w-sm">
+          <h3 className="text-lg font-bold text-[var(--color-ink-soft)]">Generate Tailored Outreach Copy</h3>
+          <p className="text-xs text-[var(--color-ash)] leading-relaxed max-w-sm">
             Create a customized formal cover letter, a highly engaging cold outreach email, and a concise 300-character LinkedIn request tailored to this role.
           </p>
         </div>
@@ -685,46 +685,46 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
   return (
     <div className="space-y-8 pb-12">
       {/* CARD 1: COVER LETTER */}
-      <div className="bg-white p-6 rounded-[32px] border border-slate-200/80 shadow-sm space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div className="bg-[var(--color-canvas)] p-6 rounded-[32px] border border-[var(--color-hairline)]/80 shadow-sm space-y-4">
+        <div className="flex items-center justify-between border-b border-[var(--color-hairline-soft)] pb-3">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600">
               <FileSpreadsheet className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800">Tailored Cover Letter</h4>
-              <p className="text-[10px] text-slate-400">Formal three-paragraph letter</p>
+              <h4 className="text-xs font-bold text-[var(--color-ink-soft)]">Tailored Cover Letter</h4>
+              <p className="text-[10px] text-[var(--color-stone)]">Formal three-paragraph letter</p>
             </div>
           </div>
           <CopyButton text={coverLetter} />
         </div>
-        <div className="bg-slate-50/50 p-5 rounded-2xl border border-slate-200/40 text-xs text-slate-700 leading-relaxed font-sans whitespace-pre-wrap max-h-[350px] overflow-y-auto scrollbar-thin">
+        <div className="bg-[var(--color-surface-soft)]/50 p-5 rounded-2xl border border-[var(--color-hairline)]/40 text-xs text-[var(--color-charcoal)] leading-relaxed font-sans whitespace-pre-wrap max-h-[350px] overflow-y-auto scrollbar-thin">
           {coverLetter}
         </div>
       </div>
 
       {/* CARD 2: COLD EMAIL */}
-      <div className="bg-white p-6 rounded-[32px] border border-slate-200/80 shadow-sm space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div className="bg-[var(--color-canvas)] p-6 rounded-[32px] border border-[var(--color-hairline)]/80 shadow-sm space-y-4">
+        <div className="flex items-center justify-between border-b border-[var(--color-hairline-soft)] pb-3">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
               <Mail className="w-4 h-4" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800">Cold Outreach Email</h4>
-              <p className="text-[10px] text-slate-400">High-impact email template</p>
+              <h4 className="text-xs font-bold text-[var(--color-ink-soft)]">Cold Outreach Email</h4>
+              <p className="text-[10px] text-[var(--color-stone)]">High-impact email template</p>
             </div>
           </div>
           <CopyButton text={outreachEmail} />
         </div>
-        <div className="bg-slate-50/50 p-5 rounded-2xl border border-slate-200/40 text-xs text-slate-700 leading-relaxed font-sans whitespace-pre-wrap max-h-[350px] overflow-y-auto scrollbar-thin">
+        <div className="bg-[var(--color-surface-soft)]/50 p-5 rounded-2xl border border-[var(--color-hairline)]/40 text-xs text-[var(--color-charcoal)] leading-relaxed font-sans whitespace-pre-wrap max-h-[350px] overflow-y-auto scrollbar-thin">
           {outreachEmail}
         </div>
       </div>
 
       {/* CARD 3: LINKEDIN NOTE */}
-      <div className="bg-white p-6 rounded-[32px] border border-slate-200/80 shadow-sm space-y-4">
-        <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+      <div className="bg-[var(--color-canvas)] p-6 rounded-[32px] border border-[var(--color-hairline)]/80 shadow-sm space-y-4">
+        <div className="flex items-center justify-between border-b border-[var(--color-hairline-soft)] pb-3">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
               <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
@@ -732,18 +732,18 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
               </svg>
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800">LinkedIn Connection Note</h4>
-              <p className="text-[10px] text-slate-400">Concise request (under 300 chars)</p>
+              <h4 className="text-xs font-bold text-[var(--color-ink-soft)]">LinkedIn Connection Note</h4>
+              <p className="text-[10px] text-[var(--color-stone)]">Concise request (under 300 chars)</p>
             </div>
           </div>
           <CopyButton text={linkedinNote} />
         </div>
-        <div className="bg-slate-50/50 p-5 rounded-2xl border border-slate-200/40 text-xs text-slate-700 leading-relaxed font-mono whitespace-pre-wrap">
+        <div className="bg-[var(--color-surface-soft)]/50 p-5 rounded-2xl border border-[var(--color-hairline)]/40 text-xs text-[var(--color-charcoal)] leading-relaxed font-mono whitespace-pre-wrap">
           {linkedinNote}
         </div>
-        <div className="flex items-center justify-between text-[10px] text-slate-400 px-1 font-semibold font-mono">
+        <div className="flex items-center justify-between text-[10px] text-[var(--color-stone)] px-1 font-semibold font-mono">
           <span>Character Count:</span>
-          <span className={linkedinNote.length > 300 ? "text-rose-500" : "text-slate-500"}>
+          <span className={linkedinNote.length > 300 ? "text-rose-500" : "text-[var(--color-ash)]"}>
             {linkedinNote.length} / 300
           </span>
         </div>
@@ -770,7 +770,7 @@ function CopyButton({ text }: { text: string }) {
       className={`flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition-all border ${
         copied
           ? "bg-emerald-50 border-emerald-200 text-emerald-600 shadow-sm"
-          : "bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-600 hover:text-slate-800"
+          : "bg-[var(--color-surface-soft)] border-[var(--color-hairline)] hover:bg-[var(--color-surface-card)] text-[var(--color-mute)] hover:text-[var(--color-ink-soft)]"
       }`}
     >
       {copied ? (

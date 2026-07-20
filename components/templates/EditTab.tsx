@@ -35,14 +35,14 @@ export default function EditTab({
 }: EditTabProps) {
   return (
     <div className="space-y-6">
-      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <div className="rounded-xl border border-[var(--color-hairline)] bg-[var(--color-surface-soft)] p-4">
         <div className="flex items-start gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white border border-slate-200">
-            <User size={16} className="text-slate-500" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--color-canvas)] border border-[var(--color-hairline)]">
+            <User size={16} className="text-[var(--color-ash)]" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-slate-900">Personal details</p>
-            <p className="mt-0.5 text-xs text-slate-500 leading-relaxed">
+            <p className="text-sm font-semibold text-[var(--color-ink)]">Personal details</p>
+            <p className="mt-0.5 text-xs text-[var(--color-ash)] leading-relaxed">
               Fill in basics here or import your full master profile for tailored resumes.
             </p>
             <Link
@@ -89,7 +89,7 @@ export default function EditTab({
       />
 
       <div>
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-[var(--color-stone)] mb-2">
           Professional summary
         </p>
         <textarea
@@ -97,7 +97,7 @@ export default function EditTab({
           placeholder="Brief overview of your experience and goals..."
           rows={4}
           onChange={(e) => onSummaryChange(e.target.value)}
-          className="w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15"
+          className="w-full resize-none rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] px-3 py-2.5 text-sm text-[var(--color-ink-soft)] placeholder:text-[var(--color-stone)] focus:border-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/15"
         />
       </div>
     </div>

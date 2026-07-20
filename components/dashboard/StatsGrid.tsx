@@ -81,7 +81,7 @@ function AnimatedStat({
       <Card
         variant="elevated"
         className={cn(
-          "group relative overflow-hidden border-slate-300",
+          "group relative overflow-hidden border-[var(--color-secondary-bg)]",
           onClick ? "cursor-pointer" : "cursor-default"
         )}
         onClick={onClick}
@@ -89,16 +89,16 @@ function AnimatedStat({
         {/* Subtle gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <CardContent className="p-5 relative">
-          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+          <span className="text-[11px] font-semibold text-[var(--color-stone)] uppercase tracking-wider">
             {label}
           </span>
-          <p className="text-3xl font-extrabold text-slate-800 mt-1.5 tracking-tight tabular-nums">
+          <p className="text-3xl font-extrabold text-[var(--color-ink-soft)] mt-1.5 tracking-tight tabular-nums">
             {animatedValue}
             {suffix && (
-              <span className="text-lg font-bold text-slate-500 ml-0.5">{suffix}</span>
+              <span className="text-lg font-bold text-[var(--color-ash)] ml-0.5">{suffix}</span>
             )}
           </p>
-          <span className="text-[11px] text-slate-500 mt-0.5 block">
+          <span className="text-[11px] text-[var(--color-ash)] mt-0.5 block">
             {sublabel}
           </span>
           {extra && <div className="mt-2">{extra}</div>}

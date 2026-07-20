@@ -317,21 +317,30 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
       .replace(/'/g, '&#039;');
     html = html.replace(/\r/g, "");
     html = html.replace(/\n{3,}/g, "\n\n");
+
+    // Use inline style with CSS variables instead of Tailwind classes so the
+    // HTML renders correctly in both light and dark mode. These classless
+    // inline styles are NOT processed by Tailwind JIT — CSS vars guarantee
+    // theme-safe coloring.
+    const headingColor = isUser ? "var(--color-on-dark)" : "var(--color-primary)";
+    const strongColor = isUser ? "var(--color-on-dark)" : "var(--color-ink)";
+    const liColor = isUser ? "var(--color-on-dark)" : "var(--color-charcoal)";
+
     html = html.replace(
       /^#+\s*(.*$)/gim,
-      `<h4 class="${isUser ? "text-white" : "text-rose-600"} font-bold mt-3 mb-1 text-sm tracking-tight">➔ $1</h4>`
+      `<h4 style="color:${headingColor};font-weight:700;margin-top:12px;margin-bottom:4px;font-size:14px;letter-spacing:-0.025em">➔ $1</h4>`
     );
     html = html.replace(
       /\*\*(.*?)\*\*/g,
-      `<strong class="font-semibold ${isUser ? "text-white" : "text-slate-900"}">$1</strong>`
+      `<strong style="color:${strongColor};font-weight:600">$1</strong>`
     );
     html = html.replace(
       /^\* (.*$)/gim,
-      `<li class="ml-4 list-disc pl-1 py-0.5 ${isUser ? "text-white/90" : "text-slate-700"} text-sm">$1</li>`
+      `<li style="color:${liColor};margin-left:16px;list-style:disc;padding-left:4px;padding-top:2px;padding-bottom:2px;font-size:14px">$1</li>`
     );
     html = html.replace(
       /^- (.*$)/gim,
-      `<li class="ml-4 list-disc pl-1 py-0.5 ${isUser ? "text-white/90" : "text-slate-700"} text-sm">$1</li>`
+      `<li style="color:${liColor};margin-left:16px;list-style:disc;padding-left:4px;padding-top:2px;padding-bottom:2px;font-size:14px">$1</li>`
     );
     html = html.replace(/\n\n/g, '<div class="h-2"></div>');
     html = html.replace(/\n/g, " ");
@@ -343,7 +352,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
       if (purifier && typeof purifier.sanitize === "function") {
         return purifier.sanitize(rawHtml, {
           ALLOWED_TAGS: ["h4", "strong", "li", "div"],
-          ALLOWED_ATTR: ["class"],
+          ALLOWED_ATTR: ["class", "style"],
         });
       }
       return rawHtml;
@@ -352,7 +361,8 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
 
     return (
       <span
-        className={`block ${isUser ? "text-white" : "text-slate-800"} leading-relaxed`}
+        style={{ color: isUser ? "var(--color-on-dark)" : "var(--color-body)" }}
+        className="block leading-relaxed"
         dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
       />
     );

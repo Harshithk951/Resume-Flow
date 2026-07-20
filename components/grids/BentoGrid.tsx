@@ -66,7 +66,7 @@ function AtsScoreGauge() {
         <div className="absolute flex flex-col items-center justify-center text-center">
           {/* Continuously animated 98 score */}
           <motion.span
-            className="text-3xl font-black text-slate-800 leading-none tabular-nums"
+            className="text-3xl font-black text-[var(--color-ink-soft)] leading-none tabular-nums"
             animate={{
               scale: [1, 1.06, 1],
               transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
@@ -74,7 +74,7 @@ function AtsScoreGauge() {
           >
             {score}%
           </motion.span>
-          <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mt-1.5">
+          <span className="text-[11px] font-bold text-[var(--color-ash)] uppercase tracking-widest mt-1.5">
             ATS Score
           </span>
         </div>
@@ -86,10 +86,10 @@ function AtsScoreGauge() {
 // ─── Before/After Tailoring Mockup ────────────────────────
 function TailoringMockup() {
   return (
-    <div className="w-full max-w-[240px] bg-white rounded-xl shadow-sm border border-slate-200 p-3 space-y-2">
+    <div className="w-full max-w-[240px] bg-[var(--color-canvas)] rounded-xl shadow-sm border border-[var(--color-hairline)] p-3 space-y-2">
       <div className="space-y-0.5">
-        <span className="text-[7px] font-bold uppercase tracking-wider text-slate-400">Before</span>
-        <div className="bg-slate-50 border border-slate-100 rounded-md p-2 text-[9px] text-slate-400">
+        <span className="text-[7px] font-bold uppercase tracking-wider text-[var(--color-stone)]">Before</span>
+        <div className="bg-[var(--color-surface-soft)] border border-[var(--color-hairline-soft)] rounded-md p-2 text-[9px] text-[var(--color-stone)]">
           <motion.p
             initial={{ textDecorationLine: "none" }}
             whileInView={{ textDecorationLine: "line-through" }}
@@ -128,22 +128,22 @@ function TailoringMockup() {
 // ─── Company Research Panel ───────────────────────────────
 function CompanyPanel() {
   return (
-    <div className="w-full max-w-[200px] bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col justify-between h-40">
+    <div className="w-full max-w-[200px] bg-[var(--color-canvas)] rounded-xl shadow-sm border border-[var(--color-hairline)] p-4 flex flex-col justify-between h-40">
       <div className="space-y-2">
-        <div className="flex justify-between items-center pb-2 border-b border-slate-200">
-          <span className="text-[7px] font-black uppercase text-slate-400">Culture Agent</span>
+        <div className="flex justify-between items-center pb-2 border-b border-[var(--color-hairline)]">
+          <span className="text-[7px] font-black uppercase text-[var(--color-stone)]">Culture Agent</span>
           <span className="text-[7px] font-black text-rose-600">Google Inc.</span>
         </div>
-        <div className="text-[7px] font-bold text-slate-500 uppercase tracking-wider">Tech Stack</div>
+        <div className="text-[7px] font-bold text-[var(--color-ash)] uppercase tracking-wider">Tech Stack</div>
         <div className="flex flex-wrap gap-1">
           {["React", "AWS", "Python"].map((tech) => (
-            <span key={tech} className="text-[7px] font-bold bg-white text-rose-600 px-1.5 py-0.5 rounded border border-slate-200">
+            <span key={tech} className="text-[7px] font-bold bg-[var(--color-canvas)] text-rose-600 px-1.5 py-0.5 rounded border border-[var(--color-hairline)]">
               {tech}
             </span>
           ))}
         </div>
       </div>
-      <div className="text-[7px] text-slate-700 font-semibold bg-rose-50/30 p-1.5 rounded border border-rose-100">
+      <div className="text-[7px] text-[var(--color-charcoal)] font-semibold bg-rose-50/30 p-1.5 rounded border border-rose-100">
         💡 Prefers: &ldquo;Impact and scale metrics&rdquo;
       </div>
     </div>
@@ -153,7 +153,7 @@ function CompanyPanel() {
 // ─── WASM Terminal Mockup ─────────────────────────────────
 function WasmTerminal() {
   return (
-    <div className="w-full max-w-[260px] bg-white rounded-xl shadow-sm border border-slate-200 p-4 font-mono text-[8px] text-slate-600 space-y-1.5">
+    <div className="w-full max-w-[260px] bg-[var(--color-canvas)] rounded-xl shadow-sm border border-[var(--color-hairline)] p-4 font-mono text-[8px] text-[var(--color-mute)] space-y-1.5">
       <div className="text-green-600 font-bold flex items-center gap-1.5 mb-2">
         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping" />
         [Compiler Worker Init]
@@ -189,7 +189,7 @@ function PrivacyShield() {
           transition={{ delay: 0.3 + i * 0.2, duration: 0.5 }}
         >
           <div className={`w-16 h-10 rounded-lg flex items-center justify-center text-[8px] font-bold transition-all duration-500 ${
-            active ? "bg-green-50 border border-green-200 text-green-700" : "bg-slate-100 border border-slate-200 text-slate-400"
+            active ? "bg-green-50 border border-green-200 text-green-700" : "bg-[var(--color-surface-card)] border border-[var(--color-hairline)] text-[var(--color-stone)]"
           }`}>
             {active ? "••••••" : item}
           </div>
@@ -211,7 +211,7 @@ function TemplateSelector() {
           className={`px-3 py-2 rounded-lg text-[9px] font-bold transition-all cursor-pointer ${
             i === 0
               ? "bg-rose-600 text-white shadow-sm"
-              : "bg-white border border-slate-200 text-slate-500"
+              : "bg-[var(--color-canvas)] border border-[var(--color-hairline)] text-[var(--color-ash)]"
           }`}
           whileHover={{ scale: 1.05, y: -2 }}
           transition={{ type: "spring", stiffness: 300, damping: 15 }}
@@ -242,10 +242,10 @@ export function BentoGrid() {
               <ScanSearch size={10} /> Core Capabilities
             </span>
           </motion.div>
-          <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
+          <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-[var(--color-ink)] tracking-[-0.02em]">
             Precision tools for career engineers
           </motion.h2>
-          <motion.p variants={scrollRevealUp} className="text-slate-500 mt-4 text-lg">
+          <motion.p variants={scrollRevealUp} className="text-[var(--color-ash)] mt-4 text-lg">
             From real-time requirements analysis to instant zero-trust PDF builds.
           </motion.p>
         </motion.div>
@@ -255,7 +255,7 @@ export function BentoGrid() {
           
           {/* 1. ATS Score - Tall (2x2) */}
           <motion.div
-            className="md:col-span-2 md:row-span-2 bg-white border-2 border-slate-900/20 rounded-2xl p-6 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
+            className="md:col-span-2 md:row-span-2 bg-[var(--color-canvas)] border-2 border-slate-900/20 rounded-2xl p-6 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -275,14 +275,14 @@ export function BentoGrid() {
               <AtsScoreGauge />
             </div>
             <div className="mt-3">
-              <h3 className="font-bold text-sm text-slate-900 group-hover:text-rose-700 transition-colors">Instant ATS Verification</h3>
-              <p className="text-slate-500 text-xs mt-1 leading-relaxed">Real-time keyword scoring and formatting analysis.</p>
+              <h3 className="font-bold text-sm text-[var(--color-ink)] group-hover:text-rose-700 transition-colors">Instant ATS Verification</h3>
+              <p className="text-[var(--color-ash)] text-xs mt-1 leading-relaxed">Real-time keyword scoring and formatting analysis.</p>
             </div>
           </motion.div>
 
           {/* 2. AI Tailoring - Standard (2x1) */}
           <motion.div
-            className="md:col-span-2 bg-white border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
+            className="md:col-span-2 bg-[var(--color-canvas)] border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -303,14 +303,14 @@ export function BentoGrid() {
               <TailoringMockup />
             </div>
             <div className="mt-2">
-              <h3 className="font-bold text-sm text-slate-900 group-hover:text-rose-700 transition-colors">AI-Powered Tailoring</h3>
-              <p className="text-slate-500 text-xs mt-0.5 leading-relaxed">Contextual rewrites for every job description.</p>
+              <h3 className="font-bold text-sm text-[var(--color-ink)] group-hover:text-rose-700 transition-colors">AI-Powered Tailoring</h3>
+              <p className="text-[var(--color-ash)] text-xs mt-0.5 leading-relaxed">Contextual rewrites for every job description.</p>
             </div>
           </motion.div>
 
           {/* 3. Live Research - Tall (2x2) */}
           <motion.div
-            className="md:col-span-2 md:row-span-2 bg-white border-2 border-slate-900/20 rounded-2xl p-6 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
+            className="md:col-span-2 md:row-span-2 bg-[var(--color-canvas)] border-2 border-slate-900/20 rounded-2xl p-6 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -331,16 +331,16 @@ export function BentoGrid() {
               <CompanyPanel />
             </div>
             <div className="mt-3">
-              <h3 className="font-bold text-sm text-slate-900 flex items-center gap-1.5 group-hover:text-rose-700 transition-colors">
+              <h3 className="font-bold text-sm text-[var(--color-ink)] flex items-center gap-1.5 group-hover:text-rose-700 transition-colors">
                 <Globe className="w-3.5 h-3.5" /> Live Company Research
               </h3>
-              <p className="text-slate-500 text-xs mt-1 leading-relaxed">Real-time culture and stack insights.</p>
+              <p className="text-[var(--color-ash)] text-xs mt-1 leading-relaxed">Real-time culture and stack insights.</p>
             </div>
           </motion.div>
 
           {/* 4. WASM Compilation - Standard (2x1) */}
           <motion.div
-            className="md:col-span-2 bg-white border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
+            className="md:col-span-2 bg-[var(--color-canvas)] border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -361,14 +361,14 @@ export function BentoGrid() {
               <WasmTerminal />
             </div>
             <div className="mt-2">
-              <h3 className="font-bold text-sm text-slate-900 group-hover:text-rose-700 transition-colors">Zero-Trust Compilation</h3>
-              <p className="text-slate-500 text-xs mt-0.5 leading-relaxed">Browser-local compilation, no third-party servers.</p>
+              <h3 className="font-bold text-sm text-[var(--color-ink)] group-hover:text-rose-700 transition-colors">Zero-Trust Compilation</h3>
+              <p className="text-[var(--color-ash)] text-xs mt-0.5 leading-relaxed">Browser-local compilation, no third-party servers.</p>
             </div>
           </motion.div>
 
           {/* 5. Privacy Isolation - Wide (3x1) */}
           <motion.div
-            className="md:col-span-3 bg-white border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
+            className="md:col-span-3 bg-[var(--color-canvas)] border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -389,16 +389,16 @@ export function BentoGrid() {
               <PrivacyShield />
             </div>
             <div className="mt-2">
-              <h3 className="font-bold text-sm text-slate-900 flex items-center gap-1.5 group-hover:text-rose-700 transition-colors">
+              <h3 className="font-bold text-sm text-[var(--color-ink)] flex items-center gap-1.5 group-hover:text-rose-700 transition-colors">
                 <Shield className="w-3.5 h-3.5" /> Privacy Isolation
               </h3>
-              <p className="text-slate-500 text-xs mt-0.5 leading-relaxed">PII masked before any external LLM calls.</p>
+              <p className="text-[var(--color-ash)] text-xs mt-0.5 leading-relaxed">PII masked before any external LLM calls.</p>
             </div>
           </motion.div>
 
           {/* 6. Smart Selectors - Wide (3x1) */}
           <motion.div
-            className="md:col-span-3 bg-white border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
+            className="md:col-span-3 bg-[var(--color-canvas)] border-2 border-slate-900/20 rounded-2xl p-5 flex flex-col hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/5 transition-all duration-300 cursor-pointer overflow-hidden group outline outline-1 outline-slate-900/10"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -419,10 +419,10 @@ export function BentoGrid() {
               <TemplateSelector />
             </div>
             <div className="mt-2">
-              <h3 className="font-bold text-sm text-slate-900 flex items-center gap-1.5 group-hover:text-rose-700 transition-colors">
+              <h3 className="font-bold text-sm text-[var(--color-ink)] flex items-center gap-1.5 group-hover:text-rose-700 transition-colors">
                 <FileText className="w-3.5 h-3.5" /> Smart Template Selectors
               </h3>
-              <p className="text-slate-500 text-xs mt-0.5 leading-relaxed">ATS-Strict, Modern Pro, or Executive layouts.</p>
+              <p className="text-[var(--color-ash)] text-xs mt-0.5 leading-relaxed">ATS-Strict, Modern Pro, or Executive layouts.</p>
             </div>
           </motion.div>
 

@@ -99,7 +99,7 @@ export function PricingSection() {
     <section
       id="pricing"
       ref={sectionRef}
-      className="py-24 px-6 bg-white border-t border-slate-200/40"
+      className="py-24 px-6 bg-[var(--color-canvas)] border-t border-[var(--color-hairline)]/40"
     >
       <div className="max-w-[1280px] mx-auto">
         <motion.div
@@ -108,10 +108,10 @@ export function PricingSection() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center max-w-2xl mx-auto mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--color-ink)] tracking-tight">
             Simple pricing plans
           </h2>
-          <p className="text-slate-600 mt-3 text-base leading-relaxed">
+          <p className="text-[var(--color-mute)] mt-3 text-base leading-relaxed">
             Start free for placement season. Upgrade when you need unlimited
             tailoring, premium templates, and priority AI-Powered Assistant access.
           </p>
@@ -126,7 +126,7 @@ export function PricingSection() {
           <div
             role="tablist"
             aria-label="Billing cycle"
-            className="inline-flex items-center rounded-full border border-slate-200 bg-slate-100/80 p-1 shadow-inner"
+            className="inline-flex items-center rounded-full border border-[var(--color-hairline)] bg-[var(--color-surface-card)]/80 p-1 shadow-inner"
           >
             {(["monthly", "yearly"] as const).map((cycle) => {
               const active = billing === cycle;
@@ -139,8 +139,8 @@ export function PricingSection() {
                   onClick={() => setBilling(cycle)}
                   className={`relative rounded-full px-6 py-2.5 text-sm font-semibold transition-all duration-200 min-w-[108px] ${
                     active
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-500 hover:text-slate-700"
+                      ? "bg-[var(--color-canvas)] text-[var(--color-ink)] shadow-sm"
+                      : "text-[var(--color-ash)] hover:text-[var(--color-charcoal)]"
                   }`}
                 >
                   {cycle === "monthly" ? "Monthly" : "Yearly"}
@@ -179,10 +179,10 @@ export function PricingSection() {
                   delay: 0.15 + index * 0.08,
                   ease: "easeOut",
                 }}
-                className={`relative flex flex-col rounded-[2rem] border bg-white p-8 md:p-10 shadow-[0_20px_40px_-20px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_24px_48px_-20px_rgba(15,23,42,0.12)] ${
+                className={`relative flex flex-col rounded-[2rem] border bg-[var(--color-canvas)] p-8 md:p-10 shadow-[0_20px_40px_-20px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_24px_48px_-20px_rgba(15,23,42,0.12)] ${
                   plan.highlighted
                     ? "border-rose-600 ring-1 ring-rose-600/20 lg:scale-[1.02] z-10"
-                    : "border-slate-200/80"
+                    : "border-[var(--color-hairline)]/80"
                 }`}
               >
                 {plan.highlighted ? (
@@ -192,22 +192,22 @@ export function PricingSection() {
                 ) : null}
 
                 <div className="mb-8">
-                  <h3 className="text-lg font-bold text-slate-900">
+                  <h3 className="text-lg font-bold text-[var(--color-ink)]">
                     {plan.name}
                   </h3>
                   <div className="mt-6 flex items-end gap-1">
-                    <span className="text-5xl font-extrabold tracking-tight text-slate-900 tabular-nums">
+                    <span className="text-5xl font-extrabold tracking-tight text-[var(--color-ink)] tabular-nums">
                       {formatPrice(price)}
                     </span>
                   </div>
-                  <p className="mt-2 text-sm font-medium text-slate-500">
+                  <p className="mt-2 text-sm font-medium text-[var(--color-ash)]">
                     {plan.monthlyPrice === 0
                       ? "Free forever"
                       : billing === "monthly"
                         ? "Per month"
                         : "Per month, billed yearly"}
                   </p>
-                  <p className="mt-5 text-sm leading-relaxed text-slate-600">
+                  <p className="mt-5 text-sm leading-relaxed text-[var(--color-mute)]">
                     {plan.description}
                   </p>
                 </div>
@@ -217,27 +217,27 @@ export function PricingSection() {
                   className={`mb-10 inline-flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all active:scale-[0.98] ${
                     plan.highlighted
                       ? "bg-rose-600 text-white shadow-lg shadow-rose-600/25 hover:bg-rose-700"
-                      : "border border-slate-300 bg-white text-slate-900 hover:border-slate-400 hover:bg-slate-50"
+                      : "border border-[var(--color-secondary-bg)] bg-[var(--color-canvas)] text-[var(--color-ink)] hover:border-slate-400 hover:bg-[var(--color-surface-soft)]"
                   }`}
                 >
                   {ctaLabel}
                 </Link>
 
-                <div className="mt-auto border-t border-slate-200/80 pt-8">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-5">
+                <div className="mt-auto border-t border-[var(--color-hairline)]/80 pt-8">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-stone)] mb-5">
                     Features
                   </p>
                   <ul className="space-y-3.5">
                     {plan.features.map((feature) => (
                       <li
                         key={feature.text}
-                        className="flex items-start gap-3 text-sm text-slate-700"
+                        className="flex items-start gap-3 text-sm text-[var(--color-charcoal)]"
                       >
                         <span
                           className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
                             plan.highlighted
                               ? "bg-rose-50 text-rose-600"
-                              : "bg-slate-100 text-slate-600"
+                              : "bg-[var(--color-surface-card)] text-[var(--color-mute)]"
                           }`}
                         >
                           <Check className="h-3 w-3" strokeWidth={3} />
@@ -252,7 +252,7 @@ export function PricingSection() {
           })}
         </div>
 
-        <p className="mt-10 text-center text-xs text-slate-500 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-10 text-center text-xs text-[var(--color-ash)] max-w-2xl mx-auto leading-relaxed">
           All plans include zero-trust client-side PDF compilation and encrypted
           profile storage. Paid tiers are illustrative — billing integration
           ships in a future release.

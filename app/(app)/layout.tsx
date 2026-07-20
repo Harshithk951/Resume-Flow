@@ -8,6 +8,7 @@ import { LayoutDashboard, User, FileText, LogOut, Loader2, Settings, Menu, X, Hi
 import { AppBackButton } from "@/components/AppBackButton";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ChatHistoryPanel } from "@/components/ChatHistoryPanel";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const navigationItems = [
   {
@@ -159,6 +160,9 @@ export default function AuthenticatedLayout({
         </div>
 
         <div className="space-y-3 border-t border-slate-200/60 pt-4 px-3 overflow-hidden">
+          {/* ── Theme Toggle ── */}
+          <ThemeToggle />
+
           <div className="flex items-center gap-3">
             <UserButton />
             <div className="flex flex-col min-w-0 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
@@ -254,6 +258,9 @@ export default function AuthenticatedLayout({
             </div>
 
             <div className="space-y-4 border-t border-slate-200/60 pt-4">
+              {/* ── Theme Toggle (mobile) ── */}
+              <ThemeToggle />
+              
               <div className="flex items-center gap-3">
                 <UserButton />
                 <span className="text-xs font-semibold text-slate-700 truncate">

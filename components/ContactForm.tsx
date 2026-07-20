@@ -30,9 +30,9 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-slate-50/50 p-6 rounded-3xl border border-slate-200/40 space-y-4 max-w-md mx-auto"
+      className="bg-[var(--color-surface-soft)]/50 p-6 rounded-3xl border border-[var(--color-hairline)]/40 space-y-4 max-w-md mx-auto"
     >
-      <h3 className="font-bold text-sm text-slate-800 mb-2">
+      <h3 className="font-bold text-sm text-[var(--color-ink-soft)] mb-2">
         Send us a direct message
       </h3>
       <div className="grid grid-cols-2 gap-3">
@@ -40,20 +40,20 @@ export function ContactForm() {
           required
           type="text"
           placeholder="Name"
-          className="bg-white border border-slate-200/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500"
+          className="bg-[var(--color-canvas)] border border-[var(--color-hairline)]/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500"
         />
         <input
           required
           type="email"
           placeholder="Email"
-          className="bg-white border border-slate-200/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500"
+          className="bg-[var(--color-canvas)] border border-[var(--color-hairline)]/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500"
         />
       </div>
       <textarea
         required
         placeholder="Your message..."
         rows={4}
-        className="w-full bg-white border border-slate-200/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500"
+        className="w-full bg-[var(--color-canvas)] border border-[var(--color-hairline)]/60 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500"
       />
       <button
         type="submit"

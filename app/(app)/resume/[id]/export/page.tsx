@@ -18,6 +18,7 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { normalizeStructuredContent } from "@/lib/pdf/types";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -228,6 +229,7 @@ export default function ExportPage({ params }: PageProps) {
   };
 
   return (
+    <ThemeProvider forcedTheme="light" attribute="class">
     <div className="max-w-[1000px] mx-auto py-8">
       {/* Back button */}
       <Link
@@ -383,5 +385,6 @@ export default function ExportPage({ params }: PageProps) {
         </motion.div>
       </div>
     </div>
+    </ThemeProvider>
   );
 }

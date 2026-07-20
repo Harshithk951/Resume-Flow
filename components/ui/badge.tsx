@@ -10,7 +10,7 @@ const badgeVariants = cva(
         default:
           "border-transparent bg-rose-600 text-white shadow-sm",
         secondary:
-          "border-slate-200 bg-slate-100 text-slate-700",
+          "border-[var(--color-hairline)] bg-[var(--color-surface-card)] text-[var(--color-charcoal)]",
         success:
           "border-transparent bg-emerald-600 text-white shadow-sm",
         warning:
@@ -18,7 +18,7 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-red-600 text-white shadow-sm",
         outline:
-          "border-slate-200 bg-white text-slate-600",
+          "border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-mute)]",
         soft_rose:
           "border-rose-100 bg-rose-50 text-rose-700",
         soft_green:
@@ -26,7 +26,7 @@ const badgeVariants = cva(
         soft_amber:
           "border-amber-100 bg-amber-50 text-amber-700",
         premium:
-          "shimmer-pill border-transparent bg-white text-rose-700",
+          "shimmer-pill border-transparent bg-[var(--color-canvas)] text-rose-700",
       },
       size: {
         sm: "px-2 py-0.5 text-[9px]",

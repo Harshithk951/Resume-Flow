@@ -366,7 +366,7 @@ export default function ProfilePage() {
   // Global Page Loading Screens
   if (!isLoaded || isLoading || isQueryLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <div className="flex min-h-screen items-center justify-center bg-[var(--color-surface-soft)]">
         <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
       </div>
     );
@@ -374,11 +374,11 @@ export default function ProfilePage() {
 
   if (isConvexLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-slate-50 p-6">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-[var(--color-surface-soft)] p-6">
         <Loader2 className="w-8 h-8 animate-spin text-rose-600 mb-4" />
-        <div className="text-center max-w-md bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-          <p className="text-md font-semibold text-slate-800 mb-2">Connecting to Realtime Database...</p>
-          <p className="text-sm text-slate-500">
+        <div className="text-center max-w-md bg-[var(--color-canvas)] p-8 rounded-3xl border border-[var(--color-hairline-soft)] shadow-sm">
+          <p className="text-md font-semibold text-[var(--color-ink-soft)] mb-2">Connecting to Realtime Database...</p>
+          <p className="text-sm text-[var(--color-ash)]">
             If this takes more than a few seconds, verify that you have configured the <strong>"convex" JWT template</strong> in your Clerk Dashboard.
           </p>
         </div>
@@ -389,7 +389,7 @@ export default function ProfilePage() {
   const showSavedView = existingProfile?.extractionStatus === "success" && !isEditing && mode !== "edit";
 
   return (
-    <div className="min-h-full bg-slate-50 text-slate-900 flex flex-col font-sans -m-6 md:-m-8">
+    <div className="min-h-full bg-[var(--color-surface-soft)] text-[var(--color-ink)] flex flex-col font-sans -m-6 md:-m-8">
       <main className="max-w-7xl mx-auto px-6 py-8 md:py-12 flex-1 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-start">
           
@@ -401,11 +401,11 @@ export default function ProfilePage() {
               <>
                 {showSavedView ? (
                   // Saved Profile Viewer
-                  <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-sm flex flex-col gap-8">
-                    <div className="flex justify-between items-start pb-6 border-b border-slate-100">
+                  <div className="bg-[var(--color-canvas)] rounded-3xl border border-[var(--color-hairline-soft)] p-8 shadow-sm flex flex-col gap-8">
+                    <div className="flex justify-between items-start pb-6 border-b border-[var(--color-hairline-soft)]">
                       <div>
-                        <h2 className="text-2xl font-bold text-slate-800">{profile.personalInfo.name || "Master Profile"}</h2>
-                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-500 mt-2">
+                        <h2 className="text-2xl font-bold text-[var(--color-ink-soft)]">{profile.personalInfo.name || "Master Profile"}</h2>
+                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-[var(--color-ash)] mt-2">
                           <span>{profile.personalInfo.email}</span>
                           {profile.personalInfo.phone && (
                             <>
@@ -436,7 +436,7 @@ export default function ProfilePage() {
                           setIsEditing(true);
                           router.push("/profile?mode=edit");
                         }}
-                        className="px-4 py-2 text-xs font-semibold rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 transition-all active:scale-95"
+                        className="px-4 py-2 text-xs font-semibold rounded-xl bg-[var(--color-surface-card)] hover:bg-[var(--color-secondary-bg)] text-[var(--color-ink-soft)] transition-all active:scale-95"
                       >
                         Edit Profile
                       </button>
@@ -446,27 +446,27 @@ export default function ProfilePage() {
                       {/* Left Block: Education & Skills */}
                       <div className="md:col-span-1 flex flex-col gap-6">
                         <div>
-                          <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                          <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-3 flex items-center gap-2">
                             <GraduationCap className="w-4 h-4 text-rose-500" /> Education
                           </h3>
                           <div className="flex flex-col gap-4">
                             {profile.education.map((edu: any, index: number) => (
                               <div key={index} className="text-xs">
-                                <h4 className="font-semibold text-slate-800">{edu.institution}</h4>
-                                <p className="text-slate-500 mt-0.5">{edu.degree}</p>
-                                <p className="text-slate-400 font-medium mt-0.5">
+                                <h4 className="font-semibold text-[var(--color-ink-soft)]">{edu.institution}</h4>
+                                <p className="text-[var(--color-ash)] mt-0.5">{edu.degree}</p>
+                                <p className="text-[var(--color-stone)] font-medium mt-0.5">
                                   {edu.year} {edu.gpa ? `| GPA: ${edu.gpa}` : ""}
                                 </p>
                               </div>
                             ))}
                             {profile.education.length === 0 && (
-                              <span className="text-xs text-slate-400">No education entries added.</span>
+                              <span className="text-xs text-[var(--color-stone)]">No education entries added.</span>
                             )}
                           </div>
                         </div>
 
                         <div>
-                          <h3 className="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2">
+                          <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-3 flex items-center gap-2">
                             <Sparkles className="w-4 h-4 text-rose-500" /> Skills
                           </h3>
                           <div className="flex flex-col gap-3">
@@ -474,14 +474,14 @@ export default function ProfilePage() {
                               if (!value || value.length === 0) return null;
                               return (
                                 <div key={key} className="text-xs">
-                                  <span className="font-semibold text-slate-400 capitalize block mb-1">
+                                  <span className="font-semibold text-[var(--color-stone)] capitalize block mb-1">
                                     {key}
                                   </span>
                                   <div className="flex flex-wrap gap-1.5">
                                     {value.map((skill: string, i: number) => (
                                       <span
                                         key={i}
-                                        className="bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-lg text-slate-700 font-medium"
+                                        className="bg-[var(--color-surface-soft)] border border-[var(--color-hairline-soft)] px-2 py-0.5 rounded-lg text-[var(--color-charcoal)] font-medium"
                                       >
                                         {skill}
                                       </span>
@@ -497,20 +497,20 @@ export default function ProfilePage() {
                       {/* Right Block: Experience & Projects */}
                       <div className="md:col-span-2 flex flex-col gap-6">
                         <div>
-                          <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                          <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-4 flex items-center gap-2">
                             <Briefcase className="w-4 h-4 text-rose-500" /> Experience
                           </h3>
-                          <div className="flex flex-col gap-6 divide-y divide-slate-100">
+                          <div className="flex flex-col gap-6 divide-y divide-[var(--color-hairline-soft)]">
                             {profile.experience.map((exp: any, index: number) => (
                               <div key={index} className="pt-4 first:pt-0 flex flex-col gap-1.5 text-xs">
                                 <div className="flex justify-between items-start">
                                   <div>
-                                    <h4 className="font-bold text-slate-800">{exp.company}</h4>
-                                    <p className="text-slate-500">{exp.role}</p>
+                                    <h4 className="font-bold text-[var(--color-ink-soft)]">{exp.company}</h4>
+                                    <p className="text-[var(--color-ash)]">{exp.role}</p>
                                   </div>
-                                  <span className="text-[10px] text-slate-400 font-semibold">{exp.duration}</span>
+                                  <span className="text-[10px] text-[var(--color-stone)] font-semibold">{exp.duration}</span>
                                 </div>
-                                <ul className="list-disc pl-5 text-slate-600 space-y-1 mt-1">
+                                <ul className="list-disc pl-5 text-[var(--color-mute)] space-y-1 mt-1">
                                   {exp.bullets.map((b: string, i: number) => (
                                     <li key={i}>{b}</li>
                                   ))}
@@ -518,22 +518,22 @@ export default function ProfilePage() {
                               </div>
                             ))}
                             {profile.experience.length === 0 && (
-                              <span className="text-xs text-slate-400">No work experience added.</span>
+                              <span className="text-xs text-[var(--color-stone)]">No work experience added.</span>
                             )}
                           </div>
                         </div>
 
                         <div>
-                          <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                          <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-4 flex items-center gap-2">
                             <Code className="w-4 h-4 text-rose-500" /> Projects
                           </h3>
-                          <div className="flex flex-col gap-6 divide-y divide-slate-100">
+                          <div className="flex flex-col gap-6 divide-y divide-[var(--color-hairline-soft)]">
                             {profile.projects.map((proj: any, index: number) => (
                               <div key={index} className="pt-4 first:pt-0 flex flex-col gap-1.5 text-xs">
                                 <div className="flex justify-between items-start">
                                   <div>
-                                    <h4 className="font-bold text-slate-800">{proj.name}</h4>
-                                    <p className="text-slate-500">{proj.description}</p>
+                                    <h4 className="font-bold text-[var(--color-ink-soft)]">{proj.name}</h4>
+                                    <p className="text-[var(--color-ash)]">{proj.description}</p>
                                   </div>
                                   {proj.link && (
                                     <a href={`https://${proj.link}`} target="_blank" rel="noreferrer" className="text-rose-600 hover:underline font-medium">
@@ -541,7 +541,7 @@ export default function ProfilePage() {
                                     </a>
                                   )}
                                 </div>
-                                <ul className="list-disc pl-5 text-slate-600 space-y-1 mt-1">
+                                <ul className="list-disc pl-5 text-[var(--color-mute)] space-y-1 mt-1">
                                   {proj.bullets.map((b: string, i: number) => (
                                     <li key={i}>{b}</li>
                                   ))}
@@ -549,7 +549,7 @@ export default function ProfilePage() {
                               </div>
                             ))}
                             {profile.projects.length === 0 && (
-                              <span className="text-xs text-slate-400">No projects added.</span>
+                              <span className="text-xs text-[var(--color-stone)]">No projects added.</span>
                             )}
                           </div>
                         </div>
@@ -557,16 +557,16 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Overwrite Drag & Drop block */}
-                    <div className="border-t border-slate-100 pt-6 mt-4">
-                      <h3 className="text-sm font-bold text-slate-800 mb-3">Re-upload & Replace Resume</h3>
+                    <div className="border-t border-[var(--color-hairline-soft)] pt-6 mt-4">
+                      <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-3">Re-upload & Replace Resume</h3>
                       <FileUpload onFileAccepted={handleFileAccepted} isProcessing={isProcessing} />
                     </div>
                   </div>
                 ) : (
                   // Normal First-Time Onboarding drag-and-drop
-                  <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-sm">
-                    <h2 className="text-xl font-bold text-slate-800 mb-2">Upload Master Resume</h2>
-                    <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+                  <div className="bg-[var(--color-canvas)] rounded-3xl border border-[var(--color-hairline-soft)] p-8 shadow-sm">
+                    <h2 className="text-xl font-bold text-[var(--color-ink-soft)] mb-2">Upload Master Resume</h2>
+                    <p className="text-sm text-[var(--color-ash)] mb-6 leading-relaxed">
                       Upload your master resume in PDF or image format. Our AI will automatically
                       extract and organize your details into a structured profile. You will review and
                       verify the fields before saving.
@@ -589,14 +589,14 @@ export default function ProfilePage() {
 
             {/* EXTRACTING State */}
             {engineState === "EXTRACTING" && (
-              <div className="bg-white rounded-3xl border border-slate-100 p-12 shadow-sm flex flex-col items-center justify-center text-center gap-6 min-h-[400px]">
+              <div className="bg-[var(--color-canvas)] rounded-3xl border border-[var(--color-hairline-soft)] p-12 shadow-sm flex flex-col items-center justify-center text-center gap-6 min-h-[400px]">
                 <div className="relative flex items-center justify-center">
                   <div className="absolute w-24 h-24 rounded-full bg-rose-500/20 blur-xl animate-pulse" />
                   <Loader2 className="w-12 h-12 text-rose-600 animate-spin relative z-10" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-800">Processing Master Profile</h3>
-                  <p className="text-sm text-slate-500 mt-2 max-w-sm leading-relaxed">
+                  <h3 className="text-lg font-bold text-[var(--color-ink-soft)]">Processing Master Profile</h3>
+                  <p className="text-sm text-[var(--color-ash)] mt-2 max-w-sm leading-relaxed">
                     Converting text streams and image screenshots into structural JSON layout...
                   </p>
                 </div>
@@ -605,7 +605,7 @@ export default function ProfilePage() {
 
             {/* FAILED State */}
             {engineState === "FAILED" && (
-              <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-sm flex flex-col gap-6">
+              <div className="bg-[var(--color-canvas)] rounded-3xl border border-[var(--color-hairline-soft)] p-8 shadow-sm flex flex-col gap-6">
                 <div className="p-6 rounded-2xl bg-red-50 border border-red-100 flex gap-4 items-start">
                   <div className="p-3 bg-red-100 text-red-600 rounded-xl shrink-0">
                     <AlertTriangle className="w-6 h-6" />
@@ -631,25 +631,25 @@ export default function ProfilePage() {
 
             {/* VERIFYING State (The Form) */}
             {engineState === "VERIFYING" && (
-              <div className="bg-white rounded-3xl border border-slate-100 p-8 shadow-sm flex flex-col">
-                <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+              <div className="bg-[var(--color-canvas)] rounded-3xl border border-[var(--color-hairline-soft)] p-8 shadow-sm flex flex-col">
+                <div className="flex justify-between items-center mb-6 pb-4 border-b border-[var(--color-hairline-soft)]">
                   <div>
-                    <h2 className="text-xl font-bold text-slate-800">Verify Profile Details</h2>
-                    <p className="text-xs text-slate-400 mt-0.5">Human verification checks are required before saving.</p>
+                    <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">Verify Profile Details</h2>
+                    <p className="text-xs text-[var(--color-stone)] mt-0.5">Human verification checks are required before saving.</p>
                   </div>
                   <button
                     onClick={() => {
                       setIsEditing(false);
                       router.push("/profile");
                     }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-100 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-all active:scale-95"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--color-hairline-soft)] bg-[var(--color-surface-soft)] hover:bg-[var(--color-surface-card)] text-[var(--color-mute)] text-xs font-semibold transition-all active:scale-95"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" /> Back
                   </button>
                 </div>
 
                 {/* Tab buttons */}
-                <div className="flex flex-wrap gap-2 pb-4 border-b border-slate-100 mb-6">
+                <div className="flex flex-wrap gap-2 pb-4 border-b border-[var(--color-hairline-soft)] mb-6">
                   {[
                     { id: "contact", label: "Contact", icon: User },
                     { id: "education", label: "Education", icon: GraduationCap },
@@ -667,7 +667,7 @@ export default function ProfilePage() {
                         className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl border transition-all ${
                           isActive
                             ? "bg-rose-50 border-rose-200 text-rose-700 shadow-sm"
-                            : "bg-white border-slate-100 text-slate-600 hover:bg-slate-50"
+                            : "bg-[var(--color-canvas)] border-[var(--color-hairline-soft)] text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)]"
                         }`}
                       >
                         <Icon className="w-3.5 h-3.5" />
@@ -685,60 +685,60 @@ export default function ProfilePage() {
                     <div className="flex flex-col gap-5">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Full Name</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Full Name</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.personalInfo.name || ""}
                             onChange={(e) => handlePersonalChange("name", e.target.value)}
                             placeholder="John Doe"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Email Address</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Email Address</label>
                           <input
                             type="email"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.personalInfo.email || ""}
                             onChange={(e) => handlePersonalChange("email", e.target.value)}
                             placeholder="john@example.com"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Phone Number</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Phone Number</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.personalInfo.phone || ""}
                             onChange={(e) => handlePersonalChange("phone", e.target.value)}
                             placeholder="+91 9876543210"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">LinkedIn Profile (Optional)</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">LinkedIn Profile (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.personalInfo.linkedin || ""}
                             onChange={(e) => handlePersonalChange("linkedin", e.target.value)}
                             placeholder="linkedin.com/in/johndoe"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">GitHub Profile (Optional)</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">GitHub Profile (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.personalInfo.github || ""}
                             onChange={(e) => handlePersonalChange("github", e.target.value)}
                             placeholder="github.com/johndoe"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Portfolio Link (Optional)</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Portfolio Link (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.personalInfo.portfolio || ""}
                             onChange={(e) => handlePersonalChange("portfolio", e.target.value)}
                             placeholder="johndoe.dev"
@@ -752,7 +752,7 @@ export default function ProfilePage() {
                   {activeSection === "education" && (
                     <div className="flex flex-col gap-5">
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-bold text-slate-500 uppercase">Degree History</span>
+                        <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Degree History</span>
                         <button
                           onClick={addEducation}
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
@@ -761,11 +761,11 @@ export default function ProfilePage() {
                         </button>
                       </div>
 
-                      <div className="flex flex-col gap-6 divide-y divide-slate-100">
+                      <div className="flex flex-col gap-6 divide-y divide-[var(--color-hairline-soft)]">
                         {profile.education.map((edu: any, index: number) => (
                           <div key={index} className="pt-6 first:pt-0 flex flex-col gap-4">
                             <div className="flex justify-between items-center">
-                              <h3 className="text-xs font-bold text-slate-400">Entry #{index + 1}</h3>
+                              <h3 className="text-xs font-bold text-[var(--color-stone)]">Entry #{index + 1}</h3>
                               <button
                                 onClick={() => removeEducation(index)}
                                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-red-50 text-red-600 hover:text-red-700 text-xs font-semibold transition-all"
@@ -776,10 +776,10 @@ export default function ProfilePage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Institution</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Institution</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={edu.institution || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -790,10 +790,10 @@ export default function ProfilePage() {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Degree / Branch</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Degree / Branch</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={edu.degree || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -804,10 +804,10 @@ export default function ProfilePage() {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">GPA / CGPA (Optional)</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">GPA / CGPA (Optional)</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={edu.gpa || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -818,10 +818,10 @@ export default function ProfilePage() {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Graduation Year</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Graduation Year</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={edu.year || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -836,7 +836,7 @@ export default function ProfilePage() {
                         ))}
 
                         {profile.education.length === 0 && (
-                          <div className="text-center py-8 text-slate-400 text-sm">
+                          <div className="text-center py-8 text-[var(--color-stone)] text-sm">
                             No education records added yet. Click Add to insert one.
                           </div>
                         )}
@@ -848,7 +848,7 @@ export default function ProfilePage() {
                   {activeSection === "experience" && (
                     <div className="flex flex-col gap-5">
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-bold text-slate-500 uppercase">Employment Timeline</span>
+                        <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Employment Timeline</span>
                         <button
                           onClick={addExperience}
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
@@ -857,11 +857,11 @@ export default function ProfilePage() {
                         </button>
                       </div>
 
-                      <div className="flex flex-col gap-8 divide-y divide-slate-100">
+                      <div className="flex flex-col gap-8 divide-y divide-[var(--color-hairline-soft)]">
                         {profile.experience.map((exp: any, index: number) => (
                           <div key={index} className="pt-6 first:pt-0 flex flex-col gap-4">
                             <div className="flex justify-between items-center">
-                              <h3 className="text-xs font-bold text-slate-400">Job Entry #{index + 1}</h3>
+                              <h3 className="text-xs font-bold text-[var(--color-stone)]">Job Entry #{index + 1}</h3>
                               <button
                                 onClick={() => removeExperience(index)}
                                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-red-50 text-red-600 hover:text-red-700 text-xs font-semibold transition-all"
@@ -872,10 +872,10 @@ export default function ProfilePage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Company</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Company</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={exp.company || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -886,10 +886,10 @@ export default function ProfilePage() {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Role Title</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Role Title</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={exp.role || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -900,10 +900,10 @@ export default function ProfilePage() {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Duration</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Duration</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={exp.duration || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -916,10 +916,10 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="flex flex-col">
-                              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Technologies Used (comma separated)</label>
+                              <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Technologies Used (comma separated)</label>
                               <input
                                 type="text"
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                 value={exp.technologies ? exp.technologies.join(", ") : ""}
                                 onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -933,7 +933,7 @@ export default function ProfilePage() {
                             {/* Bullets List */}
                             <div className="flex flex-col gap-3">
                               <div className="flex justify-between items-center">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Job Bullet Points</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block">Job Bullet Points</label>
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -952,7 +952,7 @@ export default function ProfilePage() {
                                   <div key={bIndex} className="flex gap-2">
                                     <input
                                       type="text"
-                                      className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                      className="flex-1 px-4 py-2.5 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                       value={bullet}
                                       onChange={(e) => {
                                         const updated = [...profile.experience];
@@ -980,7 +980,7 @@ export default function ProfilePage() {
                         ))}
 
                         {profile.experience.length === 0 && (
-                          <div className="text-center py-8 text-slate-400 text-sm">
+                          <div className="text-center py-8 text-[var(--color-stone)] text-sm">
                             No experience entries added. Click Add to insert one.
                           </div>
                         )}
@@ -992,7 +992,7 @@ export default function ProfilePage() {
                   {activeSection === "projects" && (
                     <div className="flex flex-col gap-5">
                       <div className="flex justify-between items-center">
-                        <span className="text-xs font-bold text-slate-500 uppercase">Independent Projects</span>
+                        <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Independent Projects</span>
                         <button
                           onClick={addProject}
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
@@ -1001,11 +1001,11 @@ export default function ProfilePage() {
                         </button>
                       </div>
 
-                      <div className="flex flex-col gap-8 divide-y divide-slate-100">
+                      <div className="flex flex-col gap-8 divide-y divide-[var(--color-hairline-soft)]">
                         {profile.projects.map((proj: any, index: number) => (
                           <div key={index} className="pt-6 first:pt-0 flex flex-col gap-4">
                             <div className="flex justify-between items-center">
-                              <h3 className="text-xs font-bold text-slate-400">Project #{index + 1}</h3>
+                              <h3 className="text-xs font-bold text-[var(--color-stone)]">Project #{index + 1}</h3>
                               <button
                                 onClick={() => removeProject(index)}
                                 className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg hover:bg-red-50 text-red-600 hover:text-red-700 text-xs font-semibold transition-all"
@@ -1016,10 +1016,10 @@ export default function ProfilePage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Project Name</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Project Name</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={proj.name || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.projects];
@@ -1030,10 +1030,10 @@ export default function ProfilePage() {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Project Link (Optional)</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Project Link (Optional)</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={proj.link || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.projects];
@@ -1046,10 +1046,10 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="flex flex-col">
-                              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Short Description</label>
+                              <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Short Description</label>
                               <input
                                 type="text"
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                 value={proj.description || ""}
                                 onChange={(e) => {
                                   const updated = [...profile.projects];
@@ -1061,10 +1061,10 @@ export default function ProfilePage() {
                             </div>
 
                             <div className="flex flex-col">
-                              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Technologies Used (comma separated)</label>
+                              <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Technologies Used (comma separated)</label>
                               <input
                                 type="text"
-                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                 value={proj.technologies ? proj.technologies.join(", ") : ""}
                                 onChange={(e) => {
                                   const updated = [...profile.projects];
@@ -1077,7 +1077,7 @@ export default function ProfilePage() {
 
                             <div className="flex flex-col gap-3">
                               <div className="flex justify-between items-center">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Project Details / Bullets</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block">Project Details / Bullets</label>
                                 <button
                                   type="button"
                                   onClick={() => {
@@ -1096,7 +1096,7 @@ export default function ProfilePage() {
                                   <div key={bIndex} className="flex gap-2">
                                     <input
                                       type="text"
-                                      className="flex-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                      className="flex-1 px-4 py-2.5 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                       value={bullet}
                                       onChange={(e) => {
                                         const updated = [...profile.projects];
@@ -1124,7 +1124,7 @@ export default function ProfilePage() {
                         ))}
 
                         {profile.projects.length === 0 && (
-                          <div className="text-center py-8 text-slate-400 text-sm">
+                          <div className="text-center py-8 text-[var(--color-stone)] text-sm">
                             No project entries added. Click Add to insert one.
                           </div>
                         )}
@@ -1135,54 +1135,54 @@ export default function ProfilePage() {
                   {/* SKILLS Tab */}
                   {activeSection === "skills" && (
                     <div className="flex flex-col gap-5">
-                      <span className="text-xs font-bold text-slate-500 uppercase block">Skills Matrix (comma-separated values)</span>
+                      <span className="text-xs font-bold text-[var(--color-ash)] uppercase block">Skills Matrix (comma-separated values)</span>
                       
                       <div className="flex flex-col gap-4">
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Languages</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Languages</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.skills.languages ? profile.skills.languages.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("languages", e.target.value)}
                             placeholder="C++, Python, JavaScript, TypeScript"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Frameworks & Libraries</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Frameworks & Libraries</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.skills.frameworks ? profile.skills.frameworks.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("frameworks", e.target.value)}
                             placeholder="React, Next.js, PyTorch, Node.js"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Tools & Clouds</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Tools & Clouds</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.skills.tools ? profile.skills.tools.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("tools", e.target.value)}
                             placeholder="Git, Docker, Kubernetes, AWS"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Databases & Cache (Optional)</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Databases & Cache (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.skills.databases ? profile.skills.databases.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("databases", e.target.value)}
                             placeholder="PostgreSQL, MongoDB, Redis"
                           />
                         </div>
                         <div className="flex flex-col">
-                          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Soft Skills / Domains (Optional)</label>
+                          <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Soft Skills / Domains (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                             value={profile.skills.soft ? profile.skills.soft.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("soft", e.target.value)}
                             placeholder="System Design, Agile, Communication"
@@ -1199,7 +1199,7 @@ export default function ProfilePage() {
                       {/* Certifications Block */}
                       <div className="flex flex-col gap-4">
                         <div className="flex justify-between items-center">
-                          <span className="text-xs font-bold text-slate-500 uppercase">Certifications</span>
+                          <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Certifications</span>
                           <button
                             onClick={addCertification}
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
@@ -1208,14 +1208,14 @@ export default function ProfilePage() {
                           </button>
                         </div>
 
-                        <div className="flex flex-col gap-4 divide-y divide-slate-100">
+                        <div className="flex flex-col gap-4 divide-y divide-[var(--color-hairline-soft)]">
                           {(profile.certifications || []).map((cert: any, index: number) => (
                             <div key={index} className="pt-4 first:pt-0 grid grid-cols-1 md:grid-cols-3 gap-4">
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Name</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Name</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={cert.name || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.certifications];
@@ -1226,10 +1226,10 @@ export default function ProfilePage() {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Issuer</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Issuer</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={cert.issuer || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.certifications];
@@ -1241,7 +1241,7 @@ export default function ProfilePage() {
                               </div>
                               <div className="flex flex-col">
                                 <div className="flex justify-between items-center mb-1.5">
-                                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Year</label>
+                                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block">Year</label>
                                   <button
                                     onClick={() => removeCertification(index)}
                                     className="text-red-500 hover:text-red-600 text-xs font-semibold"
@@ -1251,7 +1251,7 @@ export default function ProfilePage() {
                                 </div>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={cert.year || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.certifications];
@@ -1267,9 +1267,9 @@ export default function ProfilePage() {
                       </div>
 
                       {/* Achievements Block */}
-                      <div className="flex flex-col gap-4 border-t border-slate-100 pt-6 mt-2">
+                      <div className="flex flex-col gap-4 border-t border-[var(--color-hairline-soft)] pt-6 mt-2">
                         <div className="flex justify-between items-center">
-                          <span className="text-xs font-bold text-slate-500 uppercase">Achievements & Honors</span>
+                          <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Achievements & Honors</span>
                           <button
                             onClick={addAchievement}
                             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
@@ -1278,14 +1278,14 @@ export default function ProfilePage() {
                           </button>
                         </div>
 
-                        <div className="flex flex-col gap-4 divide-y divide-slate-100">
+                        <div className="flex flex-col gap-4 divide-y divide-[var(--color-hairline-soft)]">
                           {(profile.achievements || []).map((ach: any, index: number) => (
                             <div key={index} className="pt-4 first:pt-0 grid grid-cols-1 md:grid-cols-3 gap-4">
                               <div className="md:col-span-2 flex flex-col">
-                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-1.5">Description</label>
+                                <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Description</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={ach.description || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.achievements];
@@ -1297,7 +1297,7 @@ export default function ProfilePage() {
                               </div>
                               <div className="flex flex-col">
                                 <div className="flex justify-between items-center mb-1.5">
-                                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Year (Optional)</label>
+                                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block">Year (Optional)</label>
                                   <button
                                     onClick={() => removeAchievement(index)}
                                     className="text-red-500 hover:text-red-600 text-xs font-semibold"
@@ -1307,7 +1307,7 @@ export default function ProfilePage() {
                                 </div>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
                                   value={ach.year || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.achievements];
@@ -1334,13 +1334,13 @@ export default function ProfilePage() {
                 )}
 
                 {/* Confirm and Save button */}
-                <div className="border-t border-slate-100 pt-6 mt-8 flex justify-end gap-3">
+                <div className="border-t border-[var(--color-hairline-soft)] pt-6 mt-8 flex justify-end gap-3">
                   <button
                     onClick={() => {
                       setIsEditing(false);
                       router.push("/profile");
                     }}
-                    className="px-5 py-2.5 text-xs font-semibold rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors"
+                    className="px-5 py-2.5 text-xs font-semibold rounded-xl border border-[var(--color-hairline)] text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)] transition-colors"
                   >
                     Cancel
                   </button>
@@ -1366,8 +1366,8 @@ export default function ProfilePage() {
 
           {/* Right Column: Glassmorphic Education & Engine info card (40% Width) */}
           <div className="lg:col-span-4 flex flex-col gap-6">
-            <div className="bg-white/85 backdrop-blur-md border border-slate-100 rounded-3xl p-6 shadow-sm flex flex-col gap-6 sticky top-24">
-              <h3 className="text-lg font-bold text-slate-800 tracking-tight">AI Ingestion Details</h3>
+            <div className="bg-white/85 backdrop-blur-md border border-[var(--color-hairline-soft)] rounded-3xl p-6 shadow-sm flex flex-col gap-6 sticky top-24">
+              <h3 className="text-lg font-bold text-[var(--color-ink-soft)] tracking-tight">AI Ingestion Details</h3>
               
               <div className="flex flex-col gap-6">
                 <div className="flex gap-4 items-start">
@@ -1375,8 +1375,8 @@ export default function ProfilePage() {
                     <BookOpen className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-800">1. Deep Multimodal Ingestion</h4>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    <h4 className="text-sm font-semibold text-[var(--color-ink-soft)]">1. Deep Multimodal Ingestion</h4>
+                    <p className="text-xs text-[var(--color-ash)] mt-1 leading-relaxed">
                       Our parsing pipeline processes PDF documents, Word files, and image screenshots, transforming complex formatting grids and text streams into structured, machine-readable JSON data using NVIDIA Qwen 3.5 NIM.
                     </p>
                   </div>
@@ -1387,8 +1387,8 @@ export default function ProfilePage() {
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-800">2. Client-Side PII Masking</h4>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    <h4 className="text-sm font-semibold text-[var(--color-ink-soft)]">2. Client-Side PII Masking</h4>
+                    <p className="text-xs text-[var(--color-ash)] mt-1 leading-relaxed">
                       Security is built into our core. Contact details are automatically masked server-side using secure hashes before transferring documents to external AI pipelines, keeping your PII fully protected.
                     </p>
                   </div>
@@ -1399,8 +1399,8 @@ export default function ProfilePage() {
                     <ClipboardCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-slate-800">3. Mandatory Human Verification</h4>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    <h4 className="text-sm font-semibold text-[var(--color-ink-soft)]">3. Mandatory Human Verification</h4>
+                    <p className="text-xs text-[var(--color-ash)] mt-1 leading-relaxed">
                       AI parsing is highly accurate but not infallible. You must review the populated fields in the Tabbed verification form to ensure that formatting, names, and metrics are correct before finalized database writes.
                     </p>
                   </div>

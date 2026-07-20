@@ -69,16 +69,16 @@ export function SkillGapQuestionnaire({
 
   return (
     <div className="space-y-6 mt-6">
-      <h3 className="font-bold text-slate-800 text-sm tracking-tight border-b pb-2">
+      <h3 className="font-bold text-[var(--color-ink-soft)] text-sm tracking-tight border-b pb-2">
         Confirm Skill Gaps
       </h3>
       <div className="space-y-4">
         {answers.map((q, idx) => (
           <div
             key={q.skill}
-            className="bg-slate-50 border border-slate-200/50 p-4 rounded-2xl space-y-3"
+            className="bg-[var(--color-surface-soft)] border border-[var(--color-hairline)]/50 p-4 rounded-2xl space-y-3"
           >
-            <p className="text-xs text-slate-600 leading-relaxed font-medium">
+            <p className="text-xs text-[var(--color-mute)] leading-relaxed font-medium">
               {q.question}
             </p>
 
@@ -89,7 +89,7 @@ export function SkillGapQuestionnaire({
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                   q.hasSkill
                     ? "bg-green-50 border-green-200 text-green-700"
-                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                    : "bg-[var(--color-canvas)] border-[var(--color-hairline)] text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)]"
                 }`}
               >
                 Yes, I have this skill
@@ -100,7 +100,7 @@ export function SkillGapQuestionnaire({
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                   !q.hasSkill
                     ? "bg-rose-50 border-rose-200 text-rose-700"
-                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                    : "bg-[var(--color-canvas)] border-[var(--color-hairline)] text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)]"
                 }`}
               >
                 No
@@ -120,7 +120,7 @@ export function SkillGapQuestionnaire({
                 value={q.userResponse}
                 onChange={(e) => handleResponseChange(idx, e.target.value)}
                 placeholder="How did you use this skill? (e.g. 'Used it for 2 years at TechCorp')"
-                className="w-full mt-2 p-3 text-xs border border-slate-200 rounded-xl focus:outline-none focus:border-rose-500 bg-white"
+                className="w-full mt-2 p-3 text-xs border border-[var(--color-hairline)] rounded-xl focus:outline-none focus:border-rose-500 bg-[var(--color-canvas)]"
                 rows={3}
               />
             </motion.div>

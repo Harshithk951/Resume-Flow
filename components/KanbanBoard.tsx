@@ -143,20 +143,20 @@ export function KanbanBoard({
         return (
           <div
             key={col.key}
-            className={`rounded-2xl border border-slate-300 ${col.lightBg} p-4 min-h-[300px] snap-start min-w-[280px] md:min-w-0`}
+            className={`rounded-2xl border border-[var(--color-secondary-bg)] ${col.lightBg} p-4 min-h-[300px] snap-start min-w-[280px] md:min-w-0`}
           >
             {/* Column Header */}
             <div className="flex items-center justify-between mb-4 px-1 sticky top-0 z-10 bg-inherit py-1">
               <div className="flex items-center gap-2">
                 <div className={`w-2 h-2 rounded-full ${col.accent}`} />
                 <div>
-                  <h3 className="font-bold text-sm text-slate-800">{col.label}</h3>
-                  <p className="text-[10px] text-slate-400 leading-none mt-0.5">
+                  <h3 className="font-bold text-sm text-[var(--color-ink-soft)]">{col.label}</h3>
+                  <p className="text-[10px] text-[var(--color-stone)] leading-none mt-0.5">
                     {col.description}
                   </p>
                 </div>
               </div>
-              <span className="text-xs font-bold bg-white border border-slate-200 px-2 py-0.5 rounded-lg text-slate-600 shadow-sm">
+              <span className="text-xs font-bold bg-[var(--color-canvas)] border border-[var(--color-hairline)] px-2 py-0.5 rounded-lg text-[var(--color-mute)] shadow-sm">
                 {columnJobs.length}
               </span>
             </div>
@@ -179,21 +179,21 @@ export function KanbanBoard({
                       transition={{ type: "spring", stiffness: 200, damping: 20 }}
                     >
                       <Link href={`/company/${job._id}`} className="block">
-                        <Card className="hover:shadow-md border-slate-200/80 transition-all duration-200 group bg-white">
+                        <Card className="hover:shadow-md border-[var(--color-hairline)]/80 transition-all duration-200 group bg-[var(--color-canvas)]">
                           <CardContent className="p-4">
                             <div className="flex items-start justify-between mb-2">
                               <div className="min-w-0 flex-1">
                                 <span className="text-[10px] font-bold text-rose-600 uppercase tracking-wider block truncate">
                                   {job.companyName}
                                 </span>
-                                <h4 className="font-bold text-sm text-slate-800 tracking-tight truncate mt-0.5 group-hover:text-rose-600 transition-colors">
+                                <h4 className="font-bold text-sm text-[var(--color-ink-soft)] tracking-tight truncate mt-0.5 group-hover:text-rose-600 transition-colors">
                                   {job.jobTitle}
                                 </h4>
-                                <span className="text-[9px] text-slate-400 block mt-0.5">
+                                <span className="text-[9px] text-[var(--color-stone)] block mt-0.5">
                                   {timeAgo(job._creationTime)}
                                 </span>
                               </div>
-                              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform shrink-0 ml-2" />
+                              <ChevronRight className="w-4 h-4 text-[var(--color-stone)] group-hover:translate-x-0.5 transition-transform shrink-0 ml-2" />
                             </div>
 
                             {/* Enriched badges for completed cards */}
@@ -237,7 +237,7 @@ export function KanbanBoard({
                                       console.error("Retry failed:", err);
                                     }
                                   }}
-                                  className="mt-1.5 flex items-center gap-1 text-[9px] font-bold text-rose-600 hover:text-rose-700 transition-colors bg-white hover:bg-rose-50 px-2 py-1 rounded-md border border-slate-200 shadow-sm"
+                                  className="mt-1.5 flex items-center gap-1 text-[9px] font-bold text-rose-600 hover:text-rose-700 transition-colors bg-[var(--color-canvas)] hover:bg-rose-50 px-2 py-1 rounded-md border border-[var(--color-hairline)] shadow-sm"
                                 >
                                   <RotateCcw className="w-2.5 h-2.5" />
                                   <span>Retry Ingestion</span>
@@ -245,8 +245,8 @@ export function KanbanBoard({
                               </div>
                             )}
 
-                            <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-100">
-                              <span className="text-[10px] text-slate-500 font-medium">
+                            <div className="flex items-center justify-between mt-3 pt-2 border-t border-[var(--color-hairline-soft)]">
+                              <span className="text-[10px] text-[var(--color-ash)] font-medium">
                                 {statusLabel(job.pipelineState)}
                               </span>
                               {isCompleted ? (

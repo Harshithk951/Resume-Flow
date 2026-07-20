@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import "./globals.css";
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
@@ -204,7 +205,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`scroll-smooth ${jakartaSans.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
+    <html lang="en" suppressHydrationWarning className={`scroll-smooth ${jakartaSans.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
       <body className={`min-h-screen antialiased ${jakartaSans.className}`}>
         {/* ─── JSON-LD Structured Data ──────── */}
         <script
@@ -232,9 +233,11 @@ export default function RootLayout({
         <Analytics />
 
         <ConvexClerkProvider>
-          <HydrationProtectionGuard>
-              {children}
-          </HydrationProtectionGuard>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <HydrationProtectionGuard>
+                {children}
+            </HydrationProtectionGuard>
+          </ThemeProvider>
         </ConvexClerkProvider>
       </body>
     </html>

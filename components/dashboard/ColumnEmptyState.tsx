@@ -34,14 +34,14 @@ export function ColumnEmptyState({ columnKey, onAddJob }: ColumnEmptyStateProps)
   const Icon = current.icon;
 
   return (
-    <div className="flex flex-col items-center justify-center py-10 px-4 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50/30">
-      <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center mb-3">
-        <Icon className="w-5 h-5 text-slate-400" />
+    <div className="flex flex-col items-center justify-center py-10 px-4 text-center border border-dashed border-[var(--color-secondary-bg)] rounded-2xl bg-[var(--color-surface-soft)]/30">
+      <div className="w-10 h-10 rounded-xl bg-[var(--color-surface-card)] flex items-center justify-center mb-3">
+        <Icon className="w-5 h-5 text-[var(--color-stone)]" />
       </div>
-      <span className="text-xs font-bold text-slate-700 block">
+      <span className="text-xs font-bold text-[var(--color-charcoal)] block">
         {current.title}
       </span>
-      <span className="text-[10px] text-slate-400 mt-1 block">
+      <span className="text-[10px] text-[var(--color-stone)] mt-1 block">
         {current.subtitle}
       </span>
       {current.actionLabel && onAddJob && (

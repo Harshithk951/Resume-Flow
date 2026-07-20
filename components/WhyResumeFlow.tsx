@@ -176,7 +176,7 @@ function getCellContent(value: string): React.ReactNode {
     return (
       <span className="inline-flex items-center gap-1.5">
         <DashIcon />
-        <span className="text-slate-400">{value}</span>
+        <span className="text-[var(--color-stone)]">{value}</span>
       </span>
     );
   }
@@ -184,7 +184,7 @@ function getCellContent(value: string): React.ReactNode {
     return (
       <span className="inline-flex items-center gap-1.5">
         <CrossIcon />
-        <span className="text-slate-400">{value}</span>
+        <span className="text-[var(--color-stone)]">{value}</span>
       </span>
     );
   }
@@ -228,19 +228,19 @@ export function WhyResumeFlow() {
 
           <motion.h2
             variants={scrollRevealUp}
-            className="font-display text-3xl md:text-5xl lg:text-[52px] font-extrabold text-slate-900 tracking-[-0.02em] mb-6 leading-[1.1]"
+            className="font-display text-3xl md:text-5xl lg:text-[52px] font-extrabold text-[var(--color-ink)] tracking-[-0.02em] mb-6 leading-[1.1]"
           >
             The Best Free AI Resume Generator
           </motion.h2>
 
           <motion.p
             variants={scrollRevealUp}
-            className="text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
+            className="text-[var(--color-ash)] text-lg md:text-xl leading-relaxed max-w-2xl mx-auto"
           >
             Most resume builders compromise on privacy, charge for basic features, or produce ATS-unfriendly PDFs.
             ResumeFlow is different — precision-engineered for both{" "}
-            <span className="text-slate-800 font-semibold">human recruiters</span> and{" "}
-            <span className="text-slate-800 font-semibold">automated tracking systems</span>.
+            <span className="text-[var(--color-ink-soft)] font-semibold">human recruiters</span> and{" "}
+            <span className="text-[var(--color-ink-soft)] font-semibold">automated tracking systems</span>.
             And your data{" "}
             <span className="text-rose-600 font-semibold">never leaves your browser</span>.
           </motion.p>
@@ -257,9 +257,9 @@ export function WhyResumeFlow() {
           <div className="absolute -inset-1 bg-gradient-to-b from-rose-100/60 via-transparent to-transparent rounded-[2.5rem] blur-xl -z-10" />
 
           {/* Main card */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-[2rem] border border-slate-200/60 shadow-sm overflow-hidden">
+          <div className="bg-white/80 backdrop-blur-sm rounded-[2rem] border border-[var(--color-hairline)]/60 shadow-sm overflow-hidden">
             {/* Mobile: card-style comparison */}
-            <div className="block lg:hidden divide-y divide-slate-100">
+            <div className="block lg:hidden divide-y divide-[var(--color-hairline-soft)]">
               {COMPARISON_ROWS.map((row, rowIdx) => (
                 <motion.div
                   key={row.feature}
@@ -267,12 +267,12 @@ export function WhyResumeFlow() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: rowIdx * 0.04, ease: EASE_VANGUARD }}
-                  className="p-4 hover:bg-slate-50/50 transition-colors"
+                  className="p-4 hover:bg-[var(--color-surface-soft)]/50 transition-colors"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <span className="font-bold text-slate-900 text-sm">{row.feature}</span>
-                      <p className="text-[11px] text-slate-400 mt-0.5">{row.description}</p>
+                      <span className="font-bold text-[var(--color-ink)] text-sm">{row.feature}</span>
+                      <p className="text-[11px] text-[var(--color-stone)] mt-0.5">{row.description}</p>
                     </div>
                     {row.winnerIndex === 0 && (
                       <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
@@ -288,13 +288,13 @@ export function WhyResumeFlow() {
                         className={`flex items-center gap-2 text-xs py-1.5 px-2.5 rounded-lg ${
                           colIdx === 0
                             ? "bg-rose-50/70 ring-1 ring-rose-200/40"
-                            : "bg-slate-50/50"
+                            : "bg-[var(--color-surface-soft)]/50"
                         }`}
                       >
-                        <span className="text-[10px] font-bold uppercase text-slate-400 w-5 shrink-0">
+                        <span className="text-[10px] font-bold uppercase text-[var(--color-stone)] w-5 shrink-0">
                           {COLUMN_ABBREVS[colIdx]}
                         </span>
-                        <span className={colIdx === 0 ? "text-rose-700 font-semibold" : "text-slate-500"}>
+                        <span className={colIdx === 0 ? "text-rose-700 font-semibold" : "text-[var(--color-ash)]"}>
                           {val}
                         </span>
                       </div>
@@ -310,7 +310,7 @@ export function WhyResumeFlow() {
                 <thead>
                   <tr>
                     <th className="text-left p-5 pl-8 w-[220px]">
-                      <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
+                      <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-[var(--color-stone)]">
                         Feature
                       </span>
                     </th>
@@ -320,7 +320,7 @@ export function WhyResumeFlow() {
                         className={`p-5 text-center text-sm font-bold ${
                           idx === 0
                             ? "text-rose-600 bg-gradient-to-b from-rose-50/80 to-transparent"
-                            : "text-slate-400"
+                            : "text-[var(--color-stone)]"
                         }`}
                       >
                         <span className="inline-flex items-center gap-1.5">
@@ -346,17 +346,17 @@ export function WhyResumeFlow() {
                         viewport={{ once: true }}
                         transition={{ delay: rowIdx * 0.05, ease: EASE_VANGUARD }}
                         className={`group cursor-default transition-colors ${
-                          isLast ? "" : "border-b border-slate-100"
-                        } hover:bg-slate-50/80`}
+                          isLast ? "" : "border-b border-[var(--color-hairline-soft)]"
+                        } hover:bg-[var(--color-surface-soft)]/80`}
                       >
                         <td className="p-5 pl-8">
                           <div className="flex items-start gap-3">
                             <div>
-                              <span className="font-bold text-slate-800 text-sm">
+                              <span className="font-bold text-[var(--color-ink-soft)] text-sm">
                                 {row.feature}
                                 {row.winnerIndex === 0 && <SparkleIndicator />}
                               </span>
-                              <p className="text-[11px] text-slate-400 mt-0.5">
+                              <p className="text-[11px] text-[var(--color-stone)] mt-0.5">
                                 {row.description}
                               </p>
                             </div>
@@ -368,7 +368,7 @@ export function WhyResumeFlow() {
                             className={`p-5 text-center text-xs ${
                               colIdx === 0
                                 ? "bg-gradient-to-r from-rose-50/40 via-rose-50/20 to-transparent font-semibold text-rose-700"
-                                : "text-slate-500"
+                                : "text-[var(--color-ash)]"
                             }`}
                           >
                             <div className="inline-flex items-center justify-center gap-1.5">
@@ -393,7 +393,7 @@ export function WhyResumeFlow() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.6 }}
-            className="text-[11px] text-slate-400 mt-3 text-center"
+            className="text-[11px] text-[var(--color-stone)] mt-3 text-center"
           >
             * AI Assistant includes 50 messages daily on the free tier. Comparisons based on publicly available
             information as of July 2026.
@@ -418,7 +418,7 @@ export function WhyResumeFlow() {
               <div className="absolute -inset-2 bg-gradient-to-br from-white/40 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl -z-10" />
 
               {/* Card */}
-              <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/50 p-5 lg:p-6 text-center transition-all duration-300 hover:border-slate-300/60 hover:shadow-lg hover:-translate-y-1 h-full flex flex-col items-center justify-center">
+              <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-[var(--color-hairline)]/50 p-5 lg:p-6 text-center transition-all duration-300 hover:border-[var(--color-secondary-bg)]/60 hover:shadow-lg hover:-translate-y-1 h-full flex flex-col items-center justify-center">
                 {/* Icon */}
                 <div
                   className={`mx-auto mb-4 w-10 h-10 lg:w-12 lg:h-12 rounded-xl bg-gradient-to-br ${stat.gradient} flex items-center justify-center text-white shadow-lg`}
@@ -427,7 +427,7 @@ export function WhyResumeFlow() {
                 </div>
 
                 {/* Animated Value */}
-                <p className="text-2xl lg:text-3xl font-extrabold text-slate-900 font-display tracking-tight mb-1">
+                <p className="text-2xl lg:text-3xl font-extrabold text-[var(--color-ink)] font-display tracking-tight mb-1">
                   {stat.value > 0 || stat.prefix?.includes("Z") ? (
                     <AnimatedCounter
                       to={stat.value}
@@ -444,8 +444,8 @@ export function WhyResumeFlow() {
                 </p>
 
                 {/* Label */}
-                <p className="text-sm font-bold text-slate-700 mb-0.5">{stat.label}</p>
-                <p className="text-[11px] text-slate-400">{stat.description}</p>
+                <p className="text-sm font-bold text-[var(--color-charcoal)] mb-0.5">{stat.label}</p>
+                <p className="text-[11px] text-[var(--color-stone)]">{stat.description}</p>
               </div>
             </motion.div>
           ))}

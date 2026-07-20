@@ -55,15 +55,15 @@ export default function TemplateSelectTab({
     <div className="space-y-6">
       {/* SPACING PRESET — Simplified to single option */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
-          <FileText className="w-3.5 h-3.5 text-slate-400" />
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-stone)] mb-3 flex items-center gap-1.5">
+          <FileText className="w-3.5 h-3.5 text-[var(--color-stone)]" />
           Layout & Spacing
         </p>
-        <div className="bg-slate-100/80 rounded-2xl p-3 border border-slate-200/40">
+        <div className="bg-[var(--color-surface-card)]/80 rounded-2xl p-3 border border-[var(--color-hairline)]/40">
           <div className="flex items-center justify-between">
             <div>
-              <span className="text-xs font-bold text-slate-700">Compact (Standard)</span>
-              <p className="text-[10px] text-slate-400 mt-0.5">Single-column · 0.5in margins · 10pt type · Tight section spacing</p>
+              <span className="text-xs font-bold text-[var(--color-charcoal)]">Compact (Standard)</span>
+              <p className="text-[10px] text-[var(--color-stone)] mt-0.5">Single-column · 0.5in margins · 10pt type · Tight section spacing</p>
             </div>
             <span className="h-5 px-2 rounded-full bg-rose-100 text-rose-700 text-[9px] font-bold flex items-center">Default</span>
           </div>
@@ -72,7 +72,7 @@ export default function TemplateSelectTab({
 
       {/* TEMPLATE LIST */}
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3">
+        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-stone)] mb-3">
           Select Template
         </p>
         <div className="grid grid-cols-1 gap-3.5">
@@ -84,17 +84,17 @@ export default function TemplateSelectTab({
                 key={tpl.id}
                 type="button"
                 onClick={() => onSelectTemplate(tpl.id)}
-                className={`group relative flex items-start gap-4 p-4 rounded-2xl border text-left transition-all duration-200 bg-white ${
+                className={`group relative flex items-start gap-4 p-4 rounded-2xl border text-left transition-all duration-200 bg-[var(--color-canvas)] ${
                   selected
                     ? "border-rose-500/80 ring-2 ring-rose-500/10 shadow-md shadow-rose-500/5 bg-gradient-to-br from-white to-rose-50/10"
-                    : "border-slate-200/80 hover:border-slate-300 hover:shadow-sm"
+                    : "border-[var(--color-hairline)]/80 hover:border-[var(--color-secondary-bg)] hover:shadow-sm"
                 }`}
               >
                 <div
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-all ${
                     selected
                       ? "bg-rose-50 border-rose-200 text-rose-600"
-                      : "bg-slate-50 border-slate-100 text-slate-400 group-hover:text-slate-600"
+                      : "bg-[var(--color-surface-soft)] border-[var(--color-hairline-soft)] text-[var(--color-stone)] group-hover:text-[var(--color-mute)]"
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -102,7 +102,7 @@ export default function TemplateSelectTab({
 
                 <div className="min-w-0 flex-1 pr-4">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="block text-xs font-bold text-slate-800 transition-colors group-hover:text-slate-900">
+                    <span className="block text-xs font-bold text-[var(--color-ink-soft)] transition-colors group-hover:text-[var(--color-ink)]">
                       {tpl.label}
                     </span>
                     {selected && (
@@ -111,7 +111,7 @@ export default function TemplateSelectTab({
                       </span>
                     )}
                   </div>
-                  <span className="block text-[11px] text-slate-500 leading-relaxed">
+                  <span className="block text-[11px] text-[var(--color-ash)] leading-relaxed">
                     {tpl.description}
                   </span>
                   {TEMPLATE_QUALITY_BADGES[tpl.id] && (
@@ -120,7 +120,7 @@ export default function TemplateSelectTab({
                         ATS {TEMPLATE_QUALITY_BADGES[tpl.id].atsScore}
                       </span>
                       {TEMPLATE_QUALITY_BADGES[tpl.id].onePageGuaranteed && (
-                        <span className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                        <span className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-[var(--color-surface-card)] text-[var(--color-mute)] border border-[var(--color-hairline)]">
                           1-page
                         </span>
                       )}

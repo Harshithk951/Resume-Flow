@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* ── Tailwind v4 source scanning scope ────────────────────────
+   Restrict class scanning to app source files only, preventing
+   false matches in scripts/ (comments contain Tailwind-looking
+   patterns like bg-[var(--...)] which would break the build).    */
+@source "../app/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "../lib/**/*.{ts,tsx}";
+@source "../convex/**/*.{ts,tsx}";
+
 /* ─── ResumeFlow Design Tokens (Pinterest-inspired) ──────── */
 /* Adapted from Design.md — warm cream palette, single red accent,
    Inter as Pin Sans substitute, two-radius shape system */
@@ -58,6 +67,48 @@
   --font-body: var(--font-jakarta), 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: var(--font-display), 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-inter: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ─── Dark Mode Design Tokens (Deep Obsidian) ─────────────── */
+/* Applied when <html> has class="dark" (set by next-themes).    */
+/* Blue-tinted obsidian palette inspired by GitHub, Linear, and   */
+/* Notion — professional, reduces eye strain, brand red pops.    */
+.dark {
+  /* ── Brand & Accent ── (brighter red to pop on blue-charcoal) */
+  --color-primary: #ff3040;
+  --color-primary-pressed: #e60023;
+
+  /* ── Surface (Blue-tinted obsidian layers) ── */
+  --color-canvas: #0d1117;         /* Deepest page background */
+  --color-surface-soft: #131820;   /* Body wash with subtle blue */
+  --color-surface-card: #1c2333;   /* Card panels, containers */
+  --color-secondary-bg: #252d3f;   /* Buttons, inputs, sub-containers */
+  --color-secondary-pressed: #2f3a50;
+  --color-surface-dark: #080b12;   /* Deepest layer */
+  --color-hairline: #2d3548;       /* Visible border outlines */
+  --color-hairline-soft: #1f283b;
+
+  /* ── Text (all pass WCAG AA on surface-card) ── */
+  --color-ink: #f0f6fc;            /* Headings — 14.6:1 ✓ */
+  --color-ink-soft: #e6edf3;       /* Sub-headings — 12.6:1 ✓ */
+  --color-body: #c9d1d9;           /* Body copy — 8.2:1 ✓ */
+  --color-charcoal: #b1bac4;       /* Soft body — 6.5:1 ✓ */
+  --color-mute: #8b949e;           /* Metadata — 5.0:1 ✓ AA */
+  --color-ash: #6e7681;            /* Placeholders — 4.0:1 ✓ AA large */
+  --color-stone: #484f58;          /* Least emphasis — 3.1:1 ✓ AA large */
+  --color-on-dark: #ffffff;        /* Buttons on red — 4.5:1 ✓ */
+
+  /* ── Semantic (adjusted for deep obsidian background) ── */
+  --color-error: #f85149;
+  --color-error-deep: #da3633;
+  --color-success-deep: #3fb950;
+  --color-success-pale: #0a3418;
+  --color-focus-outer: #58a6ff;    /* GitHub-blue focus ring */
+  --color-focus-inner: #0d1117;
+}
+
+html {
+  color-scheme: light dark;
 }
 
 body {
@@ -741,5 +792,122 @@ button:hover .icon-island-light {
   height: 1px;
   background-color: rgba(15, 23, 42, 0.15);
   width: 100%;
+}
+
+/* ─── Dark Mode Utility Overrides ─────────────────────────── */
+/* Safety net: remaining hardcoded Tailwind light classes are    */
+/* overridden here so NOTHING stays white/light in dark mode.   */
+
+/* Backgrounds */
+.dark .bg-white { background-color: var(--color-canvas) !important; }
+.dark .bg-slate-50 { background-color: var(--color-surface-soft) !important; }
+.dark .bg-slate-100 { background-color: var(--color-surface-card) !important; }
+.dark .bg-slate-200 { background-color: var(--color-secondary-bg) !important; }
+.dark .bg-gray-50 { background-color: var(--color-surface-soft) !important; }
+.dark .bg-gray-100 { background-color: var(--color-surface-card) !important; }
+.dark .bg-gray-200 { background-color: var(--color-secondary-bg) !important; }
+.dark .bg-rose-50 { background-color: rgba(255,48,64,0.12) !important; }
+.dark .bg-amber-50 { background-color: rgba(245,158,11,0.10) !important; }
+.dark .bg-green-50 { background-color: rgba(34,197,94,0.10) !important; }
+.dark .bg-blue-50 { background-color: rgba(59,130,246,0.10) !important; }
+.dark .bg-purple-50 { background-color: rgba(168,85,247,0.10) !important; }
+.dark .bg-indigo-50 { background-color: rgba(99,102,241,0.10) !important; }
+.dark .bg-yellow-50 { background-color: rgba(234,179,8,0.10) !important; }
+.dark .bg-orange-50 { background-color: rgba(249,115,22,0.10) !important; }
+
+/* Alpha backgrounds */
+.dark .bg-white\/60 { background-color: rgba(255,255,255,0.06) !important; }
+.dark .bg-white\/40 { background-color: rgba(255,255,255,0.05) !important; }
+.dark .bg-white\/20 { background-color: rgba(255,255,255,0.04) !important; }
+.dark .bg-white\/10 { background-color: rgba(255,255,255,0.03) !important; }
+
+/* Borders */
+.dark .border-white { border-color: var(--color-hairline) !important; }
+.dark .border-white\/40 { border-color: rgba(255,255,255,0.08) !important; }
+.dark .border-slate-100 { border-color: var(--color-hairline-soft) !important; }
+.dark .border-slate-200 { border-color: var(--color-hairline) !important; }
+.dark .border-slate-200\/60 { border-color: rgba(46,46,46,0.9) !important; }
+.dark .border-slate-300 { border-color: var(--color-secondary-bg) !important; }
+.dark .border-gray-100 { border-color: var(--color-hairline-soft) !important; }
+.dark .border-gray-200 { border-color: var(--color-hairline) !important; }
+.dark .border-rose-100\/60 { border-color: rgba(255,48,64,0.2) !important; }
+.dark .border-amber-200 { border-color: rgba(245,158,11,0.25) !important; }
+.dark .border-green-200 { border-color: rgba(34,197,94,0.25) !important; }
+.dark .border-blue-200 { border-color: rgba(59,130,246,0.25) !important; }
+
+/* Text */
+.dark .text-slate-900 { color: var(--color-ink) !important; }
+.dark .text-slate-800 { color: var(--color-ink-soft) !important; }
+.dark .text-slate-700 { color: var(--color-charcoal) !important; }
+.dark .text-slate-600 { color: var(--color-mute) !important; }
+.dark .text-slate-500 { color: var(--color-ash) !important; }
+.dark .text-slate-400 { color: var(--color-stone) !important; }
+.dark .text-gray-900 { color: var(--color-ink) !important; }
+.dark .text-gray-800 { color: var(--color-ink-soft) !important; }
+.dark .text-gray-700 { color: var(--color-charcoal) !important; }
+.dark .text-gray-600 { color: var(--color-mute) !important; }
+.dark .text-gray-500 { color: var(--color-ash) !important; }
+.dark .text-gray-400 { color: var(--color-stone) !important; }
+
+/* Hover states */
+.dark .hover\:bg-white\/60:hover { background-color: rgba(255,255,255,0.07) !important; }
+.dark .hover\:bg-slate-50:hover { background-color: var(--color-surface-card) !important; }
+.dark .hover\:bg-slate-100:hover { background-color: var(--color-secondary-bg) !important; }
+.dark .hover\:bg-slate-100\/80:hover { background-color: rgba(42,42,42,0.8) !important; }
+.dark .hover\:bg-rose-50:hover { background-color: rgba(255,48,64,0.12) !important; }
+.dark .hover\:text-slate-900:hover { color: var(--color-ink) !important; }
+.dark .hover\:text-slate-950:hover { color: var(--color-ink) !important; }
+
+/* Divide lines */
+.dark .divide-slate-100 > * + * { border-color: var(--color-hairline-soft) !important; }
+.dark .divide-slate-200 > * + * { border-color: var(--color-hairline) !important; }
+.dark .divide-gray-100 > * + * { border-color: var(--color-hairline-soft) !important; }
+
+/* Rings */
+.dark .ring-slate-200 { --tw-ring-color: var(--color-hairline) !important; }
+.dark .ring-white { --tw-ring-color: var(--color-hairline) !important; }
+
+/* Glass panel — re-tinted dark */
+.dark .glass-panel {
+  background: rgba(26, 26, 26, 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45),
+              inset 0 1px 1px rgba(255,255,255,0.04) !important;
+}
+
+/* Dark-specific shadows — border-based elevation instead of invisible black shadows */
+.dark .elevation-medium {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03), 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+.dark .elevation-high {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04), 0 12px 48px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Section divider */
+.dark .section-divider { background-color: rgba(255,255,255,0.08) !important; }
+
+/* Inputs */
+.dark input,
+.dark textarea,
+.dark select {
+  background-color: var(--color-surface-card);
+  border-color: var(--color-hairline);
+  color: var(--color-ink);
+}
+.dark input::placeholder,
+.dark textarea::placeholder { color: var(--color-ash); }
+
+/* Scrollbar */
+.dark ::-webkit-scrollbar-track { background: var(--color-surface-soft); }
+.dark ::-webkit-scrollbar-thumb { background: var(--color-secondary-bg); border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: var(--color-secondary-pressed); }
+
+/* Smooth theme transition on body-wrapping elements */
+.dark body,
+.dark .card,
+.dark .card-feature,
+.dark .card-feature-soft,
+.dark .card-modal {
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 

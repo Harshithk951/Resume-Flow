@@ -63,7 +63,7 @@ export function NeedsAttentionPanel({
             size="sm"
             variant="outline"
             onClick={(e) => handleRetry(job.id, e)}
-            className="h-7 px-2.5 text-[9px] font-bold text-red-600 hover:text-red-700 border-red-200 hover:bg-red-50/50 bg-white"
+            className="h-7 px-2.5 text-[9px] font-bold text-red-600 hover:text-red-700 border-red-200 hover:bg-red-50/50 bg-[var(--color-canvas)]"
           >
             <RotateCcw className="w-2.5 h-2.5 mr-1" />
             Retry Ingest
@@ -138,11 +138,11 @@ export function NeedsAttentionPanel({
   };
 
   return (
-    <Card variant="elevated" className="border-slate-300">
+    <Card variant="elevated" className="border-[var(--color-secondary-bg)]">
       <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-            <AlertTriangle className="w-3.5 h-3.5 text-slate-500" />
+            <AlertTriangle className="w-3.5 h-3.5 text-[var(--color-ash)]" />
           </div>
           <CardTitle>Needs Attention</CardTitle>
         </div>
@@ -154,17 +154,17 @@ export function NeedsAttentionPanel({
       </CardHeader>
       <CardContent className="pt-0">
         {displayItems.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center bg-slate-50/20 rounded-xl border border-dashed border-slate-200/60">
+          <div className="flex flex-col items-center justify-center py-8 text-center bg-[var(--color-surface-soft)]/20 rounded-xl border border-dashed border-[var(--color-hairline)]/60">
             <CheckCircle2 className="w-6 h-6 text-emerald-500 mb-2" />
-            <span className="text-xs font-bold text-slate-700">All caught up!</span>
-            <span className="text-[10px] text-slate-400 mt-0.5">No items need your attention.</span>
+            <span className="text-xs font-bold text-[var(--color-charcoal)]">All caught up!</span>
+            <span className="text-[10px] text-[var(--color-stone)] mt-0.5">No items need your attention.</span>
           </div>
         ) : (
           <div className="space-y-2">
             {displayItems.map((item) => (
               <div
                 key={item.id}
-                className={`flex items-center justify-between p-3 rounded-xl border-l-3 border border-slate-300 transition-all hover:bg-slate-50/60 ${getBorderColor(
+                className={`flex items-center justify-between p-3 rounded-xl border-l-3 border border-[var(--color-secondary-bg)] transition-all hover:bg-[var(--color-surface-soft)]/60 ${getBorderColor(
                   item.type
                 )}`}
               >
@@ -173,11 +173,11 @@ export function NeedsAttentionPanel({
                   <div className="min-w-0 flex-1">
                     <Link
                       href={item.href}
-                      className="text-xs font-bold text-slate-800 hover:text-rose-600 transition-colors block truncate"
+                      className="text-xs font-bold text-[var(--color-ink-soft)] hover:text-rose-600 transition-colors block truncate"
                     >
                       {item.title}
                     </Link>
-                    <span className="text-[10px] text-slate-500 block truncate mt-0.5">
+                    <span className="text-[10px] text-[var(--color-ash)] block truncate mt-0.5">
                       {item.description}
                     </span>
                   </div>

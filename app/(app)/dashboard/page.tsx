@@ -112,7 +112,7 @@ export default function DashboardCommandCenter() {
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* ─── HEADER: Mesh gradient hero ─── */}
-      <div className="relative rounded-3xl p-8 overflow-hidden mesh-gradient-hero border border-slate-200/30 shadow-sm">
+      <div className="relative rounded-3xl p-8 overflow-hidden mesh-gradient-hero border border-[var(--color-hairline)]/30 shadow-sm">
         {/* Glass overlay */}
         <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
         
@@ -122,10 +122,10 @@ export default function DashboardCommandCenter() {
               <LayoutDashboard className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-slate-900 leading-tight">
+              <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--color-ink)] leading-tight">
                 Command Center
               </h1>
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-[var(--color-ash)] mt-1">
                 Manage corporate listings, track matching, and configure pipelines.
               </p>
             </div>
@@ -139,10 +139,10 @@ export default function DashboardCommandCenter() {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-extrabold text-slate-800 tabular-nums">{(user.credits).toLocaleString()}</span>
-                  <span className="text-[10px] text-slate-400 font-medium">credits</span>
+                  <span className="text-sm font-extrabold text-[var(--color-ink-soft)] tabular-nums">{(user.credits).toLocaleString()}</span>
+                  <span className="text-[10px] text-[var(--color-stone)] font-medium">credits</span>
                 </div>
-                <div className="w-20 h-1 bg-slate-200/60 rounded-full overflow-hidden mt-1">
+                <div className="w-20 h-1 bg-[var(--color-secondary-bg)]/60 rounded-full overflow-hidden mt-1">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${(user.credits / 10000) * 100}%` }}
@@ -191,11 +191,11 @@ export default function DashboardCommandCenter() {
         <div className="space-y-8 min-w-0">
           
           {/* Company Drives list view */}
-          <Card variant="elevated" className="overflow-hidden border-slate-300 shadow-sm bg-white">
-            <CardHeader className="pb-4 border-b border-slate-100">
+          <Card variant="elevated" className="overflow-hidden border-[var(--color-secondary-bg)] shadow-sm bg-[var(--color-canvas)]">
+            <CardHeader className="pb-4 border-b border-[var(--color-hairline-soft)]">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-slate-600 shadow-sm">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center text-[var(--color-mute)] shadow-sm">
                     <Briefcase className="w-4 h-4" />
                   </div>
                   <div>
@@ -204,15 +204,15 @@ export default function DashboardCommandCenter() {
                   </div>
                 </div>
                 {/* Filter Pills */}
-                <div className="inline-flex items-center bg-slate-100/80 rounded-xl p-1 border border-slate-200/60 shadow-inner">
+                <div className="inline-flex items-center bg-[var(--color-surface-card)]/80 rounded-xl p-1 border border-[var(--color-hairline)]/60 shadow-inner">
                   {COMPANY_FILTERS.map((f) => (
                     <button
                       key={f.key}
                       onClick={() => setCompanyFilter(f.key)}
                       className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all duration-200 ${
                         companyFilter === f.key
-                          ? "bg-white text-rose-600 shadow-sm border border-slate-200/60"
-                          : "text-slate-500 hover:text-slate-700"
+                          ? "bg-[var(--color-canvas)] text-rose-600 shadow-sm border border-[var(--color-hairline)]/60"
+                          : "text-[var(--color-ash)] hover:text-[var(--color-charcoal)]"
                       }`}
                       title={f.desc}
                     >
@@ -224,17 +224,17 @@ export default function DashboardCommandCenter() {
             </CardHeader>
             <CardContent className="p-0">
               {filteredDrives.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 text-slate-400">
-                  <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mb-4 border border-slate-200/40">
+                <div className="flex flex-col items-center justify-center py-16 text-[var(--color-stone)]">
+                  <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-card)] flex items-center justify-center mb-4 border border-[var(--color-hairline)]/40">
                     <Search className="w-6 h-6 text-slate-300" />
                   </div>
-                  <p className="text-sm font-semibold text-slate-500">No drives match this filter</p>
+                  <p className="text-sm font-semibold text-[var(--color-ash)]">No drives match this filter</p>
                   <Button variant="ghost" size="sm" className="mt-2 text-rose-600 hover:bg-rose-50" onClick={() => setCompanyFilter("all")}>
                     Clear filter
                   </Button>
                 </div>
               ) : (
-                <div className="divide-y divide-slate-100">
+                <div className="divide-y divide-[var(--color-hairline-soft)]">
                   {filteredDrives.map((drive: any, idx: number) => {
                     const isFailed = drive.pipelineState === "failed";
                     const isCompleted = drive.pipelineState === "completed";
@@ -245,8 +245,8 @@ export default function DashboardCommandCenter() {
                       <div
                         key={drive.id}
                         onClick={() => router.push(`/company/${drive.id}`)}
-                        className={`flex items-center justify-between px-6 py-4 group transition-all duration-200 hover:bg-slate-50/50 cursor-pointer ${
-                          idx % 2 === 0 ? "bg-white" : "bg-slate-50/30"
+                        className={`flex items-center justify-between px-6 py-4 group transition-all duration-200 hover:bg-[var(--color-surface-soft)]/50 cursor-pointer ${
+                          idx % 2 === 0 ? "bg-[var(--color-canvas)]" : "bg-[var(--color-surface-soft)]/30"
                         }`}
                       >
                         <div className="flex items-center gap-4 min-w-0 flex-1">
@@ -256,14 +256,14 @@ export default function DashboardCommandCenter() {
                             isCompleted ? "bg-emerald-50 text-emerald-600 ring-emerald-200" :
                             isNeedsInput ? "bg-amber-50 text-amber-600 ring-amber-200 animate-pulse" :
                             isActive ? "bg-amber-50 text-amber-600 ring-amber-200" :
-                            "bg-slate-100 text-slate-500 ring-slate-200"
+                            "bg-[var(--color-surface-card)] text-[var(--color-ash)] ring-[var(--color-hairline)]"
                           }`}>
                             {drive.companyName?.charAt(0).toUpperCase() || "?"}
                           </div>
 
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-slate-800 truncate group-hover:text-rose-600 transition-colors">
+                              <span className="text-sm font-bold text-[var(--color-ink-soft)] truncate group-hover:text-rose-600 transition-colors">
                                 {drive.companyName}
                               </span>
                               {drive.matchScore > 0 && (
@@ -272,7 +272,7 @@ export default function DashboardCommandCenter() {
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-xs text-slate-500 truncate mt-0.5">
+                            <p className="text-xs text-[var(--color-ash)] truncate mt-0.5">
                               {drive.roleTitle}
                             </p>
                           </div>
@@ -297,7 +297,7 @@ export default function DashboardCommandCenter() {
                             <Link
                               href={`/resume/${drive.id}/export`}
                               onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200/60 text-[10px] font-bold text-slate-500 hover:text-rose-600 hover:bg-rose-50 hover:border-rose-200 transition-all whitespace-nowrap shadow-sm"
+                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[var(--color-surface-soft)] border border-[var(--color-hairline)]/60 text-[10px] font-bold text-[var(--color-ash)] hover:text-rose-600 hover:bg-rose-50 hover:border-rose-200 transition-all whitespace-nowrap shadow-sm"
                               title="Download tailored resume PDF"
                             >
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -327,7 +327,7 @@ export default function DashboardCommandCenter() {
                               <button
                                 type="button"
                                 onClick={(e) => { e.stopPropagation(); setDeletingDriveId(null); }}
-                                className="text-[10px] font-bold px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded-lg transition-colors"
+                                className="text-[10px] font-bold px-2 py-1 bg-[var(--color-canvas)] border border-[var(--color-hairline)] text-[var(--color-mute)] rounded-lg transition-colors"
                               >
                                 No
                               </button>
@@ -336,13 +336,13 @@ export default function DashboardCommandCenter() {
                             <button
                               type="button"
                               onClick={(e) => { e.stopPropagation(); setDeletingDriveId(drive.id); }}
-                              className="opacity-0 group-hover:opacity-100 w-8 h-8 rounded-lg bg-slate-50 border border-slate-200/40 flex items-center justify-center text-slate-400 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all duration-200 shadow-sm"
+                              className="opacity-0 group-hover:opacity-100 w-8 h-8 rounded-lg bg-[var(--color-surface-soft)] border border-[var(--color-hairline)]/40 flex items-center justify-center text-[var(--color-stone)] hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all duration-200 shadow-sm"
                               title="Delete this drive"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
                           )}
-                          <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-200/40 flex items-center justify-center text-slate-400 group-hover:bg-rose-50 group-hover:border-rose-200 group-hover:text-rose-600 transition-all duration-200 shadow-sm">
+                          <div className="w-8 h-8 rounded-lg bg-[var(--color-surface-soft)] border border-[var(--color-hairline)]/40 flex items-center justify-center text-[var(--color-stone)] group-hover:bg-rose-50 group-hover:border-rose-200 group-hover:text-rose-600 transition-all duration-200 shadow-sm">
                             <ArrowRight className="w-4 h-4" />
                           </div>
                         </div>
@@ -355,12 +355,12 @@ export default function DashboardCommandCenter() {
           </Card>
 
           {/* ─── Toggle View Control (Pipeline Board vs Applications CRM) ─── */}
-          <div className="border-b border-slate-200/60 flex items-center justify-between pb-2" ref={kanbanRef}>
+          <div className="border-b border-[var(--color-hairline)]/60 flex items-center justify-between pb-2" ref={kanbanRef}>
             <div className="flex gap-4">
               <button
                 onClick={() => setViewTab("pipeline")}
                 className={`text-sm font-bold pb-2 transition-all border-b-2 relative ${
-                  viewTab === "pipeline" ? "border-rose-600 text-rose-600 font-extrabold" : "border-transparent text-slate-500 hover:text-slate-800"
+                  viewTab === "pipeline" ? "border-rose-600 text-rose-600 font-extrabold" : "border-transparent text-[var(--color-ash)] hover:text-[var(--color-ink-soft)]"
                 }`}
               >
                 Pipeline Board
@@ -368,7 +368,7 @@ export default function DashboardCommandCenter() {
               <button
                 onClick={() => setViewTab("applications")}
                 className={`text-sm font-bold pb-2 transition-all border-b-2 relative ${
-                  viewTab === "applications" ? "border-rose-600 text-rose-600 font-extrabold" : "border-transparent text-slate-500 hover:text-slate-800"
+                  viewTab === "applications" ? "border-rose-600 text-rose-600 font-extrabold" : "border-transparent text-[var(--color-ash)] hover:text-[var(--color-ink-soft)]"
                 }`}
               >
                 Application Tracker
