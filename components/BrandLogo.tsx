@@ -2,9 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-
 interface BrandLogoProps {
   href?: string;
   showText?: boolean;
@@ -18,13 +15,9 @@ export function BrandLogo({
   size = "md",
   className = "",
 }: BrandLogoProps) {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  // Avoid hydration mismatch — only render theme-aware content after mount
-  useEffect(() => setMounted(true), []);
-
-  const isDark = mounted && resolvedTheme === "dark";
+  // BrandLogo is always light on the landing page.
+  // In the dashboard, the .dark class on the dashboard wrapper controls CSS variable inheritance.
+  const isDark = false;
   const logoSrc = isDark ? "/logo-dark.png" : "/logo.png";
 
   // Light logo is 199×235 (portrait), dark logo is 256×256 (square).

@@ -981,6 +981,35 @@ button:hover .icon-island-light {
 .dark ::-webkit-scrollbar-thumb { background: var(--color-secondary-bg); border-radius: 4px; }
 .dark ::-webkit-scrollbar-thumb:hover { background: var(--color-secondary-pressed); }
 
+/* ── Force Light Mode Scope (export page, previews) ────────── */
+/* Reset all CSS variable overrides and !important Tailwind overrides
+   within a [data-force-light] scope, ensuring light colors even when
+   nested inside a .dark dashboard wrapper.                        */
+[data-force-light] {
+  --color-canvas: #ffffff !important;
+  --color-surface-soft: #fbfbf9 !important;
+  --color-surface-card: #f6f6f3 !important;
+  --color-secondary-bg: #e5e5e0 !important;
+  --color-hairline: #dadad3 !important;
+  --color-ink: #000000 !important;
+  --color-ink-soft: #211922 !important;
+  --color-body: #33332e !important;
+  --color-charcoal: #262622 !important;
+  --color-mute: #62625b !important;
+  --color-ash: #91918c !important;
+  --color-stone: #c8c8c1 !important;
+}
+
+/* Override the .dark !important Tailwind overrides specifically within force-light scope */
+[data-force-light] .bg-white { background-color: #ffffff !important; }
+[data-force-light] .bg-slate-50 { background-color: #f8fafc !important; }
+[data-force-light] .text-slate-900 { color: #0f172a !important; }
+[data-force-light] .text-slate-800 { color: #1e293b !important; }
+[data-force-light] .text-slate-700 { color: #334155 !important; }
+[data-force-light] .text-slate-600 { color: #475569 !important; }
+[data-force-light] .text-slate-500 { color: #64748b !important; }
+[data-force-light] .border-slate-200\/80 { border-color: rgb(226 232 240 / 0.8) !important; }
+
 /* Smooth theme transition on body-wrapping elements */
 .dark body,
 .dark .card,

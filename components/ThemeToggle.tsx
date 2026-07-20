@@ -1,11 +1,11 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
+import { useDashboardTheme } from "./DashboardThemeProvider";
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { isDark, toggleTheme } = useDashboardTheme();
   const [mounted, setMounted] = useState(false);
 
   // Avoid hydration mismatch — only render after mount
@@ -22,12 +22,10 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     );
   }
 
-  const isDark = resolvedTheme === "dark";
-
   return (
     <button
       type="button"
-      onClick={() => setTheme(isDark ? "light" : "dark")}
+      onClick={toggleTheme}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 text-[var(--color-mute)] hover:bg-white/60 hover:text-[var(--color-ink)] dark:hover:bg-white/10 w-full ${className}`}

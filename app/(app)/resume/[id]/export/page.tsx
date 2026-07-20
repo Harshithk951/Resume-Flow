@@ -17,7 +17,6 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { normalizeStructuredContent } from "@/lib/pdf/types";
-import { ThemeProvider } from "@/components/ThemeProvider";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -228,8 +227,8 @@ export default function ExportPage({ params }: PageProps) {
   };
 
   return (
-    <ThemeProvider forcedTheme="light" attribute="class">
-    <div className="max-w-[1000px] mx-auto py-8">
+    <div className="max-w-[1000px] mx-auto py-8" data-force-light>
+    {/* Force light mode for PDF export — scoped CSS in globals.css resets dark overrides */}
       {/* Back button */}
       <Link
         href={`/company/${jobId}`}
@@ -384,6 +383,5 @@ export default function ExportPage({ params }: PageProps) {
         </motion.div>
       </div>
     </div>
-    </ThemeProvider>
   );
 }

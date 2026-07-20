@@ -1,4 +1,3 @@
-import { ThemeProvider } from "@/components/ThemeProvider";
 import type { Metadata } from "next";
 import "./globals.css";
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
@@ -243,11 +242,9 @@ export default function RootLayout({
         <Analytics />
 
         <ConvexClerkProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
             <HydrationProtectionGuard>
                 {children}
             </HydrationProtectionGuard>
-          </ThemeProvider>
         </ConvexClerkProvider>
       </body>
     </html>

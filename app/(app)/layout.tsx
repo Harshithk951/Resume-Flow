@@ -9,6 +9,7 @@ import { AppBackButton } from "@/components/AppBackButton";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ChatHistoryPanel } from "@/components/ChatHistoryPanel";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { DashboardThemeProvider } from "@/components/DashboardThemeProvider";
 
 const navigationItems = [
   {
@@ -73,6 +74,7 @@ export default function AuthenticatedLayout({
   }
 
   return (
+    <DashboardThemeProvider>
     <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-surface-soft)] text-[var(--color-ink)]">
       {/* ─── COLLAPSIBLE SIDEBAR ───────────────────────
            Pure CSS hover mechanism: collapsed w-[72px] by default,
@@ -313,5 +315,6 @@ export default function AuthenticatedLayout({
         </div>
       </main>
     </div>
+    </DashboardThemeProvider>
   );
 }
