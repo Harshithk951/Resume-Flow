@@ -96,60 +96,63 @@ export default function AuthenticatedLayout({
           </span>
 
           <nav className="space-y-1.5 px-2" aria-label="Main navigation">
-            {/* Chat History button */}
-            <button
-              type="button"
-              onClick={() => setIsChatHistoryOpen(true)}
-              title="Chat History"
-              className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 text-slate-600 hover:bg-white/60 hover:text-slate-900 w-full"
-              style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
-            >
-              <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
-                <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-slate-400 group-hover/nav:text-slate-600" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
-              </div>
-              <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}>
-                Chat History
-              </span>
-            </button>
-
             {navigationItems.map((item) => {
               const isActive = item.isActive(pathname ?? "");
               const Icon = item.icon;
+              const isSettings = item.name === "Settings";
+              
               return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  title={item.name}
-                  aria-current={isActive ? "page" : undefined}
-                  className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
-                    isActive
-                      ? "bg-white text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
-                      : "text-slate-600 hover:bg-white/60 hover:text-slate-900"
-                  }`}
-                  style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
-                >
-                  {isActive && (
-                    <span className="nav-item-active-indicator" />
-                  )}
-                  <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
-                    <Icon
-                      className={`h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 ${
-                        isActive ? "text-rose-600" : "text-slate-400 group-hover/nav:text-slate-600"
-                      }`}
+                <div key={item.name} className="space-y-1.5">
+                  {isSettings && (
+                    <button
+                      type="button"
+                      onClick={() => setIsChatHistoryOpen(true)}
+                      title="Chat History"
+                      className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 text-slate-600 hover:bg-white/60 hover:text-slate-900 w-full"
                       style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
-                    />
-                    {/* Active dot below icon when collapsed */}
-                    {isActive && (
-                      <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-rose-500 group-hover/sidebar:hidden" />
-                    )}
-                  </div>
-                  {/* Nav label — hidden on collapse, fades in on hover */}
-                  <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
+                    >
+                      <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
+                        <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-slate-400 group-hover/nav:text-slate-600" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
+                      </div>
+                      <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}>
+                        Chat History
+                      </span>
+                    </button>
+                  )}
+                  <Link
+                    href={item.href}
+                    title={item.name}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
+                      isActive
+                        ? "bg-white text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
+                        : "text-slate-600 hover:bg-white/60 hover:text-slate-900"
+                    }`}
                     style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                   >
-                    {item.name}
-                  </span>
-                </Link>
+                    {isActive && (
+                      <span className="nav-item-active-indicator" />
+                    )}
+                    <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
+                      <Icon
+                        className={`h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 ${
+                          isActive ? "text-rose-600" : "text-slate-400 group-hover/nav:text-slate-600"
+                        }`}
+                        style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+                      />
+                      {/* Active dot below icon when collapsed */}
+                      {isActive && (
+                        <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-rose-500 group-hover/sidebar:hidden" />
+                      )}
+                    </div>
+                    {/* Nav label — hidden on collapse, fades in on hover */}
+                    <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
+                      style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+                    >
+                      {item.name}
+                    </span>
+                  </Link>
+                </div>
               );
             })}
           </nav>
@@ -214,34 +217,37 @@ export default function AuthenticatedLayout({
                 </button>
               </div>
               <nav className="space-y-1.5" aria-label="Mobile navigation">
-                {/* Chat History button for mobile */}
-                <button
-                  type="button"
-                  onClick={() => { setIsChatHistoryOpen(true); setIsMobileDrawerOpen(false); }}
-                  className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-slate-50 hover:text-slate-950 w-full"
-                >
-                  <History className="h-4.5 w-4.5 text-slate-400" />
-                  <span>Chat History</span>
-                </button>
-
                 {navigationItems.map((item) => {
                   const isActive = item.isActive(pathname ?? "");
                   const Icon = item.icon;
+                  const isSettings = item.name === "Settings";
+                  
                   return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setIsMobileDrawerOpen(false)}
-                      aria-current={isActive ? "page" : undefined}
-                      className={`flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 ${
-                        isActive
-                          ? "bg-rose-50 text-rose-600 border border-rose-100/60 font-semibold"
-                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
-                      }`}
-                    >
-                      <Icon className={`h-4.5 w-4.5 ${isActive ? "text-rose-600" : "text-slate-400"}`} />
-                      <span>{item.name}</span>
-                    </Link>
+                    <div key={item.name} className="space-y-1.5">
+                      {isSettings && (
+                        <button
+                          type="button"
+                          onClick={() => { setIsChatHistoryOpen(true); setIsMobileDrawerOpen(false); }}
+                          className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-slate-50 hover:text-slate-950 w-full"
+                        >
+                          <History className="h-4.5 w-4.5 text-slate-400" />
+                          <span>Chat History</span>
+                        </button>
+                      )}
+                      <Link
+                        href={item.href}
+                        onClick={() => setIsMobileDrawerOpen(false)}
+                        aria-current={isActive ? "page" : undefined}
+                        className={`flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 ${
+                          isActive
+                            ? "bg-rose-50 text-rose-600 border border-rose-100/60 font-semibold"
+                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+                        }`}
+                      >
+                        <Icon className={`h-4.5 w-4.5 ${isActive ? "text-rose-600" : "text-slate-400"}`} />
+                        <span>{item.name}</span>
+                      </Link>
+                    </div>
                   );
                 })}
               </nav>
