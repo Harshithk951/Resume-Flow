@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { useAuth } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import { useRouter, usePathname } from "next/navigation";
@@ -12,6 +12,19 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
   const { isLoaded: isClerkLoaded, isSignedIn } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+
+  const syncUserCredits = useMutation(api.users.syncUserCredits);
+
+  // Sync user credits on initial page load if authenticated
+  useEffect(() => {
+    if (isClerkLoaded && isSignedIn) {
+      syncUserCredits().catch((err) => {
+        console.error("Failed to sync user credits:", err);
+      });
+    }
+  }, [isClerkLoaded, isSignedIn, syncUserCredits]);
+
+
 
   const isPublicRoute =
     pathname === "/" ||

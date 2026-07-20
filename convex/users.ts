@@ -52,13 +52,25 @@ export const createOrGetUser = mutation({
       .unique();
 
     if (existingUser) {
-      if (
-        existingUser.email !== identity.email ||
-        existingUser.name !== identity.name
-      ) {
+      const emailChanged = existingUser.email !== identity.email;
+      const nameChanged = existingUser.name !== identity.name;
+      const needsCreditReset = existingUser.plan === "free" && existingUser.credits > MAX_CREDITS;
+
+      if (emailChanged || nameChanged || needsCreditReset) {
+        let correctCredits = existingUser.credits;
+        if (needsCreditReset) {
+          const jobs = await ctx.db
+            .query("jobs")
+            .withIndex("by_userId", (q) => q.eq("userId", existingUser._id))
+            .collect();
+          const completedJobs = jobs.filter((j) => j.pipelineState === "completed").length;
+          correctCredits = Math.max(0, MAX_CREDITS - (completedJobs * CREDITS_PER_RESUME));
+        }
+
         await ctx.db.patch(existingUser._id, {
           email: identity.email ?? existingUser.email,
           name: identity.name ?? existingUser.name,
+          credits: correctCredits,
         });
       }
       return existingUser._id;
@@ -78,6 +90,31 @@ export const createOrGetUser = mutation({
     return userId;
   },
 });
+
+/**
+ * Validates and syncs user credits on the free plan, ensuring they don't exceed 10000
+ * and are reduced properly by 500 for each completed tailored resume.
+ */
+export const syncUserCredits = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireAuth(ctx);
+    if (user.plan === "free" && user.credits > MAX_CREDITS) {
+      const jobs = await ctx.db
+        .query("jobs")
+        .withIndex("by_userId", (q) => q.eq("userId", user._id))
+        .collect();
+      const completedJobs = jobs.filter((j) => j.pipelineState === "completed").length;
+      const correctCredits = Math.max(0, MAX_CREDITS - (completedJobs * CREDITS_PER_RESUME));
+      await ctx.db.patch(user._id, {
+        credits: correctCredits,
+      });
+      return { corrected: true, credits: correctCredits };
+    }
+    return { corrected: false, credits: user.credits };
+  },
+});
+
 
 /** Public-safe user fields for the authenticated client (no clerkId/email). */
 export const getUser = query({
