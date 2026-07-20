@@ -13,6 +13,7 @@ import Link from "next/link";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { MessageSquare, X, Send, Loader2, Maximize2, Minimize2, LogIn } from "lucide-react";
+import { toast } from "@/lib/toast";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import DOMPurify from "dompurify";
@@ -448,10 +449,11 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
         content: suggestionText,
       });
     } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Failed to send message. Please try again.";
       console.error("Failed to send suggestion message.");
-      setChatError(
-        err instanceof Error ? err.message : "Failed to send message. Please try again."
-      );
+      toast.error(message);
+      setChatError(message);
       setIsGenerating(false);
     }
   };
@@ -505,6 +507,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
         err instanceof Error ? err.message : "Failed to send message. Please try again.";
       // 🛡️ Security: Log sanitized error only (no raw error details exposed)
       console.error("Failed to send message.");
+      toast.error(message);
       setChatError(message);
       setIsGenerating(false);
     }

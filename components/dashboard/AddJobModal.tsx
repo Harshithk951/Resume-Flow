@@ -5,6 +5,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion } from "framer-motion";
 import { X, Loader2, Clipboard, FileText, Camera, Coins, AlertTriangle } from "lucide-react";
+import { toast } from "@/lib/toast";
 import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -101,6 +102,7 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
       }
 
       // Success cleanup
+      toast.success(`Drive created for ${companyName}!`);
       onClose();
       setCompanyName("");
       setJobTitle("");
@@ -108,7 +110,8 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
       setSelectedFile(null);
     } catch (error: any) {
       console.error("Pipeline initialization failed:", error);
-      const msg = error?.message || "An unexpected error occurred during matching. Please check input formats.";
+      const msg = error?.message || "An unexpected error occurred.";
+      toast.error(msg);
       setErrorMessage(msg);
     } finally {
       setIsCreating(false);

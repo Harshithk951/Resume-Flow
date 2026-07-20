@@ -9,8 +9,9 @@ import {
   Trash2,
   Save,
   Loader2,
-  CheckCircle,
 } from "lucide-react";
+import { toast } from "@/lib/toast";
+import { CheckCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { exportToHtml } from "@/lib/html/exporter";
 import { LiveSandboxPreview } from "@/components/LiveSandboxPreview";
@@ -132,11 +133,14 @@ function ResumeBuilderPageContent() {
         achievements: profile.achievements,
       });
 
+      toast.success("Profile saved!");
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (err: any) {
       console.error(err);
-      setSaveError(err.message || "Failed to save profile changes.");
+      const msg = err.message || "Failed to save profile changes.";
+      setSaveError(msg);
+      toast.error(msg);
     } finally {
       setIsSaving(false);
     }

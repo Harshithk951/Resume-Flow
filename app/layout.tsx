@@ -3,6 +3,7 @@ import "./globals.css";
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
+import { Toaster } from "@/components/Toaster";
 import { jakartaSans, displayFont } from "./fonts";
 import TermsFeedConsent from "@/components/TermsFeedConsent";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
@@ -245,6 +246,7 @@ export default function RootLayout({
             <HydrationProtectionGuard>
                 {children}
             </HydrationProtectionGuard>
+            <Toaster />
         </ConvexClerkProvider>
       </body>
     </html>

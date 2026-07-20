@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { toast } from '@/lib/toast';
 
 export function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -12,20 +12,9 @@ export function ContactForm() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setSubmitted(true);
+      toast.success('Message sent! We\'ll respond within 24 hours.');
     }, 1000);
   };
-
-  if (submitted) {
-    return (
-      <div className="bg-green-50 border border-green-200 p-6 rounded-2xl flex items-center gap-3 text-green-700 text-sm max-w-md mx-auto">
-        <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
-        <span>
-          Thank you for your message! Our team will respond within 24 hours.
-        </span>
-      </div>
-    );
-  }
 
   return (
     <form

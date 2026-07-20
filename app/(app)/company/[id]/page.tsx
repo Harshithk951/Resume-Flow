@@ -30,6 +30,7 @@ import { normalizeStructuredContent } from "@/lib/pdf/types";
 import { redactStructuredContentForDisplay } from "@/lib/redactResumeData";
 import { resolveTemplate, type TemplateId } from "@/lib/latex/resolveTemplate";
 import { triggerSideCannons } from "@/lib/confetti";
+import { toast } from "@/lib/toast";
 
 const ReactPdfPreview = dynamic(
   () =>
@@ -71,8 +72,8 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   const updateApplicationStatus = useMutation(api.jobs.updateApplicationStatus);
   const deleteJobAndResume = useMutation(api.jobs.deleteJobAndResume);
 
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const deleteTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const undoClickedRef = useRef(false);
 
   const [isWorkspaceMaximized, setIsWorkspaceMaximized] = useState(false);
   const [activeTab, setActiveTab] = useState<"PREVIEW" | "LATEX" | "JSON" | "OUTREACH">(
@@ -80,7 +81,6 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   );
   const [activeTemplate, setActiveTemplate] = useState<TemplateId>("ats_strict");
   const [isDownloading, setIsDownloading] = useState(false);
-  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   const [loadingStep, setLoadingStep] = useState(0);
 
@@ -119,6 +119,33 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
     "Almost finished, rendering resume preview..."
   ];
 
+  // ─── Cleanup delete timeout on unmount ───
+  useEffect(() => {
+    return () => {
+      if (deleteTimeoutRef.current) clearTimeout(deleteTimeoutRef.current);
+    };
+  }, []);
+
+  const handleDeleteDrive = () => {
+    if (deleteTimeoutRef.current) return; // Prevent rapid double-fire
+    undoClickedRef.current = false;
+
+    toast.undo(`Drive deleted for ${job!.companyName}`, () => {
+      undoClickedRef.current = true;
+    });
+
+    deleteTimeoutRef.current = setTimeout(async () => {
+      deleteTimeoutRef.current = null;
+      if (undoClickedRef.current) return;
+      try {
+        await deleteJobAndResume({ jobId });
+        window.location.href = "/dashboard";
+      } catch {
+        toast.error("Failed to delete drive");
+      }
+    }, 6200);
+  };
+
   const prevPipelineStateRef = useRef<string | undefined>(undefined);
 
   useEffect(() => {
@@ -127,6 +154,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
       prevPipelineStateRef.current === "compiling"
     ) {
       triggerSideCannons();
+      toast.success(`Resume tailored for ${job.companyName}!`);
     }
     prevPipelineStateRef.current = job?.pipelineState;
   }, [job?.pipelineState]);
@@ -175,8 +203,10 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
       } else {
         await resetToCompiling({ jobId });
       }
+      toast.loading("Recompiling resume...");
     } catch (e) {
       console.error(e);
+      toast.error("Failed to start recompile");
     }
   };
 
@@ -213,11 +243,11 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
       }
       const url = URL.createObjectURL(blob);
       triggerDownload(url, `${job.companyName}-tailored.pdf`);
+      toast.success(`PDF downloaded: ${job.companyName}-tailored.pdf`);
     } catch (err: unknown) {
       const message =
         err instanceof Error ? err.message : "Download failed.";
-      setDownloadError(message);
-      setTimeout(() => setDownloadError(null), 6000);
+      toast.error(message);
     } finally {
       setIsDownloading(false);
     }
@@ -246,47 +276,16 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <span>Back to Dashboard</span>
           </Link>
 
-          {/* Delete Drive button */}
-          {!showDeleteConfirm ? (
-            <button
-              type="button"
-              onClick={() => setShowDeleteConfirm(true)}
-              className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--color-stone)] hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-red-100 transition-all duration-200"
-              title="Delete this drive and its resume"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              Delete Drive
-            </button>
-          ) : (
-            <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-xl px-3 py-2">
-              <span className="text-[10px] font-semibold text-red-600">Delete permanently?</span>
-              <button
-                type="button"
-                disabled={isDeleting}
-                onClick={async () => {
-                  setIsDeleting(true);
-                  try {
-                    await deleteJobAndResume({ jobId });
-                    window.location.href = "/dashboard";
-                  } catch {
-                    setIsDeleting(false);
-                    setShowDeleteConfirm(false);
-                  }
-                }}
-                className="text-[10px] font-bold px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-60 flex items-center gap-1"
-              >
-                {isDeleting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Trash2 className="w-3 h-3" />}
-                {isDeleting ? "Deleting..." : "Yes, Delete"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowDeleteConfirm(false)}
-                className="text-[10px] font-bold px-2.5 py-1 bg-[var(--color-canvas)] border border-red-200 text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)] rounded-lg transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
+          {/* Delete Drive button — shows an undo toast on click */}
+          <button
+            type="button"
+            onClick={handleDeleteDrive}
+            className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--color-stone)] hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-red-100 transition-all duration-200"
+            title="Delete this drive and its resume"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            Delete Drive
+          </button>
         </div>
 
         <div className="space-y-6">
@@ -331,13 +330,16 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                       "new"
                     }
                     onChange={async (e) => {
+                      const statusLabels: Record<string, string> = { new: "Saved", applied: "Applied", interview: "Interviewing", offered: "Offered", rejected: "Rejected" };
                       try {
                         await updateApplicationStatus({
                           jobId: job._id,
                           status: e.target.value as any,
                         });
+                        toast.success(`Status updated: ${statusLabels[e.target.value] || e.target.value}`);
                       } catch (err) {
                         console.error("Failed to update status:", err);
+                        toast.error("Failed to update status");
                       }
                     }}
                     className={`text-[10px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1.5 border focus:outline-none transition-all cursor-pointer ${
@@ -493,14 +495,6 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Download error toast */}
-        {downloadError && (
-          <div className="-mt-4 mb-4 flex items-center gap-2 px-4 py-2 rounded-xl bg-red-50 border border-red-100 text-xs text-red-700 font-medium animate-[fadeIn_0.3s_ease-out]">
-            <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-            <span>{downloadError}</span>
-          </div>
-        )}
-
         {/* Tab bar with glass styling */}
         <div className="flex items-center gap-1 bg-white/60 border border-[var(--color-hairline)]/40 rounded-2xl p-1 mb-6 shadow-sm">
           {([{ id: "PREVIEW" as const, label: "Visual Resume", icon: FileText },
@@ -606,9 +600,12 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
     setError(null);
     try {
       await generateOutreachAction({ jobId });
+      toast.success("Cover letter & outreach generated!");
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Failed to generate outreach materials.");
+      const msg = err.message || "Failed to generate outreach materials.";
+      setError(msg);
+      toast.error(msg);
     } finally {
       setGenerating(false);
     }
@@ -758,9 +755,11 @@ function CopyButton({ text }: { text: string }) {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
+      toast.success("Copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy text:", err);
+      toast.error("Failed to copy");
     }
   };
   return (

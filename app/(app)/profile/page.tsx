@@ -30,6 +30,7 @@ import {
   ShieldCheck,
   ClipboardCheck,
 } from "lucide-react";
+import { toast } from "@/lib/toast";
 
 import FileUpload from "@/components/FileUpload";
 
@@ -189,7 +190,9 @@ export default function ProfilePage() {
       setEngineState("VERIFYING");
     } catch (err: any) {
       console.error("Ingestion failed:", err);
-      setLocalError(err.message || "Failed to parse and extract resume information.");
+      const msg = err.message || "Failed to parse and extract resume information.";
+      toast.error(msg);
+      setLocalError(msg);
       await updateExtractionStatus({ status: "failed" });
       setEngineState("FAILED");
     } finally {
@@ -260,11 +263,14 @@ export default function ProfilePage() {
         rawResumeStorageId: rawResumeStorageId ? (rawResumeStorageId as any) : undefined,
       });
 
+      toast.success("Profile saved and verified!");
       setSaveSuccess(true);
       setIsEditing(false);
       router.push("/dashboard");
     } catch (err: any) {
-      setLocalError(err.message || "Failed to save profile. Please try again.");
+      const msg = err.message || "Failed to save profile. Please try again.";
+      toast.error(msg);
+      setLocalError(msg);
     } finally {
       setIsSaving(false);
     }
