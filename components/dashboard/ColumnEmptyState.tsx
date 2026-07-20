@@ -34,7 +34,7 @@ export function ColumnEmptyState({ columnKey, onAddJob }: ColumnEmptyStateProps)
   const Icon = current.icon;
 
   return (
-    <div className="flex flex-col items-center justify-center py-10 px-4 text-center border border-dashed border-slate-200 rounded-2xl bg-slate-50/30">
+    <div className="flex flex-col items-center justify-center py-10 px-4 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50/30">
       <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center mb-3">
         <Icon className="w-5 h-5 text-slate-400" />
       </div>
