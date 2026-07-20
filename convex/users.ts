@@ -55,19 +55,21 @@ export const createOrGetUser = mutation({
       const emailChanged = existingUser.email !== identity.email;
       const nameChanged = existingUser.name !== identity.name;
       const isFree = !existingUser.plan || existingUser.plan === "free";
-      const needsCreditReset = isFree && existingUser.credits > MAX_CREDITS;
 
-      if (emailChanged || nameChanged || needsCreditReset) {
-        let correctCredits = existingUser.credits;
-        if (needsCreditReset) {
-          const jobs = await ctx.db
-            .query("jobs")
-            .withIndex("by_userId", (q) => q.eq("userId", existingUser._id))
-            .collect();
-          const completedJobs = jobs.filter((j) => j.pipelineState === "completed").length;
-          correctCredits = Math.max(0, MAX_CREDITS - (completedJobs * CREDITS_PER_RESUME));
-        }
+      let correctCredits = existingUser.credits;
+      let needsCreditSync = false;
 
+      if (isFree) {
+        const jobs = await ctx.db
+          .query("jobs")
+          .withIndex("by_userId", (q) => q.eq("userId", existingUser._id))
+          .collect();
+        const completedJobs = jobs.filter((j) => j.pipelineState === "completed").length;
+        correctCredits = Math.max(0, MAX_CREDITS - (completedJobs * CREDITS_PER_RESUME));
+        needsCreditSync = existingUser.credits !== correctCredits;
+      }
+
+      if (emailChanged || nameChanged || needsCreditSync) {
         await ctx.db.patch(existingUser._id, {
           email: identity.email ?? existingUser.email,
           name: identity.name ?? existingUser.name,
@@ -101,17 +103,20 @@ export const syncUserCredits = mutation({
   handler: async (ctx) => {
     const user = await requireAuth(ctx);
     const isFree = !user.plan || user.plan === "free";
-    if (isFree && user.credits > MAX_CREDITS) {
+    if (isFree) {
       const jobs = await ctx.db
         .query("jobs")
         .withIndex("by_userId", (q) => q.eq("userId", user._id))
         .collect();
       const completedJobs = jobs.filter((j) => j.pipelineState === "completed").length;
       const correctCredits = Math.max(0, MAX_CREDITS - (completedJobs * CREDITS_PER_RESUME));
-      await ctx.db.patch(user._id, {
-        credits: correctCredits,
-      });
-      return { corrected: true, credits: correctCredits };
+      
+      if (user.credits !== correctCredits) {
+        await ctx.db.patch(user._id, {
+          credits: correctCredits,
+        });
+        return { corrected: true, credits: correctCredits };
+      }
     }
     return { corrected: false, credits: user.credits };
   },

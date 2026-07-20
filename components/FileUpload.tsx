@@ -29,7 +29,7 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
         if (rejection.file.size > 5 * 1024 * 1024) {
           setError("File size exceeds 5MB limit.");
         } else {
-          setError("Unsupported file format. Please upload a PDF, PNG, or JPEG.");
+          setError("Unsupported format. Please upload a PDF, DOCX, PNG, or JPEG.");
         }
         return;
       }
@@ -37,8 +37,44 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
       if (acceptedFiles.length === 0) return;
 
       const file = acceptedFiles[0];
-      setSelectedFile(file);
-      onFileAccepted(file);
+
+      // Page-count validation for PDFs (max 4 pages)
+      if (file.type === "application/pdf") {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const arr = new Uint8Array(e.target?.result as ArrayBuffer);
+            // Search ascii tags for page count
+            const text = new TextDecoder("ascii").decode(arr.slice(0, 2000000)); // scan first 2MB
+            const pageMatches = text.match(/\/Type\s*\/Page\b/g);
+            const pageCount = pageMatches ? pageMatches.length : 1;
+
+            if (pageCount > 4) {
+              setError(`Document has ${pageCount} pages. Resumes must be 1 to 4 pages long.`);
+              setSelectedFile(null);
+              return;
+            }
+
+            setSelectedFile(file);
+            onFileAccepted(file);
+          } catch (err) {
+            // Fallback if parsing fails
+            setSelectedFile(file);
+            onFileAccepted(file);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      } else {
+        // Enforce max 1MB for .docx to prevent uploading massive manuals/books
+        if (file.name.endsWith(".docx") && file.size > 1.5 * 1024 * 1024) {
+          setError("DOCX file is too large. Resumes must be 1 to 4 pages (max 1.5MB).");
+          setSelectedFile(null);
+          return;
+        }
+
+        setSelectedFile(file);
+        onFileAccepted(file);
+      }
     },
     [onFileAccepted]
   );
@@ -50,6 +86,7 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
     maxSize: 5 * 1024 * 1024,
     accept: {
       "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
       "image/png": [".png"],
       "image/jpeg": [".jpg", ".jpeg"],
     },
@@ -90,11 +127,16 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
           <p className="type-body-sm mt-1">
             {isProcessing
               ? "Extracting experience, education, projects and skills..."
-              : "Drag & drop your PDF or image here, or click to browse"}
+              : "Drag & drop your resume file here, or click to browse"}
           </p>
-          <span className="text-[11px] text-[var(--color-ash)] uppercase tracking-wider block mt-2">
-            PDF, PNG, JPG up to 5MB
-          </span>
+          <div className="flex flex-col gap-1 mt-3">
+            <span className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg inline-block mx-auto uppercase tracking-wider">
+              ⚠️ Strict Rule: Resumes must be 1 to 4 pages maximum
+            </span>
+            <span className="text-[10px] text-[var(--color-ash)] uppercase tracking-wider block mt-1">
+              Accepted: PDF, DOCX, PNG, JPG (up to 5MB)
+            </span>
+          </div>
         </div>
 
         {error && (
