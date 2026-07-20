@@ -92,11 +92,21 @@ export default function OnboardingPage() {
 
   // Establish Convex User record
   useEffect(() => {
+    let active = true;
     if (isClerkLoaded && user) {
-      createOrGetUser().then((uid) => {
-        setUserId(uid);
-      });
+      createOrGetUser()
+        .then((uid) => {
+          if (active) {
+            setUserId(uid);
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to establish Convex user record:", err);
+        });
     }
+    return () => {
+      active = false;
+    };
   }, [isClerkLoaded, user, createOrGetUser]);
 
   // Trigger confetti celebration when onboarding finishes (Step 3)
@@ -182,13 +192,54 @@ export default function OnboardingPage() {
 
       const { storageId } = await response.json();
 
-      // 3. Trigger AI extraction action
-      const extractionResult = await extractProfileFromPdf({
-        storageId,
-        fileSize: file.size,
-      });
+      // 3. Trigger AI extraction action with automatic retry on connection loss
+      const MAX_RETRIES = 3;
+      let extractionResult: any = null;
+      let lastError: any = null;
+
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          setProcessStatus(
+            attempt > 1
+              ? `Reconnecting to AI pipeline (attempt ${attempt}/${MAX_RETRIES})…`
+              : "Initializing AI extraction engine..."
+          );
+
+          extractionResult = await extractProfileFromPdf({
+            storageId,
+            fileSize: file.size,
+          });
+          break; // Success — exit retry loop
+        } catch (retryErr: any) {
+          lastError = retryErr;
+          const msg = retryErr?.message || String(retryErr);
+          const isConnectionLost =
+            msg.includes("Connection lost") ||
+            msg.includes("WebSocket") ||
+            msg.includes("action was in flight") ||
+            msg.includes("Failed to fetch");
+
+          if (isConnectionLost && attempt < MAX_RETRIES) {
+            // Exponential backoff: 2s, 4s
+            const delay = Math.pow(2, attempt) * 1000;
+            setProcessStatus(
+              `Connection interrupted — retrying in ${delay / 1000}s (${attempt}/${MAX_RETRIES})…`
+            );
+            setUploadProgress((prev) => Math.max(prev - 15, 10)); // Reset progress slightly
+            await new Promise((resolve) => setTimeout(resolve, delay));
+            continue;
+          }
+          throw retryErr; // Non-retriable error or max retries exhausted
+        }
+      }
+
+      if (!extractionResult && lastError) {
+        throw lastError;
+      }
 
       if (extractionResult) {
+        setUploadProgress(100);
+        setProcessStatus("Extraction complete!");
         const info = extractionResult.personalInfo;
         setName(info.name || user?.fullName || "");
         setEmail(info.email || user?.primaryEmailAddress?.emailAddress || "");
@@ -213,7 +264,14 @@ export default function OnboardingPage() {
       }
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "Failed to extract resume data. Please try again.");
+      const msg = err?.message || String(err);
+      if (msg.includes("Connection lost") || msg.includes("action was in flight")) {
+        setError(
+          "The AI extraction took too long and the connection was lost. Please try again — or use Manual Setup below."
+        );
+      } else {
+        setError(msg || "Failed to extract resume data. Please try again.");
+      }
     } finally {
       setIsProcessing(false);
     }

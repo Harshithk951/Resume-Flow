@@ -144,6 +144,20 @@ function cleanAndParseJSON(text: string): any {
   }
 }
 
+// ─── Timeout Helper ──────────────────────────────────────────
+
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(
+        () => reject(new Error(`${label} timed out after ${ms / 1000}s — please retry.`)),
+        ms
+      )
+    ),
+  ]);
+}
+
 // ─── Convex Action ───────────────────────────────────────────
 
 export const extractProfile = action({
@@ -301,19 +315,23 @@ If any section or field is completely missing in the resume, return an empty arr
 
         console.log("Step 4: Sending payload to model");
 
-        const completion = await openai.chat.completions.create({
-          model: "meta/llama-3.2-90b-vision-instruct",
-          messages: [
-            { role: "system", content: systemPrompt },
-            {
-              role: "user",
-              content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
-            },
-          ],
-          response_format: { type: "json_object" },
-          temperature: 0.1,
-          max_tokens: 3072,
-        });
+        const completion = await withTimeout(
+          openai.chat.completions.create({
+            model: "meta/llama-3.2-90b-vision-instruct",
+            messages: [
+              { role: "system", content: systemPrompt },
+              {
+                role: "user",
+                content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
+              },
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.1,
+            max_tokens: 3072,
+          }),
+          120_000,
+          "NVIDIA NIM PDF extraction"
+        );
 
         const responseText = completion.choices[0]?.message?.content || "";
         console.log("✅ Step 5: Qwen responded successfully. Parsing JSON...");
@@ -332,30 +350,34 @@ If any section or field is completely missing in the resume, return an empty arr
 
         console.log("Step 4: Sending image payload to model");
 
-        const completion = await openai.chat.completions.create({
-          model: "meta/llama-3.2-90b-vision-instruct",
-          messages: [
-            { role: "system", content: systemPrompt },
-            {
-              role: "user",
-              content: [
-                {
-                  type: "text",
-                  text: "Extract the resume content from this uploaded image. Output the structured JSON schema only.",
-                },
-                {
-                  type: "image_url",
-                  image_url: {
-                    url: `data:${mimeType};base64,${base64Image}`,
+        const completion = await withTimeout(
+          openai.chat.completions.create({
+            model: "meta/llama-3.2-90b-vision-instruct",
+            messages: [
+              { role: "system", content: systemPrompt },
+              {
+                role: "user",
+                content: [
+                  {
+                    type: "text",
+                    text: "Extract the resume content from this uploaded image. Output the structured JSON schema only.",
                   },
-                },
-              ],
-            },
-          ],
-          response_format: { type: "json_object" },
-          temperature: 0.1,
-          max_tokens: 3072,
-        });
+                  {
+                    type: "image_url",
+                    image_url: {
+                      url: `data:${mimeType};base64,${base64Image}`,
+                    },
+                  },
+                ],
+              },
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.1,
+            max_tokens: 3072,
+          }),
+          120_000,
+          "NVIDIA NIM image extraction"
+        );
 
         const responseText = completion.choices[0]?.message?.content || "";
         console.log("✅ Step 5: Qwen responded successfully. Parsing JSON...");
