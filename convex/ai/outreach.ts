@@ -11,6 +11,7 @@ import { api, internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { z } from "zod";
 import { callWithResilience, NIM_SERVICE } from "./resilience";
+import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 const OutreachPayloadSchema = z.object({
   coverLetter: z.string(),
@@ -41,7 +42,8 @@ function cleanAndParseJSON(text: string): any {
 export const generateCoverLetterAndOutreach = action({
   args: { jobId: v.id("jobs") },
   handler: async (ctx, args) => {
-    console.log("ACTION START: generateCoverLetterAndOutreach", args.jobId);
+    const log = createLogger({ traceId: generateTraceId(), jobId: args.jobId, layer: "outreach" });
+    log.info("ACTION START: generateCoverLetterAndOutreach");
     
     try {
       if (!process.env.NVIDIA_NIM_API_KEY) {
@@ -96,6 +98,9 @@ Return ONLY a valid JSON block matching this schema:
 }`;
 
       // 3. Call Llama 3.3 NIM with resilience
+      log.info("Invoking NIM for outreach generation", { model: "meta/llama-3.1-8b-instruct" });
+      incrementMetric(METRICS.NIM_CALLS);
+      const nimStart = Date.now();
       const completion = await callWithResilience(NIM_SERVICE, async () =>
         openai.chat.completions.create({
           model: "meta/llama-3.1-8b-instruct",
@@ -108,6 +113,8 @@ Return ONLY a valid JSON block matching this schema:
         }),
         true
       );
+      const nimDuration = Date.now() - nimStart;
+      log.info("Outreach generation complete", { durationMs: nimDuration });
 
       const responseText = completion.choices[0]?.message?.content || "";
       const parsedOutput = cleanAndParseJSON(responseText);
@@ -139,7 +146,10 @@ Return ONLY a valid JSON block matching this schema:
       };
 
     } catch (err: any) {
-      console.error("Outreach materials generation failed:", err);
+      const message = err instanceof Error ? err.message : String(err);
+      log.error("Outreach generation failed", { error: message });
+      captureError(err, log.getContext());
+      incrementMetric(METRICS.NIM_FAILURES);
       throw new Error(err.message || "Failed to generate outreach copy.");
     }
   },

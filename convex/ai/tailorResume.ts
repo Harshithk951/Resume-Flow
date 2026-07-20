@@ -14,6 +14,7 @@ import { maskPersonalInfo, reInjectPersonalInfo } from "../lib/piiMask";
 import { z } from "zod";
 import { atsAuditorSkill, resumeMakerSkill } from "./Skills/registry";
 import { callWithResilience, NIM_SERVICE } from "./resilience";
+import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // ─── Zod Schema for Layer 2 JSON Output ──────────────────────
 
@@ -138,7 +139,8 @@ function cleanAndParseJSON(text: string): any {
 export const tailorResume = action({
   args: { jobId: v.id("jobs") },
   handler: async (ctx, args) => {
-    console.log("ACTION START: tailorResume");
+    const log = createLogger({ traceId: generateTraceId(), jobId: args.jobId, layer: "tailor" });
+    log.info("ACTION START: tailorResume");
     try {
       if (!process.env.NVIDIA_NIM_API_KEY) {
         throw new Error("CRITICAL: NVIDIA API KEY MISSING FROM CONVEX ENV");
@@ -268,6 +270,9 @@ Return ONLY a valid JSON block matching this schema:
   "diffNotes": ["...", "..."]
 }`;
 
+      log.info("Invoking NIM for resume tailoring", { model: "meta/llama-3.1-70b-instruct" });
+      incrementMetric(METRICS.NIM_CALLS);
+      const nimStart = Date.now();
       const completion = await callWithResilience(NIM_SERVICE, async () =>
         openai.chat.completions.create({
           model: "meta/llama-3.1-70b-instruct",
@@ -281,13 +286,15 @@ Return ONLY a valid JSON block matching this schema:
         }),
         true
       );
+      const nimDuration = Date.now() - nimStart;
+      log.info("Tailoring NIM complete", { durationMs: nimDuration });
 
       const responseText = completion.choices[0]?.message?.content || "";
       const parsedOutput = cleanAndParseJSON(responseText);
 
       // Validate schema
       const validatedOutput = TailoredResumeSchema.parse(parsedOutput);
-      console.log("🎯 Step 5: Combined heuristic ATS scoring & validation complete.");
+      log.info("Tailoring complete — ready for compilation", { atsScore: validatedOutput.atsCompatibilityScore });
 
       // 5. Re-inject PII (Restore actual name, email, phone, links)
       validatedOutput.structuredContent = reInjectPersonalInfo(
@@ -306,8 +313,10 @@ Return ONLY a valid JSON block matching this schema:
       });
 
     } catch (err: any) {
-      // 🛡️ Security: Log only sanitized error (no raw error PII leaked)
-      console.error("Layer 2 tailoring failed:", err instanceof Error ? err.message : "Unknown error");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      log.error("Layer 2 tailoring failed", { error: message });
+      captureError(err, log.getContext());
+      incrementMetric(METRICS.NIM_FAILURES);
       const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
       // Graceful error state transition
       await ctx.runMutation(internal.jobs.internalUpdateJobState, {

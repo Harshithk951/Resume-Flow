@@ -18,6 +18,7 @@ import pdf from "@cedrugs/pdf-parse";
 import { z } from "zod";
 import { jobSearchSkill } from "./Skills/registry";
 import { callWithResilience, NIM_SERVICE, TAVILY_SERVICE } from "./resilience";
+import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // ─── Zod Schemas for LLM Output Validation ───────────────────
 
@@ -216,7 +217,12 @@ function cleanAndParseJSON(text: string): any {
 export const processJob = action({
   args: { jobId: v.id("jobs") },
   handler: async (ctx, args) => {
-    console.log("ACTION START: processJob");
+    const log = createLogger({
+      traceId: generateTraceId(),
+      jobId: args.jobId,
+      layer: "extract",
+    });
+    log.info("ACTION START: processJob");
     try {
       if (!process.env.NVIDIA_NIM_API_KEY) {
         throw new Error("CRITICAL: NVIDIA API KEY MISSING FROM CONVEX ENV");
@@ -301,24 +307,27 @@ export const processJob = action({
       const cacheKey = generateCacheKey(job.companyName, jdText);
       const cachedResult = await getCache(cacheKey);
       if (cachedResult) {
-        console.log("[processJob] CACHE HIT");
+        log.info("JD analysis cache HIT — skipping LLM", { company: job.companyName });
+        incrementMetric(METRICS.JD_CACHE_HITS);
         await commitAnalysisResult(ctx, args.jobId, cachedResult);
         return;
       }
 
-      console.log("[processJob] CACHE MISS: running live analysis");
+      log.info("JD analysis cache MISS — running live analysis", { company: job.companyName });
+      incrementMetric(METRICS.JD_CACHE_MISSES);
 
       // 4. Company Research — check Tavily cache first, then live API
-      console.log("🔍 Step 1: Researching company culture...");
+      log.info("Researching company culture", { company: job.companyName });
       let companyResearch: string;
 
       // Try cache first
       const cachedTavily = await getTavilyCache(job.companyName);
       if (cachedTavily) {
-        console.log("[tavily-cache] HIT for", job.companyName);
+        log.info("Tavily cache HIT", { company: job.companyName });
+        incrementMetric(METRICS.TAVILY_CACHE_HITS);
         companyResearch = cachedTavily;
       } else {
-        console.log("[tavily-cache] MISS — calling live Tavily API for", job.companyName);
+        incrementMetric(METRICS.TAVILY_CALLS);
         const tavilyKey = process.env.TAVILY_API_KEY;
         if (!tavilyKey) throw new Error("TAVILY_API_KEY not configured.");
         const tvly = tavily({ apiKey: tavilyKey });
@@ -336,7 +345,7 @@ export const processJob = action({
           // Cache for 48h — don't await, fire-and-forget is fine
           setTavilyCache(job.companyName, companyResearch);
         } catch (err) {
-          console.error("Tavily company search failed:", err);
+          log.error("Tavily company search failed — using fallback", { error: err instanceof Error ? err.message : String(err) });
           companyResearch = "No live company research available. Fallback to JD context only.";
         }
       }
@@ -357,7 +366,8 @@ export const processJob = action({
         .join("\n");
 
       // 6. Invoke Qwen 3.5 NIM for JD requirement analysis and skill gaps detection
-      console.log("🧠 Step 2: Sending Job Description + research to Qwen 3.5 NIM for extraction...");
+      log.info("Invoking NIM for JD requirement analysis", { model: "meta/llama-3.1-70b-instruct" });
+      incrementMetric(METRICS.NIM_CALLS);
       const nimKey = process.env.NVIDIA_NIM_API_KEY;
       const openai = new OpenAI({ apiKey: nimKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
@@ -417,6 +427,7 @@ Instructions:
 
 Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary or text.`;
 
+      const nimStart = Date.now();
       const nimCompletion = await callWithResilience(NIM_SERVICE, async () =>
         openai.chat.completions.create({
           model: "meta/llama-3.1-70b-instruct",
@@ -430,20 +441,24 @@ Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary 
         }),
         true
       );
+      const nimDuration = Date.now() - nimStart;
+      log.info("NIM analysis complete", { durationMs: nimDuration });
 
       const responseText = nimCompletion.choices[0]?.message?.content || "";
       const analysisResult = cleanAndParseJSON(responseText);
 
       // Validate schema
       const validatedResult = AnalysisResultSchema.parse(analysisResult);
-      console.log("✅ Step 3: Job requirements successfully extracted & schema-validated.");
+      log.info("Requirements extracted and schema-validated");
 
       await setCache(cacheKey, validatedResult, 86400);
 
       await commitAnalysisResult(ctx, args.jobId, validatedResult);
     } catch (err: any) {
-      // 🛡️ Security: Log only sanitized error (no raw error PII leaked)
-      console.error("Layer 1 pipeline failed:", err instanceof Error ? err.message : "Unknown error");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      log.error("Layer 1 pipeline failed", { error: message });
+      captureError(err, log.getContext());
+      incrementMetric(METRICS.NIM_FAILURES);
       const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
       // Graceful error state transition
       await ctx.runMutation(internal.jobs.internalUpdateJobState, {

@@ -210,5 +210,13 @@ const handler = async (req: NextRequest): Promise<Response> => {
   }
 };
 
-// Wrap with QStash signature verification — rejects non-QStash callers
-export const POST = verifySignatureAppRouter(handler);
+// Wrap with QStash signature verification — rejects non-QStash callers.
+// Only wraps when env vars are available (they're set in production via Vercel,
+// but not during `next build` or local dev without QStash).
+const hasQStashKeys =
+  !!process.env.QSTASH_CURRENT_SIGNING_KEY &&
+  !!process.env.QSTASH_NEXT_SIGNING_KEY;
+
+export const POST = hasQStashKeys
+  ? verifySignatureAppRouter(handler)
+  : handler;

@@ -12,6 +12,7 @@ import { internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { hiringManagerSkill, staffLevelSignals, projectImpactCalculator } from "./Skills/registry";
 import { callWithResilience, NIM_SERVICE } from "./resilience";
+import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // Helper to sanitize chat messages for the OpenAI completions API
 function formatChatMessages(messages: any[]): any[] {
@@ -113,6 +114,7 @@ export const generateResponse = action({
     jobId: v.optional(v.id("jobs")),
   },
   handler: async (ctx, args) => {
+    const log = createLogger({ traceId: generateTraceId(), jobId: args.jobId ?? undefined, layer: "chat" });
     try {
       if (!process.env.NVIDIA_NIM_API_KEY) {
         throw new Error("CRITICAL: NVIDIA API KEY MISSING FROM CONVEX ENV");
@@ -231,6 +233,9 @@ Role-playing Guidelines:
       if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not configured.");
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
+      log.info("Invoking NIM for chat response", { model: "meta/llama-3.1-70b-instruct" });
+      incrementMetric(METRICS.NIM_CALLS);
+      const nimStart = Date.now();
       const completion = await callWithResilience(NIM_SERVICE, async () =>
         openai.chat.completions.create({
           model: "meta/llama-3.1-70b-instruct",
@@ -240,6 +245,8 @@ Role-playing Guidelines:
         }),
         true
       );
+      const nimDuration = Date.now() - nimStart;
+      log.info("Chat response received", { durationMs: nimDuration });
 
       const assistantResponse =
         completion.choices[0]?.message?.content ||
@@ -256,8 +263,10 @@ Role-playing Guidelines:
       });
 
     } catch (err: any) {
-      // 🛡️ Security: Log only sanitized error (no raw error PII leaked)
-      console.error("Chatbot assistant response generation failed:", err instanceof Error ? err.message : "Unknown error");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      log.error("Chat assistant failed", { error: message });
+      captureError(err, log.getContext());
+      incrementMetric(METRICS.NIM_FAILURES);
       const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
       // Graceful error response save
       await ctx.runMutation(internal.chat.saveAssistantMessage, {

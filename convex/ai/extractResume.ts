@@ -14,6 +14,7 @@ import { validateUpload } from "../lib/uploadValidation";
 import { z } from "zod";
 import { api, internal } from "../_generated/api";
 import { callWithResilience, NIM_SERVICE } from "./resilience";
+import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // ─── Zod Schema for Validation ──────────────────────────────
 
@@ -167,7 +168,8 @@ export const extractProfile = action({
     fileSize: v.number(),
   },
   handler: async (ctx, args) => {
-    console.log("ACTION START: extractProfile");
+    const log = createLogger({ traceId: generateTraceId(), layer: "extract_resume" });
+    log.info("ACTION START: extractProfile");
     let profileId: string | null = null;
     try {
       if (!process.env.NVIDIA_NIM_API_KEY) {
@@ -304,7 +306,7 @@ Follow this exact JSON structure:
 If any section or field is completely missing in the resume, return an empty array [] or empty string "" for that field rather than skipping the key. Do not hallucinate any information.`;
 
       if (mimeType === "application/pdf") {
-        console.log("📄 Processing file as PDF...");
+        log.info("Processing file as PDF");
         // ─── PDF Parsing Stream ───
         const pdfBuffer = Buffer.from(arrayBuffer);
         const parsedPdf = await pdf(pdfBuffer);
@@ -316,6 +318,9 @@ If any section or field is completely missing in the resume, return an empty arr
 
         console.log("Step 4: Sending payload to model");
 
+        log.info("Invoking NIM for PDF extraction", { model: "meta/llama-3.1-70b-instruct" });
+        incrementMetric(METRICS.NIM_CALLS);
+        const nimStart = Date.now();
         const completion = await callWithResilience(NIM_SERVICE, async () =>
           withTimeout(
             openai.chat.completions.create({
@@ -336,9 +341,10 @@ If any section or field is completely missing in the resume, return an empty arr
           ),
           true
         );
+        const nimDuration = Date.now() - nimStart;
+        log.info("NIM PDF extraction complete", { durationMs: nimDuration });
 
         const responseText = completion.choices[0]?.message?.content || "";
-        console.log("✅ Step 5: Qwen responded successfully. Parsing JSON...");
         resumeData = cleanAndParseJSON(responseText);
 
         // Re-inject PII
@@ -348,12 +354,15 @@ If any section or field is completely missing in the resume, return an empty arr
           if (extractedPii.phone) resumeData.personalInfo.phone = extractedPii.phone;
         }
       } else {
-        console.log("🖼️ Processing file as Image (" + mimeType + ")...");
+        log.info("Processing file as Image", { mimeType });
         // ─── Image Vision Parsing Stream ───
         const base64Image = Buffer.from(arrayBuffer).toString("base64");
 
         console.log("Step 4: Sending image payload to model");
 
+        log.info("Invoking NIM for image OCR", { model: "meta/llama-3.2-11b-vision-instruct" });
+        incrementMetric(METRICS.NIM_CALLS);
+        const nimStart = Date.now();
         const completion = await callWithResilience(NIM_SERVICE, async () =>
           withTimeout(
             openai.chat.completions.create({
@@ -386,8 +395,9 @@ If any section or field is completely missing in the resume, return an empty arr
           true
         );
 
+        const nimDuration = Date.now() - nimStart;
+        log.info("NIM image OCR complete", { durationMs: nimDuration });
         const responseText = completion.choices[0]?.message?.content || "";
-        console.log("✅ Step 5: Qwen responded successfully. Parsing JSON...");
         resumeData = cleanAndParseJSON(responseText);
       }
 
@@ -410,8 +420,9 @@ If any section or field is completely missing in the resume, return an empty arr
       return validatedData;
     } catch (error) {
       const err = error as any;
-      // 🛡️ Security: Log only sanitized error (no raw error/PII leaked)
-      console.error("Extraction failed:", err instanceof Error ? err.message : "Unknown error");
+      const message = err instanceof Error ? err.message : "Unknown error";
+      log.error("Extraction failed", { error: message });
+      captureError(err, log.getContext());
       if (profileId) {
         try {
           await ctx.runMutation(internal.profiles.markExtractionFailed, {
