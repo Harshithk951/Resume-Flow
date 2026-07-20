@@ -124,6 +124,25 @@ const ALL_TARGETS: Record<string, string[]> = {
   "onboarding": [
     "app/onboarding/page.tsx",
   ],
+  "remaining": [
+    // Files not covered by any other group — surfaced by dark mode audit
+    // NOTE: app/globals.css is intentionally excluded — its patterns are
+    // design-token definitions and .dark utility overrides that must stay as-is.
+    "app/resources/[slug]/page.tsx",
+    "app/(app)/layout.tsx",
+    "app/info/[slug]/page.tsx",
+    "components/Navbar.tsx",
+    "app/(app)/ops/dead-letter/page.tsx",
+    "components/TemplateCarousel.tsx",
+    "components/ChatBot.tsx",
+    "components/grids/FeatureGrid.tsx",
+    "components/AppBackButton.tsx",
+    "components/ui/tabs.tsx",
+    "components/ui/progress.tsx",
+    "app/sign-in/[[...sign-in]]/page.tsx",
+    "components/LiveSandboxPreview.tsx",
+    "components/dashboard/DashboardSkeleton.tsx",
+  ],
   "all": [], // populated below
 };
 

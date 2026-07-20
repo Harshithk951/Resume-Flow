@@ -20,7 +20,7 @@ function Tabs({ tabs, activeTab, onTabChange, className }: TabsProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center bg-slate-100/80 rounded-xl p-1 border border-slate-200/60",
+        "inline-flex items-center bg-[var(--color-surface-card)]/80 rounded-xl p-1 border border-[var(--color-hairline)]/60",
         className
       )}
     >
@@ -31,8 +31,8 @@ function Tabs({ tabs, activeTab, onTabChange, className }: TabsProps) {
           className={cn(
             "flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all duration-200",
             activeTab === tab.key
-              ? "bg-white text-rose-600 shadow-sm border border-slate-200/60 font-bold"
-              : "text-slate-500 hover:text-slate-700"
+              ? "bg-[var(--color-canvas)] text-rose-600 shadow-sm border border-[var(--color-hairline)]/60 font-bold"
+              : "text-[var(--color-ash)] hover:text-[var(--color-charcoal)]"
           )}
         >
           {tab.icon && <span className="flex items-center">{tab.icon}</span>}

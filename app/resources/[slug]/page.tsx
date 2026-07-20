@@ -45,22 +45,22 @@ const resourcesContent: Record<string, ContentBlock> = {
     body: (
       <div className="space-y-8">
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             1. The Google XYZ Resume Formula
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             The most effective way to frame your achievements is using the XYZ
             formula:{' '}
             <strong>
               &ldquo;Accomplished [X] as measured by [Y], by doing [Z].&rdquo;
             </strong>
           </p>
-          <div className="bg-slate-50 border border-slate-200/50 p-4 rounded-xl text-xs space-y-2">
-            <p className="text-slate-500">
+          <div className="bg-[var(--color-surface-soft)] border border-[var(--color-hairline)]/50 p-4 rounded-xl text-xs space-y-2">
+            <p className="text-[var(--color-ash)]">
               <span className="text-rose-500 font-bold">Weak:</span> Helped
               build the company frontend website.
             </p>
-            <p className="text-slate-800">
+            <p className="text-[var(--color-ink-soft)]">
               <span className="text-green-600 font-bold">Strong:</span>{' '}
               Redesigned the core dashboard frontend [X], resulting in a 34%
               reduction in load latency [Y], by implementing React code-splitting
@@ -69,14 +69,14 @@ const resourcesContent: Record<string, ContentBlock> = {
           </div>
         </section>
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             2. Layout and Structure Guidelines
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             Corporate recruiters spend an average of 6 seconds reviewing a
             resume. Keep your structure clean:
           </p>
-          <ul className="list-disc pl-5 text-slate-600 text-xs space-y-1.5">
+          <ul className="list-disc pl-5 text-[var(--color-mute)] text-xs space-y-1.5">
             <li>
               Single page only (unless you have 8+ years of experience).
             </li>
@@ -88,27 +88,27 @@ const resourcesContent: Record<string, ContentBlock> = {
           </ul>
         </section>
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             3. Action Verbs to Start Every Bullet
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             Always begin bullet points with strong, active verbs in the past
             tense (or present for current roles):
           </p>
           <div className="grid grid-cols-2 gap-4 text-xs">
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <div className="bg-[var(--color-surface-soft)] p-3 rounded-lg border border-[var(--color-hairline-soft)]">
               <p className="font-bold text-rose-700 mb-1">
                 Creation & Dev
               </p>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 Architected, Deployed, Built, Formulated, Engineered, Developed.
               </p>
             </div>
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
+            <div className="bg-[var(--color-surface-soft)] p-3 rounded-lg border border-[var(--color-hairline-soft)]">
               <p className="font-bold text-rose-700 mb-1">
                 Leadership & Impact
               </p>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 Spearheaded, Directed, Guided, Restructured, Optimized,
                 Accelerated.
               </p>
@@ -127,48 +127,48 @@ const resourcesContent: Record<string, ContentBlock> = {
     body: (
       <div className="space-y-8">
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             1. Behavioral Prep: The STAR Method
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             Behavioral questions (&ldquo;Tell me about a time when...&rdquo;)
             should always be answered using the STAR method:
           </p>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-            <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div className="bg-[var(--color-surface-soft)] p-3 rounded-xl border border-[var(--color-hairline-soft)]">
               <h3 className="font-bold text-rose-700 mb-1">Situation</h3>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 Set the context. What was the project or conflict?
               </p>
             </div>
-            <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div className="bg-[var(--color-surface-soft)] p-3 rounded-xl border border-[var(--color-hairline-soft)]">
               <h3 className="font-bold text-rose-700 mb-1">Task</h3>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 What was your specific responsibility in that situation?
               </p>
             </div>
-            <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div className="bg-[var(--color-surface-soft)] p-3 rounded-xl border border-[var(--color-hairline-soft)]">
               <h3 className="font-bold text-rose-700 mb-1">Action</h3>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 What specific steps did you take to resolve it?
               </p>
             </div>
-            <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div className="bg-[var(--color-surface-soft)] p-3 rounded-xl border border-[var(--color-hairline-soft)]">
               <h3 className="font-bold text-rose-700 mb-1">Result</h3>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 What was the positive business or engineering outcome?
               </p>
             </div>
           </div>
         </section>
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             2. Technical Preparation Checklist
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             Ensure you have solid ground in key computer science foundations:
           </p>
-          <ul className="list-disc pl-5 text-slate-600 text-xs space-y-1.5">
+          <ul className="list-disc pl-5 text-[var(--color-mute)] text-xs space-y-1.5">
             <li>
               <strong>Algorithms:</strong> Trees, Graphs, Dynamic Programming,
               Heap/Queue.
@@ -199,10 +199,10 @@ const resourcesContent: Record<string, ContentBlock> = {
     body: (
       <div className="space-y-8">
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             1. Why ATS Matters
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             Over 95% of Fortune 500 companies use Applicant Tracking Systems
             (ATS) to filter resumes before they reach human eyes. An
             unoptimized layout can result in automatic rejection due to parsing
@@ -210,10 +210,10 @@ const resourcesContent: Record<string, ContentBlock> = {
           </p>
         </section>
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             2. Essential Optimization Rules
           </h2>
-          <ul className="list-disc pl-5 text-slate-600 text-xs space-y-2">
+          <ul className="list-disc pl-5 text-[var(--color-mute)] text-xs space-y-2">
             <li>
               <strong>Use standard headings:</strong> Stick to simple section
               labels like &ldquo;Education&rdquo;, &ldquo;Experience&rdquo;,
@@ -235,10 +235,10 @@ const resourcesContent: Record<string, ContentBlock> = {
           </ul>
         </section>
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             3. Keywords Alignment
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             ATS engines grade resumes based on the density of matching keywords
             from the job description. Always mirror key terminology naturally in
             your skills and experience lists (e.g. if the JD asks for &ldquo;API
@@ -257,10 +257,10 @@ const resourcesContent: Record<string, ContentBlock> = {
     body: (
       <div className="space-y-8">
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             1. Ingesting Job Descriptions
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             Submit a job listing text or PDF storage ID to parse and extract
             hard skills, soft skills, and ATS keywords:
           </p>
@@ -276,10 +276,10 @@ Body:
           </pre>
         </section>
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             2. Tailoring Response Schema
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             The API returns tailored JSON matching the candidate master profile
             layout:
           </p>
@@ -349,7 +349,7 @@ export default async function ResourceSlugPage({
     >
       <div className="flex gap-4 items-center mb-6">
         {pageData.icon}
-        <div className="h-px bg-slate-200/60 flex-1" />
+        <div className="h-px bg-[var(--color-secondary-bg)]/60 flex-1" />
       </div>
       {pageData.body}
     </StaticPageWrapper>

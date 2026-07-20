@@ -29,7 +29,7 @@ export function AppBackButton({
       type="button"
       onClick={handleBack}
       aria-label={label}
-      className={`inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3 py-2 text-sm font-semibold text-slate-600 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 ${className}`}
+      className={`inline-flex items-center gap-2 rounded-xl border border-[var(--color-hairline)]/80 bg-[var(--color-canvas)] px-3 py-2 text-sm font-semibold text-[var(--color-mute)] shadow-sm transition-colors hover:border-[var(--color-secondary-bg)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)] ${className}`}
     >
       <ArrowLeft className="h-4 w-4 shrink-0" />
       <span>{label}</span>

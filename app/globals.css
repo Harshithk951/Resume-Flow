@@ -909,11 +909,31 @@ button:hover .icon-island-light {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
 }
 
-/* NeedsAttentionPanel colored notification backgrounds */
+/* ── NeedsAttentionPanel ────────────────────────────── */
+/* Notification background tints */
 .dark .bg-red-50\/30 { background-color: rgba(248,81,73,0.08) !important; }
 .dark .bg-amber-50\/30 { background-color: rgba(217,122,46,0.08) !important; }
 .dark .bg-orange-50\/30 { background-color: rgba(217,122,46,0.08) !important; }
 .dark .bg-blue-50\/30 { background-color: rgba(88,166,255,0.08) !important; }
+
+/* Notification left-border accent colors — GitHub-dark muted accents */
+.dark .border-l-red-500 { border-left-color: #f85149 !important; }
+.dark .border-l-amber-500 { border-left-color: #d29922 !important; }
+.dark .border-l-orange-500 { border-left-color: #d29922 !important; }
+.dark .border-l-blue-500 { border-left-color: #58a6ff !important; }
+
+/* Notification icon/text accent colors */
+.dark .text-red-500 { color: #f85149 !important; }
+.dark .text-amber-500 { color: #d29922 !important; }
+.dark .text-orange-500 { color: #d29922 !important; }
+.dark .text-blue-500 { color: #58a6ff !important; }
+.dark .text-emerald-500 { color: #3fb950 !important; }
+
+/* Retry button text & border */
+.dark .text-red-600 { color: #f85149 !important; }
+.dark .text-red-700 { color: #f85149 !important; }
+.dark .border-red-200 { border-color: rgba(248,81,73,0.2) !important; }
+.dark .hover\:bg-red-50\/50:hover { background-color: rgba(248,81,73,0.08) !important; }
 
 /* Badge soft variant backgrounds — note: .dark .bg-rose-50 is already defined
    above in the Backgrounds section; this block adds emerald & amber.          */

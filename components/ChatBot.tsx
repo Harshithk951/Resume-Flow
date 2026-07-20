@@ -571,8 +571,8 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                       }
                       className="flex gap-0.5 items-center justify-center"
                     >
-                      <div className="w-[1.5px] h-2 bg-white rounded-full shadow-[0_0_4px_rgba(255,255,255,0.9)]" />
-                      <div className="w-[1.5px] h-2 bg-white rounded-full shadow-[0_0_4px_rgba(255,255,255,0.9)]" />
+                      <div className="w-[1.5px] h-2 bg-[var(--color-canvas)] rounded-full shadow-[0_0_4px_rgba(255,255,255,0.9)]" />
+                      <div className="w-[1.5px] h-2 bg-[var(--color-canvas)] rounded-full shadow-[0_0_4px_rgba(255,255,255,0.9)]" />
                     </motion.div>
                   </div>
                 </div>
@@ -630,7 +630,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                     </button>
                     <button
                       onClick={startNewChat}
-                      className="text-[10px] font-bold px-3 py-1.5 bg-white border border-amber-200 text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
+                      className="text-[10px] font-bold px-3 py-1.5 bg-[var(--color-canvas)] border border-amber-200 text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
                     >
                       + New Conversation
                     </button>
@@ -802,7 +802,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                     y: { repeat: Infinity, duration: 3, ease: "easeInOut" },
                     x: { repeat: Infinity, duration: 3.5, ease: "easeInOut" },
                   }}
-                  className="absolute -bottom-4 right-10 w-6 h-6 bg-white border border-slate-100 rounded-full shadow-md backdrop-blur-md z-40 pointer-events-none"
+                  className="absolute -bottom-4 right-10 w-6 h-6 bg-[var(--color-canvas)] border border-[var(--color-hairline-soft)] rounded-full shadow-md backdrop-blur-md z-40 pointer-events-none"
                 />
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
@@ -817,7 +817,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                     y: { repeat: Infinity, duration: 3.4, ease: "easeInOut" },
                     x: { repeat: Infinity, duration: 2.8, ease: "easeInOut" },
                   }}
-                  className="absolute -bottom-8 right-14 w-4 h-4 bg-white border border-slate-100 rounded-full shadow-sm backdrop-blur-md z-40 pointer-events-none"
+                  className="absolute -bottom-8 right-14 w-4 h-4 bg-[var(--color-canvas)] border border-[var(--color-hairline-soft)] rounded-full shadow-sm backdrop-blur-md z-40 pointer-events-none"
                 />
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
@@ -830,7 +830,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                     delay: 0.2,
                     y: { repeat: Infinity, duration: 2.5, ease: "easeInOut" },
                   }}
-                  className="absolute -bottom-12 right-16 w-2.5 h-2.5 bg-white border border-slate-100 rounded-full shadow-sm backdrop-blur-md z-40 pointer-events-none"
+                  className="absolute -bottom-12 right-16 w-2.5 h-2.5 bg-[var(--color-canvas)] border border-[var(--color-hairline-soft)] rounded-full shadow-sm backdrop-blur-md z-40 pointer-events-none"
                 />
               </>
             )}
@@ -898,8 +898,8 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                 }
                 className="flex gap-[2px] sm:gap-[3px] md:gap-[4px] items-center justify-center"
               >
-                <div className="w-[2px] h-[7px] sm:w-[3px] sm:h-[10px] md:w-[4px] md:h-[12px] bg-white rounded-full shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
-                <div className="w-[2px] h-[7px] sm:w-[3px] sm:h-[10px] md:w-[4px] md:h-[12px] bg-white rounded-full shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
+                <div className="w-[2px] h-[7px] sm:w-[3px] sm:h-[10px] md:w-[4px] md:h-[12px] bg-[var(--color-canvas)] rounded-full shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
+                <div className="w-[2px] h-[7px] sm:w-[3px] sm:h-[10px] md:w-[4px] md:h-[12px] bg-[var(--color-canvas)] rounded-full shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
               </motion.div>
             </div>
           </motion.button>

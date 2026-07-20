@@ -19,7 +19,7 @@ function Progress({ className, value = 0, color = "rose", ...props }: ProgressPr
   const clamped = Math.min(100, Math.max(0, value));
   return (
     <div
-      className={cn("w-full h-2 rounded-full bg-slate-100 overflow-hidden", className)}
+      className={cn("w-full h-2 rounded-full bg-[var(--color-surface-card)] overflow-hidden", className)}
       {...props}
     >
       <div

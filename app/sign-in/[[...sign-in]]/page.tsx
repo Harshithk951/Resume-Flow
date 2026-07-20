@@ -38,7 +38,7 @@ export default function SignInPage() {
       <style>{`[data-clerk-dev-mode-notice]{display:none!important}`}</style>
       <Link
         href="/"
-        className="absolute left-6 top-6 inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition-colors hover:text-rose-600 z-10"
+        className="absolute left-6 top-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-mute)] transition-colors hover:text-rose-600 z-10"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to home
@@ -52,7 +52,7 @@ export default function SignInPage() {
               rootBox: "mx-auto",
               card: "shadow-none border-none",
               cardBox:
-                "bg-white rounded-[32px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
+                "bg-[var(--color-canvas)] rounded-[32px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
               headerTitle: "text-[22px] font-semibold text-[#000000]",
               headerSubtitle: "text-[16px] text-[#33332e]",
               formButtonPrimary:

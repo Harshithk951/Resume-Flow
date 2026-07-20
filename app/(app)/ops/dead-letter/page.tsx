@@ -39,15 +39,15 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
       {/* ─── Header ─── */}
-      <div className="flex items-center gap-3 border-b border-slate-200/60 pb-6">
+      <div className="flex items-center gap-3 border-b border-[var(--color-hairline)]/60 pb-6">
         <div className="p-2.5 rounded-2xl bg-rose-50 text-rose-600">
           <SettingsIcon className="w-5 h-5" />
         </div>
         <div>
-          <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-slate-900 leading-tight">
+          <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--color-ink)] leading-tight">
             Settings
           </h1>
-          <p className="text-sm text-slate-500 mt-0.5">
+          <p className="text-sm text-[var(--color-ash)] mt-0.5">
             Manage your account, credits, and preferences.
           </p>
         </div>
@@ -69,17 +69,17 @@ export default function SettingsPage() {
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-bold text-slate-800 text-sm">{clerkUser?.fullName || appUser?.name || "User"}</h3>
+                <h3 className="font-bold text-[var(--color-ink-soft)] text-sm">{clerkUser?.fullName || appUser?.name || "User"}</h3>
                 <Badge variant={isFree ? "premium" : appUser?.plan === "pro" ? "default" : "success"} size="sm">
                   {appUser?.plan || "free"}
                 </Badge>
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-[var(--color-ash)] mt-0.5">
                 {clerkUser?.primaryEmailAddress?.emailAddress || "No email"}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 text-xs text-slate-500 bg-emerald-50/50 rounded-xl px-4 py-3 border border-emerald-100/60">
+          <div className="flex items-center gap-2.5 text-xs text-[var(--color-ash)] bg-emerald-50/50 rounded-xl px-4 py-3 border border-emerald-100/60">
             <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
             <span>All security checks passed. Your data is encrypted and accessible only to you.</span>
           </div>
@@ -103,14 +103,14 @@ export default function SettingsPage() {
           {/* Credit Progress — card-bloom effect */}
           <div className="relative card-bloom p-5 bg-gradient-to-br from-rose-50/40 to-white border border-rose-100/60 rounded-2xl space-y-3">
             <div className="flex items-center justify-between relative z-10">
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[var(--color-ash)] uppercase tracking-wider">
                 Available Credits
               </span>
-              <span className="text-xs font-bold text-slate-700 tabular-nums">
+              <span className="text-xs font-bold text-[var(--color-charcoal)] tabular-nums">
                 {(appUser?.credits ?? 0).toLocaleString()}
               </span>
             </div>
-            <div className="w-full h-3 bg-slate-100/80 rounded-full overflow-hidden relative z-10">
+            <div className="w-full h-3 bg-[var(--color-surface-card)]/80 rounded-full overflow-hidden relative z-10">
               <div
                   className={`h-full rounded-full transition-all duration-1000 ease-out ${
                     (appUser?.credits ?? 0) > 2500
@@ -124,8 +124,8 @@ export default function SettingsPage() {
             </div>
             {isFree && (
               <div className="flex items-center justify-between text-xs relative z-10">
-                <span className="text-slate-500">Resumes used</span>
-                <span className="font-bold text-slate-700">
+                <span className="text-[var(--color-ash)]">Resumes used</span>
+                <span className="font-bold text-[var(--color-charcoal)]">
                   {resumesUsed} / {maxResumes}
                 </span>
               </div>
@@ -143,19 +143,19 @@ export default function SettingsPage() {
             </Button>
           )}
 
-          <div className="text-[11px] text-slate-400 leading-relaxed bg-slate-50 rounded-xl px-4 py-3 border border-slate-200/60">
-            Each AI-powered resume tailoring consumes <strong className="text-slate-600">500 credits</strong>.
+          <div className="text-[11px] text-[var(--color-stone)] leading-relaxed bg-[var(--color-surface-soft)] rounded-xl px-4 py-3 border border-[var(--color-hairline)]/60">
+            Each AI-powered resume tailoring consumes <strong className="text-[var(--color-mute)]">500 credits</strong>.
             Free users start with 10,000 credits (20 resumes). Pro and Campus users have unlimited generation.
           </div>
         </CardContent>
       </Card>
 
       {/* ─── Sign Out ─── */}
-      <div className="border-t border-slate-200/60 pt-6">
+      <div className="border-t border-[var(--color-hairline)]/60 pt-6">
         <SignOutButton redirectUrl="/sign-in?from=logout">
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl border border-slate-200 bg-white hover:bg-rose-50 hover:border-rose-200 text-slate-600 hover:text-rose-600 text-sm font-semibold transition-all active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl border border-[var(--color-hairline)] bg-[var(--color-canvas)] hover:bg-rose-50 hover:border-rose-200 text-[var(--color-mute)] hover:text-rose-600 text-sm font-semibold transition-all active:scale-[0.98]"
           >
             <LogOut className="w-4 h-4" />
             Sign Out

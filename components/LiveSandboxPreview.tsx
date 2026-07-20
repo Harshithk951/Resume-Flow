@@ -29,12 +29,12 @@ export const LiveSandboxPreview: React.FC<PreviewProps> = ({ compiledHtml }) => 
         <iframe
           src={blobUrl}
           title="Resume visual sandbox"
-          className="w-full flex-1 bg-white border border-slate-200/60 rounded-2xl h-[600px]"
+          className="w-full flex-1 bg-[var(--color-canvas)] border border-[var(--color-hairline)]/60 rounded-2xl h-[600px]"
           sandbox="allow-scripts"
           loading="lazy"
         />
       ) : (
-        <div className="flex-grow flex items-center justify-center bg-slate-50 border border-slate-200/50 rounded-2xl h-[600px] text-slate-400 text-xs">
+        <div className="flex-grow flex items-center justify-center bg-[var(--color-surface-soft)] border border-[var(--color-hairline)]/50 rounded-2xl h-[600px] text-[var(--color-stone)] text-xs">
           <Loader2 className="w-4 h-4 animate-spin text-rose-500 mr-2" />
           <span>Loading preview...</span>
         </div>

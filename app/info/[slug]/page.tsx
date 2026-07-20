@@ -43,8 +43,8 @@ const infoContent: Record<string, ContentBlock> = {
     body: (
       <div className="space-y-8">
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">Our Mission</h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">Our Mission</h2>
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             ResumeFlow was built on the core belief that applying for jobs
             shouldn&apos;t feel like a lottery. In a world dominated by
             automated tracking systems and algorithmic filtering, candidates
@@ -55,33 +55,33 @@ const infoContent: Record<string, ContentBlock> = {
           </p>
         </section>
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             Our Core Principles
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-xs">
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-150">
+            <div className="bg-[var(--color-surface-soft)] p-4 rounded-xl border border-slate-150">
               <h3 className="font-bold text-rose-700 mb-1.5">
                 Factual Integrity
               </h3>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 We optimize experience presentation and highlight key skills,
                 but never hallucinate or invent qualifications.
               </p>
             </div>
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-150">
+            <div className="bg-[var(--color-surface-soft)] p-4 rounded-xl border border-slate-150">
               <h3 className="font-bold text-rose-700 mb-1.5">
                 Absolute Privacy
               </h3>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 By employing local masking and WASM-based compilers, we ensure
                 your personal details are fully protected.
               </p>
             </div>
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-150">
+            <div className="bg-[var(--color-surface-soft)] p-4 rounded-xl border border-slate-150">
               <h3 className="font-bold text-rose-700 mb-1.5">
                 Recruiter Alignment
               </h3>
-              <p className="text-slate-500">
+              <p className="text-[var(--color-ash)]">
                 Our layouts are compiled to comply strictly with the design
                 patterns preferred by top-tier engineering recruiters.
               </p>
@@ -124,15 +124,15 @@ const infoContent: Record<string, ContentBlock> = {
         ].map((article, idx) => (
           <div
             key={idx}
-            className="bg-slate-50 p-6 rounded-2xl border border-slate-200/50 space-y-2 hover:border-rose-300 transition-colors cursor-pointer"
+            className="bg-[var(--color-surface-soft)] p-6 rounded-2xl border border-[var(--color-hairline)]/50 space-y-2 hover:border-rose-300 transition-colors cursor-pointer"
           >
             <span className="text-[10px] font-bold text-rose-600">
               {article.date}
             </span>
-            <h3 className="text-base font-bold text-slate-800">
+            <h3 className="text-base font-bold text-[var(--color-ink-soft)]">
               {article.title}
             </h3>
-            <p className="text-slate-500 text-xs leading-relaxed">
+            <p className="text-[var(--color-ash)] text-xs leading-relaxed">
               {article.snippet}
             </p>
           </div>
@@ -150,10 +150,10 @@ const infoContent: Record<string, ContentBlock> = {
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-slate-800">
+            <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
               Support & Feedback
             </h2>
-            <p className="text-slate-600 text-sm leading-relaxed">
+            <p className="text-[var(--color-mute)] text-sm leading-relaxed">
               If you have any questions about resume tailoring, quota
               limitations, or billing, our support team is available 24/7.
             </p>
@@ -162,10 +162,10 @@ const infoContent: Record<string, ContentBlock> = {
             </p>
           </section>
           <section className="space-y-3">
-            <h2 className="text-xl font-bold text-slate-800">
+            <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
               Enterprise Drives
             </h2>
-            <p className="text-slate-600 text-sm leading-relaxed">
+            <p className="text-[var(--color-mute)] text-sm leading-relaxed">
               Interested in onboarding ResumeFlow for university placements or
               corporate hiring drives? Reach out to our team.
             </p>
@@ -187,10 +187,10 @@ const infoContent: Record<string, ContentBlock> = {
     body: (
       <div className="space-y-8">
         <section className="space-y-3">
-          <h2 className="text-xl font-bold text-slate-800">
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
             Why Join ResumeFlow?
           </h2>
-          <p className="text-slate-600 text-sm leading-relaxed">
+          <p className="text-[var(--color-mute)] text-sm leading-relaxed">
             We are a highly focused team of software engineers and designers
             building tools that impact millions of candidates. We value clean
             architecture, low-latency UI performance, and state-of-the-art AI
@@ -198,7 +198,7 @@ const infoContent: Record<string, ContentBlock> = {
           </p>
         </section>
         <section className="space-y-4">
-          <h2 className="text-xl font-bold text-slate-800">Open Roles</h2>
+          <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">Open Roles</h2>
           {[
             {
               title:
@@ -217,16 +217,16 @@ const infoContent: Record<string, ContentBlock> = {
           ].map((role, idx) => (
             <div
               key={idx}
-              className="bg-slate-50 p-5 rounded-xl border border-slate-200/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-rose-300 transition-colors"
+              className="bg-[var(--color-surface-soft)] p-5 rounded-xl border border-[var(--color-hairline)]/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:border-rose-300 transition-colors"
             >
               <div>
-                <h3 className="text-sm font-bold text-slate-800">
+                <h3 className="text-sm font-bold text-[var(--color-ink-soft)]">
                   {role.title}
                 </h3>
-                <span className="text-[10px] text-slate-400 font-bold">
+                <span className="text-[10px] text-[var(--color-stone)] font-bold">
                   {role.type}
                 </span>
-                <p className="text-slate-500 text-xs mt-1 leading-relaxed max-w-xl">
+                <p className="text-[var(--color-ash)] text-xs mt-1 leading-relaxed max-w-xl">
                   {role.desc}
                 </p>
               </div>
@@ -286,7 +286,7 @@ export default async function InfoSlugPage({
     >
       <div className="flex gap-4 items-center mb-6">
         {pageData.icon}
-        <div className="h-px bg-slate-200/60 flex-1" />
+        <div className="h-px bg-[var(--color-secondary-bg)]/60 flex-1" />
       </div>
       {pageData.body}
     </StaticPageWrapper>

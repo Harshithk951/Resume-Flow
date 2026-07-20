@@ -66,7 +66,7 @@ export default function AuthenticatedLayout({
 
   if (!isLoaded || !isSignedIn) {
     return (
-      <div className="flex h-screen w-screen items-center justify-center bg-slate-50">
+      <div className="flex h-screen w-screen items-center justify-center bg-[var(--color-surface-soft)]">
         <Loader2 className="h-6 w-6 animate-spin text-rose-500" />
       </div>
     );
@@ -90,7 +90,7 @@ export default function AuthenticatedLayout({
             className="px-4"
           />
           {/* Hover label for brand name */}
-          <span className="absolute top-[22px] left-14 text-xs font-bold text-slate-500 whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-200 pointer-events-none"
+          <span className="absolute top-[22px] left-14 text-xs font-bold text-[var(--color-ash)] whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-200 pointer-events-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             ResumeFlow
@@ -109,11 +109,11 @@ export default function AuthenticatedLayout({
                       type="button"
                       onClick={() => setIsChatHistoryOpen(true)}
                       title="Chat History"
-                      className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 text-slate-600 hover:bg-white/60 hover:text-slate-900 w-full"
+                      className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 text-[var(--color-mute)] hover:bg-white/60 hover:text-[var(--color-ink)] w-full"
                       style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                     >
                       <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
-                        <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-slate-400 group-hover/nav:text-slate-600" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
+                        <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-[var(--color-stone)] group-hover/nav:text-[var(--color-mute)]" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
                       </div>
                       <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}>
                         Chat History
@@ -126,8 +126,8 @@ export default function AuthenticatedLayout({
                     aria-current={isActive ? "page" : undefined}
                     className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
                       isActive
-                        ? "bg-white text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
-                        : "text-slate-600 hover:bg-white/60 hover:text-slate-900"
+                        ? "bg-[var(--color-canvas)] text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
+                        : "text-[var(--color-mute)] hover:bg-white/60 hover:text-[var(--color-ink)]"
                     }`}
                     style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                   >
@@ -137,7 +137,7 @@ export default function AuthenticatedLayout({
                     <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
                       <Icon
                         className={`h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 ${
-                          isActive ? "text-rose-600" : "text-slate-400 group-hover/nav:text-slate-600"
+                          isActive ? "text-rose-600" : "text-[var(--color-stone)] group-hover/nav:text-[var(--color-mute)]"
                         }`}
                         style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                       />
@@ -159,7 +159,7 @@ export default function AuthenticatedLayout({
           </nav>
         </div>
 
-        <div className="space-y-3 border-t border-slate-200/60 pt-4 px-3 overflow-hidden">
+        <div className="space-y-3 border-t border-[var(--color-hairline)]/60 pt-4 px-3 overflow-hidden">
           {/* ── Theme Toggle ── */}
           <ThemeToggle />
 
@@ -168,7 +168,7 @@ export default function AuthenticatedLayout({
             <div className="flex flex-col min-w-0 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
               style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
             >
-              <span className="text-xs font-semibold text-slate-700 truncate">
+              <span className="text-xs font-semibold text-[var(--color-charcoal)] truncate">
                 {user?.fullName || "Placement Sync"}
               </span>
             </div>
@@ -177,9 +177,9 @@ export default function AuthenticatedLayout({
           <SignOutButton redirectUrl="/sign-in?from=logout">
             <button
               type="button"
-              className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-slate-600 transition-all duration-200 hover:bg-rose-50 hover:text-rose-600 active:scale-[0.98]"
+              className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-[var(--color-mute)] transition-all duration-200 hover:bg-rose-50 hover:text-rose-600 active:scale-[0.98]"
             >
-              <LogOut className="h-4 w-4 shrink-0 text-slate-400" />
+              <LogOut className="h-4 w-4 shrink-0 text-[var(--color-stone)]" />
               <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
                 style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
               >
@@ -201,7 +201,7 @@ export default function AuthenticatedLayout({
           />
           {/* Drawer panel */}
           <aside
-            className="relative w-64 max-w-xs bg-white border-r border-slate-200/60 flex flex-col justify-between py-6 px-4 shadow-xl z-50 animate-in slide-in-from-left duration-300"
+            className="relative w-64 max-w-xs bg-[var(--color-canvas)] border-r border-[var(--color-hairline)]/60 flex flex-col justify-between py-6 px-4 shadow-xl z-50 animate-in slide-in-from-left duration-300"
             role="dialog"
             aria-modal="true"
             aria-label="Navigation menu"
@@ -214,7 +214,7 @@ export default function AuthenticatedLayout({
                 <BrandLogo href="/dashboard" size="sm" showText={true} />
                 <button
                   onClick={() => setIsMobileDrawerOpen(false)}
-                  className="p-1 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors"
+                  className="p-1 rounded-lg hover:bg-[var(--color-surface-card)] text-[var(--color-ash)] transition-colors"
                   aria-label="Close navigation menu"
                 >
                   <X className="w-4 h-4" />
@@ -232,9 +232,9 @@ export default function AuthenticatedLayout({
                         <button
                           type="button"
                           onClick={() => { setIsChatHistoryOpen(true); setIsMobileDrawerOpen(false); }}
-                          className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-slate-50 hover:text-slate-950 w-full"
+                          className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)] w-full"
                         >
-                          <History className="h-4.5 w-4.5 text-slate-400" />
+                          <History className="h-4.5 w-4.5 text-[var(--color-stone)]" />
                           <span>Chat History</span>
                         </button>
                       )}
@@ -245,10 +245,10 @@ export default function AuthenticatedLayout({
                         className={`flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 ${
                           isActive
                             ? "bg-rose-50 text-rose-600 border border-rose-100/60 font-semibold"
-                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+                            : "text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)]"
                         }`}
                       >
-                        <Icon className={`h-4.5 w-4.5 ${isActive ? "text-rose-600" : "text-slate-400"}`} />
+                        <Icon className={`h-4.5 w-4.5 ${isActive ? "text-rose-600" : "text-[var(--color-stone)]"}`} />
                         <span>{item.name}</span>
                       </Link>
                     </div>
@@ -257,22 +257,22 @@ export default function AuthenticatedLayout({
               </nav>
             </div>
 
-            <div className="space-y-4 border-t border-slate-200/60 pt-4">
+            <div className="space-y-4 border-t border-[var(--color-hairline)]/60 pt-4">
               {/* ── Theme Toggle (mobile) ── */}
               <ThemeToggle />
               
               <div className="flex items-center gap-3">
                 <UserButton />
-                <span className="text-xs font-semibold text-slate-700 truncate">
+                <span className="text-xs font-semibold text-[var(--color-charcoal)] truncate">
                   {user?.fullName || "Placement Sync"}
                 </span>
               </div>
               <SignOutButton redirectUrl="/sign-in?from=logout">
                 <button
                   type="button"
-                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-slate-600 transition-all hover:bg-rose-50 hover:text-rose-600"
+                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-[var(--color-mute)] transition-all hover:bg-rose-50 hover:text-rose-600"
                 >
-                  <LogOut className="h-4 w-4 text-slate-400" />
+                  <LogOut className="h-4 w-4 text-[var(--color-stone)]" />
                   <span>Log out</span>
                 </button>
               </SignOutButton>
@@ -292,7 +292,7 @@ export default function AuthenticatedLayout({
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="md:hidden p-2 -ml-2 rounded-lg hover:bg-slate-100/80 text-slate-600 transition-colors"
+              className="md:hidden p-2 -ml-2 rounded-lg hover:bg-[var(--color-surface-card)]/80 text-[var(--color-mute)] transition-colors"
               aria-label="Open navigation menu"
             >
               <Menu className="w-5 h-5" />
