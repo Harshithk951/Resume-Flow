@@ -1,9 +1,13 @@
 // convex/lib/rateLimit.ts
 //
 // Database-Backed Rate Limiting Helper
-// Enforces chat message limit (50/day). Resume generation is now credit-based
-// (500 credits/resume, replaces the old 5/day limit).
+// Enforces chat message limit (20/day for free users). Resume generation is
+// credit-based (500 credits/resume), checked inline in the calling mutations.
 // Automatically resets counters daily.
+//
+// Atomicity: This helper is designed to be called from within Convex mutations.
+// Convex guarantees serializable isolation per document, so the read-check-write
+// cycle within a single mutation is inherently atomic — no separate lock needed.
 
 import { ConvexError } from "convex/values";
 import { Id } from "../_generated/dataModel";
@@ -15,7 +19,7 @@ export async function enforceRateLimit(
 ) {
   const today = new Date().toISOString().split("T")[0];
 
-  // Fetch usage record for user
+  // 1. Fetch or create the usage record (atomic within parent mutation)
   let record = await ctx.db
     .query("userGenerations")
     .withIndex("by_userId", (q: any) => q.eq("userId", userId))
@@ -35,24 +39,12 @@ export async function enforceRateLimit(
     throw new ConvexError("User generation tracking record could not be established.");
   }
 
-  // Reset counters if the day has changed
-  if (record.lastResetDate !== today) {
-    await ctx.db.patch(record._id, {
-      resumesGeneratedToday: 0,
-      chatMessagesSentToday: 0,
-      lastResetDate: today,
-    });
-    // Update local record copy for limit checking below
-    record = {
-      ...record,
-      resumesGeneratedToday: 0,
-      chatMessagesSentToday: 0,
-      lastResetDate: today,
-    };
-  }
+  // 2. Reset counters if day changed — combined with the increment to stay atomic
+  const effectiveDate = record.lastResetDate;
+  const chatCount = effectiveDate !== today ? 0 : (record.chatMessagesSentToday ?? 0);
+  const resumeCount = effectiveDate !== today ? 0 : (record.resumesGeneratedToday ?? 0);
 
-  // Validate and increment counters
-  // Note: Resume type is no longer enforced here — moved to credit-based (500 credits/resume, includes outreach)
+  // 3. Validate and increment in a single atomic patch
   if (type === "chat") {
     const user = await ctx.db.get(userId);
     if (!user) {
@@ -60,16 +52,19 @@ export async function enforceRateLimit(
     }
     const isPro = user.plan === "pro" || user.plan === "campus";
 
-    if (!isPro) {
-      if (record.chatMessagesSentToday >= 20) {
-        throw new ConvexError(
-          "You have reached your daily free limit for this action. Upgrade to Pro for unlimited AI chatting!"
-        );
-      }
+    if (!isPro && chatCount >= 20) {
+      throw new ConvexError(
+        "You have reached your daily free limit for this action. Upgrade to Pro for unlimited AI chatting!"
+      );
     }
 
+    // Atomically reset (if needed) and increment
     await ctx.db.patch(record._id, {
-      chatMessagesSentToday: record.chatMessagesSentToday + 1,
+      resumesGeneratedToday: resumeCount,
+      chatMessagesSentToday: chatCount + 1,
+      lastResetDate: today,
     });
   }
+  // Resume type: no-op here — rate limiting for resumes is handled via credit
+  // deduction (500 credits/resume) in submitGapAnswers and internalSetExtractedRequirements
 }

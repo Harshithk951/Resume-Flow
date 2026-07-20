@@ -11,6 +11,7 @@ import { v, ConvexError } from "convex/values";
 import { internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { hiringManagerSkill, staffLevelSignals, projectImpactCalculator } from "./Skills/registry";
+import { callWithResilience, NIM_SERVICE } from "./resilience";
 
 // Helper to sanitize chat messages for the OpenAI completions API
 function formatChatMessages(messages: any[]): any[] {
@@ -230,12 +231,15 @@ Role-playing Guidelines:
       if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not configured.");
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
-      const completion = await openai.chat.completions.create({
-        model: "meta/llama-3.1-70b-instruct",
-        messages: messages as any,
-        temperature: 0.5,
-        max_tokens: 1536,
-      });
+      const completion = await callWithResilience(NIM_SERVICE, async () =>
+        openai.chat.completions.create({
+          model: "meta/llama-3.1-70b-instruct",
+          messages: messages as any,
+          temperature: 0.5,
+          max_tokens: 1536,
+        }),
+        true
+      );
 
       const assistantResponse =
         completion.choices[0]?.message?.content ||

@@ -1,6 +1,14 @@
 import { query } from "./_generated/server";
 import { requireAuth } from "./lib/auth";
 
+/**
+ * getDashboardStats — cached reactively by Convex's built-in query result cache.
+ * Under load, Convex automatically deduplicates concurrent identical queries
+ * (same args, same user) without hammering the database.
+ * No external Redis cache is needed here — Convex's native caching handles
+ * the repeated-dashboard-polling use case more safely than HTTP fetch calls
+ * from within a query handler.
+ */
 export const getDashboardStats = query({
   args: {},
   handler: async (ctx) => {
@@ -80,6 +88,9 @@ export const getDashboardStats = query({
   },
 });
 
+/**
+ * getDashboardSummary — cached reactively by Convex's built-in query result cache.
+ */
 export const getDashboardSummary = query({
   args: {},
   handler: async (ctx) => {

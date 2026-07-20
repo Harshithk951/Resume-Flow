@@ -13,6 +13,7 @@ import { OpenAI } from "openai";
 import { maskPersonalInfo, reInjectPersonalInfo } from "../lib/piiMask";
 import { z } from "zod";
 import { atsAuditorSkill, resumeMakerSkill } from "./Skills/registry";
+import { callWithResilience, NIM_SERVICE } from "./resilience";
 
 // ─── Zod Schema for Layer 2 JSON Output ──────────────────────
 
@@ -267,16 +268,19 @@ Return ONLY a valid JSON block matching this schema:
   "diffNotes": ["...", "..."]
 }`;
 
-      const completion = await openai.chat.completions.create({
-        model: "meta/llama-3.1-70b-instruct",
-        messages: [
-          { role: "system", content: `${resumeMakerSkill}\n\n${atsAuditorSkill}` },
-          { role: "user", content: prompt }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.2,
-        max_tokens: 2048,
-      });
+      const completion = await callWithResilience(NIM_SERVICE, async () =>
+        openai.chat.completions.create({
+          model: "meta/llama-3.1-70b-instruct",
+          messages: [
+            { role: "system", content: `${resumeMakerSkill}\n\n${atsAuditorSkill}` },
+            { role: "user", content: prompt }
+          ],
+          response_format: { type: "json_object" },
+          temperature: 0.2,
+          max_tokens: 2048,
+        }),
+        true
+      );
 
       const responseText = completion.choices[0]?.message?.content || "";
       const parsedOutput = cleanAndParseJSON(responseText);

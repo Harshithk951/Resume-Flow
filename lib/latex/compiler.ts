@@ -16,9 +16,17 @@ export interface CompileOptions {
  * Layer 3: Client-side React-PDF Vector Compile
  * Layer 4: Strict compilation failure (Option B — no text/plain upload)
  */
+export type CompileResult =
+  | { blob: Blob; engine: "wasm" | "local_api" | "react_pdf" }
+  | { engine: "queued"; cacheHit?: boolean; storageId?: string };
+
+export type CompileAndUploadResult =
+  | string
+  | { queued: true; cacheHit?: boolean; storageId?: string };
+
 export async function compileLatexToPdf(
   options: CompileOptions
-): Promise<{ blob: Blob; engine: "wasm" | "local_api" | "react_pdf" }> {
+): Promise<CompileResult> {
   const { jobId, latexCode, structuredContent, templateId } = options;
 
   if (typeof window === "undefined") {
@@ -36,10 +44,10 @@ export async function compileLatexToPdf(
     clientLog.warn("[compiler] Layer 1 WASM failed:", message);
   }
 
-  // ─── LAYER 2: LOCAL PDFLATEX API ROUTE ───
+  // ─── LAYER 2: API ROUTE (sync or async via QStash) ───
   try {
     clientLog.info(
-      "[compiler] Layer 2: Attempting local pdflatex child-process API..."
+      "[compiler] Layer 2: Attempting server-side LaTeX compilation..."
     );
     const res = await fetch("/api/compile-latex", {
       method: "POST",
@@ -48,11 +56,34 @@ export async function compileLatexToPdf(
     });
 
     if (res.ok) {
-      const pdfBlob = await res.blob();
-      if (pdfBlob.type === "application/pdf") {
-        return { blob: pdfBlob, engine: "local_api" };
+      // Check for cache hit first
+      if (res.status === 200) {
+        const contentType = res.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+          // JSON response: either cache hit or 202 enqueue
+          const data = await res.json();
+          if (data.cached && data.storageId) {
+            clientLog.info(`[compiler] Layer 2: Cache HIT — storageId=${data.storageId}`);
+            return { engine: "queued", cacheHit: true, storageId: data.storageId };
+          }
+        } else if (contentType.includes("application/pdf")) {
+          // PDF response: synchronous compile completed
+          const pdfBlob = await res.blob();
+          return { blob: pdfBlob, engine: "local_api" };
+        }
       }
-      clientLog.warn("[compiler] Layer 2 API returned non-PDF response.");
+
+      // Status 202 Accepted — async enqueue via QStash
+      if (res.status === 202) {
+        clientLog.info("[compiler] Layer 2: Compile enqueued via QStash — waiting for worker...");
+        return { engine: "queued" };
+      }
+
+      clientLog.warn(`[compiler] Layer 2 API returned status ${res.status} — unexpected.`);
+    } else if (res.status === 423) {
+      // Lock already held — another compile is in progress for this job
+      clientLog.warn("[compiler] Layer 2: Compile lock held by another instance — waiting...");
+      return { engine: "queued" };
     } else {
       const errData = await res.json().catch(() => ({}));
       clientLog.warn(
@@ -152,11 +183,34 @@ async function runWasmCompilation(latexCode: string): Promise<Blob> {
  * Unified compiler and Convex storage uploader.
  * Throws on Layer 4 failure so callers can invoke setCompilationFailed.
  */
+/**
+ * Unified compiler and Convex storage uploader.
+ *
+ * When the compile is queued (async QStash path), returns a special marker
+ * so callers can wait for pipeline state change instead of uploading.
+ *
+ * On cache hit, returns the storage ID from the cache (no upload needed).
+ *
+ * Normal synchronous compile: uploads the PDF blob and returns storage ID.
+ *
+ * Throws on Layer 4 failure so callers can invoke setCompilationFailed.
+ */
 export async function compileAndUploadResume(
   generateUploadUrl: () => Promise<string>,
   options: CompileOptions
-): Promise<string> {
-  const { blob, engine } = await compileLatexToPdf(options);
+): Promise<CompileAndUploadResult> {
+  const result = await compileLatexToPdf(options);
+
+  // Async enqueue path: compile was queued via QStash — caller should wait
+  // for pipelineState to change to "completed" via Convex reactive query
+  if (result.engine === "queued") {
+    clientLog.info(
+      "[compiler] Compile queued for server-side processing. Waiting for pipeline state change..."
+    );
+    return { queued: true, cacheHit: result.cacheHit, storageId: result.storageId };
+  }
+
+  const { blob, engine } = result;
   clientLog.info(
     `[compiler] Successful build using engine: ${engine}. Uploading to storage...`
   );

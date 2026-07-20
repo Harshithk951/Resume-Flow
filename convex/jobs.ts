@@ -54,7 +54,42 @@ export const getMyJobs = query({
 });
 
 /**
+/**
+ * Generic Upstash Redis helper for idempotency checks.
+ * Uses raw fetch because this runs in Convex's mutation context.
+ */
+async function getIdempotencyResult(key: string): Promise<string | null> {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify(["GET", key]),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { result?: string | null };
+    return data.result ?? null;
+  } catch { return null; }
+}
+
+async function setIdempotencyResult(key: string, value: string, ttlSec = 86400): Promise<void> {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify(["SET", key, value, "EX", ttlSec.toString()]),
+    });
+  } catch { /* fail silently */ }
+}
+
+/**
  * Creates a new job in the "uploaded" state and schedules Layer 1 processing.
+ * Supports idempotencyKey for safe retries against duplicate creations.
  */
 export const createJob = mutation({
   args: {
@@ -67,8 +102,17 @@ export const createJob = mutation({
       v.literal("pdf")
     ),
     rawFileStorageId: v.optional(v.id("_storage")),
+    idempotencyKey: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    // Idempotency check (best-effort via Redis)
+    if (args.idempotencyKey) {
+      const existing = await getIdempotencyResult(`idemp:createJob:${args.idempotencyKey}`);
+      if (existing) {
+        return existing; // Return the previously returned jobId
+      }
+    }
+
     const user = await requireAuth(ctx);
     await enforceRateLimit(ctx, user._id, "resume");
 
@@ -120,6 +164,11 @@ export const createJob = mutation({
       }
     }
 
+    // Store idempotency result (await to close race window between job creation and retry detection)
+    if (args.idempotencyKey) {
+      await setIdempotencyResult(`idemp:createJob:${args.idempotencyKey}`, jobId);
+    }
+
     return jobId;
   },
 });
@@ -161,6 +210,7 @@ export const deleteJobAndResume = mutation({
 
 /**
  * Submits the user's answers to the gap questions and schedules tailoring.
+ * Supports idempotencyKey for safe retries against duplicate submissions.
  */
 export const submitGapAnswers = mutation({
   args: {
@@ -172,8 +222,17 @@ export const submitGapAnswers = mutation({
         userResponse: v.string(),
       })
     ),
+    idempotencyKey: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    // Idempotency check (best-effort via Redis)
+    if (args.idempotencyKey) {
+      const existing = await getIdempotencyResult(`idemp:submitGap:${args.idempotencyKey}`);
+      if (existing) {
+        return JSON.parse(existing);
+      }
+    }
+
     const user = await requireAuth(ctx);
     const job = await ctx.db.get(args.jobId);
     if (!job) throw new Error("Job not found");
@@ -220,6 +279,11 @@ export const submitGapAnswers = mutation({
     } catch (error) {
       console.error("Failed to schedule tailorResume");
       throw error;
+    }
+
+    // Store idempotency result (await to close race window)
+    if (args.idempotencyKey) {
+      await setIdempotencyResult(`idemp:submitGap:${args.idempotencyKey}`, JSON.stringify({ success: true }));
     }
   },
 });
@@ -757,5 +821,109 @@ export const retryJobAdmin = mutation({
       console.error("Failed to schedule retry processJob");
       throw error;
     }
+  },
+});
+
+/**
+ * System mutation called by the QStash compile worker.
+ * Authenticated via shared secret instead of user JWT.
+ * Updates a job's state to "completed" with the uploaded PDF storage ID.
+ */
+export const systemSetCompilationCompleted = mutation({
+  args: {
+    jobId: v.id("jobs"),
+    pdfStorageId: v.id("_storage"),
+    secret: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.AUTOMATION_WEBHOOK_SECRET;
+    if (!expected || args.secret !== expected) {
+      throw new Error("Unauthorized: invalid system secret");
+    }
+
+    const job = await ctx.db.get(args.jobId);
+    if (!job) {
+      throw new Error("Job execution instance not found");
+    }
+
+    if (job.pipelineState !== "compiling") {
+      return { success: true, duplicatedIgnored: true };
+    }
+
+    const linkedResume = await ctx.db
+      .query("tailoredResumes")
+      .withIndex("by_jobId", (q) => q.eq("jobId", args.jobId))
+      .unique();
+
+    if (linkedResume) {
+      await ctx.db.patch(linkedResume._id, {
+        pdfStorageId: args.pdfStorageId,
+      });
+    } else {
+      await ctx.db.insert("tailoredResumes", {
+        userId: job.userId,
+        jobId: args.jobId,
+        pdfStorageId: args.pdfStorageId,
+        structuredContent: {},
+        version: 1,
+      });
+    }
+
+    await ctx.db.patch(args.jobId, {
+      pipelineState: "completed",
+      pipelineError: undefined,
+    });
+
+    const tenantId = job.tenantId;
+    if (tenantId) {
+      try {
+        await ctx.scheduler.runAfter(0, internal.webhooks.enqueueOutboundWebhook, {
+          tenantId,
+          eventType: "resume_tailored",
+          payload: {
+            jobId: args.jobId,
+            userId: job.userId,
+            pdfStorageId: args.pdfStorageId,
+            companyName: job.companyName,
+            jobTitle: job.jobTitle,
+          },
+        });
+      } catch (error) {
+        console.error("Failed to enqueue resume_tailored outbound webhook:", error);
+      }
+    }
+
+    return { success: true, duplicatedIgnored: false };
+  },
+});
+
+/**
+ * System mutation called by the QStash compile worker on failure.
+ * Authenticated via shared secret instead of user JWT.
+ */
+export const systemSetCompilationFailed = mutation({
+  args: {
+    jobId: v.id("jobs"),
+    errorMessage: v.string(),
+    secret: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const expected = process.env.AUTOMATION_WEBHOOK_SECRET;
+    if (!expected || args.secret !== expected) {
+      throw new Error("Unauthorized: invalid system secret");
+    }
+
+    const job = await ctx.db.get(args.jobId);
+    if (!job) throw new Error("Job instance not found");
+
+    if (job.pipelineState === "compiling") {
+      await ctx.db.patch(args.jobId, {
+        pipelineState: "failed",
+        pipelineError: args.errorMessage,
+      });
+      return { success: true, stateChanged: true };
+    }
+
+    return { success: true, stateChanged: false };
   },
 });

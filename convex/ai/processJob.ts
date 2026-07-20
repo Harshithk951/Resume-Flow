@@ -17,6 +17,7 @@ import pdf from "@cedrugs/pdf-parse";
 
 import { z } from "zod";
 import { jobSearchSkill } from "./Skills/registry";
+import { callWithResilience, NIM_SERVICE, TAVILY_SERVICE } from "./resilience";
 
 // ─── Zod Schemas for LLM Output Validation ───────────────────
 
@@ -131,6 +132,56 @@ async function commitAnalysisResult(
   }
 }
 
+// ─── Tavily Company Research Caching Helpers ─────────────────
+
+/**
+ * Caches Tavily company research results in Redis.
+ * TTL: 48 hours (172800s) — company culture doesn't change daily.
+ */
+async function getTavilyCache(companyName: string): Promise<string | null> {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return null;
+
+  const key = `company_research:${companyName.toLowerCase().replace(/[^a-z0-9]/g, "")}`;
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(["GET", key]),
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { result?: string | null };
+    return data.result ?? null;
+  } catch (e) {
+    console.error("[tavily-cache] Failed to read from Upstash:", e);
+    return null;
+  }
+}
+
+async function setTavilyCache(companyName: string, value: string, ttlSec = 172800): Promise<void> {
+  const url = process.env.UPSTASH_REDIS_REST_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) return;
+
+  const key = `company_research:${companyName.toLowerCase().replace(/[^a-z0-9]/g, "")}`;
+  try {
+    await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(["SET", key, value, "EX", ttlSec.toString()]),
+    });
+  } catch (e) {
+    console.error("[tavily-cache] Failed to write to Upstash:", e);
+  }
+}
+
 // Helper to clean Markdown tags and parse JSON with robust fallbacks
 function cleanAndParseJSON(text: string): any {
   let cleaned = text.trim();
@@ -218,7 +269,8 @@ export const processJob = action({
         if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not set.");
         const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
-        const ocrCompletion = await openai.chat.completions.create({
+        const ocrCompletion = await callWithResilience(NIM_SERVICE, async () =>
+        openai.chat.completions.create({
           model: "meta/llama-3.2-11b-vision-instruct",
           messages: [
             {
@@ -236,7 +288,9 @@ export const processJob = action({
             },
           ],
           temperature: 0.0,
-        });
+        }),
+        true
+      );
         jdText = ocrCompletion.choices[0]?.message?.content || "";
       }
 
@@ -254,24 +308,37 @@ export const processJob = action({
 
       console.log("[processJob] CACHE MISS: running live analysis");
 
-      // 4. Call Tavily Search to research the company
-      console.log("🔍 Step 1: Querying Tavily for live company intelligence...");
-      const tavilyKey = process.env.TAVILY_API_KEY;
-      if (!tavilyKey) throw new Error("TAVILY_API_KEY environment variable is not configured.");
-      const tvly = tavily({ apiKey: tavilyKey });
-      
-      let companyResearch = "";
-      try {
-        const researchRes = await tvly.search(
-          `What is the engineering culture, tech stack, and values of ${job.companyName}?`,
-          { searchDepth: "basic", maxResults: 3 }
-        );
-        companyResearch = researchRes.results
-          .map((r) => `[${r.title}]: ${r.content}`)
-          .join("\n\n");
-      } catch (err) {
-        console.error("Tavily company search failed:", err);
-        companyResearch = "No live company research available. Fallback to JD context only.";
+      // 4. Company Research — check Tavily cache first, then live API
+      console.log("🔍 Step 1: Researching company culture...");
+      let companyResearch: string;
+
+      // Try cache first
+      const cachedTavily = await getTavilyCache(job.companyName);
+      if (cachedTavily) {
+        console.log("[tavily-cache] HIT for", job.companyName);
+        companyResearch = cachedTavily;
+      } else {
+        console.log("[tavily-cache] MISS — calling live Tavily API for", job.companyName);
+        const tavilyKey = process.env.TAVILY_API_KEY;
+        if (!tavilyKey) throw new Error("TAVILY_API_KEY not configured.");
+        const tvly = tavily({ apiKey: tavilyKey });
+
+        try {
+          const researchRes = await callWithResilience(TAVILY_SERVICE, async () =>
+            tvly.search(
+              `What is the engineering culture, tech stack, and values of ${job.companyName}?`,
+              { searchDepth: "basic", maxResults: 3 }
+            )
+          );
+          companyResearch = researchRes.results
+            .map((r) => `[${r.title}]: ${r.content}`)
+            .join("\n\n");
+          // Cache for 48h — don't await, fire-and-forget is fine
+          setTavilyCache(job.companyName, companyResearch);
+        } catch (err) {
+          console.error("Tavily company search failed:", err);
+          companyResearch = "No live company research available. Fallback to JD context only.";
+        }
       }
 
       const skillsContext = profile.skills ? `
@@ -350,16 +417,19 @@ Instructions:
 
 Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary or text.`;
 
-      const nimCompletion = await openai.chat.completions.create({
-        model: "meta/llama-3.1-70b-instruct",
-        messages: [
-          { role: "system", content: jobSearchSkill },
-          { role: "user", content: prompt }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.1,
-        max_tokens: 2048,
-      });
+      const nimCompletion = await callWithResilience(NIM_SERVICE, async () =>
+        openai.chat.completions.create({
+          model: "meta/llama-3.1-70b-instruct",
+          messages: [
+            { role: "system", content: jobSearchSkill },
+            { role: "user", content: prompt }
+          ],
+          response_format: { type: "json_object" },
+          temperature: 0.1,
+          max_tokens: 2048,
+        }),
+        true
+      );
 
       const responseText = nimCompletion.choices[0]?.message?.content || "";
       const analysisResult = cleanAndParseJSON(responseText);

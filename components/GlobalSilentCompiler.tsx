@@ -62,7 +62,7 @@ export function GlobalSilentCompiler() {
               ? resume.latexSnapshot
               : TEMPLATES[templateId].render(resume.structuredContent);
 
-          const storageId = await compileAndUploadResume(generateUploadUrl, {
+          const storageResult = await compileAndUploadResume(generateUploadUrl, {
             jobId: job._id,
             latexCode: latex,
             structuredContent: normalizeStructuredContent(
@@ -71,6 +71,26 @@ export function GlobalSilentCompiler() {
             templateId,
           });
 
+          // Async path: compile was enqueued via QStash — worker will complete,
+          // OR compile output was cached — complete immediately with cached PDF
+          if (typeof storageResult === "object" && "queued" in storageResult && storageResult.queued) {
+            if (storageResult.cacheHit && storageResult.storageId) {
+              clientLog.info(
+                `[compiler] Cache HIT — completing job ${jobId} with existing PDF.`
+              );
+              await setCompilationCompleted({
+                jobId: job._id,
+                pdfStorageId: storageResult.storageId as Id<"_storage">,
+              });
+            } else {
+              clientLog.info(
+                `[compiler] Compile queued for job ${jobId}. Worker will complete asynchronously.`
+              );
+            }
+            return;
+          }
+
+          const storageId = storageResult as string;
           const result = await setCompilationCompleted({
             jobId: job._id,
             pdfStorageId: storageId as Id<"_storage">,

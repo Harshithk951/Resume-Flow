@@ -13,6 +13,7 @@ import pdf from "@cedrugs/pdf-parse";
 import { validateUpload } from "../lib/uploadValidation";
 import { z } from "zod";
 import { api, internal } from "../_generated/api";
+import { callWithResilience, NIM_SERVICE } from "./resilience";
 
 // ─── Zod Schema for Validation ──────────────────────────────
 
@@ -315,22 +316,25 @@ If any section or field is completely missing in the resume, return an empty arr
 
         console.log("Step 4: Sending payload to model");
 
-        const completion = await withTimeout(
-          openai.chat.completions.create({
-            model: "meta/llama-3.1-70b-instruct",
-            messages: [
-              { role: "system", content: systemPrompt },
-              {
-                role: "user",
-                content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
-              },
-            ],
-            response_format: { type: "json_object" },
-            temperature: 0.1,
-            max_tokens: 3072,
-          }),
-          120_000,
-          "NVIDIA NIM PDF extraction"
+        const completion = await callWithResilience(NIM_SERVICE, async () =>
+          withTimeout(
+            openai.chat.completions.create({
+              model: "meta/llama-3.1-70b-instruct",
+              messages: [
+                { role: "system", content: systemPrompt },
+                {
+                  role: "user",
+                  content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
+                },
+              ],
+              response_format: { type: "json_object" },
+              temperature: 0.1,
+              max_tokens: 3072,
+            }),
+            120_000,
+            "NVIDIA NIM PDF extraction"
+          ),
+          true
         );
 
         const responseText = completion.choices[0]?.message?.content || "";
@@ -350,33 +354,36 @@ If any section or field is completely missing in the resume, return an empty arr
 
         console.log("Step 4: Sending image payload to model");
 
-        const completion = await withTimeout(
-          openai.chat.completions.create({
-            model: "meta/llama-3.2-11b-vision-instruct",
-            messages: [
-              { role: "system", content: systemPrompt },
-              {
-                role: "user",
-                content: [
-                  {
-                    type: "text",
-                    text: "Extract the resume content from this uploaded image. Output the structured JSON schema only.",
-                  },
-                  {
-                    type: "image_url",
-                    image_url: {
-                      url: `data:${mimeType};base64,${base64Image}`,
+        const completion = await callWithResilience(NIM_SERVICE, async () =>
+          withTimeout(
+            openai.chat.completions.create({
+              model: "meta/llama-3.2-11b-vision-instruct",
+              messages: [
+                { role: "system", content: systemPrompt },
+                {
+                  role: "user",
+                  content: [
+                    {
+                      type: "text",
+                      text: "Extract the resume content from this uploaded image. Output the structured JSON schema only.",
                     },
-                  },
-                ],
-              },
-            ],
-            response_format: { type: "json_object" },
-            temperature: 0.1,
-            max_tokens: 3072,
-          }),
-          120_000,
-          "NVIDIA NIM image extraction"
+                    {
+                      type: "image_url",
+                      image_url: {
+                        url: `data:${mimeType};base64,${base64Image}`,
+                      },
+                    },
+                  ],
+                },
+              ],
+              response_format: { type: "json_object" },
+              temperature: 0.1,
+              max_tokens: 3072,
+            }),
+            120_000,
+            "NVIDIA NIM image extraction"
+          ),
+          true
         );
 
         const responseText = completion.choices[0]?.message?.content || "";

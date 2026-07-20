@@ -232,12 +232,20 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
     setIsDownloading(true);
     try {
-      const { blob } = await compileLatexToPdf({
+      const result = await compileLatexToPdf({
         jobId,
         latexCode: latexSource,
         structuredContent,
         templateId: resolvedTemplate,
       });
+
+      // Async enqueue: compile was sent to server-side worker
+      if (result.engine === "queued") {
+        toast.info("Compile is processing on the server. Check the preview shortly.");
+        return;
+      }
+
+      const { blob } = result;
       if (blob.type !== "application/pdf") {
         throw new Error("PDF compilation failed.");
       }

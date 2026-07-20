@@ -10,6 +10,7 @@ import { v } from "convex/values";
 import { api, internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { z } from "zod";
+import { callWithResilience, NIM_SERVICE } from "./resilience";
 
 const OutreachPayloadSchema = z.object({
   coverLetter: z.string(),
@@ -94,17 +95,19 @@ Return ONLY a valid JSON block matching this schema:
   "linkedinNote": "[Concise connection request message under 280 characters]"
 }`;
 
-      // 3. Call Llama 3.3 NIM
-      const completion = await openai.chat.completions.create({
-        model: "meta/llama-3.1-8b-instruct",
+      // 3. Call Llama 3.3 NIM with resilience
+      const completion = await callWithResilience(NIM_SERVICE, async () =>
+        openai.chat.completions.create({
+          model: "meta/llama-3.1-8b-instruct",
         messages: [
           { role: "system", content: "You are a professional outreach copywriter. You output only valid JSON." },
           { role: "user", content: prompt }
-        ],
-        response_format: { type: "json_object" },
-        temperature: 0.3,
-        max_tokens: 2048,
-      });
+        ],          response_format: { type: "json_object" },
+          temperature: 0.3,
+          max_tokens: 2048,
+        }),
+        true
+      );
 
       const responseText = completion.choices[0]?.message?.content || "";
       const parsedOutput = cleanAndParseJSON(responseText);

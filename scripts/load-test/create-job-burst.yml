@@ -1,5 +1,5 @@
 config:
-  target: "{{ $processEnvironment.TARGET_URL || 'https://dynamic-warthog-953.convex.cloud' }}"
+  target: "{{ $processEnvironment.CONVEX_URL || $processEnvironment.TARGET_URL }}"
   phases:
     - duration: 5
       arrivalRate: 400
@@ -7,17 +7,24 @@ config:
       name: "Burst to 2k concurrent (placement drive)"
   defaults:
     headers:
-      Authorization: "Bearer {{ $processEnvironment.CLERK_TOKEN || 'test-token' }}"
+      Authorization: "Bearer {{ clerkToken }}"
       Content-Type: "application/json"
   http:
-    timeout: 60
-  environments:
-    production:
-      target: "https://moonlit-panda-300.convex.cloud"
+    timeout: 120
+  payload:
+    path: "scripts/load-test/test-users.csv"
+    fields:
+      - "userId"
+      - "clerkToken"
+    order: "random"
+    skipHeader: true
+    skipEmptyLines: true
 
-# Targets Convex HTTP action endpoint for processJob, plus the initial mutation.
-# In a real placement drive scenario, 2000 students submit the SAME JD text,
-# so JD-hash caching (Phase 1c) should make most of these cache hits after the first.
+# Targets Convex HTTP mutation endpoint for createJob.
+# Each virtual user sends an idempotencyKey so retries don't create duplicates.
+# With 2k users hitting the same JD, Phase 1c JD-hash caching ensures only
+# the first request triggers the full LLM pipeline — all subsequent requests
+# hit the cache and return immediately.
 
 scenarios:
   - name: "Placement Drive — Bulk createJob"
@@ -35,6 +42,7 @@ scenarios:
               building full-stack applications. Familiarity with CI/CD pipelines
               and cloud infrastructure is a plus.
             inputType: "text"
+            idempotencyKey: "{{ $randomString(32) }}"
           capture:
             - json: "$.value"
               as: "jobId"
