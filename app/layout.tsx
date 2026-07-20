@@ -14,24 +14,34 @@ const SITE_URL = "https://resumeflow.harshithkumar.in";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "ResumeFlow - Free AI Resume Builder & ATS Optimizer",
+    default: "ResumeFlow - Free AI Resume Builder, Resume Creator & ATS Optimizer",
     template: "%s | ResumeFlow",
   },
   description:
-    "Build a professional resume for free with ResumeFlow's AI-powered resume generator. ATS-optimized templates, real-time tailoring, and zero-trust PDF compilation. Get hired faster.",
+    "Build a professional resume for free with ResumeFlow's AI-powered resume creator and generator. ATS-optimized templates, real-time tailoring, client-side PDF compilation, and zero-trust privacy. Get hired faster — no credit card needed.",
   keywords: [
+    "Resume Flow",
     "resume builder",
     "free resume builder",
+    "free resume creator",
+    "resume creator free",
     "AI resume builder",
+    "AI resume",
+    "free CV builder",
+    "CV maker free",
+    "AI CV generator",
     "ATS optimization",
     "resume generator",
-    "AI resume",
+    "free resume generator",
+    "best free resume builder",
+    "build resume online free",
+    "free ATS resume builder",
+    "resume PDF maker free",
     "job application",
     "resume tailoring",
     "career engine",
     "placement drive",
     "resume templates",
-    "free resume generator",
   ],
   authors: [{ name: "ResumeFlow", url: SITE_URL }],
   creator: "ResumeFlow",
@@ -44,9 +54,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: SITE_URL,
     siteName: "ResumeFlow",
-    title: "ResumeFlow - Free AI Resume Builder & ATS Optimizer",
+    title: "ResumeFlow - Free AI Resume Builder, Resume Creator & ATS Optimizer",
     description:
-      "Build a professional resume for free with AI-powered resume engineering. ATS-optimized templates, real-time company research, and zero-trust PDF compilation.",
+      "Build a professional resume for free with ResumeFlow's AI-powered resume creator. ATS-optimized templates, real-time company research, client-side compilation, and zero-trust PDF privacy.",
     images: [
       {
         url: "/logo.png",
@@ -58,9 +68,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ResumeFlow - Free AI Resume Builder & ATS Optimizer",
+    title: "ResumeFlow - Free AI Resume Builder, Resume Creator & ATS Optimizer",
     description:
-      "Build a professional resume for free with AI-powered resume engineering. ATS-optimized templates, zero-trust PDF compilation.",
+      "Build a professional resume for free with ResumeFlow's free resume creator and AI resume builder. ATS-optimized templates, zero-trust PDF compilation.",
     images: ["/logo.png"],
   },
   robots: {

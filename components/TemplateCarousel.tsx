@@ -98,7 +98,7 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1, ease: EASE_VANGUARD }}
-            className="font-display text-3xl md:text-5xl font-extrabold text-[var(--color-ink)] tracking-[-0.02em] leading-tight"
+            className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em] leading-tight"
           >
             Use the templates recruiters like.
           </motion.h2>
@@ -107,7 +107,7 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2, ease: EASE_VANGUARD }}
-            className="text-[var(--color-ash)] mt-4 text-sm md:text-base leading-relaxed animate-fade-in"
+            className="text-slate-500 mt-4 text-sm md:text-base leading-relaxed animate-fade-in"
           >
             Choose from purpose-built layouts — each optimized for different industries and roles.
             Hover to pause and click any template to get started instantly.
@@ -146,13 +146,13 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
                     >
                       {/* Template name displayed directly above the card */}
                       <div className="text-center mb-4">
-                        <span className="inline-block font-display text-sm md:text-base font-extrabold text-[var(--color-ink-soft)] group-hover:text-rose-600 transition-colors duration-300">
+                        <span className="inline-block font-display text-sm md:text-base font-extrabold text-slate-800 group-hover:text-rose-600 transition-colors duration-300">
                           {displayLabel}
                         </span>
                       </div>
 
                       {/* Resume image mockup */}
-                      <div className="relative aspect-[1/1.414] w-full rounded-2xl border border-[var(--color-hairline)]/80 bg-[var(--color-canvas)] shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden transition-all duration-500 group-hover:shadow-[0_24px_54px_rgba(0,0,0,0.15)] group-hover:scale-[1.02]">
+                      <div className="relative aspect-[1/1.414] w-full rounded-2xl border border-slate-200/80 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] overflow-hidden transition-all duration-500 group-hover:shadow-[0_24px_54px_rgba(0,0,0,0.15)] group-hover:scale-[1.02]">
                         <img
                           src={tpl.image}
                           alt={displayLabel}
@@ -162,8 +162,8 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
                         />
 
                         {/* Glassmorphic Overlay showing "Use this Template" on hover */}
-                        <div className="absolute inset-0 bg-[var(--color-surface-dark)]/45 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                          <span className="bg-[var(--color-canvas)] text-[var(--color-ink)] font-extrabold text-xs px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform duration-300 scale-90 group-hover:scale-100">
+                        <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                          <span className="bg-white text-slate-900 font-extrabold text-xs px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform duration-300 scale-90 group-hover:scale-100">
                             <span>Use this template</span>
                             <ArrowRight size={15} className="text-rose-600" />
                           </span>
@@ -182,10 +182,10 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
       <div className="mt-16 text-center">
         <Link
           href={templatesHref}
-          className="group inline-flex items-center justify-center bg-[var(--color-canvas)] hover:bg-[var(--color-surface-soft)] text-[var(--color-charcoal)] font-bold rounded-full border border-[var(--color-hairline)] px-8 py-3.5 text-xs tracking-wider uppercase gap-2 shadow-sm transition-all hover:shadow-md hover:border-[var(--color-secondary-bg)]"
+          className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 py-3.5 text-xs tracking-wider uppercase gap-2 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
         >
           <span>Browse All Templates</span>
-          <ArrowRight size={12} className="text-[var(--color-stone)] group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight size={12} className="text-slate-400 group-hover:translate-x-0.5 transition-transform" />
         </Link>
       </div>
     </section>

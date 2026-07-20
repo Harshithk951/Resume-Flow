@@ -121,10 +121,10 @@ export function FeatureGrid() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100 mb-4">
               <Zap size={10} /> Advanced Platform
             </span>
-            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--color-ink)] tracking-[-0.02em]">
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
               Built different. Built to win.
             </h2>
-            <p className="text-[var(--color-ash)] mt-4 text-lg">
+            <p className="text-slate-500 mt-4 text-lg">
               Engineered to streamline corporate hiring drives and personal portfolio adjustments.
             </p>
           </div>
@@ -136,10 +136,10 @@ export function FeatureGrid() {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100 mb-4">
               <Zap size={10} /> Advanced Platform
             </span>
-            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-[var(--color-ink)] tracking-[-0.02em]">
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
               Built different. Built to win.
             </h2>
-            <p className="text-[var(--color-ash)] mt-4 text-lg">
+            <p className="text-slate-500 mt-4 text-lg">
               Engineered to streamline corporate hiring drives and personal portfolio adjustments.
             </p>
           </motion.div>

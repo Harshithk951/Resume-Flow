@@ -56,21 +56,21 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <button
             onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-[var(--color-mute)] hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             Features
           </button>
           <button
             onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-[var(--color-mute)] hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             How it Works
           </button>
           <button
             onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-[var(--color-mute)] hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             Pricing
@@ -80,7 +80,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setTemplatesOpen((open) => !open)}
-              className="inline-flex items-center gap-1 text-sm font-medium text-[var(--color-mute)] hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+              className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
               style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
             >
               Templates
@@ -91,11 +91,11 @@ export default function Navbar() {
               />
             </button>
             {templatesOpen && (
-              <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-[var(--color-hairline)]/60 bg-white/95 backdrop-blur-lg py-1.5 shadow-lg">
+              <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200/60 bg-white/95 backdrop-blur-lg py-1.5 shadow-lg">
                 <Link
                   href={templatesHref}
                   onClick={() => setTemplatesOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-medium text-[var(--color-charcoal)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)] transition-colors"
+                  className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
                 >
                   Browse Templates
                 </Link>
@@ -105,7 +105,7 @@ export default function Navbar() {
                     setTemplatesOpen(false);
                     document.getElementById("templates")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="block w-full px-4 py-2.5 text-left text-sm font-medium text-[var(--color-charcoal)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-ink)] bg-transparent border-none cursor-pointer transition-colors"
+                  className="block w-full px-4 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 bg-transparent border-none cursor-pointer transition-colors"
                 >
                   View showcase
                 </button>
@@ -115,7 +115,7 @@ export default function Navbar() {
 
           <button
             onClick={() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-[var(--color-mute)] hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             FAQ
@@ -136,7 +136,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/sign-in"
-                className="text-[var(--color-mute)] hover:text-[var(--color-ink)] text-sm font-semibold transition-colors duration-300"
+                className="text-slate-600 hover:text-slate-900 text-sm font-semibold transition-colors duration-300"
               >
                 Log in
               </Link>
