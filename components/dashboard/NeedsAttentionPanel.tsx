@@ -138,7 +138,7 @@ export function NeedsAttentionPanel({
   };
 
   return (
-    <Card variant="elevated" className="border-slate-200/60">
+    <Card variant="elevated" className="border-slate-300">
       <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
@@ -164,7 +164,7 @@ export function NeedsAttentionPanel({
             {displayItems.map((item) => (
               <div
                 key={item.id}
-                className={`flex items-center justify-between p-3 rounded-xl border-l-3 border border-slate-200/60 transition-all hover:bg-slate-50/60 ${getBorderColor(
+                className={`flex items-center justify-between p-3 rounded-xl border-l-3 border border-slate-300 transition-all hover:bg-slate-50/60 ${getBorderColor(
                   item.type
                 )}`}
               >

@@ -88,7 +88,7 @@ export function ApplicationTracker({
   };
 
   return (
-    <Card variant="elevated" className="overflow-hidden border-slate-200/60 shadow-sm bg-white">
+    <Card variant="elevated" className="overflow-hidden border-slate-300 shadow-sm bg-white">
       <CardHeader className="pb-4 border-b border-slate-100">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>

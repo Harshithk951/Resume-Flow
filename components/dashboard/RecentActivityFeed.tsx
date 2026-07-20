@@ -57,7 +57,7 @@ export function RecentActivityFeed({ activities = [] }: RecentActivityFeedProps)
   const displayActivities = activities.slice(0, 5);
 
   return (
-    <Card variant="elevated" className="border-slate-200/60">
+    <Card variant="elevated" className="border-slate-300">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
