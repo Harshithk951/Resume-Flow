@@ -220,8 +220,18 @@ export const getMyJobsEnriched = query({
       .collect();
     const resumeMap = new Map(resumes.map((r) => [r.jobId as string, r]));
 
+    // Select only fields the dashboard renders — omit large fields like
+    // rawJdText, extractedRequirements, skillGapQuestions, statusHistory
+    // to minimize Convex bandwidth and function-call cost.
     return jobs.map((job) => ({
-      ...job,
+      _id: job._id,
+      _creationTime: job._creationTime,
+      companyName: job.companyName,
+      jobTitle: job.jobTitle,
+      inputType: job.inputType,
+      pipelineState: job.pipelineState,
+      pipelineError: job.pipelineError,
+      crmStatus: job.crmStatus,
       atsScore: resumeMap.get(job._id as string)?.atsCompatibilityScore ?? null,
       pdfStorageId: resumeMap.get(job._id as string)?.pdfStorageId ?? null,
       hasResume: resumeMap.has(job._id as string),

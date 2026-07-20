@@ -1,38 +1,12 @@
 "use client";
 
 import { SignUp } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-const STORAGE_KEY = "dashboard-theme";
-
 export default function SignUpPage() {
-  const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  // Hydrate theme from localStorage (matches DashboardThemeProvider)
-  useEffect(() => {
-    setMounted(true);
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === "dark") {
-        setIsDark(true);
-      }
-    } catch {
-      // localStorage unavailable
-    }
-  }, []);
-
-  if (!mounted) {
-    // Prevent flash of wrong theme
-    return null;
-  }
-
   return (
-    <div
-      className={`flex min-h-screen items-center justify-center overflow-hidden relative bg-[var(--color-surface-soft)] ${isDark ? "dark" : ""}`}
-    >
+    <div className="flex min-h-screen items-center justify-center overflow-hidden relative bg-[var(--color-surface-soft)]">
       {/* Lavender mesh gradient background — same as hero section */}
       <div className="absolute inset-0 mesh-gradient-hero pointer-events-none" />
 

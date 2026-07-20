@@ -3,28 +3,11 @@
 import { SignIn } from "@clerk/nextjs";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-const STORAGE_KEY = "dashboard-theme";
 
 export default function SignInPage() {
   const router = useRouter();
-  const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  // Hydrate theme from localStorage (matches DashboardThemeProvider)
-  useEffect(() => {
-    setMounted(true);
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === "dark") {
-        setIsDark(true);
-      }
-    } catch {
-      // localStorage unavailable
-    }
-  }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -45,15 +28,8 @@ export default function SignInPage() {
     return () => window.removeEventListener("popstate", onPopState);
   }, [router]);
 
-  if (!mounted) {
-    // Prevent flash of wrong theme
-    return null;
-  }
-
   return (
-    <div
-      className={`relative flex min-h-screen flex-col items-center justify-center px-4 overflow-hidden bg-[var(--color-surface-soft)] ${isDark ? "dark" : ""}`}
-    >
+    <div className="relative flex min-h-screen flex-col items-center justify-center px-4 overflow-hidden bg-[var(--color-surface-soft)]">
       {/* Lavender mesh gradient background — same as hero section */}
       <div className="absolute inset-0 mesh-gradient-hero pointer-events-none" />
 

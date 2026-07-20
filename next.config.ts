@@ -55,6 +55,62 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
+      // ── CDN Cache-Control for static landing pages ──────────
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/free-resume-builder",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/info/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=1800, s-maxage=1800, stale-while-revalidate=43200",
+          },
+        ],
+      },
+      {
+        source: "/legal/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/resources/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=1800, s-maxage=1800, stale-while-revalidate=43200",
+          },
+        ],
+      },
+      // Static images in public/
+      {
+        source: "/:asset((?:logo|hero-poster|chatbot-icon)\\.(?:png|jpg|webp))",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, immutable",
+          },
+        ],
+      },
     ];
   },
 };

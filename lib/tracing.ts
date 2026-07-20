@@ -164,6 +164,31 @@ export const METRICS = {
 
   /** Rate-limit rejections (per-minute, auto-resets) */
   RATE_LIMIT_REJECTIONS: "metrics:ratelimit:rejections",
+
+  // ────────────────────────────────────────────────────────────
+  // Free-Tier Usage Cap Tracking (Phase 6)
+  // These track cumulative usage that can be compared against
+  // known free-tier limits to catch caps before they're hit.
+  // ────────────────────────────────────────────────────────────
+
+  /** Convex: total function calls (estimate via action call counter) */
+  CONVEX_FUNCTION_CALLS: "metrics:usage:convex:function_calls",
+  /** Convex: approximation of data read from queries */
+  CONVEX_DATA_READ_BYTES: "metrics:usage:convex:data_read_bytes",
+  /** Convex: storage usage in bytes (updated after uploads) */
+  CONVEX_STORAGE_BYTES: "metrics:usage:convex:storage_bytes",
+
+  /** Vercel: serverless function invocations */
+  VERCEL_FUNCTION_INVOCATIONS: "metrics:usage:vercel:function_invocations",
+  /** Vercel: approximate bandwidth in bytes (response sizes) */
+  VERCEL_BANDWIDTH_BYTES: "metrics:usage:vercel:bandwidth_bytes",
+  /** Vercel: build minutes consumed (updated on deploy) */
+  VERCEL_BUILD_MINUTES: "metrics:usage:vercel:build_minutes",
+
+  /** Upstash Redis: commands executed */
+  UPSTASH_COMMANDS: "metrics:usage:upstash:commands",
+  /** Upstash Redis: approximate memory used */
+  UPSTASH_MEMORY_BYTES: "metrics:usage:upstash:memory_bytes",
 } as const;
 
 /**
