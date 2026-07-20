@@ -337,6 +337,48 @@ export default function LandingPage() {
       {/* Section Divider */}
       <div className="section-divider" />
 
+      {/* ─── CTA Strip (Animated Gradient) ─── */}
+      <section className="animated-gradient-cta py-24 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent)]"></div>
+        <motion.div
+          variants={staggerContainerSlow}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+          className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10"
+        >
+          <motion.div variants={scrollRevealUp}>
+            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-white tracking-[-0.02em]">
+              Your next career move starts here.
+            </h2>
+            <p className="text-rose-100/80 mt-3 max-w-xl text-lg">
+              Create your Master Profile today, tailor your resume for any role instantly, and land your dream offer.
+            </p>
+          </motion.div>
+          <motion.div variants={scrollRevealScale} className="shrink-0">
+            <motion.div
+              variants={magneticHover}
+              initial="rest"
+              whileHover="hover"
+              whileTap="tap"
+            >
+              <Link
+                href={mounted && isSignedIn ? "/dashboard" : "/sign-up"}
+                className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-rose-700 font-bold rounded-full shadow-xl transition-all px-8 h-14 text-base gap-3"
+              >
+                {mounted && isSignedIn ? "Go to Dashboard" : "Sign up — it's free"}
+                <span className="icon-island">
+                  <ArrowRight size={14} />
+                </span>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Section Divider */}
+      <div className="section-divider" />
+
       {/* ─── Bento Grid Section: 21st.dev-Inspired ─── */}
       <BentoGrid />
 
@@ -542,48 +584,6 @@ export default function LandingPage() {
 
       {/* ─── Why ResumeFlow — Premium Redesign ─── */}
       <WhyResumeFlow />
-
-      {/* Section Divider */}
-      <div className="section-divider" />
-
-      {/* ─── CTA Strip (Animated Gradient) ─── */}
-      <section className="animated-gradient-cta py-24 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent)]"></div>
-        <motion.div
-          variants={staggerContainerSlow}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-          className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative z-10"
-        >
-          <motion.div variants={scrollRevealUp}>
-            <h2 className="font-display text-3xl md:text-5xl font-extrabold text-white tracking-[-0.02em]">
-              Your next career move starts here.
-            </h2>
-            <p className="text-rose-100/80 mt-3 max-w-xl text-lg">
-              Create your Master Profile today, tailor your resume for any role instantly, and land your dream offer.
-            </p>
-          </motion.div>
-          <motion.div variants={scrollRevealScale} className="shrink-0">
-            <motion.div
-              variants={magneticHover}
-              initial="rest"
-              whileHover="hover"
-              whileTap="tap"
-            >
-              <Link
-                href={mounted && isSignedIn ? "/dashboard" : "/sign-up"}
-                className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-rose-700 font-bold rounded-full shadow-xl transition-all px-8 h-14 text-base gap-3"
-              >
-                {mounted && isSignedIn ? "Go to Dashboard" : "Sign up — it's free"}
-                <span className="icon-island">
-                  <ArrowRight size={14} />
-                </span>
-              </Link>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </section>
 
       {/* ─── Footer (Stagger Reveal) ─── */}
       <footer className="bg-white border-t border-slate-200 py-16 px-6">
