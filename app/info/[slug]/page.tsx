@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { StaticPageWrapper } from '@/components/StaticPageWrapper';
@@ -102,6 +103,14 @@ const infoContent: Record<string, ContentBlock> = {
         {[
           {
             title:
+              '10 Best Free Resume Builders 2026: Tested & Reviewed',
+            date: 'July 20, 2026',
+            href: '/info/blog/best-free-resume-builders-2026',
+            snippet:
+              'We tested 10 free resume builders — comparing ATS compatibility, AI features, pricing, and privacy. Find the best free resume builder for your job search.',
+          },
+          {
+            title:
               'Landing FAANG Offers in 2026: The New Tech Landscape',
             date: 'June 15, 2026',
             snippet:
@@ -121,22 +130,33 @@ const infoContent: Record<string, ContentBlock> = {
             snippet:
               'Behind the scenes of our compiler pipeline. How we compile complex LaTeX documents in V8 client engines without database overhead.',
           },
-        ].map((article, idx) => (
-          <div
-            key={idx}
-            className="bg-[var(--color-surface-soft)] p-6 rounded-2xl border border-[var(--color-hairline)]/50 space-y-2 hover:border-rose-300 transition-colors cursor-pointer"
-          >
-            <span className="text-[10px] font-bold text-rose-600">
-              {article.date}
-            </span>
-            <h3 className="text-base font-bold text-[var(--color-ink-soft)]">
-              {article.title}
-            </h3>
-            <p className="text-[var(--color-ash)] text-xs leading-relaxed">
-              {article.snippet}
-            </p>
-          </div>
-        ))}
+        ].map((article, idx) => {
+          const content = (
+            <div
+              className="bg-[var(--color-surface-soft)] p-6 rounded-2xl border border-[var(--color-hairline)]/50 space-y-2 hover:border-rose-300 transition-colors cursor-pointer"
+            >
+              <span className="text-[10px] font-bold text-rose-600">
+                {article.date}
+              </span>
+              <h3 className="text-base font-bold text-[var(--color-ink-soft)]">
+                {article.title}
+              </h3>
+              <p className="text-[var(--color-ash)] text-xs leading-relaxed">
+                {article.snippet}
+              </p>
+            </div>
+          );
+
+          if (article.href) {
+            return (
+              <Link key={idx} href={article.href}>
+                {content}
+              </Link>
+            );
+          }
+
+          return <div key={idx}>{content}</div>;
+        })}
       </div>
     ),
   },

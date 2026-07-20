@@ -7,10 +7,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     { url: baseUrl, priority: 1.0, changeFrequency: 'daily' as const },
     { url: `${baseUrl}/templates`, priority: 0.9, changeFrequency: 'weekly' as const },
+    { url: `${baseUrl}/free-resume-builder`, priority: 0.9, changeFrequency: 'weekly' as const },
   ] as const;
 
   // Info pages — company info, blog, contact, etc.
   const infoSlugs = ['about', 'blog', 'contact', 'careers'];
+
+  // Blog posts
+  const blogPosts = [
+    { url: `${baseUrl}/info/blog/best-free-resume-builders-2026`, priority: 0.85, changeFrequency: 'monthly' as const },
+  ];
   const infoPages = infoSlugs.map((slug) => ({
     url: `${baseUrl}/info/${slug}` as const,
     priority: slug === 'blog' ? 0.8 : 0.6,
@@ -36,6 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const allPages = [
     ...staticPages,
     ...infoPages,
+    ...blogPosts,
     ...resourcePages,
     ...legalPages,
   ];

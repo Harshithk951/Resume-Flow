@@ -30,7 +30,8 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
     pathname?.startsWith("/sign-up") ||
     pathname?.startsWith("/legal") ||
     pathname?.startsWith("/info") ||
-    pathname?.startsWith("/resources");
+    pathname?.startsWith("/resources") ||
+    pathname?.startsWith("/free-resume-builder");
 
   const shouldFetch =
     isClerkLoaded && isSignedIn && !isPublicRoute;

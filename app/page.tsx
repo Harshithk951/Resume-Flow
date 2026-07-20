@@ -257,11 +257,15 @@ export default function LandingPage() {
 
           <motion.p variants={itemVariants} className="text-slate-400 text-sm max-w-[600px] leading-relaxed mb-8">
             <Link href="/resources/handbook" className="text-rose-600 hover:text-rose-700 underline underline-offset-2 transition-colors">
-              Learn how to write a resume
+              Resume handbook
+            </Link>
+            {' '}·{' '}
+            <Link href="/free-resume-builder" className="text-rose-600 hover:text-rose-700 underline underline-offset-2 transition-colors">
+              Free resume builder
             </Link>
             {' '}·{' '}
             <Link href="/resources/ats-best-practices" className="text-rose-600 hover:text-rose-700 underline underline-offset-2 transition-colors">
-              ATS optimization tips
+              ATS optimization
             </Link>
             {' '}·{' '}
             <Link href="/info/blog" className="text-rose-600 hover:text-rose-700 underline underline-offset-2 transition-colors">
