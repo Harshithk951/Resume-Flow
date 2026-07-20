@@ -26,17 +26,35 @@ export default function SignUpPage() {
           appearance={{
             elements: {
               rootBox: "mx-auto",
-              card: "shadow-none border-none",
+              card: "shadow-none border-none bg-white",
               cardBox:
-                "bg-[var(--color-canvas)] rounded-[32px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
-              headerTitle: "text-[22px] font-semibold text-[var(--color-ink)]",
-              headerSubtitle: "text-[16px] text-[var(--color-body)]",
+                "bg-white rounded-[32px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.1)]",
+              headerTitle: "text-[22px] font-semibold text-[#000000]",
+              headerSubtitle: "text-[16px] text-[#33332e]",
               formButtonPrimary:
-                "bg-[var(--color-primary)] hover:bg-[var(--color-primary-pressed)] rounded-[16px] h-[40px] text-[14px] font-bold",
+                "bg-[#e60023] hover:bg-[#cc001f] rounded-[16px] h-[40px] text-[14px] font-bold text-white",
               formFieldInput:
-                "rounded-[16px] border-[var(--color-ash)] focus:border-[var(--color-ink)] focus:ring-[var(--color-focus-outer)] h-[44px]",
-              footerActionLink: "text-[var(--color-ink-soft)] font-semibold",
-              socialButtonsBlockButton: "rounded-[16px] border-[var(--color-hairline)]",
+                "bg-white rounded-[16px] border-[#91918c] focus:border-[#000000] focus:ring-[#435ee5] h-[44px] text-[#000000]",
+              footerActionLink: "text-[#211922] font-semibold",
+              socialButtonsBlockButton:
+                "bg-white rounded-[16px] border-[#dadad3] text-[#000000]",
+              socialButtonsBlockButtonText: "text-[#000000]",
+              formFieldLabel: "text-[#211922]",
+              dividerLine: "bg-[#dadad3]",
+              dividerText: "text-[#91918c]",
+              identityPreviewEditButton: "text-[#e60023]",
+              formHeaderTitle: "text-[#000000]",
+              formHeaderSubtitle: "text-[#33332e]",
+              formFieldRow: "bg-white",
+              formField: "bg-white",
+              footer: "bg-white",
+              footerAction: "bg-white",
+              socialButtons: "bg-white",
+              alternativeMethods: "bg-white text-[#000000]",
+              alternativeMethodsBlockButton:
+                "bg-white text-[#000000] border-[#dadad3]",
+              formFieldError: "bg-white",
+              formFieldErrorText: "text-[#e60023]",
             },
           }}
         />
