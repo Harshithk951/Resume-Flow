@@ -84,7 +84,11 @@ async function main() {
     (ciMode ? "-ci" : "");
 
   const resumes = await loadJsonDir<unknown>(FIXTURES_RESUMES);
-  const jds = await loadJsonDir<JobDescriptionFixture>(FIXTURES_JDS);
+  const jdsRaw = await loadJsonDir<Omit<JobDescriptionFixture, "id">>(FIXTURES_JDS);
+  const jds: JobDescriptionFixture[] = jdsRaw.map((item) => ({
+    id: item.id,
+    ...item.data,
+  }));
 
   if (resumes.length === 0 || jds.length === 0) {
     console.error("Missing fixtures in fixtures/resumes or fixtures/jds");
