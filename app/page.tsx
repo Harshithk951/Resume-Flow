@@ -592,50 +592,77 @@ export default function LandingPage() {
           className="max-w-[1280px] mx-auto"
         >
           <motion.div variants={scrollRevealUp} className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Product</p>
-              <ul className="space-y-2 text-sm text-slate-600 flex flex-col items-start">
-                <li>
-                  <button
-                    onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
-                    className="hover:text-slate-900 transition-colors bg-transparent border-none p-0 cursor-pointer"
+            <div className="md:col-span-2 lg:col-span-1">
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-5">How to Use ResumeFlow</p>
+              <div className="flex flex-col gap-3">
+                {[
+                  {
+                    step: "01",
+                    icon: (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                      </svg>
+                    ),
+                    title: "Sign up free",
+                    desc: "Create your account — no credit card needed",
+                    href: "/sign-up",
+                  },
+                  {
+                    step: "02",
+                    icon: (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                      </svg>
+                    ),
+                    title: "Build your profile",
+                    desc: "Fill in your experience, skills, and education",
+                    href: "/resume/builder",
+                  },
+                  {
+                    step: "03",
+                    icon: (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                      </svg>
+                    ),
+                    title: "AI tailors it",
+                    desc: "Paste a job description — AI rewrites for that role",
+                    href: "/free-resume-builder",
+                  },
+                  {
+                    step: "04",
+                    icon: (
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                      </svg>
+                    ),
+                    title: "Export & apply",
+                    desc: "Download ATS-optimized PDF — ready to submit",
+                    href: "/resources/handbook",
+                  },
+                ].map((item) => (
+                  <Link
+                    key={item.step}
+                    href={item.href}
+                    className="group/step flex items-start gap-3 p-2.5 rounded-xl transition-all hover:bg-slate-50 border border-transparent hover:border-slate-200"
                   >
-                    Features
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => document.getElementById("templates")?.scrollIntoView({ behavior: "smooth" })}
-                    className="hover:text-slate-900 transition-colors bg-transparent border-none p-0 cursor-pointer"
-                  >
-                    Templates
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
-                    className="hover:text-slate-900 transition-colors bg-transparent border-none p-0 cursor-pointer"
-                  >
-                    ATS Auditor
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
-                    className="hover:text-slate-900 transition-colors bg-transparent border-none p-0 cursor-pointer"
-                  >
-                    Pricing
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })}
-                    className="hover:text-slate-900 transition-colors bg-transparent border-none p-0 cursor-pointer"
-                  >
-                    FAQ
-                  </button>
-                </li>
-              </ul>
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full bg-rose-50 text-rose-700 text-[10px] font-extrabold shrink-0 border border-rose-100 group-hover/step:bg-rose-100 group-hover/step:border-rose-200 transition-colors">
+                      {item.step}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-bold text-slate-700 group-hover/step:text-rose-700 transition-colors">
+                          {item.title}
+                        </span>
+                        <ArrowRight size={10} className="text-slate-300 group-hover/step:text-rose-500 group-hover/step:translate-x-0.5 transition-all shrink-0" />
+                      </div>
+                      <p className="text-[11px] text-slate-400 leading-relaxed mt-0.5">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Resources</p>
