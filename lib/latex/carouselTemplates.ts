@@ -11,6 +11,7 @@ export const carouselTemplates: CarouselTemplate[] = [
     id: "modern_professional",
     label: "Modern",
     image: "/images/template-modern-professional.png",
+    creative: true,
   },
   {
     id: "modern_executive",
@@ -21,6 +22,7 @@ export const carouselTemplates: CarouselTemplate[] = [
     id: "tech_innovator",
     label: "Tech",
     image: "/images/template-tech-innovator.png",
+    creative: true,
   },
 ];
 

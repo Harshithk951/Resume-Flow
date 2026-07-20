@@ -61,6 +61,11 @@ export function exportToHtml(
   }
 
   // Header render helpers
+  const headline =
+    (data.summary && data.summary.trim().slice(0, 80)) ||
+    experience[0]?.role ||
+    "";
+
   const renderHeader = () => {
     if (templateId === "ats_strict") {
       return `
@@ -81,7 +86,7 @@ export function exportToHtml(
         <div class="flex justify-between items-start border-b border-slate-300 pb-6 mb-6">
           <div>
             <h1 class="text-3xl font-extrabold tracking-tight text-slate-950">${escapeHtml(personalInfo.name)}</h1>
-            <p class="text-sm font-semibold text-rose-600 mt-1 uppercase tracking-wider">Software Engineer</p>
+            ${headline ? `<p class="text-sm font-semibold text-rose-600 mt-1 uppercase tracking-wider">${escapeHtml(headline)}</p>` : ""}
           </div>
           <div class="text-right text-xs space-y-1 text-slate-500">
             ${personalInfo.email ? `<div><a href="mailto:${personalInfo.email}" class="link">${escapeHtml(personalInfo.email)}</a></div>` : ""}
@@ -115,7 +120,7 @@ export function exportToHtml(
       <div class="flex justify-between items-center border-b-2 border-slate-300 pb-6 mb-6">
         <div>
           <h1 class="text-3xl font-black tracking-tight text-slate-900">${escapeHtml(personalInfo.name)}</h1>
-          <p class="text-xs font-mono text-indigo-600 mt-1 uppercase tracking-wider">Software Engineer</p>
+          ${headline ? `<p class="text-xs font-mono text-indigo-600 mt-1 uppercase tracking-wider">${escapeHtml(headline)}</p>` : ""}
         </div>
         <div class="text-right text-xs font-mono space-y-1 text-slate-500">
           ${personalInfo.email ? `<div>${escapeHtml(personalInfo.email)}</div>` : ""}

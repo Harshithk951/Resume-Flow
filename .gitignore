@@ -42,3 +42,9 @@ yarn-error.log*
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Template quality run artifacts (keep scorecard summaries)
+reports/template-quality/**/*
+!reports/template-quality/.gitkeep
+!reports/template-quality/latest.md
+!reports/template-quality/latest.json

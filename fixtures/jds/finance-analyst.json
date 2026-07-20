@@ -1,0 +1,26 @@
+{
+  "id": "finance-analyst",
+  "title": "Financial Analyst",
+  "company": "Investment Bank",
+  "hardSkills": [
+    "Excel",
+    "Financial Modeling",
+    "DCF",
+    "LBO",
+    "VBA",
+    "SQL",
+    "Bloomberg",
+    "Compliance",
+    "Valuation"
+  ],
+  "keywordsToInclude": [
+    "Excel",
+    "financial modeling",
+    "DCF",
+    "compliance",
+    "valuation",
+    "Bloomberg",
+    "M&A"
+  ],
+  "rawText": "Seeking a Financial Analyst with advanced Excel financial modeling skills, DCF and LBO valuation experience, VBA automation, SQL reporting, Bloomberg terminal proficiency, and compliance reporting for M&A transactions."
+}

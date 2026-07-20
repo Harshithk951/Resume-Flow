@@ -1,0 +1,71 @@
+{
+  "personalInfo": {
+    "name": "Alex Chen",
+    "email": "alex.chen@email.com",
+    "phone": "+1 (415) 555-0142",
+    "linkedin": "https://linkedin.com/in/alexchen",
+    "github": "https://github.com/alexchen",
+    "portfolio": "https://alexchen.dev"
+  },
+  "summary": "Full-stack engineer shipping React and TypeScript products with measurable latency and reliability wins.",
+  "education": [
+    {
+      "institution": "University of California, Berkeley",
+      "degree": "B.S. Computer Science",
+      "gpa": "3.8",
+      "year": "2020",
+      "relevantCourses": ["Algorithms", "Distributed Systems", "Machine Learning"]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Stripe",
+      "role": "Software Engineer",
+      "duration": "Jan 2022 -- Present",
+      "bullets": [
+        "Built payment reconciliation dashboard in React and TypeScript, reducing manual review time by 45% for 12 operations analysts",
+        "Architected Redis-backed caching layer for billing APIs, cutting p99 latency from 820ms to 190ms across 3 services",
+        "Led migration to Next.js App Router for internal tools, improving build times by 38% and enabling SSR for compliance views"
+      ],
+      "technologies": ["React", "TypeScript", "Next.js", "Redis", "PostgreSQL"]
+    },
+    {
+      "company": "Datadog",
+      "role": "Software Engineer Intern",
+      "duration": "May 2021 -- Aug 2021",
+      "bullets": [
+        "Shipped observability widgets in 6 weeks using React and GraphQL, adopted by 400+ enterprise dashboards",
+        "Optimized bundle size by 22% via code-splitting and lazy loading, improving LCP scores on customer-facing pages"
+      ],
+      "technologies": ["React", "GraphQL", "TypeScript"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "ResumeFlow",
+      "description": "AI resume tailoring platform",
+      "technologies": ["Next.js", "Convex", "LaTeX"],
+      "link": "https://github.com/alexchen/resumeflow",
+      "bullets": [
+        "Built LaTeX-to-PDF pipeline with 4-layer compile fallback, achieving 99.2% successful exports in production beta"
+      ]
+    },
+    {
+      "name": "OpenMetrics CLI",
+      "description": "Developer productivity tooling",
+      "technologies": ["Rust", "Docker"],
+      "bullets": [
+        "Developed CLI profiler in Rust that reduced CI flake detection time from 4 hours to 25 minutes for 90+ microservices"
+      ]
+    }
+  ],
+  "skills": {
+    "languages": ["TypeScript", "Python", "Rust", "SQL"],
+    "frameworks": ["React", "Next.js", "Node.js"],
+    "tools": ["Docker", "Git", "AWS", "Redis"],
+    "databases": ["PostgreSQL", "Redis"],
+    "soft": ["Cross-functional collaboration", "Technical writing"]
+  },
+  "certifications": [],
+  "achievements": []
+}

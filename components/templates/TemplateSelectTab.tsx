@@ -1,6 +1,7 @@
 "use client";
 
 import { Check, Sparkles, Briefcase, GraduationCap, Layout, FileText } from "lucide-react";
+import { TEMPLATE_QUALITY_BADGES } from "@/lib/quality/templateProfiles";
 
 interface TemplateSelectTabProps {
   selectedTemplate: string;
@@ -113,6 +114,18 @@ export default function TemplateSelectTab({
                   <span className="block text-[11px] text-slate-500 leading-relaxed">
                     {tpl.description}
                   </span>
+                  {TEMPLATE_QUALITY_BADGES[tpl.id] && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      <span className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+                        ATS {TEMPLATE_QUALITY_BADGES[tpl.id].atsScore}
+                      </span>
+                      {TEMPLATE_QUALITY_BADGES[tpl.id].onePageGuaranteed && (
+                        <span className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                          1-page
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Accent indicator */}

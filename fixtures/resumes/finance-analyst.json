@@ -1,0 +1,61 @@
+{
+  "personalInfo": {
+    "name": "Priya Sharma",
+    "email": "priya.sharma@email.com",
+    "phone": "+1 (212) 555-0176",
+    "linkedin": "https://linkedin.com/in/priyasharma"
+  },
+  "summary": "Financial analyst specializing in Excel modeling, valuation, and compliance reporting for $500M+ AUM portfolios.",
+  "education": [
+    {
+      "institution": "Wharton School, University of Pennsylvania",
+      "degree": "B.S. Economics, Finance Concentration",
+      "gpa": "3.9",
+      "year": "2019",
+      "relevantCourses": ["Corporate Finance", "Financial Accounting", "Econometrics"]
+    }
+  ],
+  "experience": [
+    {
+      "company": "Goldman Sachs",
+      "role": "Financial Analyst",
+      "duration": "Jul 2019 -- Present",
+      "bullets": [
+        "Built DCF and LBO models in Excel for 15+ M&A transactions totaling $2.4B in enterprise value with <2% variance vs closing",
+        "Automated monthly compliance reporting using VBA and SQL, reducing preparation time from 12 hours to 90 minutes per cycle",
+        "Prepared board-ready variance analyses for $500M+ AUM client portfolios, improving forecast accuracy by 18% over 4 quarters"
+      ],
+      "technologies": ["Excel", "VBA", "SQL", "Bloomberg"]
+    },
+    {
+      "company": "BlackRock",
+      "role": "Summer Analyst",
+      "duration": "Jun 2018 -- Aug 2018",
+      "bullets": [
+        "Conducted credit risk analysis on 40+ fixed-income instruments using Bloomberg and Excel, supporting $120M allocation decisions for institutional clients"
+      ],
+      "technologies": ["Excel", "Bloomberg", "FactSet"]
+    }
+  ],
+  "projects": [],
+  "skills": {
+    "languages": [],
+    "frameworks": [],
+    "tools": ["Excel", "VBA", "Bloomberg", "FactSet", "PowerPoint"],
+    "databases": ["SQL"],
+    "soft": ["Financial modeling", "Stakeholder management", "Regulatory compliance"]
+  },
+  "certifications": [
+    {
+      "name": "CFA Level II Candidate",
+      "issuer": "CFA Institute",
+      "year": "2024"
+    }
+  ],
+  "achievements": [
+    {
+      "description": "Dean's List all semesters; Led Wharton Investment Club portfolio (+14% vs benchmark)",
+      "year": "2019"
+    }
+  ]
+}

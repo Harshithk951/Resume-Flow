@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { SignOutButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
-import { LayoutDashboard, User, FileText, LogOut, Loader2, Settings } from "lucide-react";
+import { LayoutDashboard, User, FileText, LogOut, Loader2, Settings, Menu, X } from "lucide-react";
 import { AppBackButton } from "@/components/AppBackButton";
 import { BrandLogo } from "@/components/BrandLogo";
 
@@ -52,6 +52,7 @@ export default function AuthenticatedLayout({
   const router = useRouter();
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const showBack = pathname !== "/dashboard";
 
   useEffect(() => {
@@ -74,7 +75,7 @@ export default function AuthenticatedLayout({
            Pure CSS hover mechanism: collapsed w-[72px] by default,
            expands to w-64 on hover. All labels fade in with opacity.
            Uses group/sidebar naming for scoped hover children. */}
-      <aside className="group/sidebar relative z-10 w-[72px] hover:w-64 border-r border-white/40 glass-panel flex flex-col justify-between py-6 shrink-0 transition-all duration-500"
+      <aside className="group/sidebar relative z-10 hidden md:flex w-[72px] hover:w-64 border-r border-white/40 glass-panel flex flex-col justify-between py-6 shrink-0 transition-all duration-500"
         style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
       >
         <div className="space-y-8 overflow-hidden">
@@ -92,7 +93,7 @@ export default function AuthenticatedLayout({
             ResumeFlow
           </span>
 
-          <nav className="space-y-1.5 px-2">
+          <nav className="space-y-1.5 px-2" aria-label="Main navigation">
             {navigationItems.map((item) => {
               const isActive = item.isActive(pathname ?? "");
               const Icon = item.icon;
@@ -101,6 +102,7 @@ export default function AuthenticatedLayout({
                   key={item.name}
                   href={item.href}
                   title={item.name}
+                  aria-current={isActive ? "page" : undefined}
                   className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
                     isActive
                       ? "bg-white text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
@@ -163,9 +165,91 @@ export default function AuthenticatedLayout({
         </div>
       </aside>
 
+      {/* ─── MOBILE Navigation Drawer ────────────────── */}
+      {isMobileDrawerOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 animate-fade-in"
+            onClick={() => setIsMobileDrawerOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Drawer panel */}
+          <aside
+            className="relative w-64 max-w-xs bg-white border-r border-slate-200/60 flex flex-col justify-between py-6 px-4 shadow-xl z-50 animate-in slide-in-from-left duration-300"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setIsMobileDrawerOpen(false);
+            }}
+          >
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <BrandLogo href="/dashboard" size="sm" showText={true} />
+                <button
+                  onClick={() => setIsMobileDrawerOpen(false)}
+                  className="p-1 rounded-lg hover:bg-slate-100 text-slate-500 transition-colors"
+                  aria-label="Close navigation menu"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <nav className="space-y-1.5" aria-label="Mobile navigation">
+                {navigationItems.map((item) => {
+                  const isActive = item.isActive(pathname ?? "");
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={() => setIsMobileDrawerOpen(false)}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? "bg-rose-50 text-rose-600 border border-rose-100/60 font-semibold"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-950"
+                      }`}
+                    >
+                      <Icon className={`h-4.5 w-4.5 ${isActive ? "text-rose-600" : "text-slate-400"}`} />
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
+
+            <div className="space-y-4 border-t border-slate-200/60 pt-4">
+              <div className="flex items-center gap-3">
+                <UserButton />
+                <span className="text-xs font-semibold text-slate-700 truncate">
+                  {user?.fullName || "Placement Sync"}
+                </span>
+              </div>
+              <SignOutButton redirectUrl="/sign-in?from=logout">
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-sm font-medium text-slate-600 transition-all hover:bg-rose-50 hover:text-rose-600"
+                >
+                  <LogOut className="h-4 w-4 text-slate-400" />
+                  <span>Log out</span>
+                </button>
+              </SignOutButton>
+            </div>
+          </aside>
+        </div>
+      )}
+
       <main className="flex-1 flex flex-col overflow-hidden min-w-0">
         <header className="h-14 border-b border-white/40 glass-panel flex items-center justify-between px-6 md:px-8 shadow-sm shrink-0">
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsMobileDrawerOpen(true)}
+              className="md:hidden p-2 -ml-2 rounded-lg hover:bg-slate-100/80 text-slate-600 transition-colors"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
             {showBack && (
               <AppBackButton
                 fallbackHref="/dashboard"

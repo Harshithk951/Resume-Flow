@@ -1,0 +1,26 @@
+{
+  "id": "swe-bigtech",
+  "title": "Senior Frontend Engineer",
+  "company": "Google",
+  "hardSkills": [
+    "React",
+    "TypeScript",
+    "JavaScript",
+    "Next.js",
+    "System Design",
+    "GraphQL",
+    "Performance Optimization",
+    "Redis",
+    "PostgreSQL"
+  ],
+  "keywordsToInclude": [
+    "React",
+    "TypeScript",
+    "frontend",
+    "system design",
+    "latency",
+    "scalable",
+    "cross-functional"
+  ],
+  "rawText": "We are hiring a Senior Frontend Engineer to build scalable React and TypeScript applications. You will optimize performance, reduce latency, and collaborate cross-functionally on system design for customer-facing products. Experience with Next.js, GraphQL, Redis, and PostgreSQL required."
+}

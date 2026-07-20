@@ -79,12 +79,24 @@ const TailoredResumeSchema = z.object({
     keywordMatchPercent: z.number().min(0).max(100).default(70),
     formattingScore: z.number().min(0).max(100).default(80),
     sectionCompletenessScore: z.number().min(0).max(100).default(90),
+    templateFormattingScore: z.number().min(0).max(100).optional().default(85),
+    recommendedTemplateId: z
+      .enum([
+        "ats_strict",
+        "modern_professional",
+        "modern_executive",
+        "tech_innovator",
+      ])
+      .optional()
+      .default("ats_strict"),
     issues: z.array(z.string()).default([]),
     suggestions: z.array(z.string()).default([]),
   }).default({
     keywordMatchPercent: 70,
     formattingScore: 80,
     sectionCompletenessScore: 90,
+    templateFormattingScore: 85,
+    recommendedTemplateId: "ats_strict",
     issues: [],
     suggestions: [],
   }),
@@ -184,9 +196,11 @@ Instructions:
 2. **ATS Scoring**:
    - Compute a heuristic ATS score based on:
      - keywordMatchPercent: What percentage of keywords/skills in the JD are represented in the tailored resume?
-     - formattingScore: Grade style (100 is simple, standard single-column, clear section headings).
+     - formattingScore: Grade content structure (100 is clear sections, standard headings, scannable bullets).
      - sectionCompletenessScore: Grade presence of Contact, Education, Experience, Projects, and Skills.
-     - overallScore: Weighted average of the three.
+     - templateFormattingScore: Expected ATS/layout fit for recommended template (100 = ats_strict single-column; styled templates may score 75-90 if visual accents are justified).
+     - recommendedTemplateId: One of ats_strict (enterprise/ATS-heavy), modern_professional (startup), modern_executive (finance/leadership), tech_innovator (engineering). Base on JD industry and culture keywords.
+     - overallScore: Weighted average of keyword, formatting, and section scores.
    - List specific "issues" found (e.g. "Missing certifications section") and actionable "suggestions" for improvement.
 
 3. **Diff Notes**:
@@ -245,6 +259,8 @@ Return ONLY a valid JSON block matching this schema:
     "keywordMatchPercent": 85,
     "formattingScore": 95,
     "sectionCompletenessScore": 90,
+    "templateFormattingScore": 88,
+    "recommendedTemplateId": "ats_strict",
     "issues": ["...", "..."],
     "suggestions": ["...", "..."]
   },

@@ -1,0 +1,27 @@
+{
+  "id": "swe-startup",
+  "title": "Full-Stack Engineer",
+  "company": "Series B Startup",
+  "hardSkills": [
+    "React",
+    "TypeScript",
+    "Next.js",
+    "Node.js",
+    "Docker",
+    "AWS",
+    "Rust",
+    "Ship fast",
+    "Builder mindset"
+  ],
+  "keywordsToInclude": [
+    "React",
+    "TypeScript",
+    "Next.js",
+    "ship",
+    "built",
+    "startup",
+    "full-stack",
+    "Docker"
+  ],
+  "rawText": "Join our Series B startup as a Full-Stack Engineer. We need builders who ship fast in React, TypeScript, and Next.js. You will own features end-to-end, deploy with Docker on AWS, and move quickly with a high-ownership culture."
+}

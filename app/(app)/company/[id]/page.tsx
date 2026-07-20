@@ -67,6 +67,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
   const resetToCompiling = useMutation(api.jobs.resetToCompiling);
   const retryJob = useMutation(api.jobs.retryJob);
+  const updateApplicationStatus = useMutation(api.jobs.updateApplicationStatus);
 
   const [isWorkspaceMaximized, setIsWorkspaceMaximized] = useState(false);
   const [activeTab, setActiveTab] = useState<"PREVIEW" | "LATEX" | "JSON" | "OUTREACH">(
@@ -269,6 +270,42 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   }`} />
                   {job.pipelineState.replace("_", " ")}
                 </span>
+
+                {job.pipelineState === "completed" && (
+                  <select
+                    value={
+                      job.crmStatus === "Saved" ? "new" :
+                      job.crmStatus === "Applied" ? "applied" :
+                      job.crmStatus === "Interviewing" ? "interview" :
+                      job.crmStatus === "Offered" ? "offered" :
+                      job.crmStatus === "Rejected" ? "rejected" :
+                      "new"
+                    }
+                    onChange={async (e) => {
+                      try {
+                        await updateApplicationStatus({
+                          jobId: job._id,
+                          status: e.target.value as any,
+                        });
+                      } catch (err) {
+                        console.error("Failed to update status:", err);
+                      }
+                    }}
+                    className={`text-[10px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1.5 border focus:outline-none transition-all cursor-pointer ${
+                      job.crmStatus === "Applied" ? "bg-blue-50 text-blue-700 border-blue-200 focus:ring-blue-500/20" :
+                      job.crmStatus === "Interviewing" ? "bg-amber-50 text-amber-700 border-amber-200 focus:ring-amber-500/20" :
+                      job.crmStatus === "Offered" ? "bg-emerald-50 text-emerald-700 border-emerald-200 focus:ring-emerald-500/20" :
+                      job.crmStatus === "Rejected" ? "bg-red-50 text-red-700 border-red-200 focus:ring-red-500/20" :
+                      "bg-slate-50 text-slate-700 border-slate-200 focus:ring-slate-500/20"
+                    }`}
+                  >
+                    <option value="new">Saved</option>
+                    <option value="applied">Applied</option>
+                    <option value="interview">Interviewing</option>
+                    <option value="offered">Offered</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                )}
               </div>
             </div>
           </div>

@@ -291,10 +291,18 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
     html = html.replace(/\n/g, " ");
 
     // 🛡️ Security: Final sanitization via DOMPurify before rendering HTML
-    const sanitizedHtml = DOMPurify.sanitize(html, {
-      ALLOWED_TAGS: ["h4", "strong", "li", "div"],
-      ALLOWED_ATTR: ["class"],
-    });
+    const getSanitizedHtml = (rawHtml: string) => {
+      if (typeof window === "undefined") return rawHtml;
+      const purifier = (DOMPurify as any)?.default || DOMPurify;
+      if (purifier && typeof purifier.sanitize === "function") {
+        return purifier.sanitize(rawHtml, {
+          ALLOWED_TAGS: ["h4", "strong", "li", "div"],
+          ALLOWED_ATTR: ["class"],
+        });
+      }
+      return rawHtml;
+    };
+    const sanitizedHtml = getSanitizedHtml(html);
 
     return (
       <span

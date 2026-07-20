@@ -194,3 +194,27 @@ export const getDashboardSummary = query({
     };
   },
 });
+
+export const getMyJobsEnriched = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireAuth(ctx);
+    const jobs = await ctx.db
+      .query("jobs")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .collect();
+    const resumes = await ctx.db
+      .query("tailoredResumes")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .collect();
+    const resumeMap = new Map(resumes.map((r) => [r.jobId as string, r]));
+
+    return jobs.map((job) => ({
+      ...job,
+      atsScore: resumeMap.get(job._id as string)?.atsCompatibilityScore ?? null,
+      pdfStorageId: resumeMap.get(job._id as string)?.pdfStorageId ?? null,
+      hasResume: resumeMap.has(job._id as string),
+    }));
+  },
+});
+

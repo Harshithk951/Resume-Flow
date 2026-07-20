@@ -1,0 +1,58 @@
+{
+  "personalInfo": {
+    "name": "Jordan O'Brien",
+    "email": "jordan.obrien@email.com",
+    "phone": "+1 (650) 555-0198",
+    "linkedin": "https://linkedin.com/in/jordanobrien",
+    "github": "https://github.com/jordanobrien"
+  },
+  "summary": "Staff engineer driving cross-team platform outcomes with $100M+ business impact.",
+  "education": [
+    {
+      "institution": "Carnegie Mellon University",
+      "degree": "M.S. Software Engineering",
+      "year": "2016"
+    }
+  ],
+  "experience": [
+    {
+      "company": "Anthropic",
+      "role": "Staff Software Engineer",
+      "duration": "Mar 2023 -- Present",
+      "bullets": [
+        "Led inference platform redesign across 4 teams, reducing p99 latency by 40% and enabling 8 model launches in one quarter",
+        "Architected shared feature store adopted by 6 ML teams, saving $180K/year in redundant compute and cutting onboarding from 2 weeks to 2 days",
+        "Facilitated RFC process aligning research and infra orgs across 4 teams, completing 3 design reviews and achieving 6-month company-wide adoption of hybrid serving architecture"
+      ],
+      "technologies": ["Python", "Kubernetes", "Ray", "PostgreSQL"]
+    },
+    {
+      "company": "Meta",
+      "role": "Senior Software Engineer",
+      "duration": "2018 -- 2023",
+      "bullets": [
+        "Built real-time ranking pipeline serving 2B+ daily requests, improving click-through rate by 12% via C++ optimization",
+        "Mentored 5 engineers through promotion cycles by designing stretch assignments and weekly architecture reviews"
+      ],
+      "technologies": ["C++", "Python", "Hive", "Presto"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Platform Reliability Framework",
+      "description": "Org-wide SRE tooling",
+      "technologies": ["Go", "Prometheus"],
+      "bullets": [
+        "Created profiling framework trained 4 teams on adoption, reducing incident MTTR by 55% across 3 product orgs in 6 months"
+      ]
+    }
+  ],
+  "skills": {
+    "languages": ["Python", "C++", "Go", "SQL"],
+    "frameworks": ["Ray", "FastAPI"],
+    "tools": ["Kubernetes", "Docker", "Prometheus"],
+    "databases": ["PostgreSQL", "Redis"]
+  },
+  "certifications": [],
+  "achievements": []
+}

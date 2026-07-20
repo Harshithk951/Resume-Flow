@@ -1,0 +1,1623 @@
+{
+  "runId": "2026-07-20T08-23-56-637Z-ci",
+  "createdAt": "2026-07-20T08:24:15.901Z",
+  "ciMode": true,
+  "combinations": [
+    {
+      "templateId": "ats_strict",
+      "resumeId": "finance-analyst",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 92,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 75,
+            "avgScore": 2.75
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: strings out of 469006\n 8844 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,260b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 341,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 48,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/finance-analyst__finance-analyst/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-mid",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: strings out of 469006\n 8796 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,248b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 230,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-mid__swe-bigtech/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: strings out of 469006\n 8796 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,248b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 228,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-mid__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-staff",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: strings out of 469006\n 8804 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,250b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 231,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 46,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-staff__swe-bigtech/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-staff",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: strings out of 469006\n 8804 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,250b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 238,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 46,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-staff__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "modern_professional",
+      "resumeId": "finance-analyst",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 92,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 75,
+            "avgScore": 2.75
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 920,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 64,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/finance-analyst__finance-analyst/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/finance-analyst__finance-analyst/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_professional",
+      "resumeId": "swe-mid",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 876,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 66,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-bigtech/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-bigtech/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_professional",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 893,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 66,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-startup/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-startup/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_professional",
+      "resumeId": "swe-staff",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 884,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 61,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-bigtech/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-bigtech/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_professional",
+      "resumeId": "swe-staff",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 884,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 61,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-startup/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-startup/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_executive",
+      "resumeId": "finance-analyst",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 92,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 75,
+            "avgScore": 2.75
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 1022,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 64,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/finance-analyst__finance-analyst/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/finance-analyst__finance-analyst/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_executive",
+      "resumeId": "swe-mid",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 911,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 66,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-bigtech/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-bigtech/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_executive",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 854,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 66,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-startup/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-startup/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_executive",
+      "resumeId": "swe-staff",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 884,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 61,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-bigtech/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-bigtech/resume.pdf"
+      }
+    },
+    {
+      "templateId": "modern_executive",
+      "resumeId": "swe-staff",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 867,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 61,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-startup/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-startup/resume.pdf"
+      }
+    },
+    {
+      "templateId": "tech_innovator",
+      "resumeId": "finance-analyst",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 92,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 75,
+            "avgScore": 2.75
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 893,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 64,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/finance-analyst__finance-analyst/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/finance-analyst__finance-analyst/resume.pdf"
+      }
+    },
+    {
+      "templateId": "tech_innovator",
+      "resumeId": "swe-mid",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &, &"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 935,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 66,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-bigtech/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-bigtech/resume.pdf"
+      }
+    },
+    {
+      "templateId": "tech_innovator",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &, &"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 945,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 66,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-startup/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-startup/resume.pdf"
+      }
+    },
+    {
+      "templateId": "tech_innovator",
+      "resumeId": "swe-staff",
+      "jdId": "swe-bigtech",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 918,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 61,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-bigtech/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-bigtech/resume.pdf"
+      }
+    },
+    {
+      "templateId": "tech_innovator",
+      "resumeId": "swe-staff",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 100,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": true,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "durationMs": 896,
+            "engine": "pdflatex"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdf-parse failed to extract text"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 61,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-startup/resume.tex",
+        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-startup/resume.pdf"
+      }
+    }
+  ],
+  "templateSummary": {
+    "ats_strict": {
+      "avgOverall": 48,
+      "passRate": 0,
+      "blockingFailures": [
+        "finance-analyst/finance-analyst: PDF Compile Reliability",
+        "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "swe-mid/swe-bigtech: PDF Compile Reliability",
+        "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-mid/swe-startup: PDF Compile Reliability",
+        "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-bigtech: PDF Compile Reliability",
+        "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-staff/swe-startup: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-startup: PDF Compile Reliability",
+        "swe-staff/swe-startup: ATS Parse & Text Recovery"
+      ]
+    },
+    "modern_professional": {
+      "avgOverall": 64,
+      "passRate": 0,
+      "blockingFailures": [
+        "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-staff/swe-startup: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-startup: ATS Parse & Text Recovery"
+      ]
+    },
+    "modern_executive": {
+      "avgOverall": 64,
+      "passRate": 0,
+      "blockingFailures": [
+        "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-staff/swe-startup: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-startup: ATS Parse & Text Recovery"
+      ]
+    },
+    "tech_innovator": {
+      "avgOverall": 64,
+      "passRate": 0,
+      "blockingFailures": [
+        "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-staff/swe-startup: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-startup: ATS Parse & Text Recovery"
+      ]
+    }
+  },
+  "passed": false
+}

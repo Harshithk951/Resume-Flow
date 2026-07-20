@@ -6,6 +6,7 @@
 function escapeLatex(str: string | undefined): string {
   if (!str) return "";
   return str
+    .replace(/\\/g, "\\textbackslash{}")
     .replace(/&/g, "\\&")
     .replace(/%/g, "\\%")
     .replace(/\$/g, "\\$")
@@ -14,7 +15,8 @@ function escapeLatex(str: string | undefined): string {
     .replace(/{/g, "\\{")
     .replace(/}/g, "\\}")
     .replace(/~/g, "\\textasciitilde ")
-    .replace(/\^/g, "\\textasciicircum ");
+    .replace(/\^/g, "\\textasciicircum ")
+    .replace(/'/g, "\\textquotesingle{}");
 }
 
 /** Normalize a URL: if it already has a protocol, use as-is; otherwise prepend https:// */
@@ -63,7 +65,6 @@ export function generateAtsStrictTemplate(data: any): string {
 \\usepackage{latexsym}
 \\usepackage[empty]{fullpage}
 \\usepackage{titlesec}
-\\usepackage{marvosym}
 \\usepackage[usenames,dvipsnames]{color}
 \\usepackage{verbatim}
 \\usepackage{enumitem}

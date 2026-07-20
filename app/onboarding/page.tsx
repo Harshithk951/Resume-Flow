@@ -68,6 +68,7 @@ export default function OnboardingPage() {
   const [step, setStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processStatus, setProcessStatus] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   // Convex integration
@@ -105,9 +106,14 @@ export default function OnboardingPage() {
     }
   }, [step]);
 
-  // Staggered loading messages to delight users (Awards Design: details & craft)
+  // Smoothly increment progress percentage and update status message to keep users hooked
   useEffect(() => {
-    if (!isProcessing) return;
+    if (!isProcessing) {
+      setUploadProgress(0);
+      setProcessStatus("");
+      return;
+    }
+
     const messages = [
       "Uploading document securely...",
       "Extracting text headers...",
@@ -117,13 +123,31 @@ export default function OnboardingPage() {
       "Removing PII tracking data...",
       "Finalizing profile data structure..."
     ];
-    let index = 0;
+
+    setUploadProgress(0);
     setProcessStatus(messages[0]);
-    const timer = setInterval(() => {
-      index = (index + 1) % messages.length;
-      setProcessStatus(messages[index]);
-    }, 2500);
-    return () => clearInterval(timer);
+
+    // Interval to increment progress percentage
+    const progressTimer = setInterval(() => {
+      setUploadProgress((prev) => {
+        if (prev >= 98) return prev; // Hold at 98% until completely finished
+        const remaining = 99 - prev;
+        // Step size decays as progress approaches 99%
+        const step = Math.max(1, Math.round(Math.random() * (remaining * 0.25)));
+        const nextProgress = Math.min(prev + step, 98);
+
+        // Sync status message dynamically based on progress brackets
+        const msgIndex = Math.min(
+          Math.floor((nextProgress / 100) * messages.length),
+          messages.length - 1
+        );
+        setProcessStatus(messages[msgIndex]);
+
+        return nextProgress;
+      });
+    }, 1000);
+
+    return () => clearInterval(progressTimer);
   }, [isProcessing]);
 
   if (!isClerkLoaded) {
@@ -459,16 +483,43 @@ export default function OnboardingPage() {
                   className="flex flex-col gap-6"
                 >
                   {isProcessing ? (
-                    <div className="flex flex-col items-center justify-center py-12 gap-4">
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 1.2, ease: "linear" }}
-                        className="w-16 h-16 border-4 border-[var(--color-primary)] border-t-transparent rounded-full mb-2"
-                      />
-                      <h3 className="type-heading-md text-center">{processStatus}</h3>
-                      <p className="type-body-sm text-center max-w-[300px]">
-                        Our AI is extracting parameters using a secure, masked data pipeline.
-                      </p>
+                    <div className="flex flex-col items-center justify-center py-12 gap-6">
+                      {/* Premium Circular Progress / Spinner Hybrid */}
+                      <div className="relative w-20 h-20 flex items-center justify-center">
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+                          className="absolute w-full h-full border-4 border-slate-100 border-t-[var(--color-primary)] rounded-full"
+                        />
+                        <span className="text-sm font-extrabold text-slate-800 tabular-nums">
+                          {uploadProgress}%
+                        </span>
+                      </div>
+
+                      <div className="space-y-1 text-center w-full max-w-sm">
+                        <h3 className="type-heading-md font-bold text-slate-800 transition-all duration-300 min-h-[28px]">
+                          {processStatus}
+                        </h3>
+                        <p className="type-body-sm text-[var(--color-mute)] max-w-[280px] mx-auto text-xs leading-relaxed">
+                          Our AI is extracting parameters using a secure, masked data pipeline.
+                        </p>
+                      </div>
+
+                      {/* Premium Horizontal Progress Bar */}
+                      <div className="w-full max-w-xs space-y-1.5 mt-2">
+                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/40">
+                          <motion.div
+                            initial={{ width: "0%" }}
+                            animate={{ width: `${uploadProgress}%` }}
+                            transition={{ ease: "easeOut", duration: 0.4 }}
+                            className="h-full bg-gradient-to-r from-rose-500 to-rose-600 rounded-full"
+                          />
+                        </div>
+                        <div className="flex justify-between text-[10px] font-bold text-[var(--color-ash)] uppercase tracking-wider px-0.5">
+                          <span>Parsing Resume</span>
+                          <span className="animate-pulse text-rose-600">Active Pipeline</span>
+                        </div>
+                      </div>
                     </div>
                   ) : (
                     <>
