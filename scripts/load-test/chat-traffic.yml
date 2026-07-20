@@ -1,0 +1,39 @@
+config:
+  target: "{{ $processEnvironment.TARGET_URL || 'https://dynamic-warthog-953.convex.cloud' }}"
+  phases:
+    - duration: 60
+      arrivalRate: 5
+      rampTo: 50
+      name: "Sustained chat traffic (5→50 req/s)"
+  defaults:
+    headers:
+      Authorization: "Bearer {{ $processEnvironment.CLERK_TOKEN || 'test-token' }}"
+      Content-Type: "application/json"
+  http:
+    timeout: 60
+  environments:
+    production:
+      target: "https://moonlit-panda-300.convex.cloud"
+
+# Targets Convex HTTP endpoints for chat mutations/queries.
+# Note: chat assistant is a background action (not synchronous HTTP),
+# so the sendChatMessage mutation returns immediately but the AI response
+# arrives asynchronously via the Convex subscription. getChatHistory
+# will show the response once the action completes (~3-8s).
+
+scenarios:
+  - name: "Chat Traffic"
+    flow:
+      - post:
+          url: "/api/mutation/chat:sendChatMessage"
+          json:
+            content: "What skills should I highlight for a software engineering internship?"
+      - think: 2
+      - post:
+          url: "/api/mutation/chat:sendChatMessage"
+          json:
+            content: "Can you review my resume bullet points and suggest improvements?"
+      - think: 5
+      - post:
+          url: "/api/query/chat:getChatHistory"
+          json: {}

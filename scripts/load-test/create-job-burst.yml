@@ -1,0 +1,40 @@
+config:
+  target: "{{ $processEnvironment.TARGET_URL || 'https://dynamic-warthog-953.convex.cloud' }}"
+  phases:
+    - duration: 5
+      arrivalRate: 400
+      rampTo: 2000
+      name: "Burst to 2k concurrent (placement drive)"
+  defaults:
+    headers:
+      Authorization: "Bearer {{ $processEnvironment.CLERK_TOKEN || 'test-token' }}"
+      Content-Type: "application/json"
+  http:
+    timeout: 60
+  environments:
+    production:
+      target: "https://moonlit-panda-300.convex.cloud"
+
+# Targets Convex HTTP action endpoint for processJob, plus the initial mutation.
+# In a real placement drive scenario, 2000 students submit the SAME JD text,
+# so JD-hash caching (Phase 1c) should make most of these cache hits after the first.
+
+scenarios:
+  - name: "Placement Drive — Bulk createJob"
+    flow:
+      - post:
+          url: "/api/mutation/jobs:createJob"
+          json:
+            companyName: "LoadTest Corp"
+            jobTitle: "Software Engineer Intern"
+            rawJdText: |
+              We are looking for a Software Engineer Intern to join our engineering team.
+              Required skills: JavaScript, TypeScript, React, Node.js, Python.
+              Nice to have: Docker, AWS, PostgreSQL, Redis, GraphQL.
+              The ideal candidate has strong problem-solving skills and experience
+              building full-stack applications. Familiarity with CI/CD pipelines
+              and cloud infrastructure is a plus.
+            inputType: "text"
+          capture:
+            - json: "$.value"
+              as: "jobId"

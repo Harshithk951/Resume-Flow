@@ -50,7 +50,6 @@ ResumeFlow is the **first AI career engine** purpose-built for placement drives 
 
 ---
 
-
 ### 🎯 Perfect for
 
 | Role | Why ResumeFlow |
@@ -121,6 +120,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 ## 🚀 Core Features
 
 ### 📄 Master Profile Management
+
 | Feature | Details |
 |---------|---------|
 | **Multi-format Ingestion** | Upload PDF, PNG, or JPEG — OCR + AI extraction with Zod validation |
@@ -129,6 +129,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | **Structured Storage** | Education, experience, projects, skills, certifications, achievements |
 
 ### 🎯 AI Resume Tailoring
+
 | Feature | Details |
 |---------|---------|
 | **2-Layer AI Pipeline** | Layer 1: JD analysis & gap detection → Layer 2: bullet rewriting & ATS scoring |
@@ -138,6 +139,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | **ATS Compatibility Score** | Heuristic scoring (keyword match, formatting, section completeness) |
 
 ### 💼 Placement Command Center
+
 | Feature | Details |
 |---------|---------|
 | **Kanban Pipeline Board** | Drag-and-drop job cards with Framer Motion spring animations |
@@ -147,6 +149,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | **Recent Activity Feed** | Real-time updates on pipeline progress and status changes |
 
 ### 🤖 AI-Powered Assistant
+
 | Feature | Details |
 |---------|---------|
 | **Context-Aware Chat** | Bound to active job ID with full profile + JD context |
@@ -156,6 +159,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | **PII Sanitization** | Automatic masking of emails, phones in all assistant responses |
 
 ### 🏢 Multi-Tenant Placement Drives
+
 | Feature | Details |
 |---------|---------|
 | **Tenant Isolation** | Row-level security (RLS) via `requireOwnership` on every mutation |
@@ -164,6 +168,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | **Webhook Queue** | Retry logic, delivery tracking, and failure handling via Convex scheduler |
 
 ### 🎨 LaTeX PDF Compilation
+
 | Feature | Details |
 |---------|---------|
 | **Server-side pdflatex** | PDF compiles via `/api/compile-latex` — zero cloud PDF storage dependency |
@@ -172,6 +177,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | **Global Silent Compiler** | Automatic re-compilation on template or content changes |
 
 ### 👁️ Frontend Experience
+
 | Feature | Details |
 |---------|---------|
 | **Company Cockpit** | 45/55 split workspace: Job Intel + Skill Gaps \| Resume Preview |
@@ -185,6 +191,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 ## 🛠 Tech Stack
 
 ### Frontend
+
 | Technology | Version | Purpose |
 |------------|---------|---------|
 | [Next.js](https://nextjs.org/) | 16.2 (App Router) | SSR, RSC, API routes, Turbopack |
@@ -195,6 +202,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | [React Three Fiber](https://r3f.drei.pm/) | 9.6 | 3D hero scene on landing page |
 
 ### Backend & Database
+
 | Technology | Version | Purpose |
 |------------|---------|---------|
 | [Convex](https://convex.dev/) | 1.41 | Realtime database, serverless functions, file storage |
@@ -203,6 +211,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | [Zod](https://zod.dev/) | 4.4 | Schema validation for AI outputs |
 
 ### AI & Intelligence
+
 | Technology | Purpose |
 |------------|---------|
 | [NVIDIA NIM](https://build.nvidia.com/) | LLM inference via OpenAI-compatible API (Llama 3.1 70B, Llama 3.2 11B Vision) |
@@ -210,6 +219,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | [@tavily/core](https://www.npmjs.com/package/@tavily/core) | Typed Tavily API client |
 
 ### Document Engine
+
 | Technology | Purpose |
 |------------|---------|
 | [pdflatex](https://www.latex-project.org/) | PDF compilation (MacTeX / TeX Live) |
@@ -218,6 +228,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | [@react-pdf/renderer](https://www.npmjs.com/package/@react-pdf/renderer) | Alternative PDF rendering |
 
 ### UI Components & Libraries
+
 | Library | Purpose |
 |---------|---------|
 | [Lucide React](https://lucide.dev/) | Icon library |
@@ -228,6 +239,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | [Canvas Confetti](https://github.com/catdad/canvas-confetti) | Celebratory micro-interactions |
 
 ### Analytics & Monitoring
+
 | Library | Purpose |
 |---------|---------|
 | [@vercel/analytics](https://vercel.com/analytics) | Vercel Speed Insights + Analytics |
@@ -255,7 +267,7 @@ flowchart TB
   subgraph edgeTier [Edge Tier — Next.js 16 on Vercel]
     Proxy[proxy.ts Clerk Route Protection]
     Headers[CSP + Security Headers]
-    LaTeXAPI[/api/compile-latex → pdflatex]
+    LaTeXAPI["/api/compile-latex -> pdflatex"]
     StaticAssets[public/ assets + images]
     Sitemap[app/sitemap.ts + robots.ts]
   end
@@ -333,7 +345,7 @@ sequenceDiagram
   L2->>C: pipelineState = compiling
 
   UI->>P: POST LaTeX snapshot
-  P->>P: pdflatex → PDF bytes
+  P->>P: pdflatex -> PDF bytes
   P-->>UI: PDF buffer
   UI->>C: setCompilationCompleted + storage upload
   C->>C: pipelineState = completed
@@ -403,7 +415,7 @@ mindmap
 
 ### Security: PII Firewall
 
-```
+```text
 User Upload (PDF) 
     │
     ▼
@@ -420,6 +432,7 @@ Final Resume (full PII restored)
 ```
 
 All personal identifiable information is:
+
 1. **Extracted** from the raw text via regex patterns
 2. **Replaced** with `[CANDIDATE_NAME]`, `[CANDIDATE_EMAIL]`, `[CANDIDATE_PHONE]` placeholders
 3. **Sent** to the LLM for processing (zero PII exposure)
@@ -547,7 +560,7 @@ erDiagram
 
 ResumeFlow follows a **zero-trust security model** with defense in depth across every layer.
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────┐
 │                    DEFENSE IN DEPTH LAYERS                    │
 ├──────────────────────────────────────────────────────────────┤
@@ -742,7 +755,7 @@ ResumeFlow is designed for **Vercel + Convex Cloud** production deployment.
 
 ### Deployment Architecture
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                    Vercel (Edge Network — Global CDN)                    │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────────┐ │
@@ -781,7 +794,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for the complete production deployment guid
 
 ## 📁 Project Structure
 
-```
+```text
 ResumeFlow/
 ├── app/                          # Next.js App Router
 │   ├── (app)/                    # Authenticated app shell
@@ -1008,7 +1021,7 @@ See [LICENSE](./LICENSE) for details. Contact for commercial licensing inquiries
 
 **ResumeFlow** — Engineered for placement velocity.
 
-```
+```text
      ┌─────────────────────────────────────────┐
      │  Convex ◄──► React ◄──► LaTeX ◄──► PDF │
      │  realtime      compile        deliver    │
