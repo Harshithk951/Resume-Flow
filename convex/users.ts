@@ -54,7 +54,8 @@ export const createOrGetUser = mutation({
     if (existingUser) {
       const emailChanged = existingUser.email !== identity.email;
       const nameChanged = existingUser.name !== identity.name;
-      const needsCreditReset = existingUser.plan === "free" && existingUser.credits > MAX_CREDITS;
+      const isFree = !existingUser.plan || existingUser.plan === "free";
+      const needsCreditReset = isFree && existingUser.credits > MAX_CREDITS;
 
       if (emailChanged || nameChanged || needsCreditReset) {
         let correctCredits = existingUser.credits;
@@ -99,7 +100,8 @@ export const syncUserCredits = mutation({
   args: {},
   handler: async (ctx) => {
     const user = await requireAuth(ctx);
-    if (user.plan === "free" && user.credits > MAX_CREDITS) {
+    const isFree = !user.plan || user.plan === "free";
+    if (isFree && user.credits > MAX_CREDITS) {
       const jobs = await ctx.db
         .query("jobs")
         .withIndex("by_userId", (q) => q.eq("userId", user._id))
