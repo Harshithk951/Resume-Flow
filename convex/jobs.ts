@@ -125,6 +125,41 @@ export const createJob = mutation({
 });
 
 /**
+ * Permanently deletes a job and its associated tailored resume + chat messages.
+ * Verifies ownership before deletion.
+ */
+export const deleteJobAndResume = mutation({
+  args: { jobId: v.id("jobs") },
+  handler: async (ctx, args) => {
+    const user = await requireAuth(ctx);
+    const job = await ctx.db.get(args.jobId);
+    if (!job) throw new Error("Job not found");
+    await requireOwnership(ctx, job);
+
+    // Delete any tailored resumes for this job
+    const resumes = await ctx.db
+      .query("tailoredResumes")
+      .withIndex("by_jobId", (q) => q.eq("jobId", args.jobId))
+      .collect();
+    for (const r of resumes) {
+      await ctx.db.delete(r._id);
+    }
+
+    // Delete any chat messages scoped to this job
+    const chatMsgs = await ctx.db
+      .query("chatMessages")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .collect();
+    for (const m of chatMsgs.filter((m) => m.jobId === args.jobId)) {
+      await ctx.db.delete(m._id);
+    }
+
+    // Finally delete the job itself
+    await ctx.db.delete(args.jobId);
+  },
+});
+
+/**
  * Submits the user's answers to the gap questions and schedules tailoring.
  */
 export const submitGapAnswers = mutation({

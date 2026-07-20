@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
-import { useQuery } from "convex/react";
+import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 import { KanbanBoard } from "@/components/KanbanBoard";
 import {
   LayoutDashboard,
@@ -13,6 +14,7 @@ import {
   Search,
   ArrowRight,
   CheckCircle2,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -52,6 +54,8 @@ export default function DashboardCommandCenter() {
   const [kanbanSearch, setKanbanSearch] = useState("");
   const [kanbanFilter, setKanbanFilter] = useState<FilterKey>("all");
   const [kanbanSort, setKanbanSort] = useState<SortKey>("newest");
+  const [deletingDriveId, setDeletingDriveId] = useState<string | null>(null);
+  const deleteJobAndResume = useMutation(api.jobs.deleteJobAndResume);
 
   // Scrolling references for click interactions
   const kanbanRef = useRef<HTMLDivElement>(null);
@@ -301,6 +305,42 @@ export default function DashboardCommandCenter() {
                               </svg>
                               <span>PDF</span>
                             </Link>
+                          )}
+                          {/* Delete button */}
+                          {deletingDriveId === drive.id ? (
+                            <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                              <span className="text-[10px] font-bold text-red-600">Delete?</span>
+                              <button
+                                type="button"
+                                onClick={async (e) => {
+                                  e.stopPropagation();
+                                  try {
+                                    await deleteJobAndResume({ jobId: drive.id as Id<"jobs"> });
+                                  } finally {
+                                    setDeletingDriveId(null);
+                                  }
+                                }}
+                                className="text-[10px] font-bold px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                              >
+                                Yes
+                              </button>
+                              <button
+                                type="button"
+                                onClick={(e) => { e.stopPropagation(); setDeletingDriveId(null); }}
+                                className="text-[10px] font-bold px-2 py-1 bg-white border border-slate-200 text-slate-600 rounded-lg transition-colors"
+                              >
+                                No
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={(e) => { e.stopPropagation(); setDeletingDriveId(drive.id); }}
+                              className="opacity-0 group-hover:opacity-100 w-8 h-8 rounded-lg bg-slate-50 border border-slate-200/40 flex items-center justify-center text-slate-400 hover:bg-red-50 hover:border-red-200 hover:text-red-500 transition-all duration-200 shadow-sm"
+                              title="Delete this drive"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
                           )}
                           <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-200/40 flex items-center justify-center text-slate-400 group-hover:bg-rose-50 group-hover:border-rose-200 group-hover:text-rose-600 transition-all duration-200 shadow-sm">
                             <ArrowRight className="w-4 h-4" />

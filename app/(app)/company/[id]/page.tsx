@@ -20,6 +20,7 @@ import {
   Mail,
   FileSpreadsheet,
   RefreshCw,
+  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -68,6 +69,10 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   const resetToCompiling = useMutation(api.jobs.resetToCompiling);
   const retryJob = useMutation(api.jobs.retryJob);
   const updateApplicationStatus = useMutation(api.jobs.updateApplicationStatus);
+  const deleteJobAndResume = useMutation(api.jobs.deleteJobAndResume);
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const [isWorkspaceMaximized, setIsWorkspaceMaximized] = useState(false);
   const [activeTab, setActiveTab] = useState<"PREVIEW" | "LATEX" | "JSON" | "OUTREACH">(
@@ -232,13 +237,57 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           isWorkspaceMaximized ? "opacity-0 pointer-events-none w-0 p-0 border-0" : "opacity-100"
         }`}
       >
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-rose-600 transition-all duration-200 group mb-6"
-        >
-          <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-1" />
-          <span>Back to Dashboard</span>
-        </Link>
+        <div className="flex items-center justify-between mb-6">
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-rose-600 transition-all duration-200 group"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-1" />
+            <span>Back to Dashboard</span>
+          </Link>
+
+          {/* Delete Drive button */}
+          {!showDeleteConfirm ? (
+            <button
+              type="button"
+              onClick={() => setShowDeleteConfirm(true)}
+              className="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-red-100 transition-all duration-200"
+              title="Delete this drive and its resume"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              Delete Drive
+            </button>
+          ) : (
+            <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-xl px-3 py-2">
+              <span className="text-[10px] font-semibold text-red-600">Delete permanently?</span>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={async () => {
+                  setIsDeleting(true);
+                  try {
+                    await deleteJobAndResume({ jobId });
+                    window.location.href = "/dashboard";
+                  } catch {
+                    setIsDeleting(false);
+                    setShowDeleteConfirm(false);
+                  }
+                }}
+                className="text-[10px] font-bold px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors disabled:opacity-60 flex items-center gap-1"
+              >
+                {isDeleting ? <Loader2 className="w-3 h-3 animate-spin" /> : <Trash2 className="w-3 h-3" />}
+                {isDeleting ? "Deleting..." : "Yes, Delete"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowDeleteConfirm(false)}
+                className="text-[10px] font-bold px-2.5 py-1 bg-white border border-red-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="space-y-6">
           {/* Company Hero */}

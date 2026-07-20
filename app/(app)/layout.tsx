@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { SignOutButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
-import { LayoutDashboard, User, FileText, LogOut, Loader2, Settings, Menu, X } from "lucide-react";
+import { LayoutDashboard, User, FileText, LogOut, Loader2, Settings, Menu, X, History } from "lucide-react";
 import { AppBackButton } from "@/components/AppBackButton";
 import { BrandLogo } from "@/components/BrandLogo";
+import { ChatHistoryPanel } from "@/components/ChatHistoryPanel";
 
 const navigationItems = [
   {
@@ -53,6 +54,7 @@ export default function AuthenticatedLayout({
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [isChatHistoryOpen, setIsChatHistoryOpen] = useState(false);
   const showBack = pathname !== "/dashboard";
 
   useEffect(() => {
@@ -94,6 +96,22 @@ export default function AuthenticatedLayout({
           </span>
 
           <nav className="space-y-1.5 px-2" aria-label="Main navigation">
+            {/* Chat History button */}
+            <button
+              type="button"
+              onClick={() => setIsChatHistoryOpen(true)}
+              title="Chat History"
+              className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 text-slate-600 hover:bg-white/60 hover:text-slate-900 w-full"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+            >
+              <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
+                <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-slate-400 group-hover/nav:text-slate-600" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
+              </div>
+              <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}>
+                Chat History
+              </span>
+            </button>
+
             {navigationItems.map((item) => {
               const isActive = item.isActive(pathname ?? "");
               const Icon = item.icon;
@@ -196,6 +214,16 @@ export default function AuthenticatedLayout({
                 </button>
               </div>
               <nav className="space-y-1.5" aria-label="Mobile navigation">
+                {/* Chat History button for mobile */}
+                <button
+                  type="button"
+                  onClick={() => { setIsChatHistoryOpen(true); setIsMobileDrawerOpen(false); }}
+                  className="flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-200 text-slate-600 hover:bg-slate-50 hover:text-slate-950 w-full"
+                >
+                  <History className="h-4.5 w-4.5 text-slate-400" />
+                  <span>Chat History</span>
+                </button>
+
                 {navigationItems.map((item) => {
                   const isActive = item.isActive(pathname ?? "");
                   const Icon = item.icon;
@@ -239,6 +267,12 @@ export default function AuthenticatedLayout({
           </aside>
         </div>
       )}
+
+      {/* Chat History slide-over panel */}
+      <ChatHistoryPanel
+        isOpen={isChatHistoryOpen}
+        onClose={() => setIsChatHistoryOpen(false)}
+      />
 
       <main className="flex-1 flex flex-col overflow-hidden min-w-0">
         <header className="h-14 border-b border-white/40 glass-panel flex items-center justify-between px-6 md:px-8 shadow-sm shrink-0">

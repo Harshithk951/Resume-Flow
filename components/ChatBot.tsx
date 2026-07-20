@@ -166,6 +166,8 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
   const [inputValue, setInputValue] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
+  // null = live current session (today); string = read-only historical session date
+  const [viewSessionDate, setViewSessionDate] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
 
@@ -183,6 +185,23 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
 
     return () => clearInterval(interval);
   }, [isGenerating]);
+
+  // Listen for open-chat-session events from the sidebar ChatHistoryPanel
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const { sessionDate } = (e as CustomEvent).detail as { jobId?: string; sessionDate: string };
+      setViewSessionDate(sessionDate);
+      setIsOpen(true);
+      setIsMaximized(false);
+    };
+    window.addEventListener("open-chat-session", handler);
+    return () => window.removeEventListener("open-chat-session", handler);
+  }, []);
+
+  const startNewChat = () => {
+    setViewSessionDate(null);
+    setIsOpen(true);
+  };
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isTracking, setIsTracking] = useState(false);
@@ -350,9 +369,14 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
   const chatHistory =
     useQuery(
       api.chat.getChatHistory,
-      !isGuest && isAuthenticated ? { jobId: chatJobId } : "skip"
+      !isGuest && isAuthenticated
+        ? { jobId: chatJobId, sessionDate: viewSessionDate ?? undefined }
+        : "skip"
     ) ?? [];
   const sendChatMessage = useMutation(api.chat.sendChatMessage);
+
+  // viewingHistory = we're peeking at a past session (read-only)
+  const viewingHistory = viewSessionDate !== null;
 
   const displayMessages: ChatMessage[] = isGuest ? guestMessages : chatHistory;
 
@@ -542,9 +566,21 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                     </motion.div>
                   </div>
                 </div>
-                <span className="text-xs font-bold uppercase tracking-wider">AI-Powered Assistant</span>
+                <span className="text-xs font-bold uppercase tracking-wider">
+                  {viewingHistory ? "📅 Chat History" : "AI-Powered Assistant"}
+                </span>
               </div>
               <div className="flex items-center gap-1.5">
+                {viewingHistory && (
+                  <button
+                    type="button"
+                    onClick={startNewChat}
+                    title="Start new conversation"
+                    className="text-[9px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 transition-colors"
+                  >
+                    New Chat
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => setIsMaximized(!isMaximized)}
@@ -571,7 +607,28 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[var(--color-surface-soft)]">
-              {displayMessages.length === 0 && (
+              {/* Session history banner */}
+              {viewingHistory && (
+                <div className="bg-amber-50 border border-amber-200/60 rounded-xl px-4 py-3 text-center space-y-2">
+                  <p className="text-[11px] font-semibold text-amber-700">📅 Viewing session — {viewSessionDate}</p>
+                  <div className="flex gap-2 justify-center">
+                    <button
+                      onClick={() => setViewSessionDate(null)}
+                      className="text-[10px] font-bold px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors"
+                    >
+                      ↩ Continue from here
+                    </button>
+                    <button
+                      onClick={startNewChat}
+                      className="text-[10px] font-bold px-3 py-1.5 bg-white border border-amber-200 text-amber-700 hover:bg-amber-50 rounded-lg transition-colors"
+                    >
+                      + New Conversation
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {displayMessages.length === 0 && !viewingHistory && (
                 <div className="flex flex-col items-center justify-center h-full text-center px-4">
                   <div className="w-12 h-12 rounded-full bg-[var(--color-primary)]/10 flex items-center justify-center mb-3">
                     <MessageSquare className="w-6 h-6 text-[var(--color-primary)]" />
@@ -584,6 +641,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                   </p>
                 </div>
               )}
+
 
               {displayMessages.map((msg, idx) => {
                 const isAssistant = msg.role === "assistant";
@@ -690,15 +748,17 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
               )}
               <div className="flex gap-2 items-center w-full">
                 <input
-                  disabled={isGenerating || guestLimitReached}
+                  disabled={isGenerating || guestLimitReached || viewingHistory}
                   type="text"
                   className="flex-1 bg-[var(--color-canvas)] border border-[var(--color-hairline)] rounded-[16px] px-3 py-2 text-sm focus:outline-none focus:border-[var(--color-ink)] disabled:opacity-60"
                   placeholder={
-                    guestLimitReached
-                      ? "Sign in to continue..."
-                      : isGuest
-                        ? "Ask about ResumeFlow, ATS, or interview tips..."
-                        : "Ask your AI assistant..."
+                    viewingHistory
+                      ? "Read-only — start a new chat to continue..."
+                      : guestLimitReached
+                        ? "Sign in to continue..."
+                        : isGuest
+                          ? "Ask about ResumeFlow, ATS, or interview tips..."
+                          : "Ask your AI assistant..."
                   }
                   value={inputValue}
                   onChange={(e) => {
@@ -708,12 +768,13 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                 />
                 <button
                   type="submit"
-                  disabled={isGenerating || !inputValue.trim() || guestLimitReached}
+                  disabled={isGenerating || !inputValue.trim() || guestLimitReached || viewingHistory}
                   className="p-2.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-pressed)] disabled:bg-[var(--color-secondary-bg)] disabled:text-[var(--color-ash)] text-white rounded-full transition-colors shrink-0"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
+
             </form>
 
             {isOpen && !isMaximized && (
