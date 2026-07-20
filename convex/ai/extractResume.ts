@@ -317,7 +317,7 @@ If any section or field is completely missing in the resume, return an empty arr
 
         const completion = await withTimeout(
           openai.chat.completions.create({
-            model: "meta/llama-3.2-90b-vision-instruct",
+            model: "meta/llama-3.1-70b-instruct",
             messages: [
               { role: "system", content: systemPrompt },
               {
@@ -352,7 +352,7 @@ If any section or field is completely missing in the resume, return an empty arr
 
         const completion = await withTimeout(
           openai.chat.completions.create({
-            model: "meta/llama-3.2-90b-vision-instruct",
+            model: "meta/llama-3.2-11b-vision-instruct",
             messages: [
               { role: "system", content: systemPrompt },
               {

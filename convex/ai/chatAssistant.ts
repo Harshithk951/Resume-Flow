@@ -225,13 +225,13 @@ Role-playing Guidelines:
       const formattedHistory = formatChatMessages(chatHistory);
       const messages = [{ role: "system", content: systemPrompt }, ...formattedHistory];
 
-      // 7. Invoke Llama 3.2 11B NIM
+      // 7. Invoke Llama 3.1 70B NIM
       const apiKey = process.env.NVIDIA_NIM_API_KEY;
       if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not configured.");
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
       const completion = await openai.chat.completions.create({
-        model: "meta/llama-3.2-90b-vision-instruct",
+        model: "meta/llama-3.1-70b-instruct",
         messages: messages as any,
         temperature: 0.5,
         max_tokens: 1536,

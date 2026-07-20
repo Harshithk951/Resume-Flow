@@ -40,7 +40,7 @@ Return ONLY valid JSON:
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "meta/llama-3.2-90b-vision-instruct",
+      model: "meta/llama-3.1-70b-instruct",
       messages: [
         {
           role: "system",
