@@ -86,7 +86,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-slate-900/30 backdrop-blur-[2px] z-40"
+            className="fixed inset-0 bg-[var(--color-surface-dark)]/30 backdrop-blur-[2px] z-40"
             onClick={onClose}
           />
 
@@ -122,7 +122,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
               {sessions.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-48 text-center px-6">
                   <div className="w-12 h-12 rounded-full bg-[var(--color-surface-card)] flex items-center justify-center mb-3">
-                    <MessageSquare className="w-5 h-5 text-slate-300" />
+                    <MessageSquare className="w-5 h-5 text-[var(--color-ash)]" />
                   </div>
                   <p className="text-sm font-semibold text-[var(--color-ash)]">No conversations yet</p>
                   <p className="text-xs text-[var(--color-stone)] mt-1">Start chatting with the AI assistant</p>
@@ -157,7 +157,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
                               <p className="text-[11px] text-[var(--color-stone)] truncate mt-0.5 leading-relaxed">
                                 {session.lastMessage}
                               </p>
-                              <p className="text-[10px] text-slate-300 mt-1">
+                              <p className="text-[10px] text-[var(--color-ash)] mt-1">
                                 {session.messageCount} message{session.messageCount !== 1 ? "s" : ""}
                               </p>
                             </div>

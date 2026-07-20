@@ -8,7 +8,7 @@
 // Designed with Design.md tokens (cream background, rounded-md, Pinterest red CTA).
 
 import React, { useState } from "react";
-import { X, Sparkles, Check } from "lucide-react";
+import { Sparkles, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SkillQuestion {

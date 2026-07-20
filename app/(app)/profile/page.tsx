@@ -7,11 +7,10 @@
 // and safe read/write state machine for returning users.
 // Adheres strictly to Design.md warm cream themes and Bento layout.
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useAction, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
-import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
   User,
@@ -24,14 +23,14 @@ import {
   Trash2,
   Save,
   ArrowLeft,
-  Check,
+
   AlertTriangle,
   Loader2,
   BookOpen,
   ShieldCheck,
   ClipboardCheck,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import FileUpload from "@/components/FileUpload";
 
 type Section = "contact" | "education" | "experience" | "projects" | "skills" | "extras";
@@ -60,7 +59,7 @@ export default function ProfilePage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
-  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [_saveSuccess, setSaveSuccess] = useState(false);
   const [rawResumeStorageId, setRawResumeStorageId] = useState<string | undefined>(undefined);
 
   // Form State

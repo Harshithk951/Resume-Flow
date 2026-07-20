@@ -12,7 +12,7 @@ const colorMap = {
   rose: "bg-rose-500",
   amber: "bg-amber-500",
   emerald: "bg-emerald-500",
-  slate: "bg-slate-600",
+  slate: "bg-[var(--color-mute)]",
 };
 
 function Progress({ className, value = 0, color = "rose", ...props }: ProgressProps) {

@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { ChevronDown } from "lucide-react";
-import { getTemplatesHref } from "@/lib/templates/navigation";
 import { BrandLogo } from "@/components/BrandLogo";
-import { ThemeToggle } from "@/components/ThemeToggle";
+
 
 export default function Navbar() {
   const { isSignedIn } = useAuth();
@@ -124,10 +123,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Dark mode toggle */}
-          <ThemeToggle className="!w-auto !px-2 !rounded-full hover:bg-white/60 hover:text-[var(--color-ink)] !flex !items-center !justify-center !transition-all !duration-300" />
-
-          <div className="w-px h-6 bg-[var(--color-secondary-bg)]/60 hidden md:block" />
 
           {mounted && isSignedIn ? (
             <Link

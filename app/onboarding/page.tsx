@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+
 import { useUser, useSession } from "@clerk/nextjs";
-import { useQuery, useMutation, useAction } from "convex/react";
+import { useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
-  Upload,
+
   CheckCircle,
   Award,
   BookOpen,
@@ -63,7 +63,7 @@ const staggerItem = {
 export default function OnboardingPage() {
   const { user, isLoaded: isClerkLoaded } = useUser();
   const { session } = useSession();
-  const router = useRouter();
+
 
   const [step, setStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -484,7 +484,7 @@ export default function OnboardingPage() {
           </div>
 
           {/* Right Column: Interaction Card */}
-          <div className="md:col-span-7 bg-white rounded-[32px] border border-[var(--color-hairline-soft)] p-8 shadow-sm flex flex-col justify-center relative overflow-hidden">
+          <div className="md:col-span-7 bg-[var(--color-canvas)] rounded-[32px] border border-[var(--color-hairline-soft)] p-8 shadow-sm flex flex-col justify-center relative overflow-hidden">
             <AnimatePresence mode="wait">
               
               {/* STEP 0: Welcome / Start */}
@@ -547,15 +547,15 @@ export default function OnboardingPage() {
                         <motion.div
                           animate={{ rotate: 360 }}
                           transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                          className="absolute w-full h-full border-4 border-slate-100 border-t-[var(--color-primary)] rounded-full"
+                          className="absolute w-full h-full border-4 border-[var(--color-hairline-soft)] border-t-[var(--color-primary)] rounded-full"
                         />
-                        <span className="text-sm font-extrabold text-slate-800 tabular-nums">
+                        <span className="text-sm font-extrabold text-[var(--color-ink-soft)] tabular-nums">
                           {uploadProgress}%
                         </span>
                       </div>
 
                       <div className="space-y-1 text-center w-full max-w-sm">
-                        <h3 className="type-heading-md font-bold text-slate-800 transition-all duration-300 min-h-[28px]">
+                        <h3 className="type-heading-md font-bold text-[var(--color-ink-soft)] transition-all duration-300 min-h-[28px]">
                           {processStatus}
                         </h3>
                         <p className="type-body-sm text-[var(--color-mute)] max-w-[280px] mx-auto text-xs leading-relaxed">
@@ -565,7 +565,7 @@ export default function OnboardingPage() {
 
                       {/* Premium Horizontal Progress Bar */}
                       <div className="w-full max-w-xs space-y-1.5 mt-2">
-                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/40">
+                        <div className="h-1.5 w-full bg-[var(--color-surface-card)] rounded-full overflow-hidden border border-[var(--color-hairline)]/40">
                           <motion.div
                             initial={{ width: "0%" }}
                             animate={{ width: `${uploadProgress}%` }}
@@ -594,7 +594,7 @@ export default function OnboardingPage() {
                         <div className="absolute inset-0 flex items-center">
                           <div className="w-full border-t border-[var(--color-hairline)]"></div>
                         </div>
-                        <span className="relative px-3 bg-white text-xs text-[var(--color-ash)] uppercase tracking-wider">
+                        <span className="relative px-3 bg-[var(--color-canvas)] text-xs text-[var(--color-ash)] uppercase tracking-wider">
                           Or Setup Manually
                         </span>
                       </div>

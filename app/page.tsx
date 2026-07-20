@@ -18,7 +18,6 @@ import { FeatureGrid } from "@/components/grids/FeatureGrid";
 import { PricingSection, type Tier } from "@/components/blocks/pricing-section";
 import { WhyResumeFlow } from "@/components/WhyResumeFlow";
 import { carouselTemplates } from "@/lib/latex/carouselTemplates";
-import { getTemplatesHref } from "@/lib/templates/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {

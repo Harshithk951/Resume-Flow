@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useQuery, useAction, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   FileText,
@@ -13,7 +12,7 @@ import {
   Code,
   FileCode,
   AlertCircle,
-  CheckCircle,
+
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";

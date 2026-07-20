@@ -264,7 +264,7 @@ const resourcesContent: Record<string, ContentBlock> = {
             Submit a job listing text or PDF storage ID to parse and extract
             hard skills, soft skills, and ATS keywords:
           </p>
-          <pre className="bg-slate-900 text-slate-300 p-4 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800">
+          <pre className="bg-[var(--color-surface-dark)] text-[var(--color-ash)] p-4 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800">
 {`POST /api/v1/jobs/process
 Headers: { "Authorization": "Bearer <YOUR_KEY>" }
 Body:
@@ -283,7 +283,7 @@ Body:
             The API returns tailored JSON matching the candidate master profile
             layout:
           </p>
-          <pre className="bg-slate-900 text-slate-300 p-4 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800">
+          <pre className="bg-[var(--color-surface-dark)] text-[var(--color-ash)] p-4 rounded-xl font-mono text-xs overflow-x-auto leading-relaxed border border-slate-800">
 {`{
   "structuredContent": {
     "personalInfo": { "name": "..." },

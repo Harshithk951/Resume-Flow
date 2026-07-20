@@ -165,7 +165,7 @@ export const checkAndDeductCredits = mutation({
       return user._id;
     }
 
-    let currentCredits = user.credits ?? 0;
+    const currentCredits = user.credits ?? 0;
     if (currentCredits < args.amount) {
       throw new ConvexError(
         `Insufficient credits (${currentCredits}/${MAX_CREDITS}). ` +

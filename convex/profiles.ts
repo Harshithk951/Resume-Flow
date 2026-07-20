@@ -217,7 +217,7 @@ export const generateUploadUrl = mutation({
     }
 
     // Ensure user record exists (handles race condition during onboarding)
-    let user = await ctx.db
+    const user = await ctx.db
       .query("users")
       .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
       .unique();

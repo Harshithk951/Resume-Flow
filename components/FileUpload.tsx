@@ -6,7 +6,7 @@
 // Designed with Design.md tokens: warm cream theme, 16px radius, Lucide icons.
 // Performs client-side validations for size (<5MB) and mime type (PDF, PNG, JPEG).
 
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { UploadCloud, FileText, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";

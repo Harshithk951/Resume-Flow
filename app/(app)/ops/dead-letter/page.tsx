@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import { useQuery, useMutation } from "convex/react";
+import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useUser, SignOutButton } from "@clerk/nextjs";
 import {
@@ -79,7 +78,7 @@ export default function SettingsPage() {
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 text-xs text-[var(--color-ash)] bg-emerald-50/50 rounded-xl px-4 py-3 border border-emerald-100/60">
+          <div className="flex items-center gap-2.5 text-xs text-[var(--color-ash)] bg-emerald-50/50 rounded-xl px-4 py-3 border border-emerald-100/60 security-banner">
             <Shield className="w-4 h-4 text-emerald-500 shrink-0" />
             <span>All security checks passed. Your data is encrypted and accessible only to you.</span>
           </div>
@@ -101,7 +100,7 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent className="space-y-5">
           {/* Credit Progress — card-bloom effect */}
-          <div className="relative card-bloom p-5 bg-gradient-to-br from-rose-50/40 to-white border border-rose-100/60 rounded-2xl space-y-3">
+          <div className="relative card-bloom p-5 bg-gradient-to-br from-rose-50/40 to-white border border-rose-100/60 rounded-2xl space-y-3 credit-card-gradient">
             <div className="flex items-center justify-between relative z-10">
               <span className="text-xs font-semibold text-[var(--color-ash)] uppercase tracking-wider">
                 Available Credits

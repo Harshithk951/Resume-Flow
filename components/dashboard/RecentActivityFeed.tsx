@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Briefcase, ArrowUpRight, FileText, Clock } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
@@ -69,7 +68,7 @@ export function RecentActivityFeed({ activities = [] }: RecentActivityFeedProps)
       <CardContent className="pt-0">
         {displayActivities.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center bg-[var(--color-surface-soft)]/20 rounded-xl border border-dashed border-[var(--color-hairline)]/60">
-            <Clock className="w-6 h-6 text-slate-300 mb-2" />
+            <Clock className="w-6 h-6 text-[var(--color-ash)] mb-2" />
             <span className="text-xs font-bold text-[var(--color-charcoal)]">No activity yet</span>
             <span className="text-[10px] text-[var(--color-stone)] mt-0.5">Activities will record here.</span>
           </div>

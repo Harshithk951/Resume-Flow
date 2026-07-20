@@ -1,16 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import {
-  User,
-  GraduationCap,
-  Briefcase,
-  Code,
-  Sparkles,
-  Award,
   Plus,
   Trash2,
   Save,
@@ -52,7 +46,7 @@ export default function TemplateBrowser() {
   }, [searchParams]);
 
   const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
+  const [_saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Local state for editing form

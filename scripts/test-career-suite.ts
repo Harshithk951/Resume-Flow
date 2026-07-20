@@ -147,7 +147,7 @@ async function runTests() {
     if (!confirmRes.success || !confirmRes.profileId) {
       throw new Error("Failed to insert or update masterProfile record");
     }
-    const profileId = confirmRes.profileId;
+    // profile verification done above via confirmRes // used for profile verification above
 
     const savedProfile = await client.query(api.onboarding.testGetProfile, {
       userId: testUserId,
@@ -295,13 +295,13 @@ async function runTests() {
         userId: testUserId,
         testSecret,
       });
-      if (userJobs.some((j: any) => j.companyName === "Broadcast Inc")) {
+      if (userJobs.some((j) => j.companyName === "Broadcast Inc")) {
         break;
       }
       await new Promise(r => setTimeout(r, 500));
     }
 
-    const broadcastJob = userJobs.find((j: any) => j.companyName === "Broadcast Inc");
+    const broadcastJob = userJobs.find((j) => j.companyName === "Broadcast Inc");
     if (!broadcastJob) {
       throw new Error("Failed to find the ingested broadcast job for the test user");
     }
@@ -336,7 +336,7 @@ async function runTests() {
     // Since AUTOMATION_OUTBOUND_WEBHOOK_URL is likely not configured or invalid in testing,
     // the webhook should transition to 'failed' (or 'pending' if it was a network failure that schedules retries).
     // Let's retrieve the event to check its status.
-    let processedEvent = await client.query(api.webhooks.testGetWebhookEvent, { eventId, testSecret });
+    const processedEvent = await client.query(api.webhooks.testGetWebhookEvent, { eventId, testSecret });
     if (!processedEvent) {
       throw new Error("Failed to query the enqueued webhook event");
     }
@@ -444,9 +444,10 @@ async function runTests() {
     console.log(`✅ Test 12 Passed: DOCX compiled successfully (Size: ${docxBytes.byteLength} bytes, validated PK header).\n`);
 
     console.log("🎉 Phase 1 tests completed successfully! All stubs registered.");
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Test Suite failed!");
-    console.error(error.message || error);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error(msg);
     process.exit(1);
   }
 }

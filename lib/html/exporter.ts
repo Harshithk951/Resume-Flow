@@ -22,10 +22,6 @@ function getGithubUsername(url: string | undefined): string {
   return url.replace(/^(https?:\/\/)?(www\.)?github\.com\//i, "").replace(/\/$/, "");
 }
 
-function cleanUrl(url: string | undefined): string {
-  if (!url) return "";
-  return url.replace(/https?:\/\/(www\.)?/, "").replace(/\/$/, "");
-}
 
 export function exportToHtml(
   data: StructuredResumeContent,

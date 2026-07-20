@@ -13,7 +13,7 @@ import {
   Briefcase,
   Search,
   ArrowRight,
-  CheckCircle2,
+
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
@@ -226,7 +226,7 @@ export default function DashboardCommandCenter() {
               {filteredDrives.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-[var(--color-stone)]">
                   <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-card)] flex items-center justify-center mb-4 border border-[var(--color-hairline)]/40">
-                    <Search className="w-6 h-6 text-slate-300" />
+                    <Search className="w-6 h-6 text-[var(--color-ash)]" />
                   </div>
                   <p className="text-sm font-semibold text-[var(--color-ash)]">No drives match this filter</p>
                   <Button variant="ghost" size="sm" className="mt-2 text-rose-600 hover:bg-rose-50" onClick={() => setCompanyFilter("all")}>

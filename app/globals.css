@@ -950,6 +950,18 @@ button:hover .icon-island-light {
 .dark .border-emerald-100 { border-color: rgba(46,160,67,0.2) !important; }
 .dark .border-amber-100 { border-color: rgba(217,122,46,0.2) !important; }
 
+/* ── Settings page: Security banner (emerald tint) ────── */
+.dark .security-banner {
+  background: rgba(14,52,24,0.5) !important;
+  border-color: rgba(46,160,67,0.2) !important;
+}
+
+/* ── Settings page: Credit card gradient ─────────────── */
+.dark .credit-card-gradient {
+  background: linear-gradient(135deg, var(--color-surface-card), var(--color-surface-card)) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+
 /* Section divider */
 .dark .section-divider { background-color: rgba(255,255,255,0.08) !important; }
 

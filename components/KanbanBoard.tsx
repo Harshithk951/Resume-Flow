@@ -13,12 +13,10 @@ import {
   UserCheck,
   RotateCcw,
 } from "lucide-react";
-import type { Doc } from "@/convex/_generated/dataModel";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ColumnEmptyState } from "@/components/dashboard/ColumnEmptyState";
-
-type JobDoc = Doc<"jobs">;
 
 const COLUMNS = [
   {
@@ -137,8 +135,7 @@ export function KanbanBoard({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-x-auto snap-x snap-mandatory md:overflow-visible pb-4">
       {COLUMNS.map((col) => {
-        const columnJobs = processedJobs.filter(col.filter);
-        const Icon = col.icon;
+    const columnJobs = processedJobs.filter(col.filter);
 
         return (
           <div
@@ -170,7 +167,7 @@ export function KanbanBoard({
                   const isCompleted = job.pipelineState === "completed";
                   const isFailed = job.pipelineState === "failed";
                   const isNeedsInput = job.pipelineState === "needs_user_input";
-                  const isActive = ["uploaded", "extracting", "tailoring", "compiling"].includes(job.pipelineState);
+            
 
                   return (
                     <motion.div

@@ -145,7 +145,7 @@ function CrossIcon() {
 }
 
 function DashIcon() {
-  return <MinusCircle className="w-5 h-5 text-slate-300" strokeWidth={2} />;
+  return <MinusCircle className="w-5 h-5 text-[var(--color-ash)]" strokeWidth={2} />;
 }
 
 function SparkleIndicator() {
@@ -407,8 +407,7 @@ export function WhyResumeFlow() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 max-w-4xl mx-auto"
-        >
-          {STAT_CARDS.map((stat, idx) => (
+        >              {STAT_CARDS.map((stat, _idx) => (
             <motion.div
               key={stat.label}
               variants={scrollRevealScale}

@@ -142,7 +142,7 @@ export const markOnboardingComplete = action({
 
 export const syncClerkMetadata = internalAction({
   args: { clerkId: v.string() },
-  handler: async (ctx, args) => {
+  handler: async (_ctx, args) => {
     const clerkSecretKey = process.env.CLERK_SECRET_KEY;
     if (!clerkSecretKey) {
       console.error("Missing CLERK_SECRET_KEY environment variable");

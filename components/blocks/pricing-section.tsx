@@ -234,7 +234,7 @@ export function PricingSection({
                   {(isPopular || isHighlighted) && !tier.comingSoon && (
                     <div className={cn(
                       "absolute -top-3 left-1/2 -translate-x-1/2 rounded-full px-3.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md",
-                      tierAccents[tier.id]?.badge || "bg-slate-800"
+                      tierAccents[tier.id]?.badge || "bg-[var(--color-surface-dark)]"
                     )}>
                       {isPopular ? "Most Popular" : isHighlighted ? "Enterprise" : ""}
                     </div>
@@ -318,7 +318,7 @@ export function PricingSection({
                                 <Check className="h-2.5 w-2.5" strokeWidth={3} />
                               </span>
                             ) : (
-                              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-card)] text-slate-300">
+                              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-card)] text-[var(--color-ash)]">
                                 <X className="h-2.5 w-2.5" strokeWidth={2.5} />
                               </span>
                             )}

@@ -1,5 +1,4 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
-import localFont from "next/font/local";
 
 // Primary body font — warm, geometric, premium feel
 export const jakartaSans = Plus_Jakarta_Sans({

@@ -37,18 +37,34 @@ const REPLACEMENTS: Replacement[] = [
   { pattern: /\bbg-slate-50\b/g, replacement: "bg-[var(--color-surface-soft)]", description: "bg-slate-50 → surface-soft" },
   { pattern: /\bbg-slate-100\b/g, replacement: "bg-[var(--color-surface-card)]", description: "bg-slate-100 → surface-card" },
   { pattern: /\bbg-slate-200\b/g, replacement: "bg-[var(--color-secondary-bg)]", description: "bg-slate-200 → secondary-bg" },
+  { pattern: /\bbg-slate-300\b/g, replacement: "bg-[var(--color-hairline)]", description: "bg-slate-300 → hairline" },
+  { pattern: /\bbg-slate-400\b/g, replacement: "bg-[var(--color-stone)]", description: "bg-slate-400 → stone" },
+  { pattern: /\bbg-slate-600\b/g, replacement: "bg-[var(--color-mute)]", description: "bg-slate-600 → mute" },
+  { pattern: /\bbg-slate-700\b/g, replacement: "bg-[var(--color-charcoal)]", description: "bg-slate-700 → charcoal" },
+  { pattern: /\bbg-slate-800\b/g, replacement: "bg-[var(--color-surface-dark)]", description: "bg-slate-800 → surface-dark" },
+  { pattern: /\bbg-slate-900\b(?!\/)/g, replacement: "bg-[var(--color-surface-dark)]", description: "bg-slate-900 → surface-dark" },
+  { pattern: /\bbg-slate-950\b(?!\/)/g, replacement: "bg-[var(--color-surface-dark)]", description: "bg-slate-950 → surface-dark" },
   { pattern: /\bbg-gray-50\b/g, replacement: "bg-[var(--color-surface-soft)]", description: "bg-gray-50 → surface-soft" },
   { pattern: /\bbg-gray-100\b/g, replacement: "bg-[var(--color-surface-card)]", description: "bg-gray-100 → surface-card" },
   { pattern: /\bbg-gray-200\b/g, replacement: "bg-[var(--color-secondary-bg)]", description: "bg-gray-200 → secondary-bg" },
 
+  // ── Slate backgrounds with /NN opacity (overlay/scrim patterns) ──
+  // These match patterns like bg-slate-900/40, bg-slate-900/30, bg-slate-950/45.
+  // OPACITY SUFFIX IS PRESERVED after the CSS variable substitution.
+  { pattern: /\bbg-slate-900\/(\d+)/g, replacement: "bg-[var(--color-surface-dark)]/$1", description: "bg-slate-900/N → surface-dark/N" },
+  { pattern: /\bbg-slate-950\/(\d+)/g, replacement: "bg-[var(--color-surface-dark)]/$1", description: "bg-slate-950/N → surface-dark/N" },
+  { pattern: /\bbg-slate-200\/(\d+)/g, replacement: "bg-[var(--color-hairline)]/$1", description: "bg-slate-200/N → hairline/N" },
+
   // ── Text colors ──
+  { pattern: /\btext-slate-950\b/g, replacement: "text-[var(--color-ink)]", description: "text-slate-950 → ink" },
   { pattern: /\btext-slate-900\b/g, replacement: "text-[var(--color-ink)]", description: "text-slate-900 → ink" },
   { pattern: /\btext-slate-800\b/g, replacement: "text-[var(--color-ink-soft)]", description: "text-slate-800 → ink-soft" },
   { pattern: /\btext-slate-700\b/g, replacement: "text-[var(--color-charcoal)]", description: "text-slate-700 → charcoal" },
   { pattern: /\btext-slate-600\b/g, replacement: "text-[var(--color-mute)]", description: "text-slate-600 → mute" },
   { pattern: /\btext-slate-500\b/g, replacement: "text-[var(--color-ash)]", description: "text-slate-500 → ash" },
   { pattern: /\btext-slate-400\b/g, replacement: "text-[var(--color-stone)]", description: "text-slate-400 → stone" },
-  { pattern: /\btext-slate-950\b/g, replacement: "text-[var(--color-ink)]", description: "text-slate-950 → ink" },
+  { pattern: /\btext-slate-300\b/g, replacement: "text-[var(--color-ash)]", description: "text-slate-300 → ash" },
+  { pattern: /\btext-slate-200\b/g, replacement: "text-[var(--color-stone)]", description: "text-slate-200 → stone" },
   { pattern: /\btext-gray-900\b/g, replacement: "text-[var(--color-ink)]", description: "text-gray-900 → ink" },
   { pattern: /\btext-gray-800\b/g, replacement: "text-[var(--color-ink-soft)]", description: "text-gray-800 → ink-soft" },
   { pattern: /\btext-gray-700\b/g, replacement: "text-[var(--color-charcoal)]", description: "text-gray-700 → charcoal" },
@@ -163,13 +179,11 @@ function migrateFile(filePath: string, dryRun: boolean): MigrationResult {
   }
 
   let content = fs.readFileSync(fullPath, "utf-8");
-  const original = content;
   const changeCounts: Record<string, number> = {};
 
   for (const repl of REPLACEMENTS) {
     const before = content;
     content = content.replace(repl.pattern, repl.replacement);
-    const count = (before.length - content.length) / (before.length - before.replace(repl.pattern, "").length) || 0;
     // More accurate count:
     const matches = before.match(repl.pattern);
     const actualCount = matches ? matches.length : 0;

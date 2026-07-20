@@ -4,14 +4,14 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   ScanSearch,
-  Brain,
+
   Globe,
   Shield,
   Lock,
   FileText,
   CheckCircle2,
 } from "lucide-react";
-import { EASE_VANGUARD, staggerContainerSlow, scrollRevealUp } from "@/lib/animations";
+import { staggerContainerSlow, scrollRevealUp } from "@/lib/animations";
 
 // ─── ATS Score Gauge ───────────────────────────────────────
 const ATS_RING_CIRCUMFERENCE = 251.2;
@@ -193,7 +193,7 @@ function PrivacyShield() {
           }`}>
             {active ? "••••••" : item}
           </div>
-          <Lock className={`w-3 h-3 transition-opacity duration-500 ${active ? "text-green-500 opacity-100" : "text-slate-300 opacity-0"}`} />
+          <Lock className={`w-3 h-3 transition-opacity duration-500 ${active ? "text-green-500 opacity-100" : "text-[var(--color-ash)] opacity-0"}`} />
         </motion.div>
       ))}
     </div>

@@ -521,7 +521,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-opacity"
+            className="fixed inset-0 bg-[var(--color-surface-dark)]/40 backdrop-blur-sm z-40 transition-opacity"
             onClick={() => setIsMaximized(false)}
           />
         )}
@@ -569,10 +569,10 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                           ? { duration: 0.08 }
                           : { type: "spring", stiffness: 150, damping: 15 }
                       }
-                      className="flex gap-0.5 items-center justify-center"
+                      className="flex gap-[2px] items-center justify-center"
                     >
-                      <div className="w-[1.5px] h-2 bg-[var(--color-canvas)] rounded-full shadow-[0_0_4px_rgba(255,255,255,0.9)]" />
-                      <div className="w-[1.5px] h-2 bg-[var(--color-canvas)] rounded-full shadow-[0_0_4px_rgba(255,255,255,0.9)]" />
+                      <div className="w-[2px] h-[9px] bg-[var(--color-inverse-on)] rounded-full shadow-[0_0_6px_rgba(255,255,255,0.95)]" />
+                      <div className="w-[2px] h-[9px] bg-[var(--color-inverse-on)] rounded-full shadow-[0_0_6px_rgba(255,255,255,0.95)]" />
                     </motion.div>
                   </div>
                 </div>
@@ -896,10 +896,10 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                     ? { duration: 0.08 }
                     : { type: "spring", stiffness: 150, damping: 15 }
                 }
-                className="flex gap-[2px] sm:gap-[3px] md:gap-[4px] items-center justify-center"
+                className="flex gap-[3px] sm:gap-[4px] md:gap-[5px] items-center justify-center"
               >
-                <div className="w-[2px] h-[7px] sm:w-[3px] sm:h-[10px] md:w-[4px] md:h-[12px] bg-[var(--color-canvas)] rounded-full shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
-                <div className="w-[2px] h-[7px] sm:w-[3px] sm:h-[10px] md:w-[4px] md:h-[12px] bg-[var(--color-canvas)] rounded-full shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
+                <div className="w-[3px] h-[9px] sm:w-[4px] sm:h-[12px] md:w-[5px] md:h-[15px] bg-[var(--color-inverse-on)] rounded-full shadow-[0_0_8px_rgba(255,255,255,0.95)]" />
+                <div className="w-[3px] h-[9px] sm:w-[4px] sm:h-[12px] md:w-[5px] md:h-[15px] bg-[var(--color-inverse-on)] rounded-full shadow-[0_0_8px_rgba(255,255,255,0.95)]" />
               </motion.div>
             </div>
           </motion.button>

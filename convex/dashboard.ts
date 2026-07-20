@@ -21,7 +21,7 @@ export const getDashboardStats = query({
       resumesByJobMap.set(resume.jobId, resume);
     });
 
-    let totalCompanies = allJobs.length;
+    const totalCompanies = allJobs.length;
     let resumesReadyCount = 0;
     let combinedMatchScoreSum = 0;
     let scoredJobsCount = 0;

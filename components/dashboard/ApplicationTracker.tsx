@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -118,7 +117,7 @@ export function ApplicationTracker({
         {completedJobs.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-4 text-center text-[var(--color-stone)]">
             <div className="w-14 h-14 rounded-2xl bg-[var(--color-surface-card)] flex items-center justify-center mb-4">
-              <CheckCircle2 className="w-6 h-6 text-slate-300" />
+              <CheckCircle2 className="w-6 h-6 text-[var(--color-ash)]" />
             </div>
             <p className="text-sm font-semibold text-[var(--color-charcoal)]">No applications to track yet</p>
             <p className="text-xs text-[var(--color-stone)] mt-1 max-w-sm">

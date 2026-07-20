@@ -7,7 +7,7 @@
 import { mutation, query, internalMutation, internalQuery } from "./_generated/server";
 import { v } from "convex/values";
 import { requireAuth } from "./lib/auth";
-import { api, internal } from "./_generated/api";
+import { api } from "./_generated/api";
 import { enforceRateLimit } from "./lib/rateLimit";
 
 // ─── Session helper ───────────────────────────────────────────

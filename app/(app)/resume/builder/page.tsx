@@ -1,23 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import {
-  User,
-  GraduationCap,
-  Briefcase,
-  Code,
-  Sparkles,
-  Award,
   Plus,
   Trash2,
   Save,
   Loader2,
-  FileText,
-  Settings,
-  AlertCircle,
   CheckCircle,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -51,7 +42,7 @@ function ResumeBuilderPageContent() {
   }, [searchParams]);
 
   const [isSaving, setIsSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
+  const [_saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Local state for editing form

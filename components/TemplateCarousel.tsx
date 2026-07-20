@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { ArrowRight, Layers } from "lucide-react";
@@ -162,7 +162,7 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
                         />
 
                         {/* Glassmorphic Overlay showing "Use this Template" on hover */}
-                        <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
+                        <div className="absolute inset-0 bg-[var(--color-surface-dark)]/45 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
                           <span className="bg-[var(--color-canvas)] text-[var(--color-ink)] font-extrabold text-xs px-5 py-3 rounded-full shadow-lg flex items-center gap-2 transition-transform duration-300 scale-90 group-hover:scale-100">
                             <span>Use this template</span>
                             <ArrowRight size={15} className="text-rose-600" />

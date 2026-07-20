@@ -195,7 +195,7 @@ export default function AuthenticatedLayout({
         <div className="fixed inset-0 z-50 md:hidden flex">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity duration-300 animate-fade-in"
+            className="fixed inset-0 bg-[var(--color-surface-dark)]/40 backdrop-blur-sm transition-opacity duration-300 animate-fade-in"
             onClick={() => setIsMobileDrawerOpen(false)}
             aria-hidden="true"
           />

@@ -14,7 +14,7 @@ import type { Id } from "../_generated/dataModel";
 import { OpenAI } from "openai";
 import { tavily } from "@tavily/core";
 import pdf from "@cedrugs/pdf-parse";
-import { maskPersonalInfo } from "../lib/piiMask";
+
 import { z } from "zod";
 import { jobSearchSkill } from "./Skills/registry";
 
@@ -273,12 +273,6 @@ export const processJob = action({
         console.error("Tavily company search failed:", err);
         companyResearch = "No live company research available. Fallback to JD context only.";
       }
-
-      // 5. Mask PII from the Master Profile
-      const maskedProfile = {
-        ...profile,
-        personalInfo: profile.personalInfo ? maskPersonalInfo(profile.personalInfo) : undefined,
-      };
 
       const skillsContext = profile.skills ? `
 - Languages: ${(profile.skills.languages || []).join(", ")}

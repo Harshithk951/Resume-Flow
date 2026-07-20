@@ -4,7 +4,7 @@ import { ConvexError } from "convex/values";
 
 export const test = action({
   args: {},
-  handler: async (ctx) => {
+  handler: async (_ctx) => {
     const apiKey = process.env.NVIDIA_NIM_API_KEY;
     if (!apiKey) {
       console.error("❌ DIAGNOSTIC: NVIDIA_NIM_API_KEY is missing from Convex env.");

@@ -315,7 +315,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                     job.pipelineState === "failed" ? "bg-red-500" :
                     job.pipelineState === "needs_user_input" ? "bg-amber-500 animate-pulse" :
                     job.pipelineState === "compiling" ? "bg-blue-500 animate-pulse" :
-                    "bg-slate-400"
+                    "bg-[var(--color-stone)]"
                   }`} />
                   {job.pipelineState.replace("_", " ")}
                 </span>
@@ -541,7 +541,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                 />
               ) : (
                 <div className="h-[600px] w-full rounded-2xl border border-[var(--color-hairline)]/50 flex flex-col items-center justify-center bg-[var(--color-canvas)] text-[var(--color-stone)] text-xs gap-3 elevation-medium">
-                  <FileText className="w-10 h-10 text-slate-300" />
+                  <FileText className="w-10 h-10 text-[var(--color-ash)]" />
                   <p className="font-semibold">No PDF available yet</p>
                   <p className="text-[10px] text-[var(--color-stone)]">Complete tailoring to generate a resume preview.</p>
                 </div>
@@ -550,7 +550,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           ) : null}
 
           {activeTab === "LATEX" ? (
-            <div className="h-[600px] bg-slate-950 p-6 rounded-2xl font-mono text-xs text-emerald-400 overflow-auto relative group shadow-lg">
+            <div className="h-[600px] bg-[var(--color-surface-dark)] p-6 rounded-2xl font-mono text-xs text-emerald-400 overflow-auto relative group shadow-lg">
               <button
                 type="button"
                 onClick={() => navigator.clipboard.writeText(latexSource)}
@@ -565,7 +565,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           ) : null}
 
           {activeTab === "JSON" ? (
-            <div className="h-[600px] bg-slate-950 p-6 rounded-2xl font-mono text-xs text-blue-400 overflow-auto shadow-lg">
+            <div className="h-[600px] bg-[var(--color-surface-dark)] p-6 rounded-2xl font-mono text-xs text-blue-400 overflow-auto shadow-lg">
               <pre>
                 {structuredContent
                   ? JSON.stringify(

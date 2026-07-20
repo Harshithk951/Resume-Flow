@@ -174,7 +174,7 @@ export const listWebhookEvents = query({
 
     const limit = args.limit ?? 50;
 
-    let q = ctx.db.query("webhookQueue");
+    const q = ctx.db.query("webhookQueue");
 
     if (args.status) {
       return await q
