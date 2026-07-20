@@ -139,8 +139,8 @@ export default function DashboardCommandCenter() {
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-extrabold text-slate-800 tabular-nums">{user.credits}</span>
-                  <span className="text-[10px] text-slate-400 font-medium">/ 10,000</span>
+                  <span className="text-sm font-extrabold text-slate-800 tabular-nums">{(user.credits).toLocaleString()}</span>
+                  <span className="text-[10px] text-slate-400 font-medium">credits</span>
                 </div>
                 <div className="w-20 h-1 bg-slate-200/60 rounded-full overflow-hidden mt-1">
                   <motion.div

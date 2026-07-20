@@ -95,7 +95,7 @@ export default function SettingsPage() {
           </div>
           <CardDescription>
             {isFree
-              ? `${resumesUsed} of ${maxResumes} resumes used · ${appUser?.credits ?? 0} / 10,000 credits remaining`
+              ? `${resumesUsed} of ${maxResumes} resumes used · ${(appUser?.credits ?? 0).toLocaleString()} credits remaining`
               : 'Unlimited resume generations'}
           </CardDescription>
         </CardHeader>
@@ -107,7 +107,7 @@ export default function SettingsPage() {
                 Available Credits
               </span>
               <span className="text-xs font-bold text-slate-700 tabular-nums">
-                {appUser?.credits ?? 0} / 10,000
+                {(appUser?.credits ?? 0).toLocaleString()}
               </span>
             </div>
             <div className="w-full h-3 bg-slate-100/80 rounded-full overflow-hidden relative z-10">
