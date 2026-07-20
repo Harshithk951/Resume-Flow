@@ -233,7 +233,7 @@ export default function RootLayout({
         <Analytics />
 
         <ConvexClerkProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange>
             <HydrationProtectionGuard>
                 {children}
             </HydrationProtectionGuard>

@@ -73,7 +73,7 @@ export default function AuthenticatedLayout({
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-surface-soft)] text-slate-900">
+    <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-surface-soft)] text-[var(--color-ink)]">
       {/* ─── COLLAPSIBLE SIDEBAR ───────────────────────
            Pure CSS hover mechanism: collapsed w-[72px] by default,
            expands to w-64 on hover. All labels fade in with opacity.

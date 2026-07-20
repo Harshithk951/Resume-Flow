@@ -541,7 +541,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                 : "fixed bottom-28 sm:bottom-32 right-6 w-96 h-[550px] z-50 bg-[var(--color-canvas)] rounded-[24px] shadow-2xl border border-[var(--color-hairline)] flex flex-col overflow-visible"
             }
           >
-            <div className="flex items-center justify-between px-5 py-3 bg-[var(--color-ink)] text-white rounded-t-[24px]">
+            <div className="flex items-center justify-between px-5 py-3 bg-[var(--color-inverse-surface)] text-white rounded-t-[24px]">
               <div className="flex items-center gap-2.5">
                 <div className="w-6 h-6 relative overflow-hidden rounded-full bg-black flex items-center justify-center shrink-0 border border-white/15">
                   <div className="w-full h-full relative">

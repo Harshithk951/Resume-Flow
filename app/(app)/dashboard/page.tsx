@@ -114,7 +114,7 @@ export default function DashboardCommandCenter() {
       {/* ─── HEADER: Mesh gradient hero ─── */}
       <div className="relative rounded-3xl p-8 overflow-hidden mesh-gradient-hero border border-[var(--color-hairline)]/30 shadow-sm">
         {/* Glass overlay */}
-        <div className="absolute inset-0 bg-white/30 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[var(--color-canvas)]/30 backdrop-blur-[1px]" />
         
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div className="flex items-start gap-4">
@@ -133,7 +133,7 @@ export default function DashboardCommandCenter() {
 
           <div className="flex items-center gap-3 flex-wrap">
             {/* Glass credit card */}
-            <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-sm">
+            <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/70 backdrop-blur-md border border-white/40 shadow-sm glass-card-dark">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-sm">
                 <Coins className="w-4 h-4 text-white" />
               </div>
