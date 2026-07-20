@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Blog posts
   const blogPosts = [
     { url: `${baseUrl}/info/blog/best-free-resume-builders-2026`, priority: 0.85, changeFrequency: 'monthly' as const },
+    { url: `${baseUrl}/info/blog/how-to-beat-ats-bots-2026`, priority: 0.85, changeFrequency: 'monthly' as const },
   ];
   const infoPages = infoSlugs.map((slug) => ({
     url: `${baseUrl}/info/${slug}` as const,

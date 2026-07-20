@@ -103,6 +103,14 @@ const infoContent: Record<string, ContentBlock> = {
         {[
           {
             title:
+              'How to Beat ATS Bots: Complete 2026 Guide',
+            date: 'July 20, 2026',
+            href: '/info/blog/how-to-beat-ats-bots-2026',
+            snippet:
+              'Step-by-step guide to creating ATS-resistant resumes. Learn keyword optimization, formatting rules, and strategies that pass 95% of ATS parsers.',
+          },
+          {
+            title:
               '10 Best Free Resume Builders 2026: Tested & Reviewed',
             date: 'July 20, 2026',
             href: '/info/blog/best-free-resume-builders-2026',
