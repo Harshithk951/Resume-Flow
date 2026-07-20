@@ -8,13 +8,13 @@ const cardVariants = cva(
     variants: {
       variant: {
         default:
-          "border-slate-200/80 bg-white shadow-sm",
+          "border-slate-300 bg-white shadow-sm",
         glass:
-          "border-white/40 bg-white/70 backdrop-blur-xl shadow-sm",
+          "border-slate-300/70 bg-white/70 backdrop-blur-xl shadow-sm",
         elevated:
-          "border-slate-200/60 bg-white elevation-medium hover:elevation-high",
+          "border-slate-300 bg-white elevation-medium hover:elevation-high",
         interactive:
-          "card-bloom border-slate-200/80 bg-white shadow-sm cursor-pointer",
+          "card-bloom border-slate-300 bg-white shadow-sm cursor-pointer",
       },
     },
     defaultVariants: {

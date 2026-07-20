@@ -187,7 +187,7 @@ export default function DashboardCommandCenter() {
         <div className="space-y-8 min-w-0">
           
           {/* Company Drives list view */}
-          <Card variant="elevated" className="overflow-hidden border-slate-200/60 shadow-sm bg-white">
+          <Card variant="elevated" className="overflow-hidden border-slate-300 shadow-sm bg-white">
             <CardHeader className="pb-4 border-b border-slate-100">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">

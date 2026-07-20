@@ -143,7 +143,7 @@ export function KanbanBoard({
         return (
           <div
             key={col.key}
-            className={`rounded-2xl border border-slate-200/80 ${col.lightBg} p-4 min-h-[300px] snap-start min-w-[280px] md:min-w-0`}
+            className={`rounded-2xl border border-slate-300 ${col.lightBg} p-4 min-h-[300px] snap-start min-w-[280px] md:min-w-0`}
           >
             {/* Column Header */}
             <div className="flex items-center justify-between mb-4 px-1 sticky top-0 z-10 bg-inherit py-1">

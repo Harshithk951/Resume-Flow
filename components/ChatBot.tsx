@@ -133,6 +133,33 @@ const CYCLING_MESSAGES = [
   "Polishing final details..."
 ];
 
+// Helper to parse suggestion text from bulleted points or numeric lists
+function extractSuggestions(content: string): string[] {
+  if (!content) return [];
+  const lines = content.split("\n");
+  const suggestions: string[] = [];
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    // Match line items starting with *, -, •, or digits (e.g. 1., 2. )
+    const match = trimmed.match(/^[-*•]\s*(.+)$/) || trimmed.match(/^\d+[\.\)]\s*(.+)$/);
+    if (match) {
+      let text = match[1].replace(/\*\*/g, "").replace(/\*/g, "").trim();
+      // Remove trailing punctuation
+      if (text.endsWith(":") || text.endsWith(".")) {
+        text = text.slice(0, -1).trim();
+      }
+      // Ensure the suggestions are concise and clean
+      if (text.length >= 4 && text.length <= 100) {
+        suggestions.push(text);
+      }
+    }
+  }
+
+  // Return up to 4 parsed suggestions to keep chat interface clean
+  return suggestions.slice(0, 4);
+}
+
 export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
@@ -345,6 +372,56 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
 
   const guestLimitReached = isGuest && guestUserCount >= GUEST_MESSAGE_LIMIT;
 
+  const handleSendSuggestion = async (suggestionText: string) => {
+    if (isGenerating) return;
+    setInputValue("");
+    setChatError(null);
+
+    if (isGuest) {
+      if (guestLimitReached) {
+        setChatError("Sign in to continue chatting.");
+        return;
+      }
+
+      const userMsg: ChatMessage = { role: "user", content: suggestionText };
+      setGuestMessages((prev) => [...prev, userMsg]);
+      setIsGenerating(true);
+
+      const nextCount = guestUserCount + 1;
+      setGuestUserCount(nextCount);
+
+      await new Promise((r) => setTimeout(r, 600));
+
+      const reply: ChatMessage = {
+        role: "assistant",
+        content: getGuestReply(suggestionText, nextCount),
+      };
+      setGuestMessages((prev) => [...prev, reply]);
+      setIsGenerating(false);
+      return;
+    }
+
+    if (!isAuthenticated) {
+      setChatError("Authentication is syncing, please wait a moment.");
+      return;
+    }
+
+    setIsGenerating(true);
+
+    try {
+      await sendChatMessage({
+        jobId: chatJobId,
+        content: suggestionText,
+      });
+    } catch (err: unknown) {
+      console.error("Failed to send suggestion message.");
+      setChatError(
+        err instanceof Error ? err.message : "Failed to send message. Please try again."
+      );
+      setIsGenerating(false);
+    }
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim() || isGenerating) return;
@@ -508,26 +585,52 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                 </div>
               )}
 
-              {displayMessages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                >
+              {displayMessages.map((msg, idx) => {
+                const isAssistant = msg.role === "assistant";
+                const suggestions = isAssistant ? extractSuggestions(msg.content) : [];
+                const isLatestMessage = idx === displayMessages.length - 1;
+
+                return (
                   <div
-                    className={`max-w-[85%] px-4 py-2.5 rounded-[16px] text-sm ${
-                      msg.role === "user"
-                        ? "bg-[var(--color-primary)] text-white rounded-br-sm"
-                        : "bg-[var(--color-canvas)] border border-[var(--color-hairline)] text-[var(--color-body)] rounded-bl-sm shadow-sm"
+                    key={idx}
+                    className={`flex flex-col gap-1.5 ${
+                      msg.role === "user" ? "items-end" : "items-start"
                     }`}
                   >
-                    {msg.role === "user" ? (
-                      <p className="leading-relaxed">{msg.content}</p>
-                    ) : (
-                      parseChatMessage(msg.content)
+                    <div
+                      className={`max-w-[85%] px-4 py-2.5 rounded-[16px] text-sm ${
+                        msg.role === "user"
+                          ? "bg-[var(--color-primary)] text-white rounded-br-sm"
+                          : "bg-[var(--color-canvas)] border border-[var(--color-hairline)] text-[var(--color-body)] rounded-bl-sm shadow-sm"
+                      }`}
+                    >
+                      {msg.role === "user" ? (
+                        <p className="leading-relaxed">{msg.content}</p>
+                      ) : (
+                        parseChatMessage(msg.content)
+                      )}
+                    </div>
+
+                    {/* Interactive suggestions pills below assistant bubbles */}
+                    {isAssistant && suggestions.length > 0 && isLatestMessage && (
+                      <div className="flex flex-wrap gap-2 mt-1 max-w-[85%] animate-fadeIn">
+                        {suggestions.map((suggestion, sIdx) => (
+                          <button
+                            key={sIdx}
+                            type="button"
+                            disabled={isGenerating}
+                            onClick={() => handleSendSuggestion(suggestion)}
+                            className="text-left text-[11px] bg-rose-50/80 hover:bg-rose-100/90 text-rose-600 font-bold px-3 py-1.5 rounded-xl border border-rose-200/50 shadow-sm transition-all duration-200 active:scale-[0.98] hover:scale-[1.02] cursor-pointer flex items-center gap-1.5 hover:shadow disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                            <span>{suggestion}</span>
+                          </button>
+                        ))}
+                      </div>
                     )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               {isGenerating && (
                 <div className="flex justify-start">
