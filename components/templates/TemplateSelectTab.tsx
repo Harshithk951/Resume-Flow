@@ -114,17 +114,10 @@ export default function TemplateSelectTab({
                   <span className="block text-[11px] text-[var(--color-ash)] leading-relaxed">
                     {tpl.description}
                   </span>
-                  {TEMPLATE_QUALITY_BADGES[tpl.id] && (
-                    <div className="flex flex-wrap gap-1.5 mt-2">
-                      <span className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
-                        ATS {TEMPLATE_QUALITY_BADGES[tpl.id].atsScore}
-                      </span>
-                      {TEMPLATE_QUALITY_BADGES[tpl.id].onePageGuaranteed && (
-                        <span className="text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-[var(--color-surface-card)] text-[var(--color-mute)] border border-[var(--color-hairline)]">
-                          1-page
-                        </span>
-                      )}
-                    </div>
+                  {TEMPLATE_QUALITY_BADGES[tpl.id]?.onePageGuaranteed && (
+                    <span className="inline-block text-[9px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-[var(--color-surface-card)] text-[var(--color-mute)] border border-[var(--color-hairline)] mt-2">
+                      1-page
+                    </span>
                   )}
                 </div>
 
