@@ -15,7 +15,6 @@ export default function SignUpPage() {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
     // Force light theme on auth route mount
@@ -94,12 +93,8 @@ export default function SignUpPage() {
     };
   }, []);
 
-  const handleFormClick = (e: React.MouseEvent) => {
-    const target = e.target as HTMLElement;
-    const isSubmitButton = target.closest(".cl-formButtonPrimary");
-    if (isSubmitButton) {
-      setIsExiting(true);
-    }
+  const handleFormClick = () => {
+    // Form click handler — kept for future interactivity
   };
 
   return (
@@ -298,7 +293,7 @@ export default function SignUpPage() {
       {/* Main Split Card Container */}
       <AnimatePresence>
         <motion.div
-          animate={isExiting ? { scale: 0.96, opacity: 0 } : { scale: 1, opacity: 1 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="relative z-10 w-full max-w-4xl bg-white rounded-[24px] sm:rounded-[32px] border border-slate-200 shadow-[0_24px_64px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col md:flex-row my-auto"
         >
