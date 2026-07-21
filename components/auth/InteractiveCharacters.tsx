@@ -5,12 +5,14 @@ import { useEffect, useState, useRef } from "react";
 interface InteractiveCharactersProps {
   isPasswordFocused?: boolean;
   isPasswordVisible?: boolean;
+  isTyping?: boolean;
   hasError?: boolean;
 }
 
 export function InteractiveCharacters({
   isPasswordFocused = false,
   isPasswordVisible = false,
+  isTyping = false,
   hasError = false,
 }: InteractiveCharactersProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,8 +40,8 @@ export function InteractiveCharacters({
 
     // Smooth lerp update loop
     const updatePosition = () => {
-      currentX += (targetX - currentX) * 0.1;
-      currentY += (targetY - currentY) * 0.1;
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
       setMousePos({ x: currentX, y: currentY });
       animationFrameId = requestAnimationFrame(updatePosition);
     };
@@ -60,13 +62,26 @@ export function InteractiveCharacters({
     };
   }, []);
 
-  // Pupil offsets (locked downward if password input is focused)
-  const activePupilX = isPasswordFocused && !isPasswordVisible ? 4 : mousePos.x * 6;
-  const activePupilY = isPasswordFocused && !isPasswordVisible ? 5 : mousePos.y * 6;
+  // Effective direction offsets
+  const dirX = isTyping ? 0.6 : isPasswordFocused && !isPasswordVisible ? 0.5 : mousePos.x;
+  const dirY = isTyping ? 0.3 : isPasswordFocused && !isPasswordVisible ? 0.5 : mousePos.y;
 
-  // Face shift for solid eyes (Orange & Yellow)
-  const faceShiftX = isPasswordFocused && !isPasswordVisible ? 3 : mousePos.x * 5;
-  const faceShiftY = isPasswordFocused && !isPasswordVisible ? 4 : mousePos.y * 5;
+  // Pupil offsets
+  const activePupilX = dirX * 7;
+  const activePupilY = dirY * 7;
+
+  // Whole-body dynamic transforms
+  const purpleRotate = hasError ? -15 : isTyping ? 8 : dirX * 12;
+  const purpleTranslateX = hasError ? -16 : isTyping ? 14 : dirX * 16;
+  const purpleTranslateY = hasError ? 12 : isTyping ? -4 : dirY * 8;
+
+  const blackRotate = hasError ? -6 : isTyping ? 6 : dirX * 8;
+  const blackTranslateX = hasError ? -8 : isTyping ? 10 : dirX * 12;
+
+  const yellowRotate = hasError ? -4 : isTyping ? 8 : dirX * 9;
+  const yellowTranslateX = hasError ? -4 : isTyping ? 10 : dirX * 10;
+
+  const orangeTranslateX = hasError ? -10 : isTyping ? 12 : dirX * 14;
 
   return (
     <div
@@ -82,7 +97,9 @@ export function InteractiveCharacters({
         <g
           id="purple-character"
           style={{
-            transform: isPasswordVisible ? "translateY(10px) scaleY(0.96)" : "none",
+            transform: isPasswordVisible
+              ? "translateY(10px) scaleY(0.96)"
+              : `translate(${purpleTranslateX}px, ${purpleTranslateY}px) rotate(${purpleRotate}deg)`,
             transformOrigin: "150px 360px",
             transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
           }}
@@ -103,24 +120,23 @@ export function InteractiveCharacters({
             {/* Left Pupil */}
             <circle cx={132 + activePupilX} cy={125 + activePupilY} r="4" fill="#000000" />
 
-            {/* Nose / Mouth / Expression */}
+            {/* Mouth Expression */}
             {hasError ? (
-              <>
-                {/* Concerned Angled Eyebrows */}
-                <line x1="124" y1="110" x2="138" y2="114" stroke="#000000" strokeWidth="3" strokeLinecap="round" />
-                <line x1="162" y1="114" x2="176" y2="110" stroke="#000000" strokeWidth="3" strokeLinecap="round" />
-                {/* Frown Mouth */}
-                <path d="M 144 146 Q 150 136 156 146" stroke="#000000" strokeWidth="4" fill="none" strokeLinecap="round" />
-              </>
-            ) : (
-              /* Standard Vertical Line Nose/Mouth */
-              <line
-                x1="150"
-                y1="122"
-                x2="150"
-                y2="148"
+              /* Sad Frown Mouth (Matching Screenshot) */
+              <path
+                d="M 141 148 Q 150 137 159 148"
                 stroke="#000000"
-                strokeWidth="5"
+                strokeWidth="4"
+                fill="none"
+                strokeLinecap="round"
+              />
+            ) : (
+              /* Happy Smile Mouth */
+              <path
+                d="M 143 140 Q 150 148 157 140"
+                stroke="#000000"
+                strokeWidth="3.5"
+                fill="none"
                 strokeLinecap="round"
               />
             )}
@@ -133,7 +149,14 @@ export function InteractiveCharacters({
         </g>
 
         {/* ─── 2. BLACK CHARACTER (Background Middle) ─── */}
-        <g id="black-character">
+        <g
+          id="black-character"
+          style={{
+            transform: `translateX(${blackTranslateX}px) rotate(${blackRotate}deg)`,
+            transformOrigin: "230px 360px",
+            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          }}
+        >
           {/* Main Pillar */}
           <rect
             x="195"
@@ -144,17 +167,28 @@ export function InteractiveCharacters({
             className="fill-[#1c1c1e]"
           />
           {/* Face Elements (Top Right) */}
-          <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
-            {/* Left Eye White */}
-            <circle cx="236" cy="195" r="8" fill="#ffffff" />
-            {/* Left Pupil */}
-            <circle cx={236 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
+          {hasError ? (
+            /* Sad Droopy Tilted Eyes (Matching Screenshot) */
+            <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
+              <g transform="rotate(-15 236 195)">
+                <circle cx="236" cy="195" r="8" fill="#ffffff" />
+                <circle cx="234" cy="192" r="3.5" fill="#000000" />
+              </g>
+              <g transform="rotate(-15 255 195)">
+                <circle cx="255" cy="195" r="8" fill="#ffffff" />
+                <circle cx="253" cy="192" r="3.5" fill="#000000" />
+              </g>
+            </g>
+          ) : (
+            /* Normal Tracking Eyes */
+            <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
+              <circle cx="236" cy="195" r="8" fill="#ffffff" />
+              <circle cx={236 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
 
-            {/* Right Eye White */}
-            <circle cx="255" cy="195" r="8" fill="#ffffff" />
-            {/* Right Pupil */}
-            <circle cx={255 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
-          </g>
+              <circle cx="255" cy="195" r="8" fill="#ffffff" />
+              <circle cx={255 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
+            </g>
+          )}
 
           {/* ─── PRIVACY REACTION: HANDS OVER EYES ─── */}
           <g
@@ -179,32 +213,40 @@ export function InteractiveCharacters({
         </g>
 
         {/* ─── 3. YELLOW CHARACTER (Right Foreground) ─── */}
-        <g id="yellow-character">
+        <g
+          id="yellow-character"
+          style={{
+            transform: `translateX(${yellowTranslateX}px) rotate(${yellowRotate}deg)`,
+            transformOrigin: "285px 360px",
+            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          }}
+        >
           {/* Pillar with Arch Top */}
           <path
             d="M 245 360 L 245 250 A 42.5 42.5 0 0 1 330 250 L 330 360 Z"
             className="fill-[#eed500]"
           />
           {/* Face Elements */}
-          <g transform={`translate(${faceShiftX * 0.6}, ${faceShiftY * 0.6})`}>
+          <g>
             {/* Single Black Eye */}
             <circle
-              cx="268"
-              cy="234"
+              cx={268 + activePupilX * 0.7}
+              cy={234 + activePupilY * 0.7}
               r="4.5"
               fill="#000000"
               style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "268px 234px" }}
             />
-            {/* Horizontal Beak/Nose Line extending to the right */}
-            <line
-              x1="282"
-              y1="248"
-              x2="345"
-              y2="248"
-              stroke="#1c1c1e"
-              strokeWidth="6.5"
-              strokeLinecap="square"
-            />
+            {/* Mouth: Wavy Squiggly Line Mouth if Error (Matching Screenshot) */}
+            {hasError && (
+              <path
+                d="M 285 248 Q 295 240 305 248 T 325 248"
+                stroke="#1c1c1e"
+                strokeWidth="4.5"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            )}
           </g>
         </g>
 
@@ -212,7 +254,9 @@ export function InteractiveCharacters({
         <g
           id="orange-character"
           style={{
-            transform: isPasswordVisible ? "translateY(6px) scaleY(0.97)" : "none",
+            transform: isPasswordVisible
+              ? "translateY(6px) scaleY(0.97)"
+              : `translateX(${orangeTranslateX}px)`,
             transformOrigin: "190px 360px",
             transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
           }}
@@ -223,27 +267,37 @@ export function InteractiveCharacters({
             className="fill-[#f75c2f]"
           />
           {/* Face Elements (Centered) */}
-          <g transform={`translate(${faceShiftX * 0.8}, ${faceShiftY * 0.8})`}>
+          <g>
             {/* Left Solid Eye */}
             <circle
-              cx="162"
-              cy="305"
+              cx={162 + activePupilX * 0.8}
+              cy={305 + activePupilY * 0.8}
               r="6"
               fill="#000000"
               style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "162px 305px" }}
             />
-            {/* Smiling Curve Mouth */}
-            <path
-              d="M 181 315 Q 190 326 199 315"
-              fill="none"
-              stroke="#000000"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
+            {/* Mouth: Sad Frown Mouth if Error (Matching Screenshot) */}
+            {hasError ? (
+              <path
+                d="M 181 322 Q 190 311 199 322"
+                fill="none"
+                stroke="#000000"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+            ) : (
+              <path
+                d="M 181 315 Q 190 326 199 315"
+                fill="none"
+                stroke="#000000"
+                strokeWidth="4"
+                strokeLinecap="round"
+              />
+            )}
             {/* Right Solid Eye */}
             <circle
-              cx="218"
-              cy="305"
+              cx={218 + activePupilX * 0.8}
+              cy={305 + activePupilY * 0.8}
               r="6"
               fill="#000000"
               style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "218px 305px" }}

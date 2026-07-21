@@ -51,50 +51,69 @@ export default function SignUpPage() {
       const pwdUnmasked = allInputs.some(
         (input) =>
           (input.name === "password" || input.getAttribute("autocomplete") === "new-password") &&
-          input.type === "text"
-      );
-      setIsPasswordVisible(pwdUnmasked);
 
-      // Check if validation error is present
-      const errorEl = formRef.current.querySelector(".cl-formFieldErrorText");
-      setHasError(Boolean(errorEl && errorEl.textContent?.trim()));
+      const passInput = formRef.current.querySelector(
+        'input[type="password"], input[name="password"]'
+      );
+      const isFocused = document.activeElement === passInput;
+      const isUnmasked = !!formRef.current.querySelector('input[type="text"][name="password"]');
+      const errorElem = formRef.current.querySelector(
+        '.cl-formFieldErrorText, [data-localization-key*="error"], .cl-formFieldError'
+      );
+
+      setIsPasswordFocused(isFocused);
+      setIsPasswordVisible(isUnmasked);
+      setHasError(!!errorElem);
     };
 
-    const formEl = formRef.current;
-    formEl.addEventListener("focusin", checkState);
-    formEl.addEventListener("focusout", checkState);
-    formEl.addEventListener("input", checkState);
-    formEl.addEventListener("click", checkState);
+    const handleInput = () => {
+      setIsTyping(true);
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => setIsTyping(false), 800);
+      checkFormState();
+    };
 
-    const observer = new MutationObserver(checkState);
-    observer.observe(formEl, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["type", "class"],
-    });
+    const container = formRef.current;
+    if (container) {
+      container.addEventListener("focusin", checkFormState);
+      container.addEventListener("focusout", checkFormState);
+      container.addEventListener("input", handleInput);
+      container.addEventListener("click", checkFormState);
+    }
+
+    const observer = new MutationObserver(checkFormState);
+    if (container) {
+      observer.observe(container, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["type", "class"],
+      });
+    }
 
     return () => {
-      formEl.removeEventListener("focusin", checkState);
-      formEl.removeEventListener("focusout", checkState);
-      formEl.removeEventListener("input", checkState);
-      formEl.removeEventListener("click", checkState);
+      if (container) {
+        container.removeEventListener("focusin", checkFormState);
+        container.removeEventListener("focusout", checkFormState);
+        container.removeEventListener("input", handleInput);
+        container.removeEventListener("click", checkFormState);
+      }
       observer.disconnect();
+      clearTimeout(typingTimeout);
     };
   }, []);
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8 overflow-hidden bg-[var(--color-surface-soft)]">
-      {/* Lavender mesh gradient background — same as hero section */}
-      <div className="absolute inset-0 mesh-gradient-hero pointer-events-none" />
+    <div className="relative min-h-screen w-full bg-[var(--color-surface-soft)] flex flex-col items-center justify-center p-4 md:p-8">
+      {/* Background Subtle Gradient Grid */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
 
-      <style>{`[data-clerk-dev-mode-notice]{display:none!important}`}</style>
-
+      {/* Top Left Navigation Link */}
       <Link
         href="/"
-        className="absolute left-6 top-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-ash)] transition-colors hover:text-rose-600 dark:hover:text-rose-400 z-10"
+        className="absolute top-6 left-6 z-20 flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
       >
-        <ArrowLeft className="h-4 w-4" />
+        <ArrowLeft className="w-4 h-4" />
         Back to home
       </Link>
 
@@ -105,6 +124,7 @@ export default function SignUpPage() {
           <InteractiveCharacters
             isPasswordFocused={isPasswordFocused}
             isPasswordVisible={isPasswordVisible}
+            isTyping={isTyping}
             hasError={hasError}
           />
         </div>

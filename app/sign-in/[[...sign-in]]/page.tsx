@@ -78,26 +78,40 @@ export default function SignInPage() {
       setHasError(Boolean(errorEl && errorEl.textContent?.trim()));
     };
 
+    const handleInput = () => {
+      setIsTyping(true);
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => setIsTyping(false), 800);
+      checkState();
+    };
+
     const formEl = formRef.current;
-    formEl.addEventListener("focusin", checkState);
-    formEl.addEventListener("focusout", checkState);
-    formEl.addEventListener("input", checkState);
-    formEl.addEventListener("click", checkState);
+    if (formEl) {
+      formEl.addEventListener("focusin", checkState);
+      formEl.addEventListener("focusout", checkState);
+      formEl.addEventListener("input", handleInput);
+      formEl.addEventListener("click", checkState);
+    }
 
     const observer = new MutationObserver(checkState);
-    observer.observe(formEl, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["type", "class"],
-    });
+    if (formEl) {
+      observer.observe(formEl, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["type", "class"],
+      });
+    }
 
     return () => {
-      formEl.removeEventListener("focusin", checkState);
-      formEl.removeEventListener("focusout", checkState);
-      formEl.removeEventListener("input", checkState);
-      formEl.removeEventListener("click", checkState);
+      if (formEl) {
+        formEl.removeEventListener("focusin", checkState);
+        formEl.removeEventListener("focusout", checkState);
+        formEl.removeEventListener("input", handleInput);
+        formEl.removeEventListener("click", checkState);
+      }
       observer.disconnect();
+      clearTimeout(typingTimeout);
     };
   }, []);
 
@@ -122,6 +136,7 @@ export default function SignInPage() {
           <InteractiveCharacters
             isPasswordFocused={isPasswordFocused}
             isPasswordVisible={isPasswordVisible}
+            isTyping={isTyping}
             hasError={hasError}
           />
         </div>
