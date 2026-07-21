@@ -182,16 +182,39 @@ export default function SignInPage() {
           font-size: 14px !important;
           margin-top: 12px !important;
         }
-        .cl-footer, .cl-footerAction {
+        .cl-footer, .cl-footerAction, .cl-footerActionTextContainer {
           background: transparent !important;
           border: none !important;
-          text-align: center !important;
+          margin-top: 12px !important;
+          padding-top: 0px !important;
+          margin-bottom: 0px !important;
+          padding-bottom: 0px !important;
+          display: flex !important;
           justify-content: center !important;
-          margin-top: 24px !important;
+          align-items: center !important;
+          text-align: center !important;
+          width: 100% !important;
+        }
+        .cl-footerActionText {
+          color: #64748b !important;
+          font-size: 14px !important;
+          font-weight: 500 !important;
+          display: inline-block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
         }
         .cl-footerActionLink {
           color: #1c1c1e !important;
+          font-size: 14px !important;
           font-weight: 700 !important;
+          margin-left: 4px !important;
+          display: inline-block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          text-decoration: none !important;
+        }
+        .cl-footerActionLink:hover {
+          text-decoration: underline !important;
         }
         .cl-dividerLine {
           background-color: #e2e8f0 !important;
