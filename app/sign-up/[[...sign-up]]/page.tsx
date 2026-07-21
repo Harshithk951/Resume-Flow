@@ -33,6 +33,8 @@ export default function SignUpPage() {
   useEffect(() => {
     if (!formRef.current) return;
 
+    let typingTimeout: NodeJS.Timeout;
+
     const checkState = () => {
       if (!formRef.current) return;
       const allInputs = Array.from(formRef.current.querySelectorAll("input"));
@@ -51,26 +53,20 @@ export default function SignUpPage() {
       const pwdUnmasked = allInputs.some(
         (input) =>
           (input.name === "password" || input.getAttribute("autocomplete") === "new-password") &&
-
-      const passInput = formRef.current.querySelector(
-        'input[type="password"], input[name="password"]'
+          input.type === "text"
       );
-      const isFocused = document.activeElement === passInput;
-      const isUnmasked = !!formRef.current.querySelector('input[type="text"][name="password"]');
-      const errorElem = formRef.current.querySelector(
-        '.cl-formFieldErrorText, [data-localization-key*="error"], .cl-formFieldError'
-      );
+      setIsPasswordVisible(pwdUnmasked);
 
-      setIsPasswordFocused(isFocused);
-      setIsPasswordVisible(isUnmasked);
-      setHasError(!!errorElem);
+      // Check if validation error is present
+      const errorEl = formRef.current.querySelector(".cl-formFieldErrorText");
+      setHasError(Boolean(errorEl && errorEl.textContent?.trim()));
     };
 
     const handleInput = () => {
       setIsTyping(true);
       clearTimeout(typingTimeout);
       typingTimeout = setTimeout(() => setIsTyping(false), 800);
-      checkFormState();
+      checkState();
     };
 
     const container = formRef.current;
