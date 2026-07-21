@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
@@ -13,10 +13,13 @@ import {
   Search,
   ArrowRight,
   Trash2,
+  X,
+  Sparkles,
+  Crown,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,6 +34,7 @@ import { RecentActivityFeed } from "@/components/dashboard/RecentActivityFeed";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { DashboardSkeleton } from "@/components/dashboard/DashboardSkeleton";
 import { RazorpayCheckout } from "@/components/RazorpayCheckout";
+import confetti from "canvas-confetti";
 
 type CompanyFilter = "all" | "active" | "needs_input" | "completed";
 
@@ -55,6 +59,45 @@ export default function DashboardCommandCenter() {
   const [kanbanSort, setKanbanSort] = useState<SortKey>("newest");
   const [deletingDriveId, setDeletingDriveId] = useState<string | null>(null);
   const deleteJobAndResume = useMutation(api.jobs.deleteJobAndResume);
+
+  // Payment success celebration
+  const [showUpgradeSuccess, setShowUpgradeSuccess] = useState(false);
+
+  const fireUpgradeConfetti = useCallback(() => {
+    const duration = 3000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 4,
+        angle: 60,
+        spread: 60,
+        origin: { x: 0, y: 0.6 },
+        colors: ["#e11d48", "#f43f5e", "#fb7185", "#fbbf24"],
+      });
+      confetti({
+        particleCount: 4,
+        angle: 120,
+        spread: 60,
+        origin: { x: 1, y: 0.6 },
+        colors: ["#e11d48", "#f43f5e", "#fb7185", "#fbbf24"],
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+
+    frame();
+  }, []);
+
+  const handleUpgradeSuccess = useCallback(() => {
+    setShowUpgradeSuccess(true);
+    fireUpgradeConfetti();
+
+    // Auto-dismiss after 8 seconds
+    setTimeout(() => setShowUpgradeSuccess(false), 8000);
+  }, [fireUpgradeConfetti]);
 
   // Scrolling references for click interactions
   const kanbanRef = useRef<HTMLDivElement>(null);
@@ -166,6 +209,7 @@ export default function DashboardCommandCenter() {
                 interval="monthly"
                 className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-gradient-to-r from-rose-600 to-rose-500 px-4 text-white text-sm font-bold shadow-md shadow-rose-500/20 hover:from-rose-700 hover:to-rose-600 transition-all"
                 label="Upgrade"
+                onSuccess={handleUpgradeSuccess}
               />
             )}
 
@@ -431,6 +475,92 @@ export default function DashboardCommandCenter() {
         onClose={() => setIsAddOpen(false)}
         credits={user.credits}
       />
+
+      {/* ─── Congratulations Overlay ─── */}
+      <AnimatePresence>
+        {showUpgradeSuccess && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+            onClick={() => setShowUpgradeSuccess(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-md mx-4 overflow-hidden rounded-3xl bg-gradient-to-br from-rose-600 via-rose-500 to-pink-600 shadow-2xl shadow-rose-500/30 border border-white/20"
+            >
+              {/* Decorative glow */}
+              <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/10 rounded-full blur-3xl" />
+              <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-amber-300/10 rounded-full blur-3xl" />
+
+              <div className="relative z-10 p-8 text-center">
+                {/* Close button */}
+                <button
+                  onClick={() => setShowUpgradeSuccess(false)}
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/70 hover:text-white transition-all"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                {/* Crown icon */}
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/15 backdrop-blur-sm border border-white/20 mb-6">
+                  <Crown className="w-10 h-10 text-yellow-300" />
+                </div>
+
+                {/* Sparkles decoration */}
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Sparkles className="w-4 h-4 text-yellow-300" />
+                  <span className="text-xs font-bold uppercase tracking-widest text-white/70">
+                    Payment Successful
+                  </span>
+                  <Sparkles className="w-4 h-4 text-yellow-300" />
+                </div>
+
+                {/* Title */}
+                <h2 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
+                  Congratulations!
+                </h2>
+                <p className="text-lg font-semibold text-white/90 mb-1">
+                  You&apos;re now on <span className="text-yellow-300">Pro</span>
+                </p>
+                <p className="text-sm text-white/60 mb-8 max-w-xs mx-auto">
+                  Unlimited resume tailoring, priority support, and all premium features unlocked!
+                </p>
+
+                {/* Stats row */}
+                <div className="grid grid-cols-3 gap-3 mb-8">
+                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
+                    <p className="text-2xl font-extrabold text-white">♾️</p>
+                    <p className="text-[10px] font-medium text-white/60 mt-0.5">Resumes</p>
+                  </div>
+                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
+                    <p className="text-2xl font-extrabold text-white">🎯</p>
+                    <p className="text-[10px] font-medium text-white/60 mt-0.5">ATS Optimized</p>
+                  </div>
+                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
+                    <p className="text-2xl font-extrabold text-white">⚡</p>
+                    <p className="text-[10px] font-medium text-white/60 mt-0.5">Priority</p>
+                  </div>
+                </div>
+
+                {/* CTA button */}
+                <button
+                  onClick={() => setShowUpgradeSuccess(false)}
+                  className="w-full py-3 px-6 rounded-2xl bg-white text-rose-600 font-extrabold text-sm hover:bg-white/90 transition-all active:scale-[0.98] shadow-lg"
+                >
+                  Start Building Resumes
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
