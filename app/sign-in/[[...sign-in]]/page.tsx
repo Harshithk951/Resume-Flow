@@ -13,6 +13,7 @@ export default function SignInPage() {
 
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {

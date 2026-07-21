@@ -12,6 +12,7 @@ export default function SignUpPage() {
 
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
