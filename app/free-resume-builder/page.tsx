@@ -228,7 +228,7 @@ export default function FreeResumeBuilderPage() {
       </nav>
 
       {/* ─── HERO ─── */}
-      <section className="pt-24 pb-16 px-6 max-w-[1280px] mx-auto text-center">
+      <section className="pt-16 md:pt-24 pb-12 md:pb-16 px-6 max-w-[1280px] mx-auto text-center">
         <div className="inline-flex items-center gap-2 rounded-full bg-rose-50 border border-rose-100/60 px-4 py-1.5 mb-6">
           <Sparkles size={12} className="text-rose-600" />
           <span className="text-[10px] font-bold uppercase tracking-wider text-rose-700">
@@ -467,7 +467,7 @@ export default function FreeResumeBuilderPage() {
               key={i}
               className="group bg-white border border-slate-200/60 rounded-xl overflow-hidden transition-all hover:border-slate-300/60"
             >
-              <summary className="flex items-center justify-between px-6 py-4 text-sm font-semibold text-slate-900 cursor-pointer hover:bg-slate-50/50 transition-colors [&::-webkit-details-marker]:hidden">
+              <summary className="flex items-center justify-between px-4 md:px-6 py-3 md:py-4 text-sm font-semibold text-slate-900 cursor-pointer hover:bg-slate-50/50 transition-colors [&::-webkit-details-marker]:hidden">
                 <span>{faq.q}</span>
                 <span className="text-slate-400 text-lg font-bold shrink-0 ml-4 group-open:rotate-45 transition-transform">
                   +

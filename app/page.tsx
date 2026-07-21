@@ -216,7 +216,7 @@ export default function LandingPage() {
       <Navbar />
 
       {/* ─── Hero Section ─── */}
-      <section className="pt-28 pb-24 px-6 max-w-[1280px] mx-auto text-center relative" ref={heroRef}>
+      <section className="pt-20 md:pt-28 pb-20 md:pb-24 px-6 max-w-[1280px] mx-auto text-center relative" ref={heroRef}>
         {/* 3D Scene — desktop only, behind text */}
         <div className="hidden lg:block">
           <Hero3DScene inView={isHeroInView} />
@@ -231,7 +231,7 @@ export default function LandingPage() {
           {/* Animated Shimmer Eyebrow Pill */}
           <motion.div
             variants={itemVariants}
-            className="eyebrow-pill shimmer-pill mb-8"
+            className="eyebrow-pill shimmer-pill mb-6 md:mb-8"
           >
             <Sparkles size={12} />
             <span>AI-Powered Career Intelligence</span>
@@ -249,7 +249,7 @@ export default function LandingPage() {
 
           <motion.p
             variants={itemVariants}
-            className="text-slate-500 text-lg md:text-xl max-w-[600px] leading-relaxed mb-12"
+            className="text-slate-500 text-lg md:text-xl max-w-[600px] leading-relaxed mb-8 md:mb-12"
           >
             Build once. Tailor instantly. Every resume, precision-engineered
             for the role you want — powered by AI with live company research.
@@ -509,7 +509,7 @@ export default function LandingPage() {
                 >
                   <button
                     onClick={() => setOpenFaqIndex(isOpen ? null : i)}
-                    className="w-full flex items-center justify-between p-6 text-left font-semibold text-slate-900 hover:bg-slate-50/50 transition-colors"
+                    className="w-full flex items-center justify-between p-4 md:p-6 text-left font-semibold text-slate-900 hover:bg-slate-50/50 transition-colors"
                   >
                     <span>{faq.q}</span>
                     <motion.span

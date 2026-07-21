@@ -162,7 +162,7 @@ export default function OnboardingPage() {
 
   if (!isClerkLoaded) {
     return (
-      <div className="min-h-screen bg-[var(--color-surface-soft)] flex items-center justify-center">
+      <div className="min-h-[100dvh] bg-[var(--color-surface-soft)] flex items-center justify-center">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
@@ -364,7 +364,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface-soft)] text-[var(--color-ink)] flex flex-col justify-between selection:bg-[var(--color-primary)] selection:text-white">
+    <div className="min-h-[100dvh] bg-[var(--color-surface-soft)] text-[var(--color-ink)] flex flex-col justify-between selection:bg-[var(--color-primary)] selection:text-white">
       {/* Background Gradients (Awards Design: color & atmosphere) */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-radial from-rose-500/5 to-transparent blur-[120px]" />
@@ -394,10 +394,10 @@ export default function OnboardingPage() {
 
       {/* Main Form container */}
       <main className="flex-1 flex items-center justify-center px-[var(--spacing-xl)] py-12 z-10">
-        <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+        <div className="w-full max-w-[900px] grid grid-cols-1 sm:grid-cols-12 gap-8 items-stretch">
           
           {/* Left Column: Visual Typography Intro (Awards Design: Asymmetry & Scale) */}
-          <div className="md:col-span-5 flex flex-col justify-between p-6">
+          <div className="sm:col-span-5 flex flex-col justify-between p-6">
             <motion.div
               initial="hidden"
               animate="visible"
@@ -484,7 +484,7 @@ export default function OnboardingPage() {
           </div>
 
           {/* Right Column: Interaction Card */}
-          <div className="md:col-span-7 bg-[var(--color-canvas)] rounded-[32px] border border-[var(--color-hairline-soft)] p-8 shadow-sm flex flex-col justify-center relative overflow-hidden">
+          <div className="sm:col-span-7 bg-[var(--color-canvas)] rounded-[32px] border border-[var(--color-hairline-soft)] p-8 shadow-sm flex flex-col justify-center relative overflow-hidden">
             <AnimatePresence mode="wait">
               
               {/* STEP 0: Welcome / Start */}
@@ -628,7 +628,7 @@ export default function OnboardingPage() {
                       </div>
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Name */}
                       <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-semibold text-[var(--color-mute)] flex items-center gap-1">
@@ -660,7 +660,7 @@ export default function OnboardingPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Branch Dropdown */}
                       <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-semibold text-[var(--color-mute)] flex items-center gap-1">
@@ -700,7 +700,7 @@ export default function OnboardingPage() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       {/* Phone */}
                       <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-semibold text-[var(--color-mute)] flex items-center gap-1">
