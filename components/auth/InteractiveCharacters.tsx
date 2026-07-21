@@ -26,7 +26,6 @@ export function InteractiveCharacters({
 
   // Computed pupil offset (dx, dy clamped to 3px radius)
   const [pupilOffset, setPupilOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-  const [isBlinking, setIsBlinking] = useState(false);
 
   // Priority order resolution: shocked > shy > watching > neutral
   let activeExpression: ExpressionState = expression;
@@ -76,7 +75,7 @@ export function InteractiveCharacters({
           targetY = rect.top + rect.height * 0.45;
         } else if (currentExpr === "shy" || isPasswordFocused) {
           // Password focus / typing: characters look LEFT away from password field for privacy!
-          targetX = rect.left - rect.width * 0.8;
+          targetX = rect.left - rect.width * 1.0;
           targetY = rect.top + rect.height * 0.45;
         }
 
@@ -85,8 +84,8 @@ export function InteractiveCharacters({
         const angle = Math.atan2(deltaY, deltaX);
         const distance = Math.hypot(deltaX, deltaY);
 
-        // Clamp maximum displacement to 3px
-        const maxRadius = 3;
+        // Clamp maximum displacement to 3.5px
+        const maxRadius = 3.5;
         const r = Math.min(maxRadius, distance * 0.02);
 
         const dx = r * Math.cos(angle);
@@ -103,16 +102,9 @@ export function InteractiveCharacters({
 
     rafIdRef.current = requestAnimationFrame(updatePupils);
 
-    // Periodic eye blinking timer
-    const blinkInterval = setInterval(() => {
-      setIsBlinking(true);
-      setTimeout(() => setIsBlinking(false), 180);
-    }, 3600);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-      clearInterval(blinkInterval);
     };
   }, [isPasswordFocused]);
 
@@ -142,17 +134,17 @@ export function InteractiveCharacters({
           {/* Body */}
           <rect x="95" y="95" width="110" height="265" rx="6" className="fill-[#6c1cd3]" />
 
-          {/* Eyes Group (Widened if shocked, blinked if isBlinking) */}
+          {/* Eyes Group (No closing/blinking) */}
           <g
             style={{
-              transform: `${isShocked ? "scale(1.15)" : "scale(1)"} ${isBlinking ? "scaleY(0.1)" : "scaleY(1)"}`,
+              transform: isShocked ? "scale(1.15)" : "scale(1)",
               transformOrigin: "150px 125px",
               transition: "transform 200ms ease-out",
             }}
           >
             {/* Left Eye White */}
             <circle cx="132" cy="125" r="9" fill="#ffffff" />
-            {/* Left Pupil (Normal round or Shy vertical dash scaleY: 0.2) */}
+            {/* Left Pupil */}
             <circle
               cx="132"
               cy="125"
@@ -178,7 +170,7 @@ export function InteractiveCharacters({
               }}
             />
 
-            {/* Mouth (Smile → Frown when shocked) */}
+            {/* Mouth */}
             {isShocked ? (
               <path d="M 141 148 Q 150 137 159 148" stroke="#000000" strokeWidth="4" fill="none" strokeLinecap="round" />
             ) : isWatching ? (
@@ -200,10 +192,10 @@ export function InteractiveCharacters({
           {/* Body */}
           <rect x="195" y="170" width="75" height="190" rx="4" className="fill-[#1c1c1e]" />
 
-          {/* Eyes Group */}
+          {/* Eyes Group (No closing/blinking) */}
           <g
             style={{
-              transform: `${isShocked ? "scale(1.15)" : "scale(1)"} ${isBlinking ? "scaleY(0.1)" : "scaleY(1)"}`,
+              transform: isShocked ? "scale(1.15)" : "scale(1)",
               transformOrigin: "245px 195px",
               transition: "transform 200ms ease-out",
             }}
@@ -245,9 +237,16 @@ export function InteractiveCharacters({
           {/* Body */}
           <path d="M 75 360 A 115 115 0 0 1 305 360 Z" className="fill-[#f75c2f]" />
 
-          {/* Face Group */}
-          <g style={{ transform: isShocked ? "scale(1.15)" : "scale(1)", transformOrigin: "190px 310px", transition: "transform 200ms ease-out" }}>
-            <g style={{ transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)` }}>
+          {/* Face Group with Amplified Left Gaze Displacement */}
+          <g
+            style={{
+              transform: isShocked ? "scale(1.15)" : "scale(1)",
+              transformOrigin: "190px 310px",
+              transition: "transform 200ms ease-out",
+            }}
+          >
+            {/* Amplified pupil translation for Orange character (2.5x multiplier) */}
+            <g style={{ transform: `translate(${pupilOffset.x * 2.8}px, ${pupilOffset.y * 1.5}px)` }}>
               {/* Left Eye */}
               <circle
                 cx="162"
@@ -294,7 +293,13 @@ export function InteractiveCharacters({
           <path d="M 245 360 L 245 250 A 42.5 42.5 0 0 1 330 250 L 330 360 Z" className="fill-[#eed500]" />
 
           {/* Face Elements */}
-          <g style={{ transform: isShocked ? "scale(1.15)" : "scale(1)", transformOrigin: "287px 240px", transition: "transform 200ms ease-out" }}>
+          <g
+            style={{
+              transform: isShocked ? "scale(1.15)" : "scale(1)",
+              transformOrigin: "287px 240px",
+              transition: "transform 200ms ease-out",
+            }}
+          >
             <circle
               cx="268"
               cy="234"
