@@ -254,7 +254,7 @@ function ResumeBuilderPageContent() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 h-[calc(100vh-8rem)] w-full gap-8 bg-[var(--color-surface-soft)]">
+    <div className="grid grid-cols-1 lg:grid-cols-12 h-[calc(100dvh-8rem)] w-full gap-8 bg-[var(--color-surface-soft)]">
       {/* LEFT COLUMN: EDITING FORM (5 columns) */}
       <div className="lg:col-span-6 bg-[var(--color-canvas)] border border-[var(--color-hairline)]/85 rounded-3xl p-6 flex flex-col h-full overflow-hidden shadow-sm">
         {/* Section tabs */}
@@ -300,6 +300,7 @@ function ResumeBuilderPageContent() {
                       onChange={(e) => updatePersonalInfo("name", e.target.value)}
                       className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="John Doe"
+                      autoComplete="name"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -310,6 +311,8 @@ function ResumeBuilderPageContent() {
                       onChange={(e) => updatePersonalInfo("email", e.target.value)}
                       className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="john@doe.com"
+                      autoComplete="email"
+                      inputMode="email"
                     />
                   </div>
                 </div>
@@ -317,11 +320,13 @@ function ResumeBuilderPageContent() {
                   <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold text-[var(--color-ash)]">Phone Number</label>
                     <input
-                      type="text"
+                      type="tel"
                       value={profile.personalInfo.phone}
                       onChange={(e) => updatePersonalInfo("phone", e.target.value)}
                       className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="+91 99999 88888"
+                      autoComplete="tel"
+                      inputMode="tel"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
@@ -365,6 +370,7 @@ function ResumeBuilderPageContent() {
                     onChange={(e) => setProfile((prev: any) => ({ ...prev, summary: e.target.value }))}
                     className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50 resize-none"
                     placeholder="Brief professional profile summary..."
+                    onFocus={(e) => e.currentTarget.scrollIntoView({ block: 'center', behavior: 'smooth' })}
                   />
                 </div>
               </motion.div>
@@ -407,6 +413,7 @@ function ResumeBuilderPageContent() {
                           onChange={(e) => updateEducation(index, "institution", e.target.value)}
                           className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
                           placeholder="University Name"
+                          autoComplete="organization"
                         />
                       </div>
                       <div className="flex flex-col gap-1">
@@ -429,6 +436,7 @@ function ResumeBuilderPageContent() {
                           onChange={(e) => updateEducation(index, "gpa", e.target.value)}
                           className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
                           placeholder="e.g. 9.15"
+                          inputMode="decimal"
                         />
                       </div>
                       <div className="flex flex-col gap-1">
@@ -439,6 +447,7 @@ function ResumeBuilderPageContent() {
                           onChange={(e) => updateEducation(index, "year", e.target.value)}
                           className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
                           placeholder="2025"
+                          inputMode="numeric"
                         />
                       </div>
                     </div>

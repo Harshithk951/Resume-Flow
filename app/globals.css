@@ -1015,7 +1015,12 @@ button:hover .icon-island-light {
 .dark .card,
 .dark .card-feature,
 .dark .card-feature-soft,
-.dark .card-modal {
-  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+/* Mobile Safe Area Inset Helpers */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
 

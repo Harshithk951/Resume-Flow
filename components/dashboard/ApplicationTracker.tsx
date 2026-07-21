@@ -125,32 +125,119 @@ export function ApplicationTracker({
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-left">
-              <thead>
-                <tr className="border-b border-[var(--color-hairline-soft)] bg-[var(--color-surface-soft)]/50 text-[10px] font-bold text-[var(--color-stone)] uppercase tracking-wider">
-                  <th className="px-6 py-3.5">Company</th>
-                  <th className="px-6 py-3.5">Role</th>
-                  <th className="px-6 py-3.5">ATS Match</th>
-                  <th className="px-6 py-3.5">Status</th>
-                  <th className="px-6 py-3.5">Added</th>
-                  <th className="px-6 py-3.5 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[var(--color-hairline-soft)] text-xs">
-                {completedJobs.map((job) => (
-                  <tr key={job._id} className="hover:bg-[var(--color-surface-soft)]/40 transition-colors group">
-                    <td className="px-6 py-4 font-bold text-[var(--color-ink-soft)]">
-                      <Link
-                        href={`/company/${job._id}`}
-                        className="hover:text-rose-600 transition-colors inline-flex items-center gap-1"
-                      >
-                        <span>{job.companyName}</span>
-                        <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 text-[var(--color-stone)] transition-opacity" />
-                      </Link>
-                    </td>
-                    <td className="px-6 py-4 text-[var(--color-mute)] font-medium">{job.jobTitle}</td>
-                    <td className="px-6 py-4">
+          <>
+            {/* ─── DESKTOP TABLE VIEW ─────── */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="w-full border-collapse text-left">
+                <thead>
+                  <tr className="border-b border-[var(--color-hairline-soft)] bg-[var(--color-surface-soft)]/50 text-[10px] font-bold text-[var(--color-stone)] uppercase tracking-wider">
+                    <th className="px-6 py-3.5">Company</th>
+                    <th className="px-6 py-3.5">Role</th>
+                    <th className="px-6 py-3.5">ATS Match</th>
+                    <th className="px-6 py-3.5">Status</th>
+                    <th className="px-6 py-3.5">Added</th>
+                    <th className="px-6 py-3.5 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--color-hairline-soft)] text-xs">
+                  {completedJobs.map((job) => (
+                    <tr key={job._id} className="hover:bg-[var(--color-surface-soft)]/40 transition-colors group">
+                      <td className="px-6 py-4 font-bold text-[var(--color-ink-soft)]">
+                        <Link
+                          href={`/company/${job._id}`}
+                          className="hover:text-rose-600 transition-colors inline-flex items-center gap-1"
+                        >
+                          <span>{job.companyName}</span>
+                          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 text-[var(--color-stone)] transition-opacity" />
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4 text-[var(--color-mute)] font-medium">{job.jobTitle}</td>
+                      <td className="px-6 py-4">
+                        {job.atsScore ? (
+                          <Badge
+                            variant={
+                              job.atsScore >= 80 ? "soft_green" :
+                              job.atsScore >= 60 ? "soft_amber" :
+                              "soft_rose"
+                            }
+                            size="sm"
+                          >
+                            {job.atsScore}%
+                          </Badge>
+                        ) : (
+                          <span className="text-[var(--color-stone)]">—</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        <select
+                          value={getStatusValueFromCrm(job.crmStatus)}
+                          onChange={(e) => handleStatusChange(job._id, e.target.value)}
+                          className={`text-[10px] font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all cursor-pointer ${getStatusSelectStyle(
+                            job.crmStatus
+                          )}`}
+                        >
+                          {statusOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value} className="bg-[var(--color-canvas)] text-[var(--color-ink)]">
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                      </td>
+                      <td className="px-6 py-4 text-[var(--color-stone)] font-medium">{timeAgo(job._creationTime)}</td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          {job.pdfStorageId && (
+                            <Link
+                              href={`/resume/${job._id}/export`}
+                              className="p-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-ash)] hover:text-rose-600 hover:border-rose-200 transition-all shadow-sm"
+                              title="Download PDF"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                            </Link>
+                          )}
+                          <Link
+                            href={`/company/${job._id}`}
+                            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] hover:bg-[var(--color-surface-soft)] text-[10px] font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-all shadow-sm"
+                          >
+                            <span>Open</span>
+                            <ChevronRight className="w-3 h-3" />
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* ─── MOBILE CARD STACK VIEW ─────── */}
+            <div className="block sm:hidden divide-y divide-[var(--color-hairline-soft)]">
+              {completedJobs.map((job) => (
+                <Link
+                  key={job._id}
+                  href={`/company/${job._id}`}
+                  className="flex items-start gap-3 px-4 py-4 hover:bg-[var(--color-surface-soft)]/50 transition-colors active:bg-[var(--color-surface-soft)]"
+                >
+                  {/* Company initial avatar */}
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 bg-rose-50 text-rose-600 border border-rose-100">
+                    {job.companyName?.charAt(0).toUpperCase() || '?'}
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-[var(--color-ink-soft)] truncate">
+                          {job.companyName}
+                        </p>
+                        <p className="text-xs text-[var(--color-mute)] truncate mt-0.5">
+                          {job.jobTitle}
+                        </p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-[var(--color-stone)] shrink-0 mt-1" />
+                    </div>
+
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      {/* ATS badge */}
                       {job.atsScore ? (
                         <Badge
                           variant={
@@ -162,15 +249,14 @@ export function ApplicationTracker({
                         >
                           {job.atsScore}%
                         </Badge>
-                      ) : (
-                        <span className="text-[var(--color-stone)]">—</span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4">
+                      ) : null}
+
+                      {/* Status dropdown */}
                       <select
                         value={getStatusValueFromCrm(job.crmStatus)}
+                        onClick={(e) => e.stopPropagation()}
                         onChange={(e) => handleStatusChange(job._id, e.target.value)}
-                        className={`text-[10px] font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all cursor-pointer ${getStatusSelectStyle(
+                        className={`text-[10px] font-bold uppercase tracking-wider rounded-lg px-2.5 py-1.5 border transition-all ${getStatusSelectStyle(
                           job.crmStatus
                         )}`}
                       >
@@ -180,33 +266,28 @@ export function ApplicationTracker({
                           </option>
                         ))}
                       </select>
-                    </td>
-                    <td className="px-6 py-4 text-[var(--color-stone)] font-medium">{timeAgo(job._creationTime)}</td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        {job.pdfStorageId && (
-                          <Link
-                            href={`/resume/${job._id}/export`}
-                            className="p-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-ash)] hover:text-rose-600 hover:border-rose-200 transition-all shadow-sm"
-                            title="Download PDF"
-                          >
-                            <Download className="w-3.5 h-3.5" />
-                          </Link>
-                        )}
+
+                      {/* Download button */}
+                      {job.pdfStorageId && (
                         <Link
-                          href={`/company/${job._id}`}
-                          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] hover:bg-[var(--color-surface-soft)] text-[10px] font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-all shadow-sm"
+                          href={`/resume/${job._id}/export`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-ash)] hover:text-rose-600 hover:border-rose-200 transition-all shadow-sm text-[10px] font-bold"
                         >
-                          <span>Open</span>
-                          <ChevronRight className="w-3 h-3" />
+                          <Download className="w-3 h-3" />
+                          PDF
                         </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      )}
+
+                      <span className="text-[10px] text-[var(--color-stone)] ml-auto">
+                        {timeAgo(job._creationTime)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
         )}
       </CardContent>
     </Card>

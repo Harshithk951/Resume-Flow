@@ -254,7 +254,7 @@ export default function TemplateBrowser() {
   }
 
   return (
-    <div className="flex min-h-full flex-col bg-[var(--color-surface-soft)] -m-6 md:-m-8">
+    <div className="flex min-h-full flex-col bg-[var(--color-surface-soft)] -m-6 md:-m-8 overflow-x-hidden">
       {/* Header Pill Selector */}
       <header className="z-20 flex h-14 shrink-0 items-center justify-center border-b border-[var(--color-hairline)] bg-[var(--color-canvas)] px-4 md:px-6 shadow-sm">
         <div className="flex rounded-xl border border-[var(--color-hairline)]/60 bg-[var(--color-surface-soft)] p-0.5">

@@ -541,7 +541,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
             className={
               isMaximized
                 ? "fixed inset-4 md:inset-10 lg:inset-16 m-auto max-w-4xl h-[80vh] z-50 rounded-3xl bg-[var(--color-canvas)] shadow-2xl border border-[var(--color-hairline)] flex flex-col overflow-hidden"
-                : "fixed bottom-28 sm:bottom-32 right-6 w-96 h-[550px] z-50 bg-[var(--color-canvas)] rounded-[24px] shadow-2xl border border-[var(--color-hairline)] flex flex-col overflow-visible"
+                : "fixed bottom-28 sm:bottom-32 right-4 left-4 sm:right-6 sm:left-auto sm:w-96 h-[60vh] sm:h-[550px] z-50 bg-[var(--color-canvas)] rounded-[24px] shadow-2xl border border-[var(--color-hairline)] flex flex-col overflow-visible"
             }
           >
             <div className="flex items-center justify-between px-5 py-3 bg-[var(--color-inverse-surface)] text-white rounded-t-[24px]">
@@ -841,7 +841,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
         )}
       </AnimatePresence>
 
-      <div ref={buttonRef} className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+      <div ref={buttonRef} className="fixed bottom-6 right-6 z-50 flex flex-col items-end pb-safe">
         <motion.div
           animate={{ y: [0, -12, 0, -4, 0] }}
           transition={{

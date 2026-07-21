@@ -3,15 +3,17 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
 
 
 export default function Navbar() {
   const { isSignedIn } = useAuth();
   const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -29,6 +31,21 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Close mobile menu on Escape
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
+    };
+    if (mobileMenuOpen) {
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -122,6 +139,15 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* Mobile hamburger button */}
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="md:hidden p-2 -mr-1 rounded-lg hover:bg-slate-100/80 transition-colors"
+          aria-label="Open navigation menu"
+        >
+          <Menu className="w-5 h-5 text-slate-600" />
+        </button>
+
         <div className="flex items-center gap-2">
 
           {mounted && isSignedIn ? (
@@ -151,6 +177,99 @@ export default function Navbar() {
           )}
         </div>
       </div>
+
+      {/* ─── MOBILE NAV DRAWER ───────────────────── */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-[60] md:hidden">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+          {/* Drawer panel */}
+          <div
+            ref={mobileMenuRef}
+            className="fixed right-0 top-0 h-full w-72 max-w-[85vw] bg-white shadow-2xl flex flex-col"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+          >
+            {/* Drawer header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+              <BrandLogo href="/" size="sm" showText={true} />
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5 text-slate-600" />
+              </button>
+            </div>
+
+            {/* Navigation links */}
+            <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
+              {[
+                { id: "features", label: "Features" },
+                { id: "how-it-works", label: "How it Works" },
+                { id: "pricing", label: "Pricing" },
+                { id: "templates", label: "Templates", hasDropdown: true },
+                { id: "faq", label: "FAQ" },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (item.id === "templates") {
+                      const href = mounted && isSignedIn ? "/templates" : "/sign-up";
+                      window.location.href = href;
+                    } else {
+                      document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
+                    }
+                  }}
+                  className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
+                >
+                  {item.label}
+                  {item.id === "templates" && (
+                    <span className="ml-1.5 text-xs text-slate-400">→</span>
+                  )}
+                </button>
+              ))}
+            </nav>
+
+            {/* Auth actions */}
+            <div className="px-4 py-6 border-t border-slate-200 space-y-3">
+              {mounted && isSignedIn ? (
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-lg shadow-rose-500/25 transition-all duration-300 px-6 py-3 text-sm w-full"
+                >
+                  Go to Dashboard
+                </Link>
+              ) : (
+                <>
+                  <Link
+                    href="/sign-in"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center w-full px-6 py-3 rounded-full border-2 border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-lg shadow-rose-500/25 transition-all duration-300 px-6 py-3 text-sm"
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

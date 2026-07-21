@@ -263,7 +263,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
   return (
     <div
-      className={`grid h-[calc(100vh-4rem)] w-full transition-[grid-template-columns] duration-500 bg-[var(--color-surface-soft)] ${
+      className={`grid h-[calc(100dvh-4rem)] w-full transition-[grid-template-columns] duration-500 bg-[var(--color-surface-soft)] ${
         isWorkspaceMaximized
           ? "grid-cols-1 lg:grid-cols-[0fr_1fr] overflow-hidden"
           : "grid-cols-1 lg:grid-cols-[40fr_60fr]"

@@ -88,7 +88,7 @@ function TailoringMockup() {
   return (
     <div className="w-full max-w-[240px] bg-[var(--color-canvas)] rounded-xl shadow-sm border border-[var(--color-hairline)] p-3 space-y-2">
       <div className="space-y-0.5">
-        <span className="text-[7px] font-bold uppercase tracking-wider text-[var(--color-stone)]">Before</span>
+        <span className="text-[10px] sm:text-[7px] font-bold uppercase tracking-wider text-[var(--color-stone)]">Before</span>
         <div className="bg-[var(--color-surface-soft)] border border-[var(--color-hairline-soft)] rounded-md p-2 text-[9px] text-[var(--color-stone)]">
           <motion.p
             initial={{ textDecorationLine: "none" }}
@@ -102,10 +102,10 @@ function TailoringMockup() {
         </div>
       </div>
       <div className="flex justify-center text-rose-500 text-[8px] leading-none">
-        <span className="animate-bounce">↓</span>
+        <span className="text-[10px] sm:text-[8px] animate-bounce">↓</span>
       </div>
       <div className="space-y-0.5">
-        <span className="text-[7px] font-bold uppercase tracking-wider text-green-700">After</span>
+        <span className="text-[10px] sm:text-[7px] font-bold uppercase tracking-wider text-green-700">After</span>
         <div className="bg-green-50 border border-green-200 rounded-md p-2 text-[9px] text-green-700 shadow-sm">
           <motion.div
             initial={{ opacity: 0 }}
@@ -131,19 +131,19 @@ function CompanyPanel() {
     <div className="w-full max-w-[200px] bg-[var(--color-canvas)] rounded-xl shadow-sm border border-[var(--color-hairline)] p-4 flex flex-col justify-between h-40">
       <div className="space-y-2">
         <div className="flex justify-between items-center pb-2 border-b border-[var(--color-hairline)]">
-          <span className="text-[7px] font-black uppercase text-[var(--color-stone)]">Culture Agent</span>
-          <span className="text-[7px] font-black text-rose-600">Google Inc.</span>
+          <span className="text-[10px] sm:text-[7px] font-black uppercase text-[var(--color-stone)]">Culture Agent</span>
+          <span className="text-[10px] sm:text-[7px] font-black text-rose-600">Google Inc.</span>
         </div>
-        <div className="text-[7px] font-bold text-[var(--color-ash)] uppercase tracking-wider">Tech Stack</div>
+        <div className="text-[10px] sm:text-[7px] font-bold text-[var(--color-ash)] uppercase tracking-wider">Tech Stack</div>
         <div className="flex flex-wrap gap-1">
           {["React", "AWS", "Python"].map((tech) => (
-            <span key={tech} className="text-[7px] font-bold bg-[var(--color-canvas)] text-rose-600 px-1.5 py-0.5 rounded border border-[var(--color-hairline)]">
+            <span key={tech} className="text-[10px] sm:text-[7px] font-bold bg-[var(--color-canvas)] text-rose-600 px-1.5 py-0.5 rounded border border-[var(--color-hairline)]">
               {tech}
             </span>
           ))}
         </div>
       </div>
-      <div className="text-[7px] text-[var(--color-charcoal)] font-semibold bg-rose-50/30 p-1.5 rounded border border-rose-100">
+      <div className="text-[10px] sm:text-[7px] text-[var(--color-charcoal)] font-semibold bg-rose-50/30 p-1.5 rounded border border-rose-100">
         💡 Prefers: &ldquo;Impact and scale metrics&rdquo;
       </div>
     </div>
@@ -153,7 +153,7 @@ function CompanyPanel() {
 // ─── WASM Terminal Mockup ─────────────────────────────────
 function WasmTerminal() {
   return (
-    <div className="w-full max-w-[260px] bg-[var(--color-canvas)] rounded-xl shadow-sm border border-[var(--color-hairline)] p-4 font-mono text-[8px] text-[var(--color-mute)] space-y-1.5">
+    <div className="w-full max-w-[260px] bg-[var(--color-canvas)] rounded-xl shadow-sm border border-[var(--color-hairline)] p-4 font-mono text-[10px] sm:text-[8px] text-[var(--color-mute)] space-y-1.5">
       <div className="text-green-600 font-bold flex items-center gap-1.5 mb-2">
         <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping" />
         [Compiler Worker Init]
@@ -188,7 +188,7 @@ function PrivacyShield() {
           animate={active ? { opacity: 1, scale: 1 } : {}}
           transition={{ delay: 0.3 + i * 0.2, duration: 0.5 }}
         >
-          <div className={`w-16 h-10 rounded-lg flex items-center justify-center text-[8px] font-bold transition-all duration-500 ${
+          <div className={`w-16 h-10 rounded-lg flex items-center justify-center text-[10px] sm:text-[8px] font-bold transition-all duration-500 ${
             active ? "bg-green-50 border border-green-200 text-green-700" : "bg-[var(--color-surface-card)] border border-[var(--color-hairline)] text-[var(--color-stone)]"
           }`}>
             {active ? "••••••" : item}

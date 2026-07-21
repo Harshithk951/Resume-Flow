@@ -175,7 +175,7 @@ export function KanbanBoard({
                       layoutId={`job-${job._id}`}
                       transition={{ type: "spring", stiffness: 200, damping: 20 }}
                     >
-                      <Link href={`/company/${job._id}`} className="block">
+                      <Link href={`/company/${job._id}`} className="block active:scale-[0.98] transition-transform duration-100">
                         <Card className="hover:shadow-md border-[var(--color-hairline)]/80 transition-all duration-200 group bg-[var(--color-canvas)]">
                           <CardContent className="p-4">
                             <div className="flex items-start justify-between mb-2">
@@ -234,9 +234,9 @@ export function KanbanBoard({
                                       console.error("Retry failed:", err);
                                     }
                                   }}
-                                  className="mt-1.5 flex items-center gap-1 text-[9px] font-bold text-rose-600 hover:text-rose-700 transition-colors bg-[var(--color-canvas)] hover:bg-rose-50 px-2 py-1 rounded-md border border-[var(--color-hairline)] shadow-sm"
+                                  className="mt-1.5 flex items-center justify-center gap-1.5 text-[10px] sm:text-[9px] font-bold text-rose-600 hover:text-rose-700 transition-colors bg-[var(--color-canvas)] hover:bg-rose-50 px-3 py-2 sm:px-2 sm:py-1 min-h-[36px] sm:min-h-0 rounded-md border border-[var(--color-hairline)] shadow-sm active:scale-[0.97]"
                                 >
-                                  <RotateCcw className="w-2.5 h-2.5" />
+                                  <RotateCcw className="w-3 h-3 sm:w-2.5 sm:h-2.5" />
                                   <span>Retry Ingestion</span>
                                 </button>
                               </div>

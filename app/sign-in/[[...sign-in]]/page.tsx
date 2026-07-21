@@ -306,7 +306,7 @@ export default function SignInPage() {
       {/* Top Left Navigation Link */}
       <Link
         href="/"
-        className="absolute top-6 left-6 z-20 flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-black transition-colors"
+        className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20 flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-black transition-colors"
       >
         <ArrowLeft className="w-4 h-4 stroke-[2.5]" />
         Back to home
@@ -317,10 +317,10 @@ export default function SignInPage() {
         <motion.div
           animate={isExiting ? { scale: 0.96, opacity: 0 } : { scale: 1, opacity: 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="relative z-10 w-full max-w-4xl bg-white rounded-[32px] border border-slate-200 shadow-[0_24px_64px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col md:flex-row my-auto"
+          className="relative z-10 w-full max-w-4xl bg-white rounded-[24px] sm:rounded-[32px] border border-slate-200 shadow-[0_24px_64px_rgba(0,0,0,0.08)] overflow-hidden flex flex-col md:flex-row my-auto"
         >
           {/* Left Column: Interactive Animated Characters */}
-          <div className="w-full md:w-1/2 flex items-stretch">
+          <div className="w-full md:w-1/2 flex items-stretch min-h-[200px] sm:min-h-[280px] md:min-h-[480px]">
             <InteractiveCharacters
               expression={expression}
               isEmailFocused={isEmailFocused}
@@ -334,7 +334,7 @@ export default function SignInPage() {
           <div
             ref={formRef}
             onClick={handleFormClick}
-            className="w-full md:w-1/2 p-8 sm:p-10 md:p-12 flex flex-col justify-center bg-white"
+            className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 flex flex-col justify-center bg-white"
           >
             <SignIn
               path="/sign-in"
