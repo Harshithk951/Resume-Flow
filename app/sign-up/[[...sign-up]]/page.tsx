@@ -18,17 +18,8 @@ export default function SignUpPage() {
   const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
-    try {
-      const storedTheme = localStorage.getItem("dashboard-theme");
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      if (storedTheme === "dark" || (!storedTheme && systemPrefersDark)) {
-        document.documentElement.classList.add("dark");
-      } else if (storedTheme === "light") {
-        document.documentElement.classList.remove("dark");
-      }
-    } catch {
-      // Ignore localStorage availability issues
-    }
+    // Force light theme on auth route mount
+    document.documentElement.classList.remove("dark");
   }, []);
 
   // Synchronous DOM Observer for Expression State Machine
@@ -112,9 +103,9 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[var(--color-surface-soft)] flex flex-col items-center justify-center p-4 md:p-8">
-      {/* Background Subtle Gradient Grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
+    <div className="relative min-h-screen w-full bg-[#f8fafc] flex flex-col items-center justify-center p-4 md:p-8">
+      {/* Background Visible Gray Dotted Pattern Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-100 pointer-events-none" />
 
       {/* Target CSS Styling */}
       <style>{`
@@ -270,12 +261,16 @@ export default function SignUpPage() {
           margin-bottom: 2px !important;
         }
 
-        /* Completely Hide Clerk Dev Mode Notice Badge & Optional Name Fields */
+        /* Completely Hide Clerk Dev Mode Notice Badge, Stray Footer Cards, & Name Fields */
         [data-clerk-dev-mode-notice],
         div[class*="dev-mode-notice"],
         .cl-internal-dev-mode-notice,
         .cl-devModeNotice,
         [data-clerk-notice],
+        .cl-footerTextContainer,
+        .cl-internal-ph3a4t,
+        .cl-internal-157s8o7,
+        .cl-internal-1k8v9f6,
         .cl-formField__firstName,
         .cl-formField__lastName,
         .cl-formFieldRow__firstName,
@@ -294,7 +289,7 @@ export default function SignUpPage() {
       {/* Top Left Navigation Link */}
       <Link
         href="/"
-        className="absolute top-6 left-6 z-20 flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100 hover:text-black dark:hover:text-white transition-colors"
+        className="absolute top-6 left-6 z-20 flex items-center gap-2 text-sm font-bold text-slate-900 hover:text-black transition-colors"
       >
         <ArrowLeft className="w-4 h-4 stroke-[2.5]" />
         Back to home
