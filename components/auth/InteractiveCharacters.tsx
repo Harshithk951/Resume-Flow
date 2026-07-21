@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export function InteractiveCharacters() {
   const containerRef = useRef<HTMLDivElement>(null);
