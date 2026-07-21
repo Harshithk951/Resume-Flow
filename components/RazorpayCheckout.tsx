@@ -162,24 +162,46 @@ export function RazorpayCheckout({
           setStatus("verifying");
 
           // ─── Step 4: Verify payment signature server-side ──
-          const verifyRes = await fetch("/api/razorpay/verify-payment", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              clerkId: userId,
-              plan,
-            }),
+          console.log("[Razorpay] Verifying payment...", {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
           });
 
-          const verifyData = await verifyRes.json();
+          // Add a timeout to prevent hanging on "Verifying..."
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-          if (!verifyRes.ok || !verifyData.success) {
-            throw new Error(
-              verifyData.error || "Payment verification failed"
-            );
+          try {
+            const verifyRes = await fetch("/api/razorpay/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              signal: controller.signal,
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                clerkId: userId,
+                plan,
+              }),
+            });
+
+            clearTimeout(timeoutId);
+            console.log("[Razorpay] Verify response status:", verifyRes.status);
+
+            const verifyData = await verifyRes.json();
+            console.log("[Razorpay] Verify response data:", verifyData);
+
+            if (!verifyRes.ok || !verifyData.success) {
+              throw new Error(
+                verifyData.error || `Verification failed (${verifyRes.status})`
+              );
+            }
+          } catch (fetchErr: any) {
+            clearTimeout(timeoutId);
+            if (fetchErr.name === "AbortError") {
+              throw new Error("Payment verification timed out. Please contact support.");
+            }
+            throw fetchErr;
           }
 
           setStatus("success");
