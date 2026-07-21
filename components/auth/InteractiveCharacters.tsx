@@ -70,9 +70,13 @@ export function InteractiveCharacters({
         let targetX = latestMouseRef.current.x;
         let targetY = latestMouseRef.current.y;
 
-        // If watching email input, bias target toward right side (form area)
         if (currentExpr === "watching") {
+          // Email focus: bias target toward right side (form area)
           targetX = rect.left + rect.width * 1.2;
+          targetY = rect.top + rect.height * 0.45;
+        } else if (currentExpr === "shy" || isPasswordFocused) {
+          // Password focus / typing: characters look LEFT away from password field for privacy!
+          targetX = rect.left - rect.width * 0.8;
           targetY = rect.top + rect.height * 0.45;
         }
 
@@ -110,7 +114,7 @@ export function InteractiveCharacters({
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
       clearInterval(blinkInterval);
     };
-  }, []);
+  }, [isPasswordFocused]);
 
   // Derived style parameters for expressions
   const isShy = activeExpression === "shy";
@@ -311,7 +315,11 @@ export function InteractiveCharacters({
                 fill="none"
                 strokeLinecap="round"
               />
+            ) : isShy || isPasswordFocused ? (
+              /* Beak points LEFT when typing password */
+              <line x1="205" y1="248" x2="268" y2="248" stroke="#1c1c1e" strokeWidth="6.5" strokeLinecap="square" />
             ) : (
+              /* Beak points RIGHT otherwise */
               <line x1="282" y1="248" x2="345" y2="248" stroke="#1c1c1e" strokeWidth="6.5" strokeLinecap="square" />
             )}
           </g>

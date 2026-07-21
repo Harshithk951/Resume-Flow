@@ -140,6 +140,12 @@ export default function SignUpPage() {
           font-size: 14px !important;
           margin-top: 4px !important;
         }
+        .cl-formFieldInputContainer {
+          position: relative !important;
+          display: flex !important;
+          align-items: center !important;
+          width: 100% !important;
+        }
         .cl-formFieldInput {
           background-color: transparent !important;
           color: #0f172a !important;
@@ -147,14 +153,32 @@ export default function SignUpPage() {
           border-bottom: 2px solid #cbd5e1 !important;
           border-radius: 0px !important;
           padding-left: 0px !important;
-          padding-right: 0px !important;
+          padding-right: 32px !important;
           box-shadow: none !important;
           transition: border-color 0.2s ease;
+          width: 100% !important;
         }
         .cl-formFieldInput:focus {
           border-bottom-color: #0f172a !important;
           outline: none !important;
           box-shadow: none !important;
+        }
+        .cl-formFieldInputShowPasswordButton,
+        .cl-formFieldInputShowPasswordIcon,
+        button[aria-label*="password"],
+        button[aria-label*="Password"],
+        button[aria-label*="Show password"],
+        button[aria-label*="Hide password"] {
+          display: flex !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          color: #64748b !important;
+          cursor: pointer !important;
+          position: absolute !important;
+          right: 8px !important;
+          top: 50% !important;
+          transform: translateY(-50%) !important;
+          z-index: 10 !important;
         }
         .cl-formButtonPrimary {
           background-color: #1c1c1e !important;
@@ -187,6 +211,8 @@ export default function SignUpPage() {
         .cl-socialButtonsBlockButton:hover {
           background-color: #e4e4e7 !important;
         }
+
+        /* Two-Line Stacked Footer Below Continue Button */
         .cl-footer, .cl-footerAction, .cl-footerActionTextContainer {
           background: transparent !important;
           border: none !important;
@@ -195,32 +221,32 @@ export default function SignUpPage() {
           margin-bottom: 0px !important;
           padding-bottom: 0px !important;
           display: flex !important;
-          flex-direction: row !important;
+          flex-direction: column !important;
           justify-content: center !important;
           align-items: center !important;
           text-align: center !important;
           width: 100% !important;
-          white-space: nowrap !important;
+          gap: 4px !important;
         }
         .cl-footerActionText {
           color: #64748b !important;
           font-size: 14px !important;
           font-weight: 500 !important;
-          display: inline !important;
+          display: block !important;
           visibility: visible !important;
           opacity: 1 !important;
-          white-space: nowrap !important;
+          text-align: center !important;
         }
         .cl-footerActionLink {
           color: #1c1c1e !important;
           font-size: 14px !important;
           font-weight: 700 !important;
-          margin-left: 4px !important;
-          display: inline !important;
+          margin-left: 0px !important;
+          display: block !important;
           visibility: visible !important;
           opacity: 1 !important;
           text-decoration: none !important;
-          white-space: nowrap !important;
+          text-align: center !important;
         }
         .cl-footerActionLink:hover {
           text-decoration: underline !important;
@@ -244,17 +270,17 @@ export default function SignUpPage() {
           margin-bottom: 2px !important;
         }
 
-        /* Reposition Clerk Dev Mode Badge to bottom-right of viewport outside auth card */
+        /* Reposition Clerk Dev Mode Badge centered at the very bottom line of viewport */
         [data-clerk-dev-mode-notice],
         div[class*="dev-mode-notice"],
         .cl-internal-dev-mode-notice,
         .cl-devModeNotice {
           position: fixed !important;
-          bottom: 16px !important;
-          right: 16px !important;
+          bottom: 12px !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
           z-index: 9999 !important;
           margin: 0 !important;
-          transform: none !important;
         }
       `}</style>
 
@@ -308,9 +334,9 @@ export default function SignUpPage() {
                   formButtonPrimary:
                     "bg-[#1c1c1e] hover:bg-[#2c2c2e] text-white rounded-full h-12 text-[15px] font-bold shadow-md transition-all active:scale-[0.99] mt-4 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   formFieldInput:
-                    "bg-transparent rounded-none border-0 border-b-2 border-slate-300 focus:border-slate-900 h-11 text-slate-900 placeholder:text-slate-400 font-medium px-0 transition-all",
-                  footerActionLink: "text-[#1c1c1e] font-bold hover:underline ml-1 inline whitespace-nowrap",
-                  footerActionText: "text-slate-500 font-medium text-sm inline whitespace-nowrap",
+                    "bg-transparent rounded-none border-0 border-b-2 border-slate-300 focus:border-slate-900 h-11 text-slate-900 placeholder:text-slate-400 font-medium px-0 transition-all pr-8",
+                  footerActionLink: "text-[#1c1c1e] font-bold hover:underline block text-center mt-1",
+                  footerActionText: "text-slate-500 font-medium text-sm block text-center",
                   socialButtonsBlockButton:
                     "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 mt-2 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   socialButtonsBlockButtonText: "text-[#1c1c1e] font-semibold text-sm",
@@ -322,15 +348,16 @@ export default function SignUpPage() {
                   formHeaderSubtitle: "text-slate-500 text-center",
                   formFieldRow: "bg-transparent",
                   formField: "bg-transparent",
-                  footer: "bg-transparent border-none mt-4 justify-center text-center w-full whitespace-nowrap",
-                  footerAction: "bg-transparent justify-center text-center w-full flex flex-row items-center whitespace-nowrap",
+                  footer: "bg-transparent border-none mt-4 justify-center text-center w-full flex flex-col items-center",
+                  footerAction: "bg-transparent justify-center text-center w-full flex flex-col items-center gap-1",
                   socialButtons: "bg-transparent w-full",
                   alternativeMethods: "bg-transparent text-[#1c1c1e]",
                   alternativeMethodsBlockButton:
                     "bg-[#f4f4f5] text-[#1c1c1e] border border-slate-200 hover:bg-slate-200 rounded-full h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   formFieldError: "bg-transparent",
                   formFieldErrorText: "text-[#f75c2f] font-medium text-xs mt-1",
-                  devModeNotice: "fixed bottom-4 right-4 z-[9999]",
+                  devModeNotice: "fixed bottom-3 left-1/2 -translate-x-1/2 z-[9999]",
+                  formFieldInputShowPasswordButton: "text-slate-600 hover:text-slate-900 cursor-pointer text-sm font-semibold",
                 },
               } as any}
             />
