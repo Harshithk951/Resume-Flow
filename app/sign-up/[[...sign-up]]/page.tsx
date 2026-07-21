@@ -4,11 +4,16 @@ import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-import { useEffect } from "react";
-
+import { useEffect, useState, useRef } from "react";
 import { InteractiveCharacters } from "@/components/auth/InteractiveCharacters";
 
 export default function SignUpPage() {
+  const formRef = useRef<HTMLDivElement>(null);
+
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
   useEffect(() => {
     // Ensure document.documentElement syncs with dark mode setting or system preference
     try {
@@ -22,6 +27,60 @@ export default function SignUpPage() {
     } catch {
       // Ignore localStorage availability issues
     }
+  }, []);
+
+  // Observer to track Password Focus, Password Visibility (Unmask), and Error Alert States
+  useEffect(() => {
+    if (!formRef.current) return;
+
+    const checkState = () => {
+      if (!formRef.current) return;
+      const allInputs = Array.from(formRef.current.querySelectorAll("input"));
+
+      // Check if password input is currently focused
+      const activeElement = document.activeElement;
+      const pwdIsFocused =
+        activeElement !== null &&
+        activeElement.tagName === "INPUT" &&
+        ((activeElement as HTMLInputElement).name === "password" ||
+          (activeElement as HTMLInputElement).type === "password" ||
+          (activeElement as HTMLInputElement).getAttribute("autocomplete") === "new-password");
+      setIsPasswordFocused(pwdIsFocused);
+
+      // Check if password text is currently unmasked/visible (type === "text" on password field)
+      const pwdUnmasked = allInputs.some(
+        (input) =>
+          (input.name === "password" || input.getAttribute("autocomplete") === "new-password") &&
+          input.type === "text"
+      );
+      setIsPasswordVisible(pwdUnmasked);
+
+      // Check if validation error is present
+      const errorEl = formRef.current.querySelector(".cl-formFieldErrorText");
+      setHasError(Boolean(errorEl && errorEl.textContent?.trim()));
+    };
+
+    const formEl = formRef.current;
+    formEl.addEventListener("focusin", checkState);
+    formEl.addEventListener("focusout", checkState);
+    formEl.addEventListener("input", checkState);
+    formEl.addEventListener("click", checkState);
+
+    const observer = new MutationObserver(checkState);
+    observer.observe(formEl, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["type", "class"],
+    });
+
+    return () => {
+      formEl.removeEventListener("focusin", checkState);
+      formEl.removeEventListener("focusout", checkState);
+      formEl.removeEventListener("input", checkState);
+      formEl.removeEventListener("click", checkState);
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -43,11 +102,15 @@ export default function SignUpPage() {
       <div className="relative z-10 w-full max-w-4xl bg-white dark:bg-[#181e2a] rounded-[32px] border-2 border-slate-200 dark:border-[#38445d] shadow-[0_24px_64px_rgba(0,0,0,0.2)] overflow-hidden flex flex-col md:flex-row my-auto">
         {/* Left Column: Interactive Animated Characters */}
         <div className="w-full md:w-1/2 flex items-stretch">
-          <InteractiveCharacters />
+          <InteractiveCharacters
+            isPasswordFocused={isPasswordFocused}
+            isPasswordVisible={isPasswordVisible}
+            hasError={hasError}
+          />
         </div>
 
         {/* Right Column: Auth Form */}
-        <div className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col justify-center bg-white dark:bg-[#181e2a]">
+        <div ref={formRef} className="w-full md:w-1/2 p-6 sm:p-8 md:p-10 flex flex-col justify-center bg-white dark:bg-[#181e2a]">
           <SignUp
             path="/sign-up"
             appearance={{

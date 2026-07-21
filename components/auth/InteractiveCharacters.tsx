@@ -2,7 +2,17 @@
 
 import { useEffect, useState, useRef } from "react";
 
-export function InteractiveCharacters() {
+interface InteractiveCharactersProps {
+  isPasswordFocused?: boolean;
+  isPasswordVisible?: boolean;
+  hasError?: boolean;
+}
+
+export function InteractiveCharacters({
+  isPasswordFocused = false,
+  isPasswordVisible = false,
+  hasError = false,
+}: InteractiveCharactersProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   // Normalized mouse coordinates from -1 to 1
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -50,13 +60,13 @@ export function InteractiveCharacters() {
     };
   }, []);
 
-  // Pupil offsets (constrained within eye limits)
-  const pupilOffsetX = mousePos.x * 6;
-  const pupilOffsetY = mousePos.y * 6;
+  // Pupil offsets (locked downward if password input is focused)
+  const activePupilX = isPasswordFocused && !isPasswordVisible ? 4 : mousePos.x * 6;
+  const activePupilY = isPasswordFocused && !isPasswordVisible ? 5 : mousePos.y * 6;
 
   // Face shift for solid eyes (Orange & Yellow)
-  const faceShiftX = mousePos.x * 5;
-  const faceShiftY = mousePos.y * 5;
+  const faceShiftX = isPasswordFocused && !isPasswordVisible ? 3 : mousePos.x * 5;
+  const faceShiftY = isPasswordFocused && !isPasswordVisible ? 4 : mousePos.y * 5;
 
   return (
     <div
@@ -69,7 +79,14 @@ export function InteractiveCharacters() {
         style={{ filter: "drop-shadow(0px 8px 24px rgba(0,0,0,0.06))" }}
       >
         {/* ─── 1. PURPLE CHARACTER (Background Left) ─── */}
-        <g id="purple-character">
+        <g
+          id="purple-character"
+          style={{
+            transform: isPasswordVisible ? "translateY(10px) scaleY(0.96)" : "none",
+            transformOrigin: "150px 360px",
+            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          }}
+        >
           {/* Main Pillar */}
           <rect
             x="95"
@@ -84,23 +101,34 @@ export function InteractiveCharacters() {
             {/* Left Eye White */}
             <circle cx="132" cy="125" r="9" fill="#ffffff" />
             {/* Left Pupil */}
-            <circle cx={132 + pupilOffsetX} cy={125 + pupilOffsetY} r="4" fill="#000000" />
+            <circle cx={132 + activePupilX} cy={125 + activePupilY} r="4" fill="#000000" />
 
-            {/* Vertical Nose Line */}
-            <line
-              x1="150"
-              y1="122"
-              x2="150"
-              y2="148"
-              stroke="#000000"
-              strokeWidth="5"
-              strokeLinecap="round"
-            />
+            {/* Nose / Mouth / Expression */}
+            {hasError ? (
+              <>
+                {/* Concerned Angled Eyebrows */}
+                <line x1="124" y1="110" x2="138" y2="114" stroke="#000000" strokeWidth="3" strokeLinecap="round" />
+                <line x1="162" y1="114" x2="176" y2="110" stroke="#000000" strokeWidth="3" strokeLinecap="round" />
+                {/* Frown Mouth */}
+                <path d="M 144 146 Q 150 136 156 146" stroke="#000000" strokeWidth="4" fill="none" strokeLinecap="round" />
+              </>
+            ) : (
+              /* Standard Vertical Line Nose/Mouth */
+              <line
+                x1="150"
+                y1="122"
+                x2="150"
+                y2="148"
+                stroke="#000000"
+                strokeWidth="5"
+                strokeLinecap="round"
+              />
+            )}
 
             {/* Right Eye White */}
             <circle cx="168" cy="125" r="9" fill="#ffffff" />
             {/* Right Pupil */}
-            <circle cx={168 + pupilOffsetX} cy={125 + pupilOffsetY} r="4" fill="#000000" />
+            <circle cx={168 + activePupilX} cy={125 + activePupilY} r="4" fill="#000000" />
           </g>
         </g>
 
@@ -116,16 +144,37 @@ export function InteractiveCharacters() {
             className="fill-[#18181b] dark:fill-[#09090b]"
           />
           {/* Face Elements (Top Right) */}
-          <g style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
+          <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
             {/* Left Eye White */}
             <circle cx="236" cy="195" r="8" fill="#ffffff" />
             {/* Left Pupil */}
-            <circle cx={236 + pupilOffsetX * 0.8} cy={195 + pupilOffsetY * 0.8} r="3.5" fill="#000000" />
+            <circle cx={236 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
 
             {/* Right Eye White */}
             <circle cx="255" cy="195" r="8" fill="#ffffff" />
             {/* Right Pupil */}
-            <circle cx={255 + pupilOffsetX * 0.8} cy={195 + pupilOffsetY * 0.8} r="3.5" fill="#000000" />
+            <circle cx={255 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
+          </g>
+
+          {/* ─── PRIVACY REACTION: HANDS OVER EYES ─── */}
+          <g
+            id="black-character-hands"
+            style={{
+              transform: isPasswordVisible
+                ? "translateY(0px) scale(1)"
+                : "translateY(32px) scale(0)",
+              transformOrigin: "245px 195px",
+              opacity: isPasswordVisible ? 1 : 0,
+              transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease",
+            }}
+          >
+            {/* Left Hand covering left eye */}
+            <ellipse cx="235" cy="195" rx="10" ry="11" fill="#27272a" stroke="#18181b" strokeWidth="2" />
+            {/* Right Hand covering right eye */}
+            <ellipse cx="256" cy="195" rx="10" ry="11" fill="#27272a" stroke="#18181b" strokeWidth="2" />
+            {/* Finger details */}
+            <line x1="235" y1="187" x2="235" y2="198" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="256" y1="187" x2="256" y2="198" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
           </g>
         </g>
 
@@ -160,7 +209,14 @@ export function InteractiveCharacters() {
         </g>
 
         {/* ─── 4. ORANGE CHARACTER (Front Foreground Semi-Circle) ─── */}
-        <g id="orange-character">
+        <g
+          id="orange-character"
+          style={{
+            transform: isPasswordVisible ? "translateY(6px) scaleY(0.97)" : "none",
+            transformOrigin: "190px 360px",
+            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
+          }}
+        >
           {/* Semi-circle Dome */}
           <path
             d="M 75 360 A 115 115 0 0 1 305 360 Z"
