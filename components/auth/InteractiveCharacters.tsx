@@ -71,7 +71,7 @@ export function InteractiveCharacters({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full min-h-[360px] md:min-h-[480px] bg-[#e3e5e8] dark:bg-[#151a24] flex items-end justify-center p-4 overflow-hidden select-none"
+      className="relative w-full h-full min-h-[360px] md:min-h-[480px] bg-[#e5e5e5] dark:bg-[#151a24] flex items-end justify-center p-4 overflow-hidden select-none"
     >
       <svg
         viewBox="0 0 400 400"
@@ -94,7 +94,7 @@ export function InteractiveCharacters({
             width="110"
             height="265"
             rx="6"
-            className="fill-[#7c3aed] dark:fill-[#6d28d9]"
+            className="fill-[#6c1cd3] dark:fill-[#5a16b3]"
           />
           {/* Face Elements */}
           <g style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "150px 125px" }}>
@@ -141,7 +141,7 @@ export function InteractiveCharacters({
             width="75"
             height="190"
             rx="4"
-            className="fill-[#18181b] dark:fill-[#09090b]"
+            className="fill-[#1c1c1e] dark:fill-[#0e0e10]"
           />
           {/* Face Elements (Top Right) */}
           <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
@@ -169,9 +169,9 @@ export function InteractiveCharacters({
             }}
           >
             {/* Left Hand covering left eye */}
-            <ellipse cx="235" cy="195" rx="10" ry="11" fill="#27272a" stroke="#18181b" strokeWidth="2" />
+            <ellipse cx="235" cy="195" rx="10" ry="11" fill="#27272a" stroke="#1c1c1e" strokeWidth="2" />
             {/* Right Hand covering right eye */}
-            <ellipse cx="256" cy="195" rx="10" ry="11" fill="#27272a" stroke="#18181b" strokeWidth="2" />
+            <ellipse cx="256" cy="195" rx="10" ry="11" fill="#27272a" stroke="#1c1c1e" strokeWidth="2" />
             {/* Finger details */}
             <line x1="235" y1="187" x2="235" y2="198" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
             <line x1="256" y1="187" x2="256" y2="198" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
@@ -183,7 +183,7 @@ export function InteractiveCharacters({
           {/* Pillar with Arch Top */}
           <path
             d="M 245 360 L 245 250 A 42.5 42.5 0 0 1 330 250 L 330 360 Z"
-            className="fill-[#eab308] dark:fill-[#ca8a04]"
+            className="fill-[#eed500] dark:fill-[#c4af00]"
           />
           {/* Face Elements */}
           <g transform={`translate(${faceShiftX * 0.6}, ${faceShiftY * 0.6})`}>
@@ -201,7 +201,7 @@ export function InteractiveCharacters({
               y1="248"
               x2="345"
               y2="248"
-              stroke="#18181b"
+              stroke="#1c1c1e"
               strokeWidth="6.5"
               strokeLinecap="square"
             />
@@ -220,7 +220,7 @@ export function InteractiveCharacters({
           {/* Semi-circle Dome */}
           <path
             d="M 75 360 A 115 115 0 0 1 305 360 Z"
-            className="fill-[#f97316] dark:fill-[#ea580c]"
+            className="fill-[#f75c2f] dark:fill-[#d6471e]"
           />
           {/* Face Elements (Centered) */}
           <g transform={`translate(${faceShiftX * 0.8}, ${faceShiftY * 0.8})`}>

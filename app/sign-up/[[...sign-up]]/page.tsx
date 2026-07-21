@@ -99,7 +99,7 @@ export default function SignUpPage() {
       </Link>
 
       {/* Main Split Card Container (WeStud layout) */}
-      <div className="relative z-10 w-full max-w-4xl bg-white dark:bg-[#181e2a] rounded-[32px] border-2 border-slate-200 dark:border-[#38445d] shadow-[0_24px_64px_rgba(0,0,0,0.2)] overflow-hidden flex flex-col md:flex-row my-auto">
+      <div className="relative z-10 w-full max-w-4xl bg-white dark:bg-[#181e2a] rounded-[32px] border-2 border-slate-200 dark:border-[#38445d] shadow-[0_24px_64px_rgba(0,0,0,0.18)] overflow-hidden flex flex-col md:flex-row my-auto">
         {/* Left Column: Interactive Animated Characters */}
         <div className="w-full md:w-1/2 flex items-stretch">
           <InteractiveCharacters
@@ -119,29 +119,29 @@ export default function SignUpPage() {
                 card: "shadow-none border-none bg-transparent w-full p-0",
                 cardBox: "shadow-none border-none bg-transparent w-full p-0",
                 headerTitle: "text-[24px] font-bold text-slate-900 dark:text-[#f0f6fc]",
-                headerSubtitle: "text-[15px] text-slate-600 dark:text-[#8b949e]",
+                headerSubtitle: "text-[15px] text-slate-500 dark:text-[#8b949e]",
                 formButtonPrimary:
-                  "bg-[#18181b] hover:bg-[#27272a] dark:bg-[#f0f6fc] dark:hover:bg-[#e2e8f0] dark:text-[#18181b] rounded-full h-[46px] text-[15px] font-bold text-white shadow-md transition-all active:scale-[0.99]",
+                  "bg-[#1c1c1e] hover:bg-[#2c2c2e] dark:bg-[#f0f6fc] dark:hover:bg-[#e2e8f0] dark:text-[#1c1c1e] rounded-full h-[46px] text-[15px] font-bold text-white shadow-sm transition-all active:scale-[0.99]",
                 formFieldInput:
-                  "bg-slate-50/80 dark:bg-[#111622] rounded-[16px] border-2 border-slate-300 dark:border-[#3d4b68] focus:border-[#18181b] dark:focus:border-[#f0f6fc] focus:ring-2 focus:ring-slate-900/10 h-[46px] text-slate-900 dark:text-[#f0f6fc] placeholder:text-slate-400 dark:placeholder:text-[#8b949e] font-medium shadow-sm transition-all",
-                footerActionLink: "text-slate-900 dark:text-[#f0f6fc] font-bold hover:underline",
+                  "bg-slate-50/80 dark:bg-[#111622] rounded-[16px] border-2 border-slate-200 dark:border-[#3d4b68] focus:border-[#1c1c1e] dark:focus:border-[#f0f6fc] focus:ring-2 focus:ring-slate-900/10 h-[46px] text-slate-900 dark:text-[#f0f6fc] placeholder:text-slate-400 dark:placeholder:text-[#8b949e] font-medium shadow-sm transition-all",
+                footerActionLink: "text-[#1c1c1e] dark:text-[#f0f6fc] font-bold hover:underline",
                 socialButtonsBlockButton:
-                  "bg-slate-100/80 dark:bg-[#111622] rounded-full border-2 border-slate-300 dark:border-[#3d4b68] text-slate-900 dark:text-[#f0f6fc] hover:bg-slate-200 dark:hover:bg-[#1f283d] hover:border-slate-400 dark:hover:border-[#526388] shadow-sm transition-all font-semibold h-[46px]",
+                  "bg-[#f4f4f5] dark:bg-[#111622] rounded-full border border-slate-200 dark:border-[#3d4b68] text-slate-900 dark:text-[#f0f6fc] hover:bg-slate-200 dark:hover:bg-[#1f283d] transition-all font-semibold h-[46px]",
                 socialButtonsBlockButtonText: "text-slate-900 dark:text-[#f0f6fc] font-semibold text-sm",
                 formFieldLabel: "text-slate-800 dark:text-[#e6edf3] font-semibold text-sm mb-1.5",
-                dividerLine: "bg-slate-300 dark:bg-[#38445d] h-[1px]",
-                dividerText: "text-slate-500 dark:text-[#8b949e] font-semibold text-xs uppercase tracking-wider",
-                identityPreviewEditButton: "text-slate-900 dark:text-[#f0f6fc] font-semibold",
+                dividerLine: "bg-slate-200 dark:bg-[#38445d] h-[1px]",
+                dividerText: "text-slate-400 dark:text-[#8b949e] font-semibold text-xs uppercase tracking-wider",
+                identityPreviewEditButton: "text-[#1c1c1e] dark:text-[#f0f6fc] font-semibold",
                 formHeaderTitle: "text-slate-900 dark:text-[#f0f6fc]",
-                formHeaderSubtitle: "text-slate-600 dark:text-[#8b949e]",
+                formHeaderSubtitle: "text-slate-500 dark:text-[#8b949e]",
                 formFieldRow: "bg-transparent",
                 formField: "bg-transparent",
-                footer: "bg-transparent border-t-2 border-slate-200 dark:border-[#2b3548] mt-4 pt-4",
+                footer: "bg-transparent border-t border-slate-200 dark:border-[#2b3548] mt-4 pt-4",
                 footerAction: "bg-transparent",
                 socialButtons: "bg-transparent",
                 alternativeMethods: "bg-transparent text-slate-900 dark:text-[#f0f6fc]",
                 alternativeMethodsBlockButton:
-                  "bg-white dark:bg-[#111622] text-slate-900 dark:text-[#f0f6fc] border-2 border-slate-300 dark:border-[#3d4b68] hover:bg-slate-100 dark:hover:bg-[#1f283d] rounded-full h-[46px]",
+                  "bg-[#f4f4f5] dark:bg-[#111622] text-slate-900 dark:text-[#f0f6fc] border border-slate-200 dark:border-[#3d4b68] hover:bg-slate-200 dark:hover:bg-[#1f283d] rounded-full h-[46px]",
                 formFieldError: "bg-transparent",
                 formFieldErrorText: "text-[#e60023] dark:text-[#ff3040] font-medium",
               },
