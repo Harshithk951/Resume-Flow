@@ -9,6 +9,7 @@ import { InteractiveCharacters } from "@/components/auth/InteractiveCharacters";
 export default function SignUpPage() {
   const formRef = useRef<HTMLDivElement>(null);
 
+  const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -30,22 +31,27 @@ export default function SignUpPage() {
     }
   }, []);
 
-  // Observer to track Password Focus, Password Visibility (Unmask), and Error Alert States
+  // Observer to track Email Focus, Password Focus, Password Visibility, and Error Alert States
   useEffect(() => {
     if (!formRef.current) return;
 
     const checkState = () => {
       if (!formRef.current) return;
       const allInputs = Array.from(formRef.current.querySelectorAll("input"));
+      const activeElement = document.activeElement;
+
+      // Check if email input is currently focused
+      const emailInput = formRef.current.querySelector(
+        'input[type="email"], input[name="emailAddress"], input[name="email"]'
+      );
+      const emailIsFocused = activeElement !== null && activeElement === emailInput;
+      setIsEmailFocused(emailIsFocused);
 
       // Check if password input is currently focused
-      const activeElement = document.activeElement;
-      const pwdIsFocused =
-        activeElement !== null &&
-        activeElement.tagName === "INPUT" &&
-        ((activeElement as HTMLInputElement).name === "password" ||
-          (activeElement as HTMLInputElement).type === "password" ||
-          (activeElement as HTMLInputElement).getAttribute("autocomplete") === "new-password");
+      const passInput = formRef.current.querySelector(
+        'input[type="password"], input[name="password"]'
+      );
+      const pwdIsFocused = activeElement !== null && activeElement === passInput;
       setIsPasswordFocused(pwdIsFocused);
 
       // Check if password text is currently unmasked/visible (type === "text" on password field)
@@ -57,7 +63,7 @@ export default function SignUpPage() {
       setIsPasswordVisible(pwdUnmasked);
 
       // Check if validation error is present
-      const errorEl = formRef.current.querySelector(".cl-formFieldErrorText");
+      const errorEl = formRef.current.querySelector(".cl-formFieldErrorText, .cl-formFieldError");
       setHasError(Boolean(errorEl && errorEl.textContent?.trim()));
     };
 
@@ -93,7 +99,10 @@ export default function SignUpPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full bg-[#f4f4f5] dark:bg-[#090d16] flex flex-col items-center justify-center p-4 md:p-8">
+    <div className="relative min-h-screen w-full bg-[var(--color-surface-soft)] flex flex-col items-center justify-center p-4 md:p-8">
+      {/* Background Subtle Gradient Grid (Restored Dotted Background) */}
+      <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
+
       {/* Target CSS Overrides to Force Clean WeStud Image 2 Layout */}
       <style>{`
         .cl-card, .cl-main, .cl-signUp-start, .cl-signIn-start, .cl-cardBox, .cl-formFieldRow, .cl-formField, .cl-header, .cl-footer, .cl-rootBox, .cl-pageScrollBox {
@@ -198,6 +207,7 @@ export default function SignUpPage() {
         {/* Left Column: Interactive Animated Characters */}
         <div className="w-full md:w-1/2 flex items-stretch">
           <InteractiveCharacters
+            isEmailFocused={isEmailFocused}
             isPasswordFocused={isPasswordFocused}
             isPasswordVisible={isPasswordVisible}
             isTyping={isTyping}
@@ -207,13 +217,6 @@ export default function SignUpPage() {
 
         {/* Right Column: Auth Form */}
         <div ref={formRef} className="w-full md:w-1/2 p-8 sm:p-10 md:p-12 flex flex-col justify-center bg-white">
-          {/* Top WeStud Star/Sparkle Icon (Matching Image 2) */}
-          <div className="flex justify-center mb-6">
-            <svg width="28" height="32" viewBox="0 0 28 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M14 0C14 8.83656 20.268 16 28 16C20.268 16 14 23.1634 14 32C14 23.1634 7.73199 16 0 16C7.73199 16 14 8.83656 14 0Z" fill="#1C1C1E"/>
-            </svg>
-          </div>
-
           <SignUp
             path="/sign-up"
             appearance={{
