@@ -270,26 +270,33 @@ export default function SignUpPage() {
           margin-bottom: 2px !important;
         }
 
-        /* Reposition Clerk Dev Mode Badge centered at the very bottom line of viewport */
+        /* Completely Hide Clerk Dev Mode Notice Badge & Optional Name Fields */
         [data-clerk-dev-mode-notice],
         div[class*="dev-mode-notice"],
         .cl-internal-dev-mode-notice,
-        .cl-devModeNotice {
-          position: fixed !important;
-          bottom: 12px !important;
-          left: 50% !important;
-          transform: translateX(-50%) !important;
-          z-index: 9999 !important;
+        .cl-devModeNotice,
+        [data-clerk-notice],
+        .cl-formField__firstName,
+        .cl-formField__lastName,
+        .cl-formFieldRow__firstName,
+        .cl-formFieldRow__lastName {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          height: 0 !important;
+          width: 0 !important;
           margin: 0 !important;
+          padding: 0 !important;
         }
       `}</style>
 
       {/* Top Left Navigation Link */}
       <Link
         href="/"
-        className="absolute top-6 left-6 z-20 flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+        className="absolute top-6 left-6 z-20 flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100 hover:text-black dark:hover:text-white transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-4 h-4 stroke-[2.5]" />
         Back to home
       </Link>
 
@@ -356,7 +363,7 @@ export default function SignUpPage() {
                     "bg-[#f4f4f5] text-[#1c1c1e] border border-slate-200 hover:bg-slate-200 rounded-full h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   formFieldError: "bg-transparent",
                   formFieldErrorText: "text-[#f75c2f] font-medium text-xs mt-1",
-                  devModeNotice: "fixed bottom-3 left-1/2 -translate-x-1/2 z-[9999]",
+                  devModeNotice: "hidden",
                   formFieldInputShowPasswordButton: "text-slate-600 hover:text-slate-900 cursor-pointer text-sm font-semibold",
                 },
               } as any}
