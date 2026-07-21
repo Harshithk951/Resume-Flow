@@ -34,7 +34,7 @@ export default function SignUpPage() {
     }
   }, []);
 
-  // Observer to track Email Focus, Password Focus, Password Visibility, and Error Alert States
+  // Synchronous DOM Observer for Expression State Machine
   useEffect(() => {
     if (!formRef.current) return;
 
@@ -114,7 +114,6 @@ export default function SignUpPage() {
     };
   }, []);
 
-  // Handle submit click exit transition
   const handleFormClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     const isSubmitButton = target.closest(".cl-formButtonPrimary");
@@ -125,22 +124,17 @@ export default function SignUpPage() {
 
   return (
     <div className="relative min-h-screen w-full bg-[var(--color-surface-soft)] flex flex-col items-center justify-center p-4 md:p-8">
-      {/* Background Subtle Gradient Grid (Restored Dotted Background) */}
+      {/* Background Subtle Gradient Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
 
-      {/* Target CSS Overrides */}
+      {/* Target CSS Styling (No CSS flex-order hacks) */}
       <style>{`
         .cl-card, .cl-main, .cl-signUp-start, .cl-signIn-start, .cl-cardBox, .cl-formFieldRow, .cl-formField, .cl-header, .cl-footer, .cl-rootBox, .cl-pageScrollBox {
           background-color: transparent !important;
           background: transparent !important;
           box-shadow: none !important;
         }
-        .cl-cardBox, .cl-signIn-start, .cl-signUp-start, .cl-main {
-          display: flex !important;
-          flex-direction: column !important;
-        }
         .cl-header, .cl-formHeader {
-          order: 1 !important;
           text-align: center !important;
           margin-bottom: 20px !important;
         }
@@ -156,11 +150,6 @@ export default function SignUpPage() {
           text-align: center !important;
           font-size: 14px !important;
           margin-top: 4px !important;
-        }
-        .cl-form {
-          order: 2 !important;
-          display: flex !important;
-          flex-direction: column !important;
         }
         .cl-formFieldInput {
           background-color: transparent !important;
@@ -179,7 +168,6 @@ export default function SignUpPage() {
           box-shadow: none !important;
         }
         .cl-formButtonPrimary {
-          order: 3 !important;
           background-color: #1c1c1e !important;
           color: #ffffff !important;
           border-radius: 9999px !important;
@@ -194,11 +182,7 @@ export default function SignUpPage() {
         .cl-formButtonPrimary:hover {
           background-color: #000000 !important;
         }
-        .cl-dividerRow, .cl-dividerLine, .cl-dividerText {
-          display: none !important;
-        }
-        .cl-socialButtons, .cl-socialButtonsBlockButton {
-          order: 4 !important;
+        .cl-socialButtonsBlockButton {
           background-color: #f4f4f5 !important;
           border: 1px solid #e4e4e7 !important;
           color: #1c1c1e !important;
@@ -207,6 +191,7 @@ export default function SignUpPage() {
           font-weight: 600 !important;
           font-size: 14px !important;
           margin-top: 12px !important;
+          margin-bottom: 12px !important;
           width: 100% !important;
           cursor: url('/cursor-arrow.svg'), pointer !important;
         }
@@ -214,7 +199,6 @@ export default function SignUpPage() {
           background-color: #e4e4e7 !important;
         }
         .cl-footer, .cl-footerAction, .cl-footerActionTextContainer {
-          order: 5 !important;
           background: transparent !important;
           border: none !important;
           margin-top: 16px !important;
@@ -249,6 +233,18 @@ export default function SignUpPage() {
         .cl-footerActionLink:hover {
           text-decoration: underline !important;
         }
+        .cl-dividerRow {
+          margin-top: 12px !important;
+          margin-bottom: 12px !important;
+        }
+        .cl-dividerLine {
+          background-color: #e2e8f0 !important;
+        }
+        .cl-dividerText {
+          color: #94a3b8 !important;
+          font-weight: 600 !important;
+          font-size: 11px !important;
+        }
         .cl-formFieldLabel {
           color: #334155 !important;
           font-weight: 600 !important;
@@ -269,7 +265,7 @@ export default function SignUpPage() {
         Back to home
       </Link>
 
-      {/* Main Split Card Container with Exit Transition */}
+      {/* Main Split Card Container */}
       <AnimatePresence>
         <motion.div
           animate={isExiting ? { scale: 0.96, opacity: 0 } : { scale: 1, opacity: 1 }}
@@ -288,7 +284,7 @@ export default function SignUpPage() {
             />
           </div>
 
-          {/* Right Column: Auth Form */}
+          {/* Right Column: Native Clerk Auth Form under Path A */}
           <div
             ref={formRef}
             onClick={handleFormClick}
@@ -297,10 +293,15 @@ export default function SignUpPage() {
             <SignUp
               path="/sign-up"
               appearance={{
+                layout: {
+                  socialButtonsPlacement: "top",
+                  socialButtonsVariant: "blockButton",
+                  showOptionalFields: false,
+                },
                 elements: {
                   rootBox: "w-full mx-auto",
                   card: "shadow-none border-none bg-transparent w-full p-0",
-                  cardBox: "shadow-none border-none bg-transparent w-full p-0 flex flex-col",
+                  cardBox: "shadow-none border-none bg-transparent w-full p-0",
                   headerTitle: "text-[26px] font-extrabold text-[#1c1c1e] text-center tracking-tight",
                   headerSubtitle: "text-[14px] text-slate-500 text-center mt-1",
                   formButtonPrimary:
@@ -310,11 +311,11 @@ export default function SignUpPage() {
                   footerActionLink: "text-[#1c1c1e] font-bold hover:underline ml-1 inline",
                   footerActionText: "text-slate-500 font-medium text-sm inline",
                   socialButtonsBlockButton:
-                    "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 mt-3 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
+                    "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 mt-2 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   socialButtonsBlockButtonText: "text-[#1c1c1e] font-semibold text-sm",
                   formFieldLabel: "text-slate-800 font-semibold text-sm mb-1",
-                  dividerLine: "hidden",
-                  dividerText: "hidden",
+                  dividerLine: "bg-slate-200 h-[1px]",
+                  dividerText: "text-slate-400 font-semibold text-xs uppercase tracking-wider",
                   identityPreviewEditButton: "text-[#1c1c1e] font-semibold",
                   formHeaderTitle: "text-[#1c1c1e] text-center",
                   formHeaderSubtitle: "text-slate-500 text-center",
@@ -329,7 +330,7 @@ export default function SignUpPage() {
                   formFieldError: "bg-transparent",
                   formFieldErrorText: "text-[#f75c2f] font-medium text-xs mt-1",
                 },
-              }}
+              } as any}
             />
           </div>
         </motion.div>
