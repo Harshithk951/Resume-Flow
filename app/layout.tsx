@@ -8,6 +8,7 @@ import { jakartaSans, displayFont } from "./fonts";
 import TermsFeedConsent from "@/components/TermsFeedConsent";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { WebVitals } from "@/components/WebVitals";
+import MobileBanner from "@/components/MobileBanner";
 
 const SITE_URL = "https://resumeflow.harshithkumar.in";
 
@@ -235,6 +236,9 @@ export default function RootLayout({
 
         {/* ─── GA4 + GTM with Consent Mode v2 (Client Component) ──────── */}
         <AnalyticsScripts />
+
+        {/* ─── Mobile Detection Banner ──────── */}
+        <MobileBanner />
 
         {/* ─── Core Web Vitals RUM reporting (Client Component) ──────── */}
         <WebVitals />
