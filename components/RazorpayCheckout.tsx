@@ -12,6 +12,8 @@ import confetti from "canvas-confetti";
 type Plan = "pro" | "campus";
 type Interval = "monthly" | "yearly";
 
+const convexApi = api as any;
+
 interface RazorpayCheckoutProps {
   plan: Plan;
   interval?: Interval;
@@ -50,6 +52,7 @@ export function RazorpayCheckout({
 
   // For optimistic UI — refetch user data on success
   const rerun = useMutation(api.users.createOrGetUser);
+  const verifyAndUpgrade = useMutation((convexApi as any).users.verifyRazorpayPaymentAndUpgrade);
 
   const displayLabel =
     label ||
@@ -161,47 +164,25 @@ export function RazorpayCheckout({
         }) => {
           setStatus("verifying");
 
-          // ─── Step 4: Verify payment signature server-side ──
-          console.log("[Razorpay] Verifying payment...", {
+          // ─── Step 4: Verify payment via Convex mutation (no API route needed) ──
+          console.log("[Razorpay] Verifying payment via Convex...", {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
           });
 
-          // Add a timeout to prevent hanging on "Verifying..."
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
+          const verifyResult = await verifyAndUpgrade({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            plan,
+          });
 
-          try {
-            const verifyRes = await fetch("/api/razorpay/verify-payment", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              signal: controller.signal,
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                clerkId: userId,
-                plan,
-              }),
-            });
+          console.log("[Razorpay] Verify result:", verifyResult);
 
-            clearTimeout(timeoutId);
-            console.log("[Razorpay] Verify response status:", verifyRes.status);
-
-            const verifyData = await verifyRes.json();
-            console.log("[Razorpay] Verify response data:", verifyData);
-
-            if (!verifyRes.ok || !verifyData.success) {
-              throw new Error(
-                verifyData.error || `Verification failed (${verifyRes.status})`
-              );
-            }
-          } catch (fetchErr: any) {
-            clearTimeout(timeoutId);
-            if (fetchErr.name === "AbortError") {
-              throw new Error("Payment verification timed out. Please contact support.");
-            }
-            throw fetchErr;
+          if (!verifyResult.success) {
+            throw new Error(
+              (verifyResult as any).message || "Payment verification failed"
+            );
           }
 
           setStatus("success");

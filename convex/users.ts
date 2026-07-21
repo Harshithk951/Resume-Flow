@@ -249,6 +249,85 @@ export const addCreditsAdmin = mutation({
 });
 
 /**
+ * Regular mutation to verify Razorpay payment and upgrade user plan.
+ * Called directly from the client after successful Razorpay checkout.
+ * Verifies HMAC signature server-side in Convex.
+ */
+export const verifyRazorpayPaymentAndUpgrade = mutation({
+  args: {
+    razorpay_order_id: v.string(),
+    razorpay_payment_id: v.string(),
+    razorpay_signature: v.string(),
+    plan: v.union(v.literal("pro"), v.literal("campus")),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    // ─── Verify HMAC Signature ──────────────────────────
+    const secret = process.env.RAZORPAY_KEY_SECRET ?? process.env.RAZOR_PAY_SECRET ?? "";
+    if (!secret) {
+      console.error("[Razorpay] Missing RAZORPAY_KEY_SECRET in Convex env vars");
+      throw new Error("Payment configuration error: missing secret");
+    }
+
+    // HMAC verification using Web Crypto API (available in Convex runtime)
+    const encoder = new TextEncoder();
+    const cryptoKey = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"]
+    );
+
+    const dataToVerify = `${args.razorpay_order_id}|${args.razorpay_payment_id}`;
+    const signatureBytes = new Uint8Array(
+      (args.razorpay_signature.match(/[\da-f]{2}/gi) ?? []).map((h) => parseInt(h, 16))
+    );
+
+    const isValid = await crypto.subtle.verify(
+      "HMAC",
+      cryptoKey,
+      signatureBytes,
+      encoder.encode(dataToVerify)
+    );
+
+    if (!isValid) {
+      console.error("[Razorpay] Signature mismatch — possible tampering");
+      throw new Error("Payment verification failed: invalid signature");
+    }
+
+    // ─── Upgrade user plan ────────────────────────────────
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    await ctx.db.patch(user._id, {
+      plan: args.plan,
+      credits: 100000, // Give ample credits for pro users
+    });
+
+    console.log(
+      `[Razorpay] Payment verified & plan upgraded: ${identity.subject} → ${args.plan}`
+    );
+
+    return {
+      success: true,
+      plan: args.plan,
+      message: `Successfully upgraded to ${args.plan} plan!`,
+    };
+  },
+});
+
+/**
  * Internal mutation to upgrade a user's plan after successful payment.
  * Only callable server-side — prevents client-side plan manipulation.
  */
