@@ -71,12 +71,12 @@ export function InteractiveCharacters({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full min-h-[360px] md:min-h-[480px] bg-[#e5e5e5] dark:bg-[#151a24] flex items-end justify-center p-4 overflow-hidden select-none"
+      className="relative w-full h-full min-h-[360px] md:min-h-[480px] bg-[#e5e5e5] flex items-end justify-center p-4 overflow-hidden select-none"
     >
       <svg
         viewBox="0 0 400 400"
         className="w-full max-w-[420px] h-auto overflow-visible"
-        style={{ filter: "drop-shadow(0px 8px 24px rgba(0,0,0,0.06))" }}
+        style={{ filter: "drop-shadow(0px 8px 24px rgba(0,0,0,0.04))" }}
       >
         {/* ─── 1. PURPLE CHARACTER (Background Left) ─── */}
         <g
@@ -94,7 +94,7 @@ export function InteractiveCharacters({
             width="110"
             height="265"
             rx="6"
-            className="fill-[#6c1cd3] dark:fill-[#5a16b3]"
+            className="fill-[#6c1cd3]"
           />
           {/* Face Elements */}
           <g style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "150px 125px" }}>
@@ -141,7 +141,7 @@ export function InteractiveCharacters({
             width="75"
             height="190"
             rx="4"
-            className="fill-[#1c1c1e] dark:fill-[#0e0e10]"
+            className="fill-[#1c1c1e]"
           />
           {/* Face Elements (Top Right) */}
           <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
@@ -183,7 +183,7 @@ export function InteractiveCharacters({
           {/* Pillar with Arch Top */}
           <path
             d="M 245 360 L 245 250 A 42.5 42.5 0 0 1 330 250 L 330 360 Z"
-            className="fill-[#eed500] dark:fill-[#c4af00]"
+            className="fill-[#eed500]"
           />
           {/* Face Elements */}
           <g transform={`translate(${faceShiftX * 0.6}, ${faceShiftY * 0.6})`}>
@@ -220,7 +220,7 @@ export function InteractiveCharacters({
           {/* Semi-circle Dome */}
           <path
             d="M 75 360 A 115 115 0 0 1 305 360 Z"
-            className="fill-[#f75c2f] dark:fill-[#d6471e]"
+            className="fill-[#f75c2f]"
           />
           {/* Face Elements (Centered) */}
           <g transform={`translate(${faceShiftX * 0.8}, ${faceShiftY * 0.8})`}>
