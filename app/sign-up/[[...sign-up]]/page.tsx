@@ -105,6 +105,47 @@ export default function SignUpPage() {
 
   return (
     <div className="relative min-h-screen w-full bg-[var(--color-surface-soft)] flex flex-col items-center justify-center p-4 md:p-8">
+      {/* Target CSS Overrides to Force Clean Pure White Clerk Panel */}
+      <style>{`
+        .cl-card, .cl-main, .cl-signUp-start, .cl-signIn-start, .cl-cardBox, .cl-formFieldRow, .cl-formField, .cl-header, .cl-footer, .cl-rootBox, .cl-pageScrollBox {
+          background-color: transparent !important;
+          background: transparent !important;
+          box-shadow: none !important;
+        }
+        .cl-headerTitle, .cl-formHeaderTitle {
+          color: #1c1c1e !important;
+        }
+        .cl-headerSubtitle, .cl-formHeaderSubtitle {
+          color: #64748b !important;
+        }
+        .cl-formFieldLabel {
+          color: #1e293b !important;
+        }
+        .cl-formFieldInput {
+          background-color: #f8fafc !important;
+          color: #0f172a !important;
+          border: 2px solid #e2e8f0 !important;
+        }
+        .cl-formButtonPrimary {
+          background-color: #1c1c1e !important;
+          color: #ffffff !important;
+        }
+        .cl-socialButtonsBlockButton {
+          background-color: #f4f4f5 !important;
+          border: 1px solid #e2e8f0 !important;
+          color: #1c1c1e !important;
+        }
+        .cl-footerActionLink {
+          color: #1c1c1e !important;
+        }
+        .cl-dividerLine {
+          background-color: #e2e8f0 !important;
+        }
+        .cl-dividerText {
+          color: #94a3b8 !important;
+        }
+      `}</style>
+
       {/* Background Subtle Gradient Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
 
