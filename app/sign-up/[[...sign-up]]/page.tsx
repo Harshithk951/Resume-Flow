@@ -4,7 +4,24 @@ import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { useEffect } from "react";
+
 export default function SignUpPage() {
+  useEffect(() => {
+    // Ensure document.documentElement syncs with dark mode setting or system preference
+    try {
+      const storedTheme = localStorage.getItem("dashboard-theme");
+      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (storedTheme === "dark" || (!storedTheme && systemPrefersDark)) {
+        document.documentElement.classList.add("dark");
+      } else if (storedTheme === "light") {
+        document.documentElement.classList.remove("dark");
+      }
+    } catch {
+      // Ignore localStorage availability issues
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen items-center justify-center overflow-hidden relative bg-[var(--color-surface-soft)]">
       {/* Lavender mesh gradient background — same as hero section */}
@@ -14,7 +31,7 @@ export default function SignUpPage() {
 
       <Link
         href="/"
-        className="absolute left-6 top-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-ash)] transition-colors hover:text-rose-600 z-10"
+        className="absolute left-6 top-6 inline-flex items-center gap-2 text-sm font-semibold text-[var(--color-ash)] transition-colors hover:text-rose-600 dark:hover:text-rose-400 z-10"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to home
@@ -28,33 +45,33 @@ export default function SignUpPage() {
               rootBox: "mx-auto",
               card: "shadow-none border-none bg-transparent",
               cardBox:
-                "bg-white dark:bg-[#1c2333] rounded-[32px] p-8 shadow-[0_4px_16px_rgba(0,0,0,0.1)] border border-[var(--color-hairline)] dark:border-[#2d3548]",
-              headerTitle: "text-[22px] font-semibold text-[var(--color-ink)] dark:text-[#f0f6fc]",
-              headerSubtitle: "text-[16px] text-[var(--color-mute)] dark:text-[#8b949e]",
+                "bg-white dark:bg-[#181e2a] rounded-[32px] p-8 shadow-[0_16px_48px_rgba(0,0,0,0.3)] border-2 border-slate-200 dark:border-[#38445d]",
+              headerTitle: "text-[22px] font-semibold text-slate-900 dark:text-[#f0f6fc]",
+              headerSubtitle: "text-[16px] text-slate-600 dark:text-[#8b949e]",
               formButtonPrimary:
-                "bg-[#e60023] hover:bg-[#cc001f] dark:bg-[#ff3040] dark:hover:bg-[#e60023] rounded-[16px] h-[40px] text-[14px] font-bold text-white shadow-none transition-colors",
+                "bg-[#e60023] hover:bg-[#cc001f] dark:bg-[#ff3040] dark:hover:bg-[#e60023] rounded-[16px] h-[44px] text-[14px] font-bold text-white shadow-md transition-all active:scale-[0.99]",
               formFieldInput:
-                "bg-white dark:bg-[#252d3f] rounded-[16px] border-[#91918c] dark:border-[#2d3548] focus:border-[var(--color-ink)] dark:focus:border-[#f0f6fc] focus:ring-[#435ee5] h-[44px] text-[var(--color-ink)] dark:text-[#f0f6fc] placeholder:text-[var(--color-ash)] dark:placeholder:text-[#8b949e]",
-              footerActionLink: "text-[var(--color-ink-soft)] dark:text-[#f0f6fc] font-semibold hover:underline",
+                "bg-slate-50/70 dark:bg-[#111622] rounded-[16px] border-2 border-slate-300 dark:border-[#3d4b68] focus:border-[#e60023] dark:focus:border-[#ff3040] focus:ring-2 focus:ring-rose-500/20 h-[44px] text-slate-900 dark:text-[#f0f6fc] placeholder:text-slate-400 dark:placeholder:text-[#8b949e] font-medium shadow-sm transition-all",
+              footerActionLink: "text-[#e60023] dark:text-[#ff3040] font-bold hover:underline",
               socialButtonsBlockButton:
-                "bg-white dark:bg-[#252d3f] rounded-[16px] border-[#dadad3] dark:border-[#2d3548] text-[var(--color-ink)] dark:text-[#f0f6fc] hover:bg-[var(--color-surface-card)] dark:hover:bg-[#2f3a50] transition-colors",
-              socialButtonsBlockButtonText: "text-[var(--color-ink)] dark:text-[#f0f6fc] font-medium",
-              formFieldLabel: "text-[var(--color-ink-soft)] dark:text-[#c9d1d9]",
-              dividerLine: "bg-[#dadad3] dark:bg-[#2d3548]",
-              dividerText: "text-[#91918c] dark:text-[#8b949e]",
-              identityPreviewEditButton: "text-[#e60023] dark:text-[#ff3040]",
-              formHeaderTitle: "text-[var(--color-ink)] dark:text-[#f0f6fc]",
-              formHeaderSubtitle: "text-[var(--color-mute)] dark:text-[#8b949e]",
+                "bg-white dark:bg-[#111622] rounded-[16px] border-2 border-slate-300 dark:border-[#3d4b68] text-slate-900 dark:text-[#f0f6fc] hover:bg-slate-100 dark:hover:bg-[#1f283d] hover:border-slate-400 dark:hover:border-[#526388] shadow-sm transition-all font-semibold",
+              socialButtonsBlockButtonText: "text-slate-900 dark:text-[#f0f6fc] font-semibold text-sm",
+              formFieldLabel: "text-slate-800 dark:text-[#e6edf3] font-semibold text-sm mb-1.5",
+              dividerLine: "bg-slate-300 dark:bg-[#38445d] h-[1px]",
+              dividerText: "text-slate-500 dark:text-[#8b949e] font-semibold text-xs uppercase tracking-wider",
+              identityPreviewEditButton: "text-[#e60023] dark:text-[#ff3040] font-semibold",
+              formHeaderTitle: "text-slate-900 dark:text-[#f0f6fc]",
+              formHeaderSubtitle: "text-slate-600 dark:text-[#8b949e]",
               formFieldRow: "bg-transparent",
               formField: "bg-transparent",
-              footer: "bg-transparent border-t border-[var(--color-hairline)] dark:border-[#2d3548]",
+              footer: "bg-transparent border-t-2 border-slate-200 dark:border-[#2b3548] mt-4 pt-4",
               footerAction: "bg-transparent",
               socialButtons: "bg-transparent",
-              alternativeMethods: "bg-transparent text-[var(--color-ink)] dark:text-[#f0f6fc]",
+              alternativeMethods: "bg-transparent text-slate-900 dark:text-[#f0f6fc]",
               alternativeMethodsBlockButton:
-                "bg-white dark:bg-[#252d3f] text-[var(--color-ink)] dark:text-[#f0f6fc] border-[#dadad3] dark:border-[#2d3548]",
+                "bg-white dark:bg-[#111622] text-slate-900 dark:text-[#f0f6fc] border-2 border-slate-300 dark:border-[#3d4b68] hover:bg-slate-100 dark:hover:bg-[#1f283d]",
               formFieldError: "bg-transparent",
-              formFieldErrorText: "text-[#e60023] dark:text-[#ff3040]",
+              formFieldErrorText: "text-[#e60023] dark:text-[#ff3040] font-medium",
             },
           }}
         />
