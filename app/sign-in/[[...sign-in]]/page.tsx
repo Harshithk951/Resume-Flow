@@ -16,11 +16,8 @@ export default function SignInPage() {
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-
-  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     try {
@@ -100,17 +97,10 @@ export default function SignInPage() {
       }
     };
 
-    const handleInput = () => {
-      setIsTyping(true);
-      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
-      typingTimeoutRef.current = setTimeout(() => setIsTyping(false), 800);
-      checkState();
-    };
-
     const formEl = formRef.current;
     formEl.addEventListener("focusin", checkState);
     formEl.addEventListener("focusout", checkState);
-    formEl.addEventListener("input", handleInput);
+    formEl.addEventListener("input", checkState);
     formEl.addEventListener("click", checkState);
 
     const observer = new MutationObserver(checkState);
@@ -124,10 +114,9 @@ export default function SignInPage() {
     return () => {
       formEl.removeEventListener("focusin", checkState);
       formEl.removeEventListener("focusout", checkState);
-      formEl.removeEventListener("input", handleInput);
+      formEl.removeEventListener("input", checkState);
       formEl.removeEventListener("click", checkState);
       observer.disconnect();
-      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     };
   }, []);
 
@@ -144,7 +133,7 @@ export default function SignInPage() {
       {/* Background Subtle Gradient Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f293d_1px,transparent_1px)] [background-size:24px_24px] opacity-70 pointer-events-none" />
 
-      {/* Target CSS Styling (No CSS flex-order hacks) */}
+      {/* Target CSS Styling */}
       <style>{`
         .cl-card, .cl-main, .cl-signUp-start, .cl-signIn-start, .cl-cardBox, .cl-formFieldRow, .cl-formField, .cl-header, .cl-footer, .cl-rootBox, .cl-pageScrollBox {
           background-color: transparent !important;
@@ -228,6 +217,7 @@ export default function SignInPage() {
           align-items: center !important;
           text-align: center !important;
           width: 100% !important;
+          white-space: nowrap !important;
         }
         .cl-footerActionText {
           color: #64748b !important;
@@ -236,6 +226,7 @@ export default function SignInPage() {
           display: inline !important;
           visibility: visible !important;
           opacity: 1 !important;
+          white-space: nowrap !important;
         }
         .cl-footerActionLink {
           color: #1c1c1e !important;
@@ -246,6 +237,7 @@ export default function SignInPage() {
           visibility: visible !important;
           opacity: 1 !important;
           text-decoration: none !important;
+          white-space: nowrap !important;
         }
         .cl-footerActionLink:hover {
           text-decoration: underline !important;
@@ -268,8 +260,18 @@ export default function SignInPage() {
           font-size: 14px !important;
           margin-bottom: 2px !important;
         }
-        [data-clerk-dev-mode-notice] {
-          display: none !important;
+
+        /* Reposition Clerk Dev Mode Badge to bottom-right of viewport outside auth card */
+        [data-clerk-dev-mode-notice],
+        div[class*="dev-mode-notice"],
+        .cl-internal-dev-mode-notice,
+        .cl-devModeNotice {
+          position: fixed !important;
+          bottom: 16px !important;
+          right: 16px !important;
+          z-index: 9999 !important;
+          margin: 0 !important;
+          transform: none !important;
         }
       `}</style>
 
@@ -296,7 +298,6 @@ export default function SignInPage() {
               isEmailFocused={isEmailFocused}
               isPasswordFocused={isPasswordFocused}
               isPasswordVisible={isPasswordVisible}
-              isTyping={isTyping}
               hasError={hasError}
             />
           </div>
@@ -325,8 +326,8 @@ export default function SignInPage() {
                     "bg-[#1c1c1e] hover:bg-[#2c2c2e] text-white rounded-full h-12 text-[15px] font-bold shadow-md transition-all active:scale-[0.99] mt-4 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   formFieldInput:
                     "bg-transparent rounded-none border-0 border-b-2 border-slate-300 focus:border-slate-900 h-11 text-slate-900 placeholder:text-slate-400 font-medium px-0 transition-all",
-                  footerActionLink: "text-[#1c1c1e] font-bold hover:underline ml-1 inline",
-                  footerActionText: "text-slate-500 font-medium text-sm inline",
+                  footerActionLink: "text-[#1c1c1e] font-bold hover:underline ml-1 inline whitespace-nowrap",
+                  footerActionText: "text-slate-500 font-medium text-sm inline whitespace-nowrap",
                   socialButtonsBlockButton:
                     "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 mt-2 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   socialButtonsBlockButtonText: "text-[#1c1c1e] font-semibold text-sm",
@@ -338,14 +339,15 @@ export default function SignInPage() {
                   formHeaderSubtitle: "text-slate-500 text-center",
                   formFieldRow: "bg-transparent",
                   formField: "bg-transparent",
-                  footer: "bg-transparent border-none mt-4 justify-center text-center w-full",
-                  footerAction: "bg-transparent justify-center text-center w-full flex flex-row items-center",
+                  footer: "bg-transparent border-none mt-4 justify-center text-center w-full whitespace-nowrap",
+                  footerAction: "bg-transparent justify-center text-center w-full flex flex-row items-center whitespace-nowrap",
                   socialButtons: "bg-transparent w-full",
                   alternativeMethods: "bg-transparent text-[#1c1c1e]",
                   alternativeMethodsBlockButton:
                     "bg-[#f4f4f5] text-[#1c1c1e] border border-slate-200 hover:bg-slate-200 rounded-full h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   formFieldError: "bg-transparent",
                   formFieldErrorText: "text-[#f75c2f] font-medium text-xs mt-1",
+                  devModeNotice: "fixed bottom-4 right-4 z-[9999]",
                 },
               } as any}
             />

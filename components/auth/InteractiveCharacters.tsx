@@ -10,7 +10,6 @@ export interface InteractiveCharactersProps {
   isEmailFocused?: boolean;
   isPasswordFocused?: boolean;
   isPasswordVisible?: boolean;
-  isTyping?: boolean;
   hasError?: boolean;
 }
 
@@ -39,22 +38,27 @@ export function InteractiveCharacters({
     else if (isEmailFocused) activeExpression = "watching";
   }
 
+  // Ref pattern to prevent stale closures inside un-keyed rAF loop
+  const activeExpressionRef = useRef<ExpressionState>(activeExpression);
+  useEffect(() => {
+    activeExpressionRef.current = activeExpression;
+  }, [activeExpression]);
+
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       latestMouseRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    // Set initial mouse position in center of screen if not moved
     if (typeof window !== "undefined") {
       latestMouseRef.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     }
 
     window.addEventListener("mousemove", handleMouseMove);
 
-    // rAF loop to sample mouse position once per frame
+    // rAF loop to sample mouse position once per frame smoothly
     const updatePupils = () => {
-      // Check prefers-reduced-motion
       const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const currentExpr = activeExpressionRef.current;
 
       if (prefersReducedMotion) {
         setPupilOffset({ x: 0, y: 0 });
@@ -67,7 +71,7 @@ export function InteractiveCharacters({
         let targetY = latestMouseRef.current.y;
 
         // If watching email input, bias target toward right side (form area)
-        if (activeExpression === "watching") {
+        if (currentExpr === "watching") {
           targetX = rect.left + rect.width * 1.2;
           targetY = rect.top + rect.height * 0.45;
         }
@@ -106,7 +110,7 @@ export function InteractiveCharacters({
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
       clearInterval(blinkInterval);
     };
-  }, [activeExpression]);
+  }, []);
 
   // Derived style parameters for expressions
   const isShy = activeExpression === "shy";
@@ -135,7 +139,13 @@ export function InteractiveCharacters({
           <rect x="95" y="95" width="110" height="265" rx="6" className="fill-[#6c1cd3]" />
 
           {/* Eyes Group (Widened if shocked, blinked if isBlinking) */}
-          <g style={{ transform: `${isShocked ? "scale(1.15)" : "scale(1)"} ${isBlinking ? "scaleY(0.1)" : "scaleY(1)"}`, transformOrigin: "150px 125px", transition: "transform 200ms ease-out" }}>
+          <g
+            style={{
+              transform: `${isShocked ? "scale(1.15)" : "scale(1)"} ${isBlinking ? "scaleY(0.1)" : "scaleY(1)"}`,
+              transformOrigin: "150px 125px",
+              transition: "transform 200ms ease-out",
+            }}
+          >
             {/* Left Eye White */}
             <circle cx="132" cy="125" r="9" fill="#ffffff" />
             {/* Left Pupil (Normal round or Shy vertical dash scaleY: 0.2) */}
@@ -147,7 +157,6 @@ export function InteractiveCharacters({
               style={{
                 transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
                 transformOrigin: "132px 125px",
-                transition: "transform 150ms ease-out",
               }}
             />
 
@@ -162,7 +171,6 @@ export function InteractiveCharacters({
               style={{
                 transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
                 transformOrigin: "168px 125px",
-                transition: "transform 150ms ease-out",
               }}
             />
 
@@ -189,7 +197,13 @@ export function InteractiveCharacters({
           <rect x="195" y="170" width="75" height="190" rx="4" className="fill-[#1c1c1e]" />
 
           {/* Eyes Group */}
-          <g style={{ transform: isShocked ? "scale(1.15)" : "scale(1)", transformOrigin: "245px 195px", transition: "transform 200ms ease-out" }}>
+          <g
+            style={{
+              transform: `${isShocked ? "scale(1.15)" : "scale(1)"} ${isBlinking ? "scaleY(0.1)" : "scaleY(1)"}`,
+              transformOrigin: "245px 195px",
+              transition: "transform 200ms ease-out",
+            }}
+          >
             <circle cx="236" cy="195" r="8" fill="#ffffff" />
             <circle
               cx="236"
@@ -199,7 +213,6 @@ export function InteractiveCharacters({
               style={{
                 transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
                 transformOrigin: "236px 195px",
-                transition: "transform 150ms ease-out",
               }}
             />
 
@@ -212,7 +225,6 @@ export function InteractiveCharacters({
               style={{
                 transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
                 transformOrigin: "255px 195px",
-                transition: "transform 150ms ease-out",
               }}
             />
           </g>
@@ -231,7 +243,7 @@ export function InteractiveCharacters({
 
           {/* Face Group */}
           <g style={{ transform: isShocked ? "scale(1.15)" : "scale(1)", transformOrigin: "190px 310px", transition: "transform 200ms ease-out" }}>
-            <g style={{ transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`, transition: "transform 150ms ease-out" }}>
+            <g style={{ transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)` }}>
               {/* Left Eye */}
               <circle
                 cx="162"
@@ -241,7 +253,6 @@ export function InteractiveCharacters({
                 style={{
                   transform: isShy ? "scaleY(0.2)" : "scaleY(1)",
                   transformOrigin: "162px 305px",
-                  transition: "transform 150ms ease-out",
                 }}
               />
 
@@ -261,7 +272,6 @@ export function InteractiveCharacters({
                 style={{
                   transform: isShy ? "scaleY(0.2)" : "scaleY(1)",
                   transformOrigin: "218px 305px",
-                  transition: "transform 150ms ease-out",
                 }}
               />
             </g>
@@ -289,7 +299,6 @@ export function InteractiveCharacters({
               style={{
                 transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
                 transformOrigin: "268px 234px",
-                transition: "transform 150ms ease-out",
               }}
             />
 
