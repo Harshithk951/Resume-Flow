@@ -15,6 +15,7 @@ export default function SignInPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Ensure document.documentElement syncs with dark mode setting or system preference
@@ -81,38 +82,32 @@ export default function SignInPage() {
 
     const handleInput = () => {
       setIsTyping(true);
-      clearTimeout(typingTimeout);
-      typingTimeout = setTimeout(() => setIsTyping(false), 800);
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = setTimeout(() => setIsTyping(false), 800);
       checkState();
     };
 
     const formEl = formRef.current;
-    if (formEl) {
-      formEl.addEventListener("focusin", checkState);
-      formEl.addEventListener("focusout", checkState);
-      formEl.addEventListener("input", handleInput);
-      formEl.addEventListener("click", checkState);
-    }
+    formEl.addEventListener("focusin", checkState);
+    formEl.addEventListener("focusout", checkState);
+    formEl.addEventListener("input", handleInput);
+    formEl.addEventListener("click", checkState);
 
     const observer = new MutationObserver(checkState);
-    if (formEl) {
-      observer.observe(formEl, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["type", "class"],
-      });
-    }
+    observer.observe(formEl, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["type", "class"],
+    });
 
     return () => {
-      if (formEl) {
-        formEl.removeEventListener("focusin", checkState);
-        formEl.removeEventListener("focusout", checkState);
-        formEl.removeEventListener("input", handleInput);
-        formEl.removeEventListener("click", checkState);
-      }
+      formEl.removeEventListener("focusin", checkState);
+      formEl.removeEventListener("focusout", checkState);
+      formEl.removeEventListener("input", handleInput);
+      formEl.removeEventListener("click", checkState);
       observer.disconnect();
-      clearTimeout(typingTimeout);
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     };
   }, []);
 

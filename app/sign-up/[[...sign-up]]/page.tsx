@@ -14,6 +14,7 @@ export default function SignUpPage() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Ensure document.documentElement syncs with dark mode setting or system preference
@@ -33,8 +34,6 @@ export default function SignUpPage() {
   // Observer to track Password Focus, Password Visibility (Unmask), and Error Alert States
   useEffect(() => {
     if (!formRef.current) return;
-
-    let typingTimeout: NodeJS.Timeout;
 
     const checkState = () => {
       if (!formRef.current) return;
@@ -65,38 +64,32 @@ export default function SignUpPage() {
 
     const handleInput = () => {
       setIsTyping(true);
-      clearTimeout(typingTimeout);
-      typingTimeout = setTimeout(() => setIsTyping(false), 800);
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = setTimeout(() => setIsTyping(false), 800);
       checkState();
     };
 
-    const container = formRef.current;
-    if (container) {
-      container.addEventListener("focusin", checkFormState);
-      container.addEventListener("focusout", checkFormState);
-      container.addEventListener("input", handleInput);
-      container.addEventListener("click", checkFormState);
-    }
+    const formEl = formRef.current;
+    formEl.addEventListener("focusin", checkState);
+    formEl.addEventListener("focusout", checkState);
+    formEl.addEventListener("input", handleInput);
+    formEl.addEventListener("click", checkState);
 
-    const observer = new MutationObserver(checkFormState);
-    if (container) {
-      observer.observe(container, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["type", "class"],
-      });
-    }
+    const observer = new MutationObserver(checkState);
+    observer.observe(formEl, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["type", "class"],
+    });
 
     return () => {
-      if (container) {
-        container.removeEventListener("focusin", checkFormState);
-        container.removeEventListener("focusout", checkFormState);
-        container.removeEventListener("input", handleInput);
-        container.removeEventListener("click", checkFormState);
-      }
+      formEl.removeEventListener("focusin", checkState);
+      formEl.removeEventListener("focusout", checkState);
+      formEl.removeEventListener("input", handleInput);
+      formEl.removeEventListener("click", checkState);
       observer.disconnect();
-      clearTimeout(typingTimeout);
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     };
   }, []);
 
