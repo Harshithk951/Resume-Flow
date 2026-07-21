@@ -123,14 +123,11 @@ export function RazorpayCheckout({
       }
 
       // ─── Step 3: Open Razorpay checkout ─────────────────────
-      const razorpayKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      // Use key_id from the API response (runtime, not build-time)
+      const razorpayKey = (order as any).key_id || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
       if (!razorpayKey) {
-        console.error("[Razorpay] NEXT_PUBLIC_RAZORPAY_KEY_ID is not set. " +
-          "This env var must be present at BUILD time (not runtime). " +
-          "Push a new commit to trigger a fresh Vercel build.");
         throw new Error(
-          "Payment configuration error: Razorpay key missing. " +
-          "Please contact support."
+          "Payment configuration error: Razorpay key missing."
         );
       }
 

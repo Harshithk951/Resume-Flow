@@ -25,7 +25,7 @@ const PLAN_PRICES: Record<
   },
 };
 
-function getRazorpayInstance() {
+function getRazorpayCredentials() {
   const key_id = process.env.RAZORPAY_KEY_ID ?? process.env.RAZOR_PAY_TEST;
   const key_secret =
     process.env.RAZORPAY_KEY_SECRET ?? process.env.RAZOR_PAY_SECRET;
@@ -34,7 +34,7 @@ function getRazorpayInstance() {
     throw new Error("Razorpay credentials not configured");
   }
 
-  return new Razorpay({ key_id, key_secret });
+  return { key_id, key_secret };
 }
 
 export async function POST(req: NextRequest) {
@@ -62,7 +62,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const razorpay = getRazorpayInstance();
+    const { key_id, key_secret } = getRazorpayCredentials();
+    const razorpay = new Razorpay({ key_id, key_secret });
 
     const options = {
       amount: priceConfig.amount,
@@ -77,6 +78,7 @@ export async function POST(req: NextRequest) {
 
     const order = await razorpay.orders.create(options);
 
+    // Return key_id so client can initialize checkout without relying on NEXT_PUBLIC_ env
     return NextResponse.json(
       {
         id: order.id,
@@ -84,6 +86,7 @@ export async function POST(req: NextRequest) {
         currency: order.currency,
         receipt: order.receipt,
         status: order.status,
+        key_id, // Client uses this to initialize Razorpay checkout
       },
       { status: 200 }
     );
