@@ -223,9 +223,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        {/* ─── Google AdSense Verification ──────── */}
+        {/* ─── Google AdSense Verification (lazy: loads after page becomes idle) ──────── */}
         <script
-          async
+          defer
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7941579236760268"
           crossOrigin="anonymous"
         />

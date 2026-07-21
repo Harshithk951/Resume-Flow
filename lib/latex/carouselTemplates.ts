@@ -4,24 +4,24 @@ export const carouselTemplates: CarouselTemplate[] = [
   {
     id: "ats_strict",
     label: "ATS",
-    image: "/images/template-ats-strict.png",
+    image: "/images/template-ats-strict.webp",
     ats: true,
   },
   {
     id: "modern_professional",
     label: "Modern",
-    image: "/images/template-modern-professional.png",
+    image: "/images/template-modern-professional.webp",
     creative: true,
   },
   {
     id: "modern_executive",
     label: "Finance",
-    image: "/images/template-modern-executive.png",
+    image: "/images/template-modern-executive.webp",
   },
   {
     id: "tech_innovator",
     label: "Tech",
-    image: "/images/template-tech-innovator.png",
+    image: "/images/template-tech-innovator.webp",
     creative: true,
   },
 ];

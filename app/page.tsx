@@ -102,8 +102,7 @@ const HeroVideo = memo(function HeroVideo() {
         autoPlay
         loop
         muted
-        playsInline
-        preload="auto"
+        playsInline                        preload="none"
         disablePictureInPicture
         controlsList="nodownload nofullscreen noremoteplayback"
         className="w-full h-full object-cover pointer-events-none transform-gpu will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"

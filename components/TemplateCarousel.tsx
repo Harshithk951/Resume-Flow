@@ -31,28 +31,28 @@ const templateDetails: Record<string, TemplateDetail> = {
     label: "ATS Strict",
     subtitle: "Classic Single-Column Layout",
     accentColor: "#0f172a",
-    image: "/images/template-ats-strict.png",
+    image: "/images/template-ats-strict.webp",
   },
   modern_professional: {
     id: "modern_professional",
     label: "Startup Accent",
     subtitle: "Modern Creative Professional",
     accentColor: "#e60023",
-    image: "/images/template-modern-professional.png",
+    image: "/images/template-modern-professional.webp",
   },
   modern_executive: {
     id: "modern_executive",
     label: "Finance Classic",
     subtitle: "Elite Leadership & Corporate",
     accentColor: "#1e3a5f",
-    image: "/images/template-modern-executive.png",
+    image: "/images/template-modern-executive.webp",
   },
   tech_innovator: {
     id: "tech_innovator",
     label: "Tech Modern",
     subtitle: "Software & Systems Engineer",
     accentColor: "#4f46e5",
-    image: "/images/template-tech-innovator.png",
+    image: "/images/template-tech-innovator.webp",
   },
 };
 
@@ -157,8 +157,8 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
                           src={tpl.image}
                           alt={displayLabel}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none block"
-                          loading="eager"
-                          decoding="sync"
+                          loading="lazy"
+                          decoding="async"
                         />
 
                         {/* Glassmorphic Overlay showing "Use this Template" on hover */}
