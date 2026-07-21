@@ -6,7 +6,6 @@ const isProtectedRoute = createRouteMatcher([
   "/profile(.*)",
   "/company(.*)",
   "/resume(.*)",
-  "/templates(.*)",
   "/api/compile-latex(.*)",
 ]);
 
