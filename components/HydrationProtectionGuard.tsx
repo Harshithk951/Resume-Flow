@@ -4,9 +4,13 @@ import { useQuery, useMutation } from "convex/react";
 import { useAuth } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, ReactNode } from "react";
-import { GlobalSilentCompiler } from "./GlobalSilentCompiler";
-import ChatBot from "./ChatBot";
+import { useEffect, ReactNode, lazy, Suspense } from "react";
+
+// Lazy-load heavy components — not needed for initial render
+const GlobalSilentCompiler = lazy(() =>
+  import("./GlobalSilentCompiler").then((m) => ({ default: m.GlobalSilentCompiler }))
+);
+const ChatBot = lazy(() => import("./ChatBot"));
 
 export function HydrationProtectionGuard({ children }: { children: ReactNode }) {
   const { isLoaded: isClerkLoaded, isSignedIn } = useAuth();
@@ -111,17 +115,27 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
     <>
       {children}
 
-      {isPublicRoute && <ChatBot guestMode />}
+      {isPublicRoute && (
+        <Suspense fallback={null}>
+          <ChatBot guestMode />
+        </Suspense>
+      )}
 
       {showAuthenticatedTools && (
         <>
-          <GlobalSilentCompiler />
-          <ChatBot jobId={activeJobId} />
+          <Suspense fallback={null}>
+            <GlobalSilentCompiler />
+          </Suspense>
+          <Suspense fallback={null}>
+            <ChatBot jobId={activeJobId} />
+          </Suspense>
         </>
       )}
 
       {!isPublicRoute && !showAuthenticatedTools && profile !== undefined && (
-        <ChatBot jobId={activeJobId} />
+        <Suspense fallback={null}>
+          <ChatBot jobId={activeJobId} />
+        </Suspense>
       )}
     </>
   );
