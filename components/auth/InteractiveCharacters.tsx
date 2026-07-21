@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
 
-interface InteractiveCharactersProps {
+export type ExpressionState = "neutral" | "watching" | "shy" | "shocked";
+
+export interface InteractiveCharactersProps {
+  expression?: ExpressionState;
   isEmailFocused?: boolean;
   isPasswordFocused?: boolean;
   isPasswordVisible?: boolean;
@@ -11,79 +15,103 @@ interface InteractiveCharactersProps {
 }
 
 export function InteractiveCharacters({
+  expression = "neutral",
   isEmailFocused = false,
   isPasswordFocused = false,
   isPasswordVisible = false,
-  isTyping = false,
   hasError = false,
 }: InteractiveCharactersProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  // Normalized mouse coordinates from -1 to 1
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const latestMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const rafIdRef = useRef<number | null>(null);
+
+  // Computed pupil offset (dx, dy clamped to 3px radius)
+  const [pupilOffset, setPupilOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isBlinking, setIsBlinking] = useState(false);
-  const [breath, setBreath] = useState(0);
+
+  // Priority order resolution: shocked > shy > watching > neutral
+  let activeExpression: ExpressionState = expression;
+  if (hasError) {
+    activeExpression = "shocked";
+  } else if (expression === "neutral") {
+    if (isPasswordVisible) activeExpression = "shocked";
+    else if (isPasswordFocused) activeExpression = "shy";
+    else if (isEmailFocused) activeExpression = "watching";
+  }
 
   useEffect(() => {
-    let animationFrameId: number;
-    let targetX = 0;
-    let targetY = 0;
-    let currentX = 0;
-    let currentY = 0;
-    let startTime = Date.now();
-
     const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      // Normalize between -1 and 1
-      targetX = Math.max(-1, Math.min(1, (e.clientX - centerX) / (window.innerWidth / 2)));
-      targetY = Math.max(-1, Math.min(1, (e.clientY - centerY) / (window.innerHeight / 2)));
+      latestMouseRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    // Smooth lerp & breathing update loop
-    const updateLoop = () => {
-      currentX += (targetX - currentX) * 0.12;
-      currentY += (targetY - currentY) * 0.12;
-      setMousePos({ x: currentX, y: currentY });
-
-      const elapsed = Date.now() - startTime;
-      setBreath(Math.sin(elapsed * 0.003) * 1.5);
-
-      animationFrameId = requestAnimationFrame(updateLoop);
-    };
+    // Set initial mouse position in center of screen if not moved
+    if (typeof window !== "undefined") {
+      latestMouseRef.current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    }
 
     window.addEventListener("mousemove", handleMouseMove);
-    animationFrameId = requestAnimationFrame(updateLoop);
 
-    // Periodic blinking effect
+    // rAF loop to sample mouse position once per frame
+    const updatePupils = () => {
+      // Check prefers-reduced-motion
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (prefersReducedMotion) {
+        setPupilOffset({ x: 0, y: 0 });
+      } else if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        let targetX = latestMouseRef.current.x;
+        let targetY = latestMouseRef.current.y;
+
+        // If watching email input, bias target toward right side (form area)
+        if (activeExpression === "watching") {
+          targetX = rect.left + rect.width * 1.2;
+          targetY = rect.top + rect.height * 0.45;
+        }
+
+        const deltaX = targetX - centerX;
+        const deltaY = targetY - centerY;
+        const angle = Math.atan2(deltaY, deltaX);
+        const distance = Math.hypot(deltaX, deltaY);
+
+        // Clamp maximum displacement to 3px
+        const maxRadius = 3;
+        const r = Math.min(maxRadius, distance * 0.02);
+
+        const dx = r * Math.cos(angle);
+        const dy = r * Math.sin(angle);
+
+        setPupilOffset((prev) => ({
+          x: prev.x + (dx - prev.x) * 0.2,
+          y: prev.y + (dy - prev.y) * 0.2,
+        }));
+      }
+
+      rafIdRef.current = requestAnimationFrame(updatePupils);
+    };
+
+    rafIdRef.current = requestAnimationFrame(updatePupils);
+
+    // Periodic eye blinking timer
     const blinkInterval = setInterval(() => {
       setIsBlinking(true);
       setTimeout(() => setIsBlinking(false), 180);
-    }, 3500);
+    }, 3600);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      cancelAnimationFrame(animationFrameId);
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
       clearInterval(blinkInterval);
     };
-  }, []);
+  }, [activeExpression]);
 
-  // Determine active direction vector
-  const isFormFocused = isEmailFocused || isPasswordFocused || isTyping;
-  const dirX = isFormFocused && !hasError ? 0.6 : mousePos.x;
-  const dirY = isFormFocused && !hasError ? 0.4 : mousePos.y;
-
-  // Pupil offsets
-  const activePupilX = dirX * 7;
-  const activePupilY = dirY * 7;
-
-  // Rotation angles with fixed ground pivot at y=360
-  const purpleRotate = hasError ? -15 : isFormFocused ? 7 : mousePos.x * 12;
-  const blackRotate = hasError ? -6 : isFormFocused ? 5 : mousePos.x * 8;
-  const yellowRotate = hasError ? -4 : isFormFocused ? 6 : mousePos.x * 9;
-  const orangeSkewX = hasError ? -6 : -mousePos.x * 5;
+  // Derived style parameters for expressions
+  const isShy = activeExpression === "shy";
+  const isShocked = activeExpression === "shocked";
+  const isWatching = activeExpression === "watching";
 
   return (
     <div
@@ -95,253 +123,190 @@ export function InteractiveCharacters({
         className="w-full max-w-[420px] h-auto overflow-visible"
         style={{ filter: "drop-shadow(0px 8px 24px rgba(0,0,0,0.04))" }}
       >
-        {/* ─── 1. PURPLE CHARACTER (Background Left) ─── */}
-        <g
+        {/* ─── 1. PURPLE CHARACTER (Index 0: Delay 0ms) ─── */}
+        <motion.g
           id="purple-character"
-          style={{
-            transform: isPasswordVisible
-              ? `translateY(${10 + breath}px) scaleY(0.96)`
-              : `translateY(${breath}px) rotate(${purpleRotate}deg)`,
-            transformOrigin: "150px 360px",
-            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0 }}
+          style={{ transformOrigin: "150px 360px" }}
         >
-          {/* Main Pillar Base fixed at y=360 */}
-          <rect
-            x="95"
-            y="95"
-            width="110"
-            height="265"
-            rx="6"
-            className="fill-[#6c1cd3]"
-          />
-          {/* Face Elements */}
-          <g style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "150px 125px" }}>
+          {/* Body */}
+          <rect x="95" y="95" width="110" height="265" rx="6" className="fill-[#6c1cd3]" />
+
+          {/* Eyes Group (Widened if shocked, blinked if isBlinking) */}
+          <g style={{ transform: `${isShocked ? "scale(1.15)" : "scale(1)"} ${isBlinking ? "scaleY(0.1)" : "scaleY(1)"}`, transformOrigin: "150px 125px", transition: "transform 200ms ease-out" }}>
             {/* Left Eye White */}
             <circle cx="132" cy="125" r="9" fill="#ffffff" />
-            {/* Left Pupil */}
-            <circle cx={132 + activePupilX} cy={125 + activePupilY} r="4" fill="#000000" />
-
-            {/* Mouth Expressions */}
-            {hasError ? (
-              /* Sad Frown Mouth (Error State) */
-              <path
-                d="M 141 148 Q 150 137 159 148"
-                stroke="#000000"
-                strokeWidth="4"
-                fill="none"
-                strokeLinecap="round"
-              />
-            ) : isEmailFocused || isPasswordFocused || isTyping ? (
-              /* Vertical Line Mouth/Nose (Email & Password Typing State) */
-              <line
-                x1="150"
-                y1="122"
-                x2="150"
-                y2="148"
-                stroke="#000000"
-                strokeWidth="5"
-                strokeLinecap="round"
-              />
-            ) : (
-              /* Standard Happy Smile Mouth */
-              <path
-                d="M 143 140 Q 150 148 157 140"
-                stroke="#000000"
-                strokeWidth="3.5"
-                fill="none"
-                strokeLinecap="round"
-              />
-            )}
+            {/* Left Pupil (Normal round or Shy vertical dash scaleY: 0.2) */}
+            <circle
+              cx="132"
+              cy="125"
+              r="4"
+              fill="#000000"
+              style={{
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transformOrigin: "132px 125px",
+                transition: "transform 150ms ease-out",
+              }}
+            />
 
             {/* Right Eye White */}
             <circle cx="168" cy="125" r="9" fill="#ffffff" />
             {/* Right Pupil */}
-            <circle cx={168 + activePupilX} cy={125 + activePupilY} r="4" fill="#000000" />
-          </g>
-        </g>
-
-        {/* ─── 2. BLACK CHARACTER (Background Middle) ─── */}
-        <g
-          id="black-character"
-          style={{
-            transform: `translateY(${breath * 0.8}px) rotate(${blackRotate}deg)`,
-            transformOrigin: "232.5px 360px",
-            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
-        >
-          {/* Main Pillar Base fixed at y=360 */}
-          <rect
-            x="195"
-            y="170"
-            width="75"
-            height="190"
-            rx="4"
-            className="fill-[#1c1c1e]"
-          />
-          {/* Face Elements */}
-          {hasError ? (
-            /* Sad Droopy Tilted Eyes */
-            <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
-              <g transform="rotate(-15 236 195)">
-                <circle cx="236" cy="195" r="8" fill="#ffffff" />
-                <circle cx="234" cy="192" r="3.5" fill="#000000" />
-              </g>
-              <g transform="rotate(-15 255 195)">
-                <circle cx="255" cy="195" r="8" fill="#ffffff" />
-                <circle cx="253" cy="192" r="3.5" fill="#000000" />
-              </g>
-            </g>
-          ) : (
-            /* Normal Tracking Eyes */
-            <g style={{ transform: `scaleY(${isBlinking && !isPasswordVisible ? 0.1 : 1})`, transformOrigin: "245px 195px" }}>
-              <circle cx="236" cy="195" r="8" fill="#ffffff" />
-              <circle cx={236 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
-
-              <circle cx="255" cy="195" r="8" fill="#ffffff" />
-              <circle cx={255 + activePupilX * 0.8} cy={195 + activePupilY * 0.8} r="3.5" fill="#000000" />
-            </g>
-          )}
-
-          {/* ─── PRIVACY REACTION: HANDS OVER EYES ─── */}
-          <g
-            id="black-character-hands"
-            style={{
-              transform: isPasswordVisible
-                ? "translateY(0px) scale(1)"
-                : "translateY(32px) scale(0)",
-              transformOrigin: "245px 195px",
-              opacity: isPasswordVisible ? 1 : 0,
-              transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease",
-            }}
-          >
-            <ellipse cx="235" cy="195" rx="10" ry="11" fill="#27272a" stroke="#1c1c1e" strokeWidth="2" />
-            <ellipse cx="256" cy="195" rx="10" ry="11" fill="#27272a" stroke="#1c1c1e" strokeWidth="2" />
-            <line x1="235" y1="187" x2="235" y2="198" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="256" y1="187" x2="256" y2="198" stroke="#3f3f46" strokeWidth="1.5" strokeLinecap="round" />
-          </g>
-        </g>
-
-        {/* ─── 3. YELLOW CHARACTER (Right Foreground) ─── */}
-        <g
-          id="yellow-character"
-          style={{
-            transform: `translateY(${breath * 0.5}px) rotate(${yellowRotate}deg)`,
-            transformOrigin: "287.5px 360px",
-            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
-        >
-          {/* Base fixed at y=360 */}
-          <path
-            d="M 245 360 L 245 250 A 42.5 42.5 0 0 1 330 250 L 330 360 Z"
-            className="fill-[#eed500]"
-          />
-          {/* Face Elements */}
-          <g>
-            {/* Single Black Eye */}
             <circle
-              cx={268 + activePupilX * 0.7}
-              cy={234 + activePupilY * 0.7}
-              r="4.5"
+              cx="168"
+              cy="125"
+              r="4"
               fill="#000000"
-              style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "268px 234px" }}
+              style={{
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transformOrigin: "168px 125px",
+                transition: "transform 150ms ease-out",
+              }}
             />
 
-            {/* Mouth Expressions */}
-            {hasError ? (
-              /* Wavy Squiggly Line Mouth (Error State) */
+            {/* Mouth (Smile → Frown when shocked) */}
+            {isShocked ? (
+              <path d="M 141 148 Q 150 137 159 148" stroke="#000000" strokeWidth="4" fill="none" strokeLinecap="round" />
+            ) : isWatching ? (
+              <line x1="150" y1="122" x2="150" y2="148" stroke="#000000" strokeWidth="5" strokeLinecap="round" />
+            ) : (
+              <path d="M 143 140 Q 150 148 157 140" stroke="#000000" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+            )}
+          </g>
+        </motion.g>
+
+        {/* ─── 2. BLACK CHARACTER (Index 1: Delay 100ms) ─── */}
+        <motion.g
+          id="black-character"
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
+          style={{ transformOrigin: "232.5px 360px" }}
+        >
+          {/* Body */}
+          <rect x="195" y="170" width="75" height="190" rx="4" className="fill-[#1c1c1e]" />
+
+          {/* Eyes Group */}
+          <g style={{ transform: isShocked ? "scale(1.15)" : "scale(1)", transformOrigin: "245px 195px", transition: "transform 200ms ease-out" }}>
+            <circle cx="236" cy="195" r="8" fill="#ffffff" />
+            <circle
+              cx="236"
+              cy="195"
+              r="3.5"
+              fill="#000000"
+              style={{
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transformOrigin: "236px 195px",
+                transition: "transform 150ms ease-out",
+              }}
+            />
+
+            <circle cx="255" cy="195" r="8" fill="#ffffff" />
+            <circle
+              cx="255"
+              cy="195"
+              r="3.5"
+              fill="#000000"
+              style={{
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transformOrigin: "255px 195px",
+                transition: "transform 150ms ease-out",
+              }}
+            />
+          </g>
+        </motion.g>
+
+        {/* ─── 3. ORANGE CHARACTER (Index 2: Delay 200ms) ─── */}
+        <motion.g
+          id="orange-character"
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
+          style={{ transformOrigin: "190px 360px" }}
+        >
+          {/* Body */}
+          <path d="M 75 360 A 115 115 0 0 1 305 360 Z" className="fill-[#f75c2f]" />
+
+          {/* Face Group */}
+          <g style={{ transform: isShocked ? "scale(1.15)" : "scale(1)", transformOrigin: "190px 310px", transition: "transform 200ms ease-out" }}>
+            <g style={{ transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`, transition: "transform 150ms ease-out" }}>
+              {/* Left Eye */}
+              <circle
+                cx="162"
+                cy="305"
+                r="6"
+                fill="#000000"
+                style={{
+                  transform: isShy ? "scaleY(0.2)" : "scaleY(1)",
+                  transformOrigin: "162px 305px",
+                  transition: "transform 150ms ease-out",
+                }}
+              />
+
+              {/* Mouth */}
+              {isShocked ? (
+                <path d="M 181 322 Q 190 311 199 322" fill="none" stroke="#000000" strokeWidth="4" strokeLinecap="round" />
+              ) : isWatching ? null : (
+                <path d="M 181 315 Q 190 326 199 315" fill="none" stroke="#000000" strokeWidth="4" strokeLinecap="round" />
+              )}
+
+              {/* Right Eye */}
+              <circle
+                cx="218"
+                cy="305"
+                r="6"
+                fill="#000000"
+                style={{
+                  transform: isShy ? "scaleY(0.2)" : "scaleY(1)",
+                  transformOrigin: "218px 305px",
+                  transition: "transform 150ms ease-out",
+                }}
+              />
+            </g>
+          </g>
+        </motion.g>
+
+        {/* ─── 4. YELLOW CHARACTER (Index 3: Delay 300ms) ─── */}
+        <motion.g
+          id="yellow-character"
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
+          style={{ transformOrigin: "287.5px 360px" }}
+        >
+          {/* Body */}
+          <path d="M 245 360 L 245 250 A 42.5 42.5 0 0 1 330 250 L 330 360 Z" className="fill-[#eed500]" />
+
+          {/* Face Elements */}
+          <g style={{ transform: isShocked ? "scale(1.15)" : "scale(1)", transformOrigin: "287px 240px", transition: "transform 200ms ease-out" }}>
+            <circle
+              cx="268"
+              cy="234"
+              r="4.5"
+              fill="#000000"
+              style={{
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transformOrigin: "268px 234px",
+                transition: "transform 150ms ease-out",
+              }}
+            />
+
+            {/* Mouth/Beak */}
+            {isShocked ? (
               <path
                 d="M 285 248 Q 295 240 305 248 T 325 248"
                 stroke="#1c1c1e"
                 strokeWidth="4.5"
                 fill="none"
                 strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            ) : mousePos.x < 0 && !isFormFocused ? (
-              /* Horizontal Beak Line extending to the LEFT */
-              <line
-                x1="205"
-                y1="248"
-                x2="268"
-                y2="248"
-                stroke="#1c1c1e"
-                strokeWidth="6.5"
-                strokeLinecap="square"
               />
             ) : (
-              /* Horizontal Beak Line extending to the RIGHT */
-              <line
-                x1="282"
-                y1="248"
-                x2="345"
-                y2="248"
-                stroke="#1c1c1e"
-                strokeWidth="6.5"
-                strokeLinecap="square"
-              />
+              <line x1="282" y1="248" x2="345" y2="248" stroke="#1c1c1e" strokeWidth="6.5" strokeLinecap="square" />
             )}
           </g>
-        </g>
-
-        {/* ─── 4. ORANGE CHARACTER (Front Foreground Semi-Circle) ─── */}
-        <g
-          id="orange-character"
-          style={{
-            transform: isPasswordVisible
-              ? `translateY(${6 + breath}px) scaleY(0.97)`
-              : `translateY(${breath * 1.2}px) skewX(${orangeSkewX}deg)`,
-            transformOrigin: "190px 360px",
-            transition: "transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)",
-          }}
-        >
-          {/* Base fixed at y=360 */}
-          <path
-            d="M 75 360 A 115 115 0 0 1 305 360 Z"
-            className="fill-[#f75c2f]"
-          />
-          {/* Face Elements */}
-          {hasError ? (
-            /* Sad Frown Mouth (Error State) */
-            <g transform={`translate(${activePupilX * 0.8}px, ${activePupilY * 0.8}px)`}>
-              <circle cx="162" cy="305" r="6" fill="#000000" />
-              <path d="M 181 322 Q 190 311 199 322" fill="none" stroke="#000000" strokeWidth="4" strokeLinecap="round" />
-              <circle cx="218" cy="305" r="6" fill="#000000" />
-            </g>
-          ) : isPasswordVisible ? (
-            /* Closed Curving Eyelash Eyes (Unmask Privacy Reaction State - Matching Screenshot) */
-            <g transform={`translate(${activePupilX * 0.6}px, ${activePupilY * 0.6}px)`}>
-              <path d="M 152 305 Q 162 313 172 305" fill="none" stroke="#000000" strokeWidth="3.5" strokeLinecap="round" />
-              <circle cx="190" cy="308" r="2.5" fill="#000000" />
-              <path d="M 208 305 Q 218 313 228 305" fill="none" stroke="#000000" strokeWidth="3.5" strokeLinecap="round" />
-            </g>
-          ) : isEmailFocused ? (
-            /* Eyes Only (No Mouth) (Email Typing State - Matching Screenshot) */
-            <g transform={`translate(${activePupilX * 0.8}px, ${activePupilY * 0.8}px)`}>
-              <circle cx="162" cy="305" r="6" fill="#000000" />
-              <circle cx="218" cy="305" r="6" fill="#000000" />
-            </g>
-          ) : (
-            /* Standard Smiling Face (Masked Password & Cursor Motion State) */
-            <g transform={`translate(${activePupilX * 0.8}px, ${activePupilY * 0.8}px)`}>
-              <circle
-                cx="162"
-                cy="305"
-                r="6"
-                fill="#000000"
-                style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "162px 305px" }}
-              />
-              <path d="M 181 315 Q 190 326 199 315" fill="none" stroke="#000000" strokeWidth="4" strokeLinecap="round" />
-              <circle
-                cx="218"
-                cy="305"
-                r="6"
-                fill="#000000"
-                style={{ transform: `scaleY(${isBlinking ? 0.1 : 1})`, transformOrigin: "218px 305px" }}
-              />
-            </g>
-          )}
-        </g>
+        </motion.g>
       </svg>
     </div>
   );
