@@ -8,12 +8,10 @@ import { KanbanBoard } from "@/components/KanbanBoard";
 import {
   LayoutDashboard,
   Coins,
-  Zap,
   Plus,
   Briefcase,
   Search,
   ArrowRight,
-
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
@@ -32,6 +30,7 @@ import { NeedsAttentionPanel } from "@/components/dashboard/NeedsAttentionPanel"
 import { RecentActivityFeed } from "@/components/dashboard/RecentActivityFeed";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { DashboardSkeleton } from "@/components/dashboard/DashboardSkeleton";
+import { RazorpayCheckout } from "@/components/RazorpayCheckout";
 
 type CompanyFilter = "all" | "active" | "needs_input" | "completed";
 
@@ -162,10 +161,12 @@ export default function DashboardCommandCenter() {
             </Badge>
 
             {isFree && (
-              <Button size="sm" className="bg-gradient-to-r from-rose-600 to-rose-500 text-white shadow-md shadow-rose-500/20 border-0 hover:from-rose-700 hover:to-rose-600">
-                <Zap className="w-3.5 h-3.5" />
-                <span>Upgrade</span>
-              </Button>
+              <RazorpayCheckout
+                plan="pro"
+                interval="monthly"
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-gradient-to-r from-rose-600 to-rose-500 px-4 text-white text-sm font-bold shadow-md shadow-rose-500/20 hover:from-rose-700 hover:to-rose-600 transition-all"
+                label="Upgrade"
+              />
             )}
 
             <Button onClick={() => setIsAddOpen(true)} size="sm" className="bg-gradient-to-r from-rose-600 to-rose-500 text-white shadow-md shadow-rose-500/20 border-0 hover:from-rose-700 hover:to-rose-600">

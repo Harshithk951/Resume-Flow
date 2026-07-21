@@ -247,3 +247,29 @@ export const addCreditsAdmin = mutation({
     console.log(`Successfully added ${args.amount} credits to user ${args.email}. New total: ${user.credits + args.amount}`);
   },
 });
+
+/**
+ * Internal mutation to upgrade a user's plan after successful payment.
+ * Only callable server-side — prevents client-side plan manipulation.
+ */
+export const upgradeUserPlan = internalMutation({
+  args: {
+    clerkId: v.string(),
+    plan: v.union(v.literal("pro"), v.literal("campus")),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", args.clerkId))
+      .unique();
+    if (!user) {
+      throw new Error(`User not found for clerkId: ${args.clerkId}`);
+    }
+    await ctx.db.patch(user._id, {
+      plan: args.plan,
+      credits: 100000, // Give ample credits for pro users
+    });
+    console.log(`[Razorpay] Upgraded user ${user.email} (${user._id}) to ${args.plan} plan`);
+    return { success: true, userId: user._id, plan: args.plan };
+  },
+});
