@@ -24,7 +24,7 @@ export function InteractiveCharacters({
   const latestMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const rafIdRef = useRef<number | null>(null);
 
-  // Computed pupil offset (dx, dy clamped to 3px radius)
+  // Computed pupil offset (dx, dy clamped to 3.5px radius)
   const [pupilOffset, setPupilOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   // Priority order resolution: shocked > shy > watching > neutral
@@ -109,9 +109,9 @@ export function InteractiveCharacters({
   }, [isPasswordFocused]);
 
   // Derived style parameters for expressions
-  const isShy = activeExpression === "shy";
   const isShocked = activeExpression === "shocked";
   const isWatching = activeExpression === "watching";
+  const isShy = activeExpression === "shy";
 
   return (
     <div
@@ -134,7 +134,7 @@ export function InteractiveCharacters({
           {/* Body */}
           <rect x="95" y="95" width="110" height="265" rx="6" className="fill-[#6c1cd3]" />
 
-          {/* Eyes Group (No closing/blinking) */}
+          {/* Eyes Group (Always round, no pupil flattening) */}
           <g
             style={{
               transform: isShocked ? "scale(1.15)" : "scale(1)",
@@ -144,28 +144,28 @@ export function InteractiveCharacters({
           >
             {/* Left Eye White */}
             <circle cx="132" cy="125" r="9" fill="#ffffff" />
-            {/* Left Pupil */}
+            {/* Left Pupil (Always round open circle) */}
             <circle
               cx="132"
               cy="125"
               r="4"
               fill="#000000"
               style={{
-                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`,
                 transformOrigin: "132px 125px",
               }}
             />
 
             {/* Right Eye White */}
             <circle cx="168" cy="125" r="9" fill="#ffffff" />
-            {/* Right Pupil */}
+            {/* Right Pupil (Always round open circle) */}
             <circle
               cx="168"
               cy="125"
               r="4"
               fill="#000000"
               style={{
-                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`,
                 transformOrigin: "168px 125px",
               }}
             />
@@ -192,7 +192,7 @@ export function InteractiveCharacters({
           {/* Body */}
           <rect x="195" y="170" width="75" height="190" rx="4" className="fill-[#1c1c1e]" />
 
-          {/* Eyes Group (No closing/blinking) */}
+          {/* Eyes Group (Always round, no pupil flattening) */}
           <g
             style={{
               transform: isShocked ? "scale(1.15)" : "scale(1)",
@@ -207,7 +207,7 @@ export function InteractiveCharacters({
               r="3.5"
               fill="#000000"
               style={{
-                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`,
                 transformOrigin: "236px 195px",
               }}
             />
@@ -219,7 +219,7 @@ export function InteractiveCharacters({
               r="3.5"
               fill="#000000"
               style={{
-                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`,
                 transformOrigin: "255px 195px",
               }}
             />
@@ -245,19 +245,10 @@ export function InteractiveCharacters({
               transition: "transform 200ms ease-out",
             }}
           >
-            {/* Amplified pupil translation for Orange character (2.5x multiplier) */}
+            {/* Amplified pupil translation for Orange character (always round open eyes) */}
             <g style={{ transform: `translate(${pupilOffset.x * 2.8}px, ${pupilOffset.y * 1.5}px)` }}>
-              {/* Left Eye */}
-              <circle
-                cx="162"
-                cy="305"
-                r="6"
-                fill="#000000"
-                style={{
-                  transform: isShy ? "scaleY(0.2)" : "scaleY(1)",
-                  transformOrigin: "162px 305px",
-                }}
-              />
+              {/* Left Eye (Always round open circle) */}
+              <circle cx="162" cy="305" r="6" fill="#000000" />
 
               {/* Mouth */}
               {isShocked ? (
@@ -266,17 +257,8 @@ export function InteractiveCharacters({
                 <path d="M 181 315 Q 190 326 199 315" fill="none" stroke="#000000" strokeWidth="4" strokeLinecap="round" />
               )}
 
-              {/* Right Eye */}
-              <circle
-                cx="218"
-                cy="305"
-                r="6"
-                fill="#000000"
-                style={{
-                  transform: isShy ? "scaleY(0.2)" : "scaleY(1)",
-                  transformOrigin: "218px 305px",
-                }}
-              />
+              {/* Right Eye (Always round open circle) */}
+              <circle cx="218" cy="305" r="6" fill="#000000" />
             </g>
           </g>
         </motion.g>
@@ -300,13 +282,14 @@ export function InteractiveCharacters({
               transition: "transform 200ms ease-out",
             }}
           >
+            {/* Eye (Always round open circle) */}
             <circle
               cx="268"
               cy="234"
               r="4.5"
               fill="#000000"
               style={{
-                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px) ${isShy ? "scaleY(0.2)" : "scaleY(1)"}`,
+                transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`,
                 transformOrigin: "268px 234px",
               }}
             />
