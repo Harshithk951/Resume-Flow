@@ -101,7 +101,30 @@ export const createOrGetUser = mutation({
 export const syncUserCredits = mutation({
   args: {},
   handler: async (ctx) => {
-    const user = await requireAuth(ctx);
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return { corrected: false, credits: 0 };
+    }
+
+    let user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      const tenantId = process.env.DEFAULT_TENANT_ID ?? "default";
+      const userId = await ctx.db.insert("users", {
+        clerkId: identity.subject,
+        email: identity.email ?? "",
+        name: identity.name ?? "",
+        tenantId,
+        credits: MAX_CREDITS,
+        plan: "free",
+        onboardingComplete: false,
+      });
+      return { corrected: true, credits: MAX_CREDITS };
+    }
+
     const isFree = !user.plan || user.plan === "free";
     if (isFree) {
       const jobs = await ctx.db

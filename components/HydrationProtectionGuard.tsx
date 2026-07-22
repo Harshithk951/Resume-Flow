@@ -17,16 +17,16 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
   const pathname = usePathname();
   const router = useRouter();
 
-  const syncUserCredits = useMutation(api.users.syncUserCredits);
+  const createOrGetUser = useMutation(api.users.createOrGetUser);
 
-  // Sync user credits on initial page load if authenticated
+  // Sync user record and credits on initial page load if authenticated
   useEffect(() => {
     if (isClerkLoaded && isSignedIn) {
-      syncUserCredits().catch((err) => {
-        console.error("Failed to sync user credits:", err);
+      createOrGetUser().catch((err) => {
+        console.error("Failed to sync user:", err);
       });
     }
-  }, [isClerkLoaded, isSignedIn, syncUserCredits]);
+  }, [isClerkLoaded, isSignedIn, createOrGetUser]);
 
   const isPublicRoute =
     pathname === "/" ||
