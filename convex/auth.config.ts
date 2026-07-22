@@ -4,7 +4,7 @@
 // IMPORTANT: You must set CLERK_JWT_ISSUER_DOMAIN as an environment variable
 // in the Convex Dashboard → Settings → Environment Variables.
 //
-// Value: https://mutual-collie-86.clerk.accounts.dev
+// Value: https://clerk.resumeflow.harshithkumar.in
 //
 // This tells Convex how to validate incoming Clerk JWTs.
 
