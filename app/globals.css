@@ -30,12 +30,12 @@
 
   /* ── Text ── */
   --color-ink: #000000;
-  --color-ink-soft: #211922;
-  --color-body: #33332e;
-  --color-charcoal: #262622;
-  --color-mute: #62625b;
-  --color-ash: #91918c;
-  --color-stone: #c8c8c1;
+  --color-ink-soft: #171717;
+  --color-body: #171717;
+  --color-charcoal: #0a0a0a;
+  --color-mute: #374151;
+  --color-ash: #525252;
+  --color-stone: #4b5563;
   --color-on-dark: #ffffff;
 
   /* ── Inverse Surface (always-dark for headers, overlays) ── */

@@ -170,25 +170,25 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
               {/* Core Details */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">Company Name</label>
+                  <label className="text-xs font-extrabold text-[#040404] uppercase tracking-wider">Company Name</label>
                   <Input
                     type="text"
                     required
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="e.g. Google"
-                    className="h-10"
+                    className="h-10 text-[#040404] placeholder:text-[#525252]"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">Role Title</label>
+                  <label className="text-xs font-extrabold text-[#040404] uppercase tracking-wider">Role Title</label>
                   <Input
                     type="text"
                     required
                     value={jobTitle}
                     onChange={(e) => setJobTitle(e.target.value)}
                     placeholder="e.g. Software Engineer Intern"
-                    className="h-10"
+                    className="h-10 text-[#040404] placeholder:text-[#525252]"
                   />
                 </div>
               </div>
@@ -196,19 +196,19 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
               {/* Tab Content */}
               {activeTab === "text" ? (
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">Job Description</label>
+                  <label className="text-xs font-extrabold text-[#040404] uppercase tracking-wider">Job Description</label>
                   <textarea
                     required
                     rows={6}
                     value={jdText}
                     onChange={(e) => setJdText(e.target.value)}
-                    className="w-full p-4 border border-[var(--color-hairline)] rounded-xl text-sm focus:outline-none focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 transition-all resize-none bg-[var(--color-canvas)] placeholder:text-[var(--color-stone)]"
+                    className="w-full p-4 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition-all resize-none bg-white text-[#040404] placeholder:text-[#525252]"
                     placeholder="Paste raw requirements here (minimum 50 characters)..."
                   />
                 </div>
               ) : (
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider">
+                  <label className="text-xs font-extrabold text-[#040404] uppercase tracking-wider">
                     {activeTab === "pdf" ? "Upload Job PDF" : "Upload Screenshot"}
                   </label>
                   <FileUpload
@@ -233,12 +233,12 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
               )}
 
               {/* Bottom Actions */}
-              <div className="flex items-center justify-between pt-2 border-t border-[var(--color-hairline-soft)]">
+              <div className="flex items-center justify-between pt-2 border-t border-slate-200">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-lg bg-[var(--color-surface-card)] flex items-center justify-center">
-                    <Coins className="w-3.5 h-3.5 text-[var(--color-ash)]" />
+                  <div className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center">
+                    <Coins className="w-3.5 h-3.5 text-[#040404]" />
                   </div>
-                  <span className="text-[11px] text-[var(--color-ash)] font-semibold tabular-nums">
+                  <span className="text-[11px] text-[#525252] font-semibold tabular-nums">
                     Cost: 500 Credits
                   </span>
                   {credits < 500 && (

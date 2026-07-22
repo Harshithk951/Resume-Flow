@@ -130,7 +130,7 @@ export function ApplicationTracker({
             <div className="hidden sm:block overflow-x-auto">
               <table className="w-full border-collapse text-left">
                 <thead>
-                  <tr className="border-b border-[var(--color-hairline-soft)] bg-[var(--color-surface-soft)]/50 text-[10px] font-bold text-[var(--color-stone)] uppercase tracking-wider">
+                  <tr className="border-b border-slate-200 bg-slate-100 text-[10px] font-extrabold text-[#040404] uppercase tracking-wider">
                     <th className="px-6 py-3.5">Company</th>
                     <th className="px-6 py-3.5">Role</th>
                     <th className="px-6 py-3.5">ATS Match</th>
@@ -139,19 +139,19 @@ export function ApplicationTracker({
                     <th className="px-6 py-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[var(--color-hairline-soft)] text-xs">
+                <tbody className="divide-y divide-slate-200 text-xs">
                   {completedJobs.map((job) => (
-                    <tr key={job._id} className="hover:bg-[var(--color-surface-soft)]/40 transition-colors group">
-                      <td className="px-6 py-4 font-bold text-[var(--color-ink-soft)]">
+                    <tr key={job._id} className="hover:bg-slate-50 transition-colors group">
+                      <td className="px-6 py-4 font-bold text-[#040404]">
                         <Link
                           href={`/company/${job._id}`}
-                          className="hover:text-rose-600 transition-colors inline-flex items-center gap-1"
+                          className="hover:text-red-600 transition-colors inline-flex items-center gap-1"
                         >
                           <span>{job.companyName}</span>
-                          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 text-[var(--color-stone)] transition-opacity" />
+                          <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 text-neutral-700 transition-opacity" />
                         </Link>
                       </td>
-                      <td className="px-6 py-4 text-[var(--color-mute)] font-medium">{job.jobTitle}</td>
+                      <td className="px-6 py-4 text-[#525252] font-semibold">{job.jobTitle}</td>
                       <td className="px-6 py-4">
                         {job.atsScore ? (
                           <Badge
@@ -165,7 +165,7 @@ export function ApplicationTracker({
                             {job.atsScore}%
                           </Badge>
                         ) : (
-                          <span className="text-[var(--color-stone)]">—</span>
+                          <span className="text-[#525252]">—</span>
                         )}
                       </td>
                       <td className="px-6 py-4">
@@ -177,19 +177,19 @@ export function ApplicationTracker({
                           )}`}
                         >
                           {statusOptions.map((opt) => (
-                            <option key={opt.value} value={opt.value} className="bg-[var(--color-canvas)] text-[var(--color-ink)]">
+                            <option key={opt.value} value={opt.value} className="bg-white text-[#040404]">
                               {opt.label}
                             </option>
                           ))}
                         </select>
                       </td>
-                      <td className="px-6 py-4 text-[var(--color-stone)] font-medium">{timeAgo(job._creationTime)}</td>
+                      <td className="px-6 py-4 text-[#525252] font-semibold tabular-nums">{timeAgo(job._creationTime)}</td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-2">
                           {job.pdfStorageId && (
                             <Link
                               href={`/resume/${job._id}/export`}
-                              className="p-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-ash)] hover:text-rose-600 hover:border-rose-200 transition-all shadow-sm"
+                              className="p-1.5 rounded-lg border border-slate-200 bg-white text-neutral-800 hover:text-red-600 hover:border-red-200 transition-all shadow-sm"
                               title="Download PDF"
                             >
                               <Download className="w-3.5 h-3.5" />
@@ -197,7 +197,7 @@ export function ApplicationTracker({
                           )}
                           <Link
                             href={`/company/${job._id}`}
-                            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] hover:bg-[var(--color-surface-soft)] text-[10px] font-bold text-[var(--color-mute)] hover:text-[var(--color-ink)] transition-all shadow-sm"
+                            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-[10px] font-bold text-neutral-900 hover:text-red-600 transition-all shadow-sm"
                           >
                             <span>Open</span>
                             <ChevronRight className="w-3 h-3" />
