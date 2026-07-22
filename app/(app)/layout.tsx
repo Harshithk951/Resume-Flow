@@ -252,10 +252,7 @@ export default function AuthenticatedLayout({
               </nav>
             </div>
 
-            <div className="space-y-4 border-t border-[var(--color-hairline)]/60 pt-4">
-              {/* ── Theme Toggle (mobile) ── */}
-              <ThemeToggle />
-              
+            <div className="space-y-4 border-t border-slate-200 pt-4">
               <div className="flex items-center gap-3">
                 <UserButton />
                 <span className="text-xs font-semibold text-[var(--color-charcoal)] truncate">
