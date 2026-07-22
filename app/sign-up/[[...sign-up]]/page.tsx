@@ -1,13 +1,14 @@
 "use client";
 
-import { SignUp } from "@clerk/nextjs";
+import { SignUp, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { InteractiveCharacters, ExpressionState } from "@/components/auth/InteractiveCharacters";
 
 export default function SignUpPage() {
+  const { isLoaded } = useAuth();
   const formRef = useRef<HTMLDivElement>(null);
 
   const [expression, setExpression] = useState<ExpressionState>("neutral");
@@ -49,7 +50,7 @@ export default function SignUpPage() {
     return () => clearInterval(timer);
   }, []);
 
-  // Synchronous DOM Observer for Expression State Machine
+  // Safe Event Listeners for Interactive Character State Machine (No MutationObserver loops)
   useEffect(() => {
     if (!formRef.current) return;
 
@@ -102,22 +103,11 @@ export default function SignUpPage() {
     formEl.addEventListener("focusin", checkState);
     formEl.addEventListener("focusout", checkState);
     formEl.addEventListener("input", checkState);
-    formEl.addEventListener("click", checkState);
-
-    const observer = new MutationObserver(checkState);
-    observer.observe(formEl, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["type", "class"],
-    });
 
     return () => {
       formEl.removeEventListener("focusin", checkState);
       formEl.removeEventListener("focusout", checkState);
       formEl.removeEventListener("input", checkState);
-      formEl.removeEventListener("click", checkState);
-      observer.disconnect();
     };
   }, []);
 
@@ -358,55 +348,62 @@ export default function SignUpPage() {
           <div
             ref={formRef}
             onClick={handleFormClick}
-            className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 flex flex-col justify-center bg-white"
+            className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 flex flex-col justify-center bg-white min-h-[400px]"
           >
-            <SignUp
-              routing="path"
-              path="/sign-up"
-              fallbackRedirectUrl="/dashboard"
-              signInFallbackRedirectUrl="/dashboard"
-              appearance={{
-                layout: {
-                  socialButtonsPlacement: "top",
-                  socialButtonsVariant: "blockButton",
-                  showOptionalFields: false,
-                },
-                elements: {
-                  rootBox: "w-full mx-auto",
-                  card: "shadow-none border-none bg-transparent w-full p-0",
-                  cardBox: "shadow-none border-none bg-transparent w-full p-0",
-                  headerTitle: "text-[26px] font-extrabold text-[#1c1c1e] text-center tracking-tight",
-                  headerSubtitle: "text-[14px] text-slate-500 text-center mt-1",
-                  formButtonPrimary:
-                    "bg-[#1c1c1e] hover:bg-[#2c2c2e] text-white rounded-full h-12 text-[15px] font-bold shadow-md transition-all active:scale-[0.99] mt-4 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
-                  formFieldInput:
-                    "bg-transparent rounded-none border-0 border-b-2 border-slate-300 focus:border-slate-900 h-11 text-slate-900 placeholder:text-slate-400 font-medium px-0 transition-all pr-8",
-                  footerActionLink: "text-[#1c1c1e] font-bold hover:underline block text-center mt-1",
-                  footerActionText: "text-slate-500 font-medium text-sm block text-center",
-                  socialButtonsBlockButton:
-                    "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
-                  socialButtonsBlockButtonText: "text-[#1c1c1e] font-semibold text-sm",
-                  formFieldLabel: "text-slate-800 font-semibold text-sm mb-1",
-                  dividerLine: "bg-slate-200 h-[1px]",
-                  dividerText: "text-slate-400 font-semibold text-xs uppercase tracking-wider",
-                  identityPreviewEditButton: "text-[#1c1c1e] font-semibold",
-                  formHeaderTitle: "text-[#1c1c1e] text-center",
-                  formHeaderSubtitle: "text-slate-500 text-center",
-                  formFieldRow: "bg-transparent",
-                  formField: "bg-transparent",
-                  footer: "bg-transparent border-none mt-4 justify-center text-center w-full flex flex-col items-center",
-                  footerAction: "bg-transparent justify-center text-center w-full flex flex-col items-center gap-1",
-                  socialButtons: "bg-transparent w-full",
-                  alternativeMethods: "bg-transparent text-[#1c1c1e]",
-                  alternativeMethodsBlockButton:
-                    "bg-[#f4f4f5] text-[#1c1c1e] border border-slate-200 hover:bg-slate-200 rounded-full h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
-                  formFieldError: "bg-transparent",
-                  formFieldErrorText: "text-[#f75c2f] font-medium text-xs mt-1",
-                  devModeNotice: "hidden",
-                  formFieldInputShowPasswordButton: "text-slate-600 hover:text-slate-900 cursor-pointer text-sm font-semibold",
-                },
-              } as any}
-            />
+            {!isLoaded ? (
+              <div className="flex flex-col items-center justify-center py-12 gap-3">
+                <Loader2 className="w-8 h-8 text-slate-400 animate-spin" />
+                <p className="text-sm font-medium text-slate-500">Loading sign up...</p>
+              </div>
+            ) : (
+              <SignUp
+                routing="path"
+                path="/sign-up"
+                fallbackRedirectUrl="/dashboard"
+                signInFallbackRedirectUrl="/dashboard"
+                appearance={{
+                  layout: {
+                    socialButtonsPlacement: "top",
+                    socialButtonsVariant: "blockButton",
+                    showOptionalFields: false,
+                  },
+                  elements: {
+                    rootBox: "w-full mx-auto",
+                    card: "shadow-none border-none bg-transparent w-full p-0",
+                    cardBox: "shadow-none border-none bg-transparent w-full p-0",
+                    headerTitle: "text-[26px] font-extrabold text-[#1c1c1e] text-center tracking-tight",
+                    headerSubtitle: "text-[14px] text-slate-500 text-center mt-1",
+                    formButtonPrimary:
+                      "bg-[#1c1c1e] hover:bg-[#2c2c2e] text-white rounded-full h-12 text-[15px] font-bold shadow-md transition-all active:scale-[0.99] mt-4 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
+                    formFieldInput:
+                      "bg-transparent rounded-none border-0 border-b-2 border-slate-300 focus:border-slate-900 h-11 text-slate-900 placeholder:text-slate-400 font-medium px-0 transition-all pr-8",
+                    footerActionLink: "text-[#1c1c1e] font-bold hover:underline block text-center mt-1",
+                    footerActionText: "text-slate-500 font-medium text-sm block text-center",
+                    socialButtonsBlockButton:
+                      "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
+                    socialButtonsBlockButtonText: "text-[#1c1c1e] font-semibold text-sm",
+                    formFieldLabel: "text-slate-800 font-semibold text-sm mb-1",
+                    dividerLine: "bg-slate-200 h-[1px]",
+                    dividerText: "text-slate-400 font-semibold text-xs uppercase tracking-wider",
+                    identityPreviewEditButton: "text-[#1c1c1e] font-semibold",
+                    formHeaderTitle: "text-[#1c1c1e] text-center",
+                    formHeaderSubtitle: "text-slate-500 text-center",
+                    formFieldRow: "bg-transparent",
+                    formField: "bg-transparent",
+                    footer: "bg-transparent border-none mt-4 justify-center text-center w-full flex flex-col items-center",
+                    footerAction: "bg-transparent justify-center text-center w-full flex flex-col items-center gap-1",
+                    socialButtons: "bg-transparent w-full",
+                    alternativeMethods: "bg-transparent text-[#1c1c1e]",
+                    alternativeMethodsBlockButton:
+                      "bg-[#f4f4f5] text-[#1c1c1e] border border-slate-200 hover:bg-slate-200 rounded-full h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
+                    formFieldError: "bg-transparent",
+                    formFieldErrorText: "text-[#f75c2f] font-medium text-xs mt-1",
+                    devModeNotice: "hidden",
+                    formFieldInputShowPasswordButton: "text-slate-600 hover:text-slate-900 cursor-pointer text-sm font-semibold",
+                  },
+                } as any}
+              />
+            )}
           </div>
         </motion.div>
       </AnimatePresence>
