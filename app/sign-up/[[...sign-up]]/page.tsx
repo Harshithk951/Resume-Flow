@@ -21,25 +21,31 @@ export default function SignUpPage() {
     document.documentElement.classList.remove("dark");
   }, []);
 
-  // Fallback: Replace Clerk social button mask-image with local SVG (Clerk uses CSS mask-image spans, not <img>)
+  // Fallback: Replace Clerk social button mask-image with local SVG & ensure black background fill
   useEffect(() => {
-    let fixed = false;
-    const timer = setInterval(() => {
-      if (fixed) return;
-      document.querySelectorAll<HTMLSpanElement>(
-        ".cl-socialButtonsBlockButton span"
-      ).forEach((span) => {
-        const mask =
-          getComputedStyle(span).maskImage ||
-          getComputedStyle(span).webkitMaskImage ||
-          "";
-        if (mask.includes("github")) {
-          span.style.maskImage = "url(/github-icon.svg)";
-          span.style.webkitMaskImage = "url(/github-icon.svg)";
-          fixed = true;
-        }
+    const fixGithubIcon = () => {
+      const githubSpans = document.querySelectorAll<HTMLSpanElement>(
+        ".cl-socialButtonsBlockButton__github span, .cl-socialButtonsProviderIcon__github, .cl-providerIcon__github, span[aria-label*='GitHub']"
+      );
+      githubSpans.forEach((span) => {
+        if (span.classList.contains("cl-socialButtonsBlockButtonText")) return;
+        span.style.setProperty("background-color", "#000000", "important");
+        span.style.setProperty("mask-image", "url(/github-icon.svg)", "important");
+        span.style.setProperty("-webkit-mask-image", "url(/github-icon.svg)", "important");
+        span.style.setProperty("mask-size", "contain", "important");
+        span.style.setProperty("-webkit-mask-size", "contain", "important");
+        span.style.setProperty("mask-repeat", "no-repeat", "important");
+        span.style.setProperty("-webkit-mask-repeat", "no-repeat", "important");
+        span.style.setProperty("mask-position", "center", "important");
+        span.style.setProperty("-webkit-mask-position", "center", "important");
+        span.style.setProperty("width", "18px", "important");
+        span.style.setProperty("height", "18px", "important");
+        span.style.setProperty("display", "inline-block", "important");
       });
-    }, 300);
+    };
+
+    fixGithubIcon();
+    const timer = setInterval(fixGithubIcon, 200);
     setTimeout(() => clearInterval(timer), 6000);
     return () => clearInterval(timer);
   }, []);
@@ -222,6 +228,26 @@ export default function SignUpPage() {
         }
         .cl-socialButtonsBlockButton:hover {
           background-color: #e4e4e7 !important;
+        }
+        .cl-socialButtonsProviderIcon__github,
+        .cl-providerIcon__github,
+        .cl-socialButtonsBlockButton__github .cl-socialButtonsProviderIcon,
+        .cl-socialButtonsBlockButton__github span[aria-label*="GitHub"],
+        span.cl-socialButtonsProviderIcon__github,
+        span.cl-providerIcon__github {
+          background-color: #000000 !important;
+          background-image: none !important;
+          mask-image: url('/github-icon.svg') !important;
+          -webkit-mask-image: url('/github-icon.svg') !important;
+          mask-size: contain !important;
+          -webkit-mask-size: contain !important;
+          mask-repeat: no-repeat !important;
+          -webkit-mask-repeat: no-repeat !important;
+          mask-position: center !important;
+          -webkit-mask-position: center !important;
+          width: 18px !important;
+          height: 18px !important;
+          display: inline-block !important;
         }
 
         /* Two-Line Stacked Footer Below Continue Button */
