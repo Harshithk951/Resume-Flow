@@ -361,6 +361,7 @@ export default function SignUpPage() {
             className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 flex flex-col justify-center bg-white"
           >
             <SignUp
+              routing="path"
               path="/sign-up"
               fallbackRedirectUrl="/dashboard"
               signInFallbackRedirectUrl="/dashboard"
