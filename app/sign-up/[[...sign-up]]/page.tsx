@@ -21,6 +21,19 @@ export default function SignUpPage() {
     document.documentElement.classList.remove("dark");
   }, []);
 
+  // Fallback: Replace Clerk social button images with local SVGs (Safari ITP blocks img.clerk.com)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const img = e.target as HTMLImageElement | null;
+      if (!img?.src?.includes("clerk.com") || !img.src.includes("github"))
+        return;
+      img.onerror = null; // prevent loop if local SVG also fails
+      img.src = "/github-icon.svg";
+    };
+    window.addEventListener("error", handler, true);
+    return () => window.removeEventListener("error", handler, true);
+  }, []);
+
   // Synchronous DOM Observer for Expression State Machine
   useEffect(() => {
     if (!formRef.current) return;
@@ -99,6 +112,9 @@ export default function SignUpPage() {
 
   return (
     <div className="relative min-h-screen w-full bg-[#f8fafc] flex flex-col items-center justify-center p-4 md:p-8">
+      {/* Preconnect to Clerk image CDN (Safari needs this for social icons) */}
+      <link rel="preconnect" href="https://img.clerk.com" />
+
       {/* Background Visible Gray Dotted Pattern Overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1.5px,transparent_1.5px)] [background-size:24px_24px] opacity-100 pointer-events-none" />
 
