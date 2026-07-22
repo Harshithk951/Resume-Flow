@@ -16,6 +16,9 @@ import {
   X,
   Sparkles,
   Crown,
+  Infinity,
+  Target,
+  Zap,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -535,17 +538,17 @@ export default function DashboardCommandCenter() {
 
                 {/* Stats row */}
                 <div className="grid grid-cols-3 gap-3 mb-8">
-                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
-                    <p className="text-2xl font-extrabold text-white">♾️</p>
-                    <p className="text-[10px] font-medium text-white/60 mt-0.5">Resumes</p>
+                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3 flex flex-col items-center justify-center">
+                    <Infinity className="w-6 h-6 text-white mb-1" />
+                    <p className="text-[10px] font-semibold text-white/70">Resumes</p>
                   </div>
-                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
-                    <p className="text-2xl font-extrabold text-white">🎯</p>
-                    <p className="text-[10px] font-medium text-white/60 mt-0.5">ATS Optimized</p>
+                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3 flex flex-col items-center justify-center">
+                    <Target className="w-6 h-6 text-yellow-300 mb-1" />
+                    <p className="text-[10px] font-semibold text-white/70">ATS Optimized</p>
                   </div>
-                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3">
-                    <p className="text-2xl font-extrabold text-white">⚡</p>
-                    <p className="text-[10px] font-medium text-white/60 mt-0.5">Priority</p>
+                  <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 p-3 flex flex-col items-center justify-center">
+                    <Zap className="w-6 h-6 text-amber-300 mb-1" />
+                    <p className="text-[10px] font-semibold text-white/70">Priority</p>
                   </div>
                 </div>
 
