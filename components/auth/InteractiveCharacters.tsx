@@ -126,8 +126,8 @@ export function InteractiveCharacters({
         {/* ─── 1. PURPLE CHARACTER (Index 0: Delay 0ms) ─── */}
         <motion.g
           id="purple-character"
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0 }}
           style={{ transformOrigin: "150px 360px" }}
         >
@@ -184,8 +184,8 @@ export function InteractiveCharacters({
         {/* ─── 2. BLACK CHARACTER (Index 1: Delay 100ms) ─── */}
         <motion.g
           id="black-character"
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
           style={{ transformOrigin: "232.5px 360px" }}
         >
@@ -229,8 +229,8 @@ export function InteractiveCharacters({
         {/* ─── 3. ORANGE CHARACTER (Index 2: Delay 200ms) ─── */}
         <motion.g
           id="orange-character"
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
           style={{ transformOrigin: "190px 360px" }}
         >
@@ -266,8 +266,8 @@ export function InteractiveCharacters({
         {/* ─── 4. YELLOW CHARACTER (Index 3: Delay 300ms) ─── */}
         <motion.g
           id="yellow-character"
-          initial={{ y: -40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.3 }}
           style={{ transformOrigin: "287.5px 360px" }}
         >
