@@ -1,6 +1,6 @@
 "use client";
 
-import { SignIn } from "@clerk/nextjs";
+import { SignIn, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
@@ -10,6 +10,7 @@ import { InteractiveCharacters, ExpressionState } from "@/components/auth/Intera
 
 export default function SignInPage() {
   const router = useRouter();
+  const { isLoaded, isSignedIn } = useAuth();
   const formRef = useRef<HTMLDivElement>(null);
 
   const [expression, setExpression] = useState<ExpressionState>("neutral");
@@ -17,6 +18,15 @@ export default function SignInPage() {
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  // If user is already authenticated (e.g. after OAuth redirect), immediately navigate to target or dashboard
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      const params = new URLSearchParams(window.location.search);
+      const redirectUrl = params.get("redirect_url") || "/dashboard";
+      router.replace(redirectUrl);
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     // Force light theme on auth route mount
@@ -390,6 +400,8 @@ export default function SignInPage() {
           >
             <SignIn
               path="/sign-in"
+              fallbackRedirectUrl="/dashboard"
+              signUpFallbackRedirectUrl="/dashboard"
               appearance={{
                 layout: {
                   socialButtonsPlacement: "top",
