@@ -313,28 +313,17 @@ export default function SignUpPage() {
           margin-bottom: 2px !important;
         }
 
-        /* Completely Hide Clerk Dev Mode Notice Badge, Stray Footer Cards, & Name Fields */
+        /* Hide Clerk Dev Mode Notice Badge & Optional Name Fields */
         [data-clerk-dev-mode-notice],
         div[class*="dev-mode-notice"],
-        .cl-internal-dev-mode-notice,
         .cl-devModeNotice,
         [data-clerk-notice],
         .cl-footerTextContainer,
-        .cl-internal-ph3a4t,
-        .cl-internal-157s8o7,
-        .cl-internal-1k8v9f6,
         .cl-formField__firstName,
         .cl-formField__lastName,
         .cl-formFieldRow__firstName,
         .cl-formFieldRow__lastName {
           display: none !important;
-          visibility: hidden !important;
-          opacity: 0 !important;
-          pointer-events: none !important;
-          height: 0 !important;
-          width: 0 !important;
-          margin: 0 !important;
-          padding: 0 !important;
         }
       `}</style>
 
