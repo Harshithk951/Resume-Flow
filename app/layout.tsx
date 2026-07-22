@@ -4,7 +4,7 @@ import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider"
 import { Analytics } from "@vercel/analytics/next";
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
 import { Toaster } from "@/components/Toaster";
-import { jakartaSans, displayFont } from "./fonts";
+import { jakartaSans, outfitFont, interFont } from "./fonts";
 import TermsFeedConsent from "@/components/TermsFeedConsent";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { WebVitals } from "@/components/WebVitals";
@@ -216,7 +216,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`scroll-smooth ${jakartaSans.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
+    <html lang="en" suppressHydrationWarning className={`scroll-smooth ${jakartaSans.variable} ${outfitFont.variable} ${interFont.variable}`} data-scroll-behavior="smooth">
       <body className={`min-h-screen antialiased ${jakartaSans.className}`}>
         {/* ─── JSON-LD Structured Data ──────── */}
         <script

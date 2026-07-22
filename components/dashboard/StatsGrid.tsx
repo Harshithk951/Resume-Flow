@@ -92,7 +92,7 @@ function AnimatedStat({
           <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
             {label}
           </span>
-          <p className="text-3xl font-extrabold text-slate-900 dark:text-white mt-1.5 tracking-tight tabular-nums">
+          <p className="text-3xl font-extrabold text-slate-900 dark:text-white mt-1.5 tracking-tight tabular-nums font-scalable">
             {animatedValue}
             {suffix && (
               <span className="text-lg font-bold text-slate-700 dark:text-slate-200 ml-0.5">{suffix}</span>
