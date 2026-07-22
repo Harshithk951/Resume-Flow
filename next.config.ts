@@ -10,13 +10,13 @@ const devAllowedOrigins =
 
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://www.termsfeed.com https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://challenges.cloudflare.com https://cdn.tailwindcss.com https://ep2.adtrafficquality.google https://*.razorpay.com",
-  "style-src 'self' 'unsafe-inline' https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://fonts.googleapis.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://www.termsfeed.com https://challenges.cloudflare.com https://cdn.tailwindcss.com https://ep2.adtrafficquality.google https://*.razorpay.com",
+  "style-src 'self' 'unsafe-inline' https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://fonts.googleapis.com",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "img-src 'self' data: blob: https://www.google-analytics.com https://analytics.google.com https://img.clerk.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://*.doubleclick.net https://*.razorpay.com",
+  "img-src 'self' data: blob: https://img.clerk.com https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://*.doubleclick.net https://*.razorpay.com",
   "worker-src 'self' blob:",
-  "frame-src 'self' blob: https://challenges.cloudflare.com https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://googleads.g.doubleclick.net https://www.google.com https://ep2.adtrafficquality.google https://www.googletagmanager.com https://analytics.google.com https://*.razorpay.com",
-  "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://challenges.cloudflare.com https://img.clerk.com wss://*.convex.cloud https://*.convex.cloud https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://*.doubleclick.net https://clerk-telemetry.com https://www.termsfeed.com https://*.razorpay.com",
+  "frame-src 'self' blob: https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://challenges.cloudflare.com https://googleads.g.doubleclick.net https://www.google.com https://ep2.adtrafficquality.google https://www.googletagmanager.com https://analytics.google.com https://*.razorpay.com",
+  "connect-src 'self' https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://img.clerk.com https://clerk-telemetry.com wss://*.convex.cloud https://*.convex.cloud https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://challenges.cloudflare.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://*.doubleclick.net https://www.termsfeed.com https://*.razorpay.com",
 ];
 
 const securityHeaders = [
