@@ -56,39 +56,39 @@ export function RecentActivityFeed({ activities = [] }: RecentActivityFeedProps)
   const displayActivities = activities.slice(0, 5);
 
   return (
-    <Card variant="elevated" className="border-[var(--color-secondary-bg)]">
+    <Card variant="elevated" className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-            <Clock className="w-3.5 h-3.5 text-[var(--color-ash)]" />
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
+            <Clock className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
           </div>
-          <CardTitle>Recent Activity</CardTitle>
+          <CardTitle className="text-slate-900 dark:text-white">Recent Activity</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="pt-0">
         {displayActivities.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center bg-[var(--color-surface-soft)]/20 rounded-xl border border-dashed border-[var(--color-hairline)]/60">
-            <Clock className="w-6 h-6 text-[var(--color-ash)] mb-2" />
-            <span className="text-xs font-bold text-[var(--color-charcoal)]">No activity yet</span>
-            <span className="text-[10px] text-[var(--color-stone)] mt-0.5">Activities will record here.</span>
+          <div className="flex flex-col items-center justify-center py-8 text-center bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+            <Clock className="w-6 h-6 text-slate-600 dark:text-slate-300 mb-2" />
+            <span className="text-xs font-bold text-slate-900 dark:text-white">No activity yet</span>
+            <span className="text-[10px] text-slate-600 dark:text-slate-400 font-medium mt-0.5">Activities will record here.</span>
           </div>
         ) : (
-          <div className="relative pl-4 space-y-4 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-[var(--color-surface-card)]">
+          <div className="relative pl-4 space-y-4 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-200 dark:before:bg-slate-800">
             {displayActivities.map((act) => (
               <div key={act.id} className="relative flex gap-3 items-start group">
                 {/* Timeline connector dot */}
                 <div
-                  className={`absolute -left-[29px] top-1 w-[24px] h-[24px] rounded-full border flex items-center justify-center shrink-0 z-10 bg-[var(--color-canvas)] transition-all shadow-sm ${getDotStyle(
+                  className={`absolute -left-[29px] top-1 w-[24px] h-[24px] rounded-full border flex items-center justify-center shrink-0 z-10 bg-white dark:bg-slate-900 transition-all shadow-sm ${getDotStyle(
                     act.type
                   )}`}
                 >
                   {getIcon(act.type)}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-xs font-semibold text-[var(--color-ink-soft)] block leading-tight">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white block leading-tight">
                     {act.title}
                   </span>
-                  <span className="text-[10px] text-[var(--color-stone)] font-medium block mt-0.5">
+                  <span className="text-[10px] text-slate-600 dark:text-slate-300 font-semibold block mt-0.5">
                     {timeAgo(act.timestamp)}
                   </span>
                 </div>

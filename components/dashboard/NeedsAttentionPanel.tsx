@@ -138,33 +138,33 @@ export function NeedsAttentionPanel({
   };
 
   return (
-    <Card variant="elevated" className="border-[var(--color-secondary-bg)]">
+    <Card variant="elevated" className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <CardHeader className="pb-3 flex flex-row items-center justify-between space-y-0">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-            <AlertTriangle className="w-3.5 h-3.5 text-[var(--color-ash)]" />
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
+            <AlertTriangle className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
           </div>
-          <CardTitle>Needs Attention</CardTitle>
+          <CardTitle className="text-slate-900 dark:text-white">Needs Attention</CardTitle>
         </div>
         {items.length > 0 && (
-          <span className="text-[10px] font-bold bg-rose-50 text-rose-600 border border-rose-100 px-2 py-0.5 rounded-full animate-pulse">
+          <span className="text-[10px] font-bold bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-100 dark:border-rose-900/60 px-2 py-0.5 rounded-full animate-pulse">
             {items.length} Action{items.length !== 1 ? "s" : ""}
           </span>
         )}
       </CardHeader>
       <CardContent className="pt-0">
         {displayItems.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-8 text-center bg-[var(--color-surface-soft)]/20 rounded-xl border border-dashed border-[var(--color-hairline)]/60">
+          <div className="flex flex-col items-center justify-center py-8 text-center bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
             <CheckCircle2 className="w-6 h-6 text-emerald-500 mb-2" />
-            <span className="text-xs font-bold text-[var(--color-charcoal)]">All caught up!</span>
-            <span className="text-[10px] text-[var(--color-stone)] mt-0.5">No items need your attention.</span>
+            <span className="text-xs font-bold text-slate-900 dark:text-white">All caught up!</span>
+            <span className="text-[10px] text-slate-600 dark:text-slate-400 font-medium mt-0.5">No items need your attention.</span>
           </div>
         ) : (
           <div className="space-y-2">
             {displayItems.map((item) => (
               <div
                 key={item.id}
-                className={`flex items-center justify-between p-3 rounded-xl border-l-3 border border-[var(--color-secondary-bg)] transition-all hover:bg-[var(--color-surface-soft)]/60 ${getBorderColor(
+                className={`flex items-center justify-between p-3 rounded-xl border-l-3 border border-slate-200 dark:border-slate-800 transition-all hover:bg-slate-50 dark:hover:bg-slate-800/60 ${getBorderColor(
                   item.type
                 )}`}
               >
@@ -173,11 +173,11 @@ export function NeedsAttentionPanel({
                   <div className="min-w-0 flex-1">
                     <Link
                       href={item.href}
-                      className="text-xs font-bold text-[var(--color-ink-soft)] hover:text-rose-600 transition-colors block truncate"
+                      className="text-xs font-bold text-slate-900 dark:text-white hover:text-rose-600 dark:hover:text-rose-400 transition-colors block truncate"
                     >
                       {item.title}
                     </Link>
-                    <span className="text-[10px] text-[var(--color-ash)] block truncate mt-0.5">
+                    <span className="text-[10px] text-slate-600 dark:text-slate-300 font-medium block truncate mt-0.5">
                       {item.description}
                     </span>
                   </div>
@@ -187,7 +187,7 @@ export function NeedsAttentionPanel({
                 ) : (
                   <Link
                     href={item.href}
-                    className="shrink-0 text-[10px] font-bold text-rose-600 hover:text-rose-700 hover:underline transition-colors flex items-center"
+                    className="shrink-0 text-[10px] font-bold text-rose-600 dark:text-rose-400 hover:underline transition-colors flex items-center"
                   >
                     Resolve
                   </Link>

@@ -37,13 +37,13 @@ const ACTIONS = [
 
 export function QuickActions({ onAddJob }: QuickActionsProps) {
   return (
-    <Card variant="elevated" className="border-[var(--color-secondary-bg)]">
+    <Card variant="elevated" className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-            <ExternalLink className="w-3.5 h-3.5 text-[var(--color-ash)]" />
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
+            <ExternalLink className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
           </div>
-          <CardTitle>Quick Actions</CardTitle>
+          <CardTitle className="text-slate-900 dark:text-white">Quick Actions</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="pt-0">
@@ -52,7 +52,7 @@ export function QuickActions({ onAddJob }: QuickActionsProps) {
             const Icon = action.icon;
             const content = (
               <div
-                className="flex items-center gap-3 p-3 rounded-xl border border-[var(--color-secondary-bg)] bg-[var(--color-canvas)] hover:bg-[var(--color-surface-soft)]/80 hover:border-[var(--color-secondary-bg)]/80 transition-all duration-200 cursor-pointer group"
+                className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 cursor-pointer group"
               >
                 <div
                   className={`w-9 h-9 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200`}
@@ -60,10 +60,10 @@ export function QuickActions({ onAddJob }: QuickActionsProps) {
                   <Icon className="w-4 h-4 text-white" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-xs font-bold text-[var(--color-ink-soft)] block">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white block">
                     {action.label}
                   </span>
-                  <span className="text-[10px] text-[var(--color-stone)]">
+                  <span className="text-[10px] text-slate-600 dark:text-slate-300 font-medium">
                     {action.description}
                   </span>
                 </div>

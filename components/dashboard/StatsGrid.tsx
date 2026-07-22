@@ -89,16 +89,16 @@ function AnimatedStat({
         {/* Subtle gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <CardContent className="p-5 relative">
-          <span className="text-[11px] font-semibold text-[var(--color-stone)] uppercase tracking-wider">
+          <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
             {label}
           </span>
-          <p className="text-3xl font-extrabold text-[var(--color-ink-soft)] mt-1.5 tracking-tight tabular-nums">
+          <p className="text-3xl font-extrabold text-slate-900 dark:text-white mt-1.5 tracking-tight tabular-nums">
             {animatedValue}
             {suffix && (
-              <span className="text-lg font-bold text-[var(--color-ash)] ml-0.5">{suffix}</span>
+              <span className="text-lg font-bold text-slate-700 dark:text-slate-200 ml-0.5">{suffix}</span>
             )}
           </p>
-          <span className="text-[11px] text-[var(--color-ash)] mt-0.5 block">
+          <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400 mt-0.5 block">
             {sublabel}
           </span>
           {extra && <div className="mt-2">{extra}</div>}

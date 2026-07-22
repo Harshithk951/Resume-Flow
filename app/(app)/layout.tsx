@@ -92,7 +92,7 @@ export default function AuthenticatedLayout({
             className="px-4"
           />
           {/* Hover label for brand name */}
-          <span className="absolute top-[22px] left-14 text-xs font-bold text-[var(--color-ash)] whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-200 pointer-events-none"
+          <span className="absolute top-[22px] left-14 text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-200 pointer-events-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             ResumeFlow
@@ -111,11 +111,11 @@ export default function AuthenticatedLayout({
                       type="button"
                       onClick={() => setIsChatHistoryOpen(true)}
                       title="Chat History"
-                      className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 text-[var(--color-mute)] hover:bg-white/60 hover:text-[var(--color-ink)] w-full"
+                      className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white w-full"
                       style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                     >
                       <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
-                        <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-[var(--color-stone)] group-hover/nav:text-[var(--color-mute)]" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
+                        <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-slate-600 dark:text-slate-400 group-hover/nav:text-slate-900 dark:group-hover/nav:text-white" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
                       </div>
                       <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}>
                         Chat History
@@ -126,10 +126,10 @@ export default function AuthenticatedLayout({
                     href={item.href}
                     title={item.name}
                     aria-current={isActive ? "page" : undefined}
-                    className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
+                    className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 ${
                       isActive
-                        ? "bg-[var(--color-canvas)] text-rose-600 shadow-[0_2px_12px_-2px_rgba(225,29,72,0.08)] border border-rose-100/60 font-semibold"
-                        : "text-[var(--color-mute)] hover:bg-white/60 hover:text-[var(--color-ink)]"
+                        ? "bg-white dark:bg-slate-900 text-rose-600 dark:text-rose-400 shadow-sm border border-rose-100 dark:border-rose-950 font-bold"
+                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
                     }`}
                     style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                   >
@@ -139,7 +139,7 @@ export default function AuthenticatedLayout({
                     <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
                       <Icon
                         className={`h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 ${
-                          isActive ? "text-rose-600" : "text-[var(--color-stone)] group-hover/nav:text-[var(--color-mute)]"
+                          isActive ? "text-rose-600 dark:text-rose-400" : "text-slate-600 dark:text-slate-400 group-hover/nav:text-slate-900 dark:group-hover/nav:text-white"
                         }`}
                         style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                       />
