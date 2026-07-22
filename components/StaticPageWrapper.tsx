@@ -25,7 +25,14 @@ export function StaticPageWrapper({
       <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-blue-500/[0.01] rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Simplified Navbar */}
-      <nav className="sticky top-0 z-45 bg-white/70 backdrop-blur-md border-b border-[var(--color-hairline-soft)]/85">
+      <nav
+        className="sticky top-0 z-45 bg-white/70 backdrop-blur-md border-b border-[var(--color-hairline-soft)]/85 transform-gpu"
+        style={{
+          WebkitBackfaceVisibility: "hidden",
+          backfaceVisibility: "hidden",
+          transform: "translateZ(0)",
+        }}
+      >
         <div className="max-w-[1000px] mx-auto px-6 h-16 flex items-center justify-between">
           <BrandLogo href="/" className="gap-3.5" />
           <Link

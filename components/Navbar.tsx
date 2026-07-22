@@ -58,16 +58,18 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-500 ${
+      className={`sticky top-0 z-50 transition-colors duration-300 transform-gpu ${
         scrolled
-          ? "mx-4 mt-3 rounded-2xl glass-panel shadow-[0_8px_32px_rgba(0,0,0,0.06)]"
-          : "bg-white/70 backdrop-blur-md border-b border-slate-900/10"
+          ? "bg-white/85 dark:bg-slate-950/85 backdrop-blur-lg shadow-sm border-b border-slate-200/80 dark:border-slate-800/80"
+          : "bg-white/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-slate-900/10 dark:border-slate-800/50"
       }`}
-      style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+      style={{
+        WebkitBackfaceVisibility: "hidden",
+        backfaceVisibility: "hidden",
+        transform: "translateZ(0)",
+      }}
     >
-      <div className={`max-w-[1280px] mx-auto px-6 flex items-center justify-between transition-all duration-500 ${
-        scrolled ? "h-14" : "h-16"
-      }`}>
+      <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
         <BrandLogo href="/" className="gap-3.5" />
 
         <div className="hidden md:flex items-center gap-8">
