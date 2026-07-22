@@ -113,7 +113,7 @@ export const syncUserCredits = mutation({
 
     if (!user) {
       const tenantId = process.env.DEFAULT_TENANT_ID ?? "default";
-      const userId = await ctx.db.insert("users", {
+      await ctx.db.insert("users", {
         clerkId: identity.subject,
         email: identity.email ?? "",
         name: identity.name ?? "",
