@@ -21,14 +21,13 @@ export default function SignUpPage() {
     document.documentElement.classList.remove("dark");
   }, []);
 
-  // Fallback: Replace Clerk social button mask-image with local SVG & ensure black background fill
+  // Fallback: Replace Clerk social button mask-image with local SVG & ensure black background fill on icon only
   useEffect(() => {
     const fixGithubIcon = () => {
-      const githubSpans = document.querySelectorAll<HTMLSpanElement>(
-        ".cl-socialButtonsBlockButton__github span, .cl-socialButtonsProviderIcon__github, .cl-providerIcon__github, span[aria-label*='GitHub']"
+      const githubIconSpans = document.querySelectorAll<HTMLSpanElement>(
+        ".cl-socialButtonsProviderIcon__github, .cl-providerIcon__github, .cl-socialButtonsBlockButton__github .cl-socialButtonsProviderIcon, .cl-socialButtonsBlockButton__github .cl-providerIcon"
       );
-      githubSpans.forEach((span) => {
-        if (span.classList.contains("cl-socialButtonsBlockButtonText")) return;
+      githubIconSpans.forEach((span) => {
         span.style.setProperty("background-color", "#000000", "important");
         span.style.setProperty("mask-image", "url(/github-icon.svg)", "important");
         span.style.setProperty("-webkit-mask-image", "url(/github-icon.svg)", "important");
@@ -143,7 +142,7 @@ export default function SignUpPage() {
         }
         .cl-header, .cl-formHeader {
           text-align: center !important;
-          margin-bottom: 20px !important;
+          margin-bottom: 12px !important;
         }
         .cl-headerTitle, .cl-formHeaderTitle {
           color: #1c1c1e !important;
@@ -157,6 +156,14 @@ export default function SignUpPage() {
           text-align: center !important;
           font-size: 14px !important;
           margin-top: 4px !important;
+        }
+        .cl-socialButtonsRoot,
+        .cl-socialButtons,
+        .cl-socialButtonsBlockButtonRow {
+          margin-top: 0px !important;
+          margin-bottom: 0px !important;
+          padding-top: 0px !important;
+          padding-bottom: 0px !important;
         }
         .cl-formFieldInputContainer {
           position: relative !important;
@@ -221,8 +228,8 @@ export default function SignUpPage() {
           height: 48px !important;
           font-weight: 600 !important;
           font-size: 14px !important;
-          margin-top: 12px !important;
-          margin-bottom: 12px !important;
+          margin-top: 0px !important;
+          margin-bottom: 0px !important;
           width: 100% !important;
           cursor: url('/cursor-arrow.svg'), pointer !important;
         }
@@ -232,9 +239,7 @@ export default function SignUpPage() {
         .cl-socialButtonsProviderIcon__github,
         .cl-providerIcon__github,
         .cl-socialButtonsBlockButton__github .cl-socialButtonsProviderIcon,
-        .cl-socialButtonsBlockButton__github span[aria-label*="GitHub"],
-        span.cl-socialButtonsProviderIcon__github,
-        span.cl-providerIcon__github {
+        .cl-socialButtonsBlockButton__github .cl-providerIcon {
           background-color: #000000 !important;
           background-image: none !important;
           mask-image: url('/github-icon.svg') !important;
@@ -387,7 +392,7 @@ export default function SignUpPage() {
                   footerActionLink: "text-[#1c1c1e] font-bold hover:underline block text-center mt-1",
                   footerActionText: "text-slate-500 font-medium text-sm block text-center",
                   socialButtonsBlockButton:
-                    "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 mt-2 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
+                    "bg-[#f4f4f5] rounded-full border border-slate-200 text-slate-900 hover:bg-slate-200 transition-all font-semibold h-12 w-full cursor-[url('/cursor-arrow.svg'),pointer]",
                   socialButtonsBlockButtonText: "text-[#1c1c1e] font-semibold text-sm",
                   formFieldLabel: "text-slate-800 font-semibold text-sm mb-1",
                   dividerLine: "bg-slate-200 h-[1px]",
