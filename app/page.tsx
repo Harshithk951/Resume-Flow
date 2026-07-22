@@ -102,10 +102,11 @@ const HeroVideo = memo(function HeroVideo() {
         autoPlay
         loop
         muted
-        playsInline                        preload="none"
+        playsInline
+        preload="metadata"
         disablePictureInPicture
         controlsList="nodownload nofullscreen noremoteplayback"
-        className="w-full h-full object-cover pointer-events-none transform-gpu will-change-transform [transform:translateZ(0)] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]"
+        className="w-full h-full object-cover pointer-events-none"
       />
 
       <div ref={menuRef} className="group/audio absolute bottom-4 right-4 z-10">
