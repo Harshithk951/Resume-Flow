@@ -167,10 +167,10 @@ export default function DashboardCommandCenter() {
               <LayoutDashboard className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white leading-tight">
+              <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[#040404] leading-tight">
                 Command Center
               </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-300 font-medium mt-1">
+              <p className="text-sm text-[#525252] font-medium mt-1">
                 Manage corporate listings, track matching, and configure pipelines.
               </p>
             </div>
@@ -178,24 +178,24 @@ export default function DashboardCommandCenter() {
 
           <div className="flex items-center gap-3 flex-wrap">
             {/* Glass credit card */}
-            <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/70 dark:bg-slate-900/80 backdrop-blur-md border border-white/40 dark:border-slate-800 shadow-sm glass-card-dark">
+            <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white border border-neutral-200 shadow-sm">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-sm">
                 <Coins className="w-4 h-4 text-white" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-extrabold text-slate-900 dark:text-white tabular-nums">{(user.credits).toLocaleString()}</span>
-                  <span className="text-[10px] text-slate-600 dark:text-slate-300 font-semibold">credits</span>
+                  <span className="text-sm font-extrabold text-[#040404] tabular-nums">{(user.credits).toLocaleString()}</span>
+                  <span className="text-[10px] text-[#525252] font-semibold">credits</span>
                 </div>
-                <div className="w-20 h-1 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden mt-1">
+                <div className="w-20 h-1 bg-slate-200 rounded-full overflow-hidden mt-1">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${(user.credits / 10000) * 100}%` }}
                     transition={{ duration: 1, ease: "easeOut" }}
                     className={`h-full rounded-full ${
-                      user.credits > 2500 ? "bg-gradient-to-r from-emerald-400 to-emerald-500" :
-                      user.credits > 1000 ? "bg-gradient-to-r from-amber-400 to-amber-500" :
-                      "bg-gradient-to-r from-rose-400 to-rose-500"
+                      user.credits > 2500 ? "bg-emerald-500" :
+                      user.credits > 1000 ? "bg-amber-500" :
+                      "bg-red-600"
                     }`}
                   />
                 </div>
@@ -210,13 +210,13 @@ export default function DashboardCommandCenter() {
               <RazorpayCheckout
                 plan="pro"
                 interval="monthly"
-                className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-gradient-to-r from-rose-600 to-rose-500 px-4 text-white text-sm font-bold shadow-md shadow-rose-500/20 hover:from-rose-700 hover:to-rose-600 transition-all"
+                className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-red-600 px-4 text-white text-sm font-bold shadow-md hover:bg-red-700 transition-all"
                 label="Upgrade"
                 onSuccess={handleUpgradeSuccess}
               />
             )}
 
-            <Button onClick={() => setIsAddOpen(true)} size="sm" className="bg-gradient-to-r from-rose-600 to-rose-500 text-white shadow-md shadow-rose-500/20 border-0 hover:from-rose-700 hover:to-rose-600">
+            <Button onClick={() => setIsAddOpen(true)} size="sm" className="bg-red-600 text-white shadow-md border-0 hover:bg-red-700 font-bold">
               <Plus className="w-4 h-4" />
               <span>Add Drive</span>
             </Button>
@@ -239,28 +239,28 @@ export default function DashboardCommandCenter() {
         <div className="space-y-8 min-w-0">
           
           {/* Company Drives list view */}
-          <Card variant="elevated" className="overflow-hidden border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-            <CardHeader className="pb-4 border-b border-slate-200/80 dark:border-slate-800/80">
+          <Card variant="elevated" className="overflow-hidden border-slate-200 shadow-sm bg-white">
+            <CardHeader className="pb-4 border-b border-slate-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center text-slate-700 dark:text-slate-200 shadow-sm">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-[#040404] shadow-sm">
                     <Briefcase className="w-4 h-4" />
                   </div>
                   <div>
-                    <CardTitle className="text-slate-900 dark:text-white">Company Drives</CardTitle>
-                    <CardDescription className="text-slate-600 dark:text-slate-300 font-medium">{filteredDrives.length} drive{filteredDrives.length !== 1 ? "s" : ""}</CardDescription>
+                    <CardTitle className="text-[#040404] font-extrabold">Company Drives</CardTitle>
+                    <CardDescription className="text-[#525252] font-medium">{filteredDrives.length} drive{filteredDrives.length !== 1 ? "s" : ""}</CardDescription>
                   </div>
                 </div>
                 {/* Filter Pills */}
-                <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border border-slate-200 dark:border-slate-700 shadow-inner">
+                <div className="inline-flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200 shadow-inner">
                   {COMPANY_FILTERS.map((f) => (
                     <button
                       key={f.key}
                       onClick={() => setCompanyFilter(f.key)}
                       className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all duration-200 ${
                         companyFilter === f.key
-                          ? "bg-white dark:bg-slate-900 text-rose-600 dark:text-rose-400 shadow-sm border border-slate-200 dark:border-slate-700"
-                          : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                          ? "bg-red-600 text-white shadow-sm"
+                          : "text-neutral-900 hover:text-red-600"
                       }`}
                       title={f.desc}
                     >
@@ -272,12 +272,12 @@ export default function DashboardCommandCenter() {
             </CardHeader>
             <CardContent className="p-0">
               {filteredDrives.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 text-slate-600 dark:text-slate-300">
-                  <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4 border border-slate-200 dark:border-slate-700">
-                    <Search className="w-6 h-6 text-slate-600 dark:text-slate-300" />
+                <div className="flex flex-col items-center justify-center py-16 text-neutral-700">
+                  <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center mb-4 border border-slate-200">
+                    <Search className="w-6 h-6 text-neutral-700" />
                   </div>
-                  <p className="text-sm font-bold text-slate-700 dark:text-slate-200">No drives match this filter</p>
-                  <Button variant="ghost" size="sm" className="mt-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 font-bold" onClick={() => setCompanyFilter("all")}>
+                  <p className="text-sm font-bold text-[#040404]">No drives match this filter</p>
+                  <Button variant="ghost" size="sm" className="mt-2 text-red-600 hover:bg-red-50 font-bold" onClick={() => setCompanyFilter("all")}>
                     Clear filter
                   </Button>
                 </div>
@@ -311,7 +311,7 @@ export default function DashboardCommandCenter() {
 
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-slate-900 dark:text-white truncate group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">
+                              <span className="text-sm font-bold text-neutral-950 truncate group-hover:text-red-600 transition-colors">
                                 {drive.companyName}
                               </span>
                               {drive.matchScore > 0 && (
@@ -320,7 +320,7 @@ export default function DashboardCommandCenter() {
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-xs text-slate-600 dark:text-slate-300 font-medium truncate mt-0.5">
+                            <p className="text-xs text-neutral-700 font-medium truncate mt-0.5">
                               {drive.roleTitle}
                             </p>
                           </div>
@@ -345,7 +345,7 @@ export default function DashboardCommandCenter() {
                             <Link
                               href={`/resume/${drive.id}/export`}
                               onClick={(e) => e.stopPropagation()}
-                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[10px] font-bold text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all whitespace-nowrap shadow-sm"
+                              className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-100 border border-slate-200 text-[10px] font-bold text-neutral-900 hover:text-red-600 hover:bg-red-50 transition-all whitespace-nowrap shadow-sm"
                               title="Download tailored resume PDF"
                             >
                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

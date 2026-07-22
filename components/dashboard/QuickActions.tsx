@@ -37,13 +37,13 @@ const ACTIONS = [
 
 export function QuickActions({ onAddJob }: QuickActionsProps) {
   return (
-    <Card variant="elevated" className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+    <Card variant="elevated" className="border-slate-200 bg-white shadow-sm">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700 flex items-center justify-center">
-            <ExternalLink className="w-3.5 h-3.5 text-slate-700 dark:text-slate-300" />
+          <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center">
+            <ExternalLink className="w-3.5 h-3.5 text-[#040404]" />
           </div>
-          <CardTitle className="text-slate-900 dark:text-white">Quick Actions</CardTitle>
+          <CardTitle className="text-[#040404] font-extrabold">Quick Actions</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="pt-0">
@@ -52,7 +52,7 @@ export function QuickActions({ onAddJob }: QuickActionsProps) {
             const Icon = action.icon;
             const content = (
               <div
-                className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 cursor-pointer group"
+                className="flex items-center gap-3 p-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 transition-all duration-200 cursor-pointer group"
               >
                 <div
                   className={`w-9 h-9 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform duration-200`}
@@ -60,10 +60,10 @@ export function QuickActions({ onAddJob }: QuickActionsProps) {
                   <Icon className="w-4 h-4 text-white" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-xs font-bold text-slate-900 dark:text-white block">
+                  <span className="text-xs font-bold text-[#040404] block">
                     {action.label}
                   </span>
-                  <span className="text-[10px] text-slate-600 dark:text-slate-300 font-medium">
+                  <span className="text-[10px] text-[#525252] font-medium">
                     {action.description}
                   </span>
                 </div>

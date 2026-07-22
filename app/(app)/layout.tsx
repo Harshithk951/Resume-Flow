@@ -8,7 +8,6 @@ import { LayoutDashboard, User, FileText, LogOut, Loader2, Settings, Menu, X, Hi
 import { AppBackButton } from "@/components/AppBackButton";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ChatHistoryPanel } from "@/components/ChatHistoryPanel";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { DashboardThemeProvider } from "@/components/DashboardThemeProvider";
 
 const navigationItems = [
@@ -75,12 +74,9 @@ export default function AuthenticatedLayout({
 
   return (
     <DashboardThemeProvider>
-    <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-surface-soft)] text-[var(--color-ink)]">
-      {/* ─── COLLAPSIBLE SIDEBAR ───────────────────────
-           Pure CSS hover mechanism: collapsed w-[72px] by default,
-           expands to w-64 on hover. All labels fade in with opacity.
-           Uses group/sidebar naming for scoped hover children. */}
-      <aside className="group/sidebar relative z-10 hidden md:flex w-[72px] hover:w-64 border-r border-white/40 glass-panel flex flex-col justify-between py-6 shrink-0 transition-all duration-500"
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-50/60 text-neutral-950">
+      {/* ─── COLLAPSIBLE SIDEBAR ─────────────────────── */}
+      <aside className="group/sidebar relative z-10 hidden md:flex w-[72px] hover:w-64 border-r border-slate-200 bg-white flex flex-col justify-between py-6 shrink-0 transition-all duration-500 shadow-sm"
         style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
       >
         <div className="space-y-8 overflow-hidden">
@@ -92,7 +88,7 @@ export default function AuthenticatedLayout({
             className="px-4"
           />
           {/* Hover label for brand name */}
-          <span className="absolute top-[22px] left-14 text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-200 pointer-events-none"
+          <span className="absolute top-[22px] left-14 text-xs font-bold text-neutral-950 whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-200 pointer-events-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             ResumeFlow
@@ -111,11 +107,11 @@ export default function AuthenticatedLayout({
                       type="button"
                       onClick={() => setIsChatHistoryOpen(true)}
                       title="Chat History"
-                      className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white w-full"
+                      className="group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 text-neutral-900 hover:bg-slate-100 hover:text-neutral-950 w-full"
                       style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                     >
                       <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
-                        <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-slate-600 dark:text-slate-400 group-hover/nav:text-slate-900 dark:group-hover/nav:text-white" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
+                        <History className="h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 text-neutral-700 group-hover/nav:text-neutral-950" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }} />
                       </div>
                       <span className="whitespace-nowrap opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100" style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}>
                         Chat History
@@ -128,8 +124,8 @@ export default function AuthenticatedLayout({
                     aria-current={isActive ? "page" : undefined}
                     className={`group/nav relative flex items-center gap-3 px-3 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 ${
                       isActive
-                        ? "bg-white dark:bg-slate-900 text-rose-600 dark:text-rose-400 shadow-sm border border-rose-100 dark:border-rose-950 font-bold"
-                        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-red-50 text-red-600 shadow-sm border border-red-100 font-bold"
+                        : "text-neutral-900 hover:bg-slate-100 hover:text-neutral-950"
                     }`}
                     style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                   >
@@ -139,13 +135,13 @@ export default function AuthenticatedLayout({
                     <div className="relative flex items-center justify-center w-5 h-5 shrink-0">
                       <Icon
                         className={`h-4 w-4 transition-all duration-300 group-hover/nav:scale-110 ${
-                          isActive ? "text-rose-600 dark:text-rose-400" : "text-slate-600 dark:text-slate-400 group-hover/nav:text-slate-900 dark:group-hover/nav:text-white"
+                          isActive ? "text-red-600" : "text-neutral-700 group-hover/nav:text-neutral-950"
                         }`}
                         style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
                       />
                       {/* Active dot below icon when collapsed */}
                       {isActive && (
-                        <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-rose-500 group-hover/sidebar:hidden" />
+                        <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-red-600 group-hover/sidebar:hidden" />
                       )}
                     </div>
                     {/* Nav label — hidden on collapse, fades in on hover */}
@@ -161,16 +157,13 @@ export default function AuthenticatedLayout({
           </nav>
         </div>
 
-        <div className="space-y-3 border-t border-[var(--color-hairline)]/60 pt-4 px-3 overflow-hidden">
-          {/* ── Theme Toggle ── */}
-          <ThemeToggle />
-
+        <div className="space-y-3 border-t border-slate-200 pt-4 px-3 overflow-hidden">
           <div className="flex items-center gap-3">
             <UserButton />
             <div className="flex flex-col min-w-0 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 delay-100"
               style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
             >
-              <span className="text-xs font-semibold text-[var(--color-charcoal)] truncate">
+              <span className="text-xs font-bold text-neutral-950 truncate">
                 {user?.fullName || "Placement Sync"}
               </span>
             </div>
