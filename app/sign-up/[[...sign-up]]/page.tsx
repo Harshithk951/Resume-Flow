@@ -1,14 +1,13 @@
 "use client";
 
-import { SignUp, useAuth } from "@clerk/nextjs";
+import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { InteractiveCharacters, ExpressionState } from "@/components/auth/InteractiveCharacters";
 
 export default function SignUpPage() {
-  const { isLoaded } = useAuth();
   const formRef = useRef<HTMLDivElement>(null);
 
   const [expression, setExpression] = useState<ExpressionState>("neutral");

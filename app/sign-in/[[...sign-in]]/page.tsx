@@ -1,8 +1,8 @@
 "use client";
 
-import { SignIn, useAuth } from "@clerk/nextjs";
+import { SignIn } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -10,7 +10,6 @@ import { InteractiveCharacters, ExpressionState } from "@/components/auth/Intera
 
 export default function SignInPage() {
   const router = useRouter();
-  const { isLoaded } = useAuth();
   const formRef = useRef<HTMLDivElement>(null);
 
   const [expression, setExpression] = useState<ExpressionState>("neutral");
