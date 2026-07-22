@@ -97,7 +97,7 @@ const HeroVideo = memo(function HeroVideo() {
     <div className="relative w-full h-full group">
       <video
         ref={videoRef}
-        src="/hero-demo.mp4"
+        src="/ProductAD.mov"
         poster="/hero-poster.jpg"
         autoPlay
         loop
