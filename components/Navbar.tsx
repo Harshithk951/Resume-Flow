@@ -60,8 +60,8 @@ export default function Navbar() {
     <nav
       className={`sticky top-0 z-50 transition-colors duration-300 transform-gpu ${
         scrolled
-          ? "bg-white/85 dark:bg-slate-950/85 backdrop-blur-lg shadow-sm border-b border-slate-200/80 dark:border-slate-800/80"
-          : "bg-white/70 dark:bg-slate-950/70 backdrop-blur-md border-b border-slate-900/10 dark:border-slate-800/50"
+          ? "bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl shadow-md border-b border-slate-200/80 dark:border-slate-800/80"
+          : "bg-white/85 dark:bg-slate-950/85 backdrop-blur-md border-b border-slate-200/60 dark:border-slate-800/50"
       }`}
       style={{
         WebkitBackfaceVisibility: "hidden",
@@ -75,21 +75,21 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <button
             onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             Features
           </button>
           <button
             onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             How it Works
           </button>
           <button
             onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             Pricing
@@ -99,7 +99,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setTemplatesOpen((open) => !open)}
-              className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+              className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 transition-colors duration-300 cursor-pointer bg-transparent border-none"
               style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
             >
               Templates
@@ -110,11 +110,11 @@ export default function Navbar() {
               />
             </button>
             {templatesOpen && (
-              <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200/60 bg-white/95 backdrop-blur-lg py-1.5 shadow-lg">
+              <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-lg py-1.5 shadow-xl">
                 <Link
                   href={templatesHref}
                   onClick={() => setTemplatesOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+                  className="block px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   Browse Templates
                 </Link>
@@ -124,7 +124,7 @@ export default function Navbar() {
                     setTemplatesOpen(false);
                     document.getElementById("templates")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="block w-full px-4 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 bg-transparent border-none cursor-pointer transition-colors"
+                  className="block w-full px-4 py-2.5 text-left text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white bg-transparent border-none cursor-pointer transition-colors"
                 >
                   View showcase
                 </button>
@@ -134,7 +134,7 @@ export default function Navbar() {
 
           <button
             onClick={() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
+            className="text-sm font-semibold text-slate-700 dark:text-slate-200 hover:text-rose-600 dark:hover:text-rose-400 transition-colors duration-300 cursor-pointer bg-transparent border-none"
             style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
           >
             FAQ
@@ -144,14 +144,13 @@ export default function Navbar() {
         {/* Mobile hamburger button */}
         <button
           onClick={() => setMobileMenuOpen(true)}
-          className="md:hidden p-2 -mr-1 rounded-lg hover:bg-slate-100/80 transition-colors"
+          className="md:hidden p-2 -mr-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           aria-label="Open navigation menu"
         >
-          <Menu className="w-5 h-5 text-slate-600" />
+          <Menu className="w-5 h-5 text-slate-700 dark:text-slate-200" />
         </button>
 
-        <div className="flex items-center gap-2">
-
+        <div className="flex items-center gap-4">
           {mounted && isSignedIn ? (
             <Link
               href="/dashboard"
@@ -164,7 +163,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/sign-in"
-                className="text-slate-600 hover:text-slate-900 text-sm font-semibold transition-colors duration-300"
+                className="text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white text-sm font-semibold transition-colors duration-300"
               >
                 Log in
               </Link>
