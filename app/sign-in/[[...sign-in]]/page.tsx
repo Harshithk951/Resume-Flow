@@ -38,17 +38,27 @@ export default function SignInPage() {
     return () => window.removeEventListener("popstate", onPopState);
   }, [router]);
 
-  // Fallback: Replace Clerk social button images with local SVGs (Safari ITP blocks img.clerk.com)
+  // Fallback: Replace Clerk social button mask-image with local SVG (Clerk uses CSS mask-image spans, not <img>)
   useEffect(() => {
-    const handler = (e: Event) => {
-      const img = e.target as HTMLImageElement | null;
-      if (!img?.src?.includes("clerk.com") || !img.src.includes("github"))
-        return;
-      img.onerror = null; // prevent loop if local SVG also fails
-      img.src = "/github-icon.svg";
-    };
-    window.addEventListener("error", handler, true);
-    return () => window.removeEventListener("error", handler, true);
+    let fixed = false;
+    const timer = setInterval(() => {
+      if (fixed) return;
+      document.querySelectorAll<HTMLSpanElement>(
+        ".cl-socialButtonsBlockButton span"
+      ).forEach((span) => {
+        const mask =
+          getComputedStyle(span).maskImage ||
+          getComputedStyle(span).webkitMaskImage ||
+          "";
+        if (mask.includes("github")) {
+          span.style.maskImage = "url(/github-icon.svg)";
+          span.style.webkitMaskImage = "url(/github-icon.svg)";
+          fixed = true;
+        }
+      });
+    }, 300);
+    setTimeout(() => clearInterval(timer), 6000);
+    return () => clearInterval(timer);
   }, []);
 
   // Synchronous DOM Observer for Expression State Machine
