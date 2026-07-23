@@ -48,11 +48,11 @@ const templates: TemplateOption[] = [
   {
     id: "tech_modern",
     label: "Tech Modern",
-    fontTag: "Latin Modern (Monospace accent)",
-    description: "Clean developer-centric layout with Latin Modern typography. Optimized for software engineering and systems roles.",
+    fontTag: "Latin Modern (Accent-Bar)",
+    description: "Developer-centric minimalist layout with Latin Modern typography and accent-bar section headers. Optimized for software engineering and systems roles.",
     icon: Layout,
-    accent: "#059669",
-    badge: "Engineering",
+    accent: "#38bdf8",
+    badge: "Engineering Minimalist",
   },
 ];
 

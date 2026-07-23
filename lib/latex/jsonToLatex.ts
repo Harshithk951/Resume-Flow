@@ -103,7 +103,31 @@ ${COMMON_MACROS}`,
 
 \\setlength{\\parindent}{0pt}
 \\pagestyle{empty}
-${COMMON_MACROS}`,
+
+% ---------- Macros ----------
+\\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries #1\\par}}
+\\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
+
+\\newcommand{\\ressection}[1]{%
+  \\vspace{8pt}
+  {\\bfseries\\large #1}\\[-7pt]
+  \\noindent\\rule{0.35\\linewidth}{0.8pt}\\vspace{3pt}
+}
+
+\\newcommand{\\resheading}[4]{%
+  \\noindent\\textbf{#1} \\hfill \\textbf{#2}\\[1pt]
+  \\noindent\\textit{#3} \\hfill \\textit{#4}\\[2pt]
+}
+
+\\newenvironment{resitems}{%
+  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+}{%
+  \\end{itemize}
+}
+\\newcommand{\\resitem}[1]{\\item #1}
+
+\\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
+`,
 };
 
 /**
