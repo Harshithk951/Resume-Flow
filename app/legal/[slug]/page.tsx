@@ -337,23 +337,116 @@ const legalContent: Record<string, ContentBlock> = {
   cookies: {
     category: "Legal & Settings",
     title: "Cookie Policy & Settings",
-    subtitle: "Manage how local storage and session markers are utilized to enhance your workspace.",
+    subtitle: "How ResumeFlow uses cookies, local storage, and similar tracking technologies to provide and improve our service.",
     icon: <Cookie className="w-8 h-8 text-rose-600" />,
     body: (
       <div className="space-y-8 text-xs md:text-sm">
-        <section className="space-y-2">
-          <h2 className="text-base font-bold text-slate-800">1. What are cookies and local storage?</h2>
+        <p className="text-slate-500 italic">Last updated: July 22, 2026</p>
+
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">1. What Are Cookies</h2>
           <p className="text-slate-600 leading-relaxed">
-            We use local session cookies to securely verify your authentication status during database queries.
-            Additionally, browser local storage is utilized to temporarily store user interface layout states (such as maximizing your workspace canvas) and cache preview data.
+            Cookies are small text files that are stored on your device (computer, tablet, or mobile) when you visit a website. They are widely used to make websites work more efficiently, provide a better user experience, and give website owners information about how their site is being used. Local storage is a similar technology that allows websites to store information locally on your browser for persistent data that doesn&apos;t need to be transmitted to the server with every request.
           </p>
         </section>
 
-        <section className="space-y-2">
-          <h2 className="text-base font-bold text-slate-800">2. Essential Cookies</h2>
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">2. How We Use Cookies</h2>
           <p className="text-slate-600 leading-relaxed">
-            These cookies are strictly necessary to provide you with secure dashboard access, database sync, and placement tools.
-            Disabling essential cookies will block you from signing in or tailoring resumes.
+            ResumeFlow uses cookies and local storage for the following purposes:
+          </p>
+          <ul className="list-disc pl-5 space-y-2 text-slate-600">
+            <li><strong>Authentication:</strong> Session cookies verify your login status and maintain your authenticated session across page navigations within our dashboard.</li>
+            <li><strong>Security:</strong> We use cookies to detect and prevent fraudulent activity, protect user accounts from unauthorized access, and enforce rate limiting.</li>
+            <li><strong>User Preferences:</strong> Local storage remembers your UI layout choices (such as workspace maximization state), template selections, and theme preferences.</li>
+            <li><strong>Performance & Analytics:</strong> We use analytics cookies to understand how users interact with our service, identify areas for improvement, and measure feature adoption.</li>
+            <li><strong>Advertising:</strong> With your consent, third-party advertising partners (including Google AdSense) may set cookies to serve relevant advertisements based on your browsing activity.</li>
+          </ul>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">3. Types of Cookies We Use</h2>
+          <div className="space-y-4">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h3 className="font-bold text-slate-800 text-sm">Essential / Strictly Necessary Cookies</h3>
+              <p className="text-slate-600 text-xs mt-1 leading-relaxed">
+                These cookies are required for the basic functioning of our platform. They enable secure login, database query authentication, and session management. Without these cookies, core features like signing in, accessing the dashboard, and tailoring resumes would not function. These cookies do not require user consent and cannot be disabled through our cookie preference tools.
+              </p>
+            </div>
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h3 className="font-bold text-slate-800 text-sm">Functionality Cookies</h3>
+              <p className="text-slate-600 text-xs mt-1 leading-relaxed">
+                These cookies remember your preferences and choices to provide a personalized experience. This includes remembering your selected resume template, workspace layout preferences, and dismissed notification banners. Information collected by these cookies may be anonymized and does not track your browsing activity on other websites.
+              </p>
+            </div>
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h3 className="font-bold text-slate-800 text-sm">Analytics and Performance Cookies</h3>
+              <p className="text-slate-600 text-xs mt-1 leading-relaxed">
+                We use analytics services (including but not limited to Google Analytics, Sentry, and Vercel Analytics) to collect aggregated data about how visitors use our platform. This includes page views, feature interactions, error rates, and load times. This data helps us improve our service and identify technical issues. These cookies collect anonymized data and do not directly identify individual users.
+              </p>
+            </div>
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <h3 className="font-bold text-slate-800 text-sm">Advertising and Marketing Cookies (Google AdSense)</h3>
+              <p className="text-slate-600 text-xs mt-1 leading-relaxed">
+                Our website uses Google AdSense, a service provided by Google LLC (&ldquo;Google&rdquo;), to display advertisements. Google AdSense uses cookies (specifically, the DoubleClick cookie from Google) to serve ads based on your previous visits to our website and other websites across the internet. These cookies enable Google and its partners to serve personalized ads based on your browsing history and interests.
+              </p>
+              <p className="text-slate-600 text-xs mt-2 leading-relaxed">
+                The DoubleClick cookie enables Google to: (a) serve advertisements to users based on their visit to our Website and/or other websites; (b) measure the effectiveness of advertising campaigns; (c) prevent the same ad from appearing too frequently; and (d) report on ad impressions and interactions. You can learn more about how Google uses data when you use our site by visiting <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="text-rose-600 hover:underline">Google&apos;s Privacy & Terms site</a>.
+              </p>
+              <p className="text-slate-600 text-xs mt-2 leading-relaxed">
+                <strong>Opt-Out:</strong> You can opt out of personalized advertising by visiting Google&apos;s Ads Settings at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-rose-600 hover:underline">https://adssettings.google.com</a>. You can also opt out of third-party cookies used for personalized advertising by visiting <a href="https://optout.aboutads.info" target="_blank" rel="noopener noreferrer" className="text-rose-600 hover:underline">https://optout.aboutads.info</a> (for US-based users) or <a href="https://www.youronlinechoices.com" target="_blank" rel="noopener noreferrer" className="text-rose-600 hover:underline">https://www.youronlinechoices.com</a> (for EU-based users).
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">4. Third-Party Cookies</h2>
+          <p className="text-slate-600 leading-relaxed">
+            In addition to our own cookies, we may use various third-party services that also set cookies on your device. These third parties include:
+          </p>
+          <ul className="list-disc pl-5 space-y-2 text-slate-600">
+            <li><strong>Google AdSense & DoubleClick:</strong> Advertising personalization and measurement cookies as described above.</li>
+            <li><strong>Google Analytics:</strong> Aggregated usage analytics and behavior tracking.</li>
+            <li><strong>Sentry:</strong> Error tracking and performance monitoring (may set functional cookies for session correlation).</li>
+            <li><strong>Convex (Database Provider):</strong> Authentication session verification (essential cookies).</li>
+            <li><strong>Clerk (Authentication Provider):</strong> Session and authentication cookies for user sign-in.</li>
+            <li><strong>Vercel (Hosting Provider):</strong> Analytics and deployment monitoring.</li>
+          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            These third-party services have their own privacy policies governing the use of your data. We encourage you to review their policies for complete information about their data processing practices.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">5. Cookie Consent and Your Choices</h2>
+          <p className="text-slate-600 leading-relaxed">
+            When you first visit ResumeFlow, we display a cookie consent banner that allows you to choose which categories of cookies you accept. You can:
+          </p>
+          <ul className="list-disc pl-5 space-y-1.5 text-slate-600">
+            <li>Accept all cookies (essential, functional, analytics, and advertising).</li>
+            <li>Accept only essential and functional cookies (reject analytics and advertising).</li>
+            <li>Reject all non-essential cookies (continue with essential cookies only).</li>
+          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            You can change your cookie preferences at any time by clicking the &ldquo;Cookie Settings&rdquo; link in the footer of our website. You can also control cookies through your browser settings. Most web browsers allow you to manage your cookie preferences through their settings menus. Please consult your browser&apos;s help documentation for specific instructions.
+          </p>
+          <p className="text-slate-600 leading-relaxed">
+            Please note that blocking or deleting essential cookies may impact your ability to use certain features of our platform, including signing in and accessing your dashboard.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">6. Updates to This Policy</h2>
+          <p className="text-slate-600 leading-relaxed">
+            We may update this Cookie Policy from time to time to reflect changes in technology, regulation, or our business practices. When we make material changes, we will notify you by updating the &ldquo;Last updated&rdquo; date at the top of this policy and, where appropriate, through a prominent notice on our website or via email. We encourage you to review this page periodically for the latest information about our cookie practices.
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">7. Contact Us</h2>
+          <p className="text-slate-600 leading-relaxed">
+            If you have any questions about this Cookie Policy or our use of cookies and tracking technologies, please contact us at <a href="mailto:support@resumeflow.harshithkumar.in" className="text-rose-600 hover:underline font-semibold">support@resumeflow.harshithkumar.in</a> or visit our <a href="/info/contact" className="text-rose-600 hover:underline font-semibold">Contact Us</a> page.
           </p>
         </section>
       </div>

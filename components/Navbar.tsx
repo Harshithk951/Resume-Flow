@@ -73,27 +73,24 @@ export default function Navbar() {
         <BrandLogo href="/" className="gap-3.5" />
 
         <div className="hidden md:flex items-center gap-8">
-          <button
-            onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
-            style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+          <Link
+            href="/#features"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
           >
             Features
-          </button>
-          <button
-            onClick={() => document.getElementById("how-it-works")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
-            style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+          </Link>
+          <Link
+            href="/#how-it-works"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
           >
             How it Works
-          </button>
-          <button
-            onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
-            style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+          </Link>
+          <Link
+            href="/#pricing"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
           >
             Pricing
-          </button>
+          </Link>
 
           <div className="relative" ref={dropdownRef}>
             <button
@@ -132,6 +129,24 @@ export default function Navbar() {
             )}
           </div>
 
+          <Link
+            href="/info/about"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+          >
+            About
+          </Link>
+          <Link
+            href="/resources/handbook"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+          >
+            Resources
+          </Link>
+          <Link
+            href="/info/blog"
+            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+          >
+            Blog
+          </Link>
           <button
             onClick={() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })}
             className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
@@ -139,6 +154,19 @@ export default function Navbar() {
           >
             FAQ
           </button>
+          <div className="h-4 w-px bg-slate-200" />
+          <Link
+            href="/legal/privacy"
+            className="text-xs font-medium text-slate-400 hover:text-rose-600 transition-colors duration-300"
+          >
+            Privacy
+          </Link>
+          <Link
+            href="/info/contact"
+            className="text-xs font-medium text-slate-400 hover:text-rose-600 transition-colors duration-300"
+          >
+            Contact
+          </Link>
         </div>
 
         {/* Mobile hamburger button */}
@@ -213,32 +241,60 @@ export default function Navbar() {
             {/* Navigation links */}
             <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
               {[
-                { id: "features", label: "Features" },
-                { id: "how-it-works", label: "How it Works" },
-                { id: "pricing", label: "Pricing" },
-                { id: "templates", label: "Templates", hasDropdown: true },
-                { id: "faq", label: "FAQ" },
+                { id: "features", label: "Features", href: "/#features" },
+                { id: "how-it-works", label: "How it Works", href: "/#how-it-works" },
+                { id: "pricing", label: "Pricing", href: "/#pricing" },
+                { id: "templates", label: "Templates", href: null, isTemplates: true },
+                { id: "about", label: "About", href: "/info/about" },
+                { id: "resources", label: "Resources", href: "/resources/handbook" },
+                { id: "blog", label: "Blog", href: "/info/blog" },
+                { id: "faq", label: "FAQ", href: "/#faq" },
               ].map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    if (item.id === "templates") {
+                item.href ? (
+                  <Link
+                    key={item.id}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
                       const href = mounted && isSignedIn ? "/templates" : "/sign-up";
                       window.location.href = href;
-                    } else {
-                      document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                  className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
-                >
-                  {item.label}
-                  {item.id === "templates" && (
+                    }}
+                    className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
+                  >
+                    {item.label}
                     <span className="ml-1.5 text-xs text-slate-400">→</span>
-                  )}
-                </button>
+                  </button>
+                )
               ))}
+              {/* Legal & Contact quick links */}
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <p className="px-4 pb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  Support
+                </p>
+                <Link
+                  href="/legal/privacy"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-rose-600 transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/info/contact"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-50 hover:text-rose-600 transition-colors"
+                >
+                  Contact Us
+                </Link>
+              </div>
             </nav>
 
             {/* Auth actions */}

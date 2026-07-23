@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowLeft, Home, Sparkles } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
+import Footer from "@/components/Footer";
 
 interface StaticPageWrapperProps {
   title: string;
@@ -81,13 +82,7 @@ export function StaticPageWrapper({
         </div>
       </main>
 
-      {/* Simple Footer */}
-      <footer className="bg-[var(--color-surface-soft)] border-t border-[var(--color-hairline)]/40 py-8 px-6 text-center text-xs text-[var(--color-stone)]">
-        <div className="max-w-[900px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <BrandLogo size="sm" className="opacity-60" />
-          <span>© 2026 ResumeFlow. All rights reserved.</span>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
