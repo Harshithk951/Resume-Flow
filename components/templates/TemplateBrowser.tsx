@@ -37,7 +37,7 @@ export default function TemplateBrowser() {
     const templateParam = searchParams.get("template");
     if (
       templateParam &&
-      ["ats_strict", "modern_professional", "modern_executive", "tech_innovator"].includes(
+      ["ats_strict", "startup", "finance_tech", "tech_modern", "modern_professional", "modern_executive", "tech_innovator"].includes(
         templateParam
       )
     ) {
