@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { jsonToLatex } from "@/lib/latex/jsonToLatex";
-import { TEMPLATES, type TemplateId } from "@/lib/latex/resolveTemplate";
+import type { TemplateId } from "@/lib/latex/resolveTemplate";
 import { normalizeStructuredContent } from "@/lib/pdf/types";
 import type {
   CombinationResult,

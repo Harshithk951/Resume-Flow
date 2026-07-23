@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
-import { Loader2, Sparkles, ArrowRight, LayoutTemplate, FileText, Zap, CheckCircle, ShieldCheck } from "lucide-react";
+import { Loader2, ArrowRight, LayoutTemplate, FileText, CheckCircle, ShieldCheck } from "lucide-react";
 import TemplateBrowser from "@/components/templates/TemplateBrowser";
 
 export default function TemplatesPage() {
