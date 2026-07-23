@@ -120,7 +120,7 @@ export function GlobalSilentCompiler() {
               `[compiler] Compile queued. Running fast client-side fallback compilation for job ${jobId}...`
             );
             const fallbackBlob = await compileStructuredContentToPdf(
-              normalizeStructuredContent(resume.structuredContent),
+              normalizeStructuredContent(contentToCompile),
               templateId
             );
             const uploadUrl = await generateUploadUrl();
