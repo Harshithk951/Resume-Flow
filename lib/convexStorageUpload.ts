@@ -8,6 +8,8 @@
  *   3. Retrying with same-origin upload proxy if direct cross-origin fetch returns 502/CORS error.
  */
 
+import type { Id } from "@/convex/_generated/dataModel";
+
 function getMimeType(file: File | Blob, filename?: string): string {
   if (file.type && file.type.trim() !== "") {
     return file.type;
@@ -40,7 +42,7 @@ function getMimeType(file: File | Blob, filename?: string): string {
 }
 
 export interface UploadResult {
-  storageId: string;
+  storageId: Id<"_storage">;
 }
 
 export async function uploadToConvexStorage(
@@ -63,7 +65,7 @@ export async function uploadToConvexStorage(
     if (response.ok) {
       const data = await response.json();
       if (data && data.storageId) {
-        return { storageId: data.storageId };
+        return { storageId: data.storageId as Id<"_storage"> };
       }
     }
 
@@ -94,7 +96,7 @@ export async function uploadToConvexStorage(
       throw new Error("Invalid response format from storage server.");
     }
 
-    return { storageId: data.storageId };
+    return { storageId: data.storageId as Id<"_storage"> };
   } catch (proxyErr: any) {
     console.error("[ConvexStorage] Storage upload proxy failed:", proxyErr);
     throw new Error(
