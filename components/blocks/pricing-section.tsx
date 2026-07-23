@@ -23,10 +23,78 @@ export interface Tier {
 interface PricingSectionProps {
   title?: string;
   subtitle?: string;
-  frequencies: string[];
-  tiers: Tier[];
-  allFeatures: string[];
+  frequencies?: string[];
+  tiers?: Tier[];
+  allFeatures?: string[];
 }
+
+export const DEFAULT_ALL_FEATURES = [
+  "Unlimited resume tailoring",
+  "Unlimited AI Assistant messages",
+  "All 4 premium LaTeX templates",
+  "Live company research",
+  "Priority ATS audit queue",
+  "Skill gap questionnaire",
+  "Client-side PDF compilation",
+  "Shared placement dashboards",
+  "Bulk job Kanban tracker",
+  "Dedicated onboarding support",
+  "Custom branding & export",
+];
+
+export const DEFAULT_TIERS: Tier[] = [
+  {
+    id: "starter",
+    name: "Starter",
+    price: { monthly: 0, yearly: 0 },
+    description: "Ideal for students exploring placement prep. No credit card required.",
+    availableFeatures: [
+      "Skill gap questionnaire",
+      "Client-side PDF compilation",
+    ],
+    cta: "Start for Free",
+    href: "/sign-up",
+  },
+  {
+    id: "pro",
+    name: "Pro",
+    price: { monthly: 19, yearly: 15 },
+    description: "For active job seekers running multiple company drives. 30-day trial on yearly billing.",
+    availableFeatures: [
+      "Unlimited resume tailoring",
+      "Unlimited AI Assistant messages",
+      "All 4 premium LaTeX templates",
+      "Live company research",
+      "Priority ATS audit queue",
+      "Skill gap questionnaire",
+      "Client-side PDF compilation",
+    ],
+    cta: "Coming Soon",
+    href: "#",
+    popular: true,
+    comingSoon: true,
+  },
+  {
+    id: "campus",
+    name: "Campus",
+    price: { monthly: 79, yearly: 65 },
+    description: "For placement cells and training partners managing cohorts at scale.",
+    availableFeatures: [
+      "Unlimited resume tailoring",
+      "Unlimited AI Assistant messages",
+      "All 4 premium LaTeX templates",
+      "Live company research",
+      "Priority ATS audit queue",
+      "Skill gap questionnaire",
+      "Client-side PDF compilation",
+      "Shared placement dashboards",
+      "Bulk job Kanban tracker",
+      "Dedicated onboarding support",
+    ],
+    cta: "Contact Sales",
+    href: "/info/contact",
+  },
+];
 
 // ─── Tier Color Maps ──────────────────────────────────────
 const tierAccents: Record<string, {
@@ -119,9 +187,9 @@ function AnimatedNumber({ value, prefix = "$" }: { value: number | string; prefi
 export function PricingSection({
   title = "Simple Pricing",
   subtitle = "Choose the best plan for your needs",
-  frequencies,
-  tiers,
-  allFeatures,
+  frequencies = ["monthly", "yearly"],
+  tiers = DEFAULT_TIERS,
+  allFeatures = DEFAULT_ALL_FEATURES,
 }: PricingSectionProps) {
   const [activeFrequency, setActiveFrequency] = useState(frequencies[0] || "monthly");
 
