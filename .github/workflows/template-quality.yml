@@ -29,7 +29,8 @@ jobs:
             texlive-latex-base \
             texlive-latex-recommended \
             texlive-latex-extra \
-            texlive-fonts-recommended
+            texlive-fonts-recommended \
+            poppler-utils
 
       - name: Install dependencies
         run: npm ci
