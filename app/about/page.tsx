@@ -1,5 +1,4 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { StaticPageWrapper } from "@/components/StaticPageWrapper";
 import { Info, ShieldCheck, Zap, Code, Award, Lock, CheckCircle2 } from "lucide-react";
 import type { Metadata } from "next";
@@ -140,7 +139,9 @@ export default function AboutPage() {
           </div>
         </StaticPageWrapper>
       </main>
-      <Footer />
+      <footer className="py-8 border-t border-slate-800 text-center text-xs text-slate-500">
+        © {new Date().getFullYear()} ResumeFlow. All rights reserved.
+      </footer>
     </div>
   );
 }
