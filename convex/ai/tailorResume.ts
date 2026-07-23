@@ -56,12 +56,15 @@ const TailoredResumeSchema = z.object({
       })
     ).default([]),
     skills: z.object({
-      languages: z.array(z.string()).default([]),
-      frameworks: z.array(z.string()).default([]),
-      tools: z.array(z.string()).default([]),
+      languages: z.array(z.string()).optional().default([]),
+      frameworksAndTools: z.array(z.string()).optional().default([]),
+      cloudAndDevOps: z.array(z.string()).optional().default([]),
+      csFundamentals: z.array(z.string()).optional().default([]),
+      frameworks: z.array(z.string()).optional().default([]),
+      tools: z.array(z.string()).optional().default([]),
       databases: z.array(z.string()).optional().default([]),
       soft: z.array(z.string()).optional().default([]),
-    }).default({ languages: [], frameworks: [], tools: [], databases: [], soft: [] }),
+    }).default({ languages: [], frameworksAndTools: [], cloudAndDevOps: [], csFundamentals: [] }),
     certifications: z.array(
       z.object({
         name: z.string().default(""),
@@ -173,8 +176,28 @@ export const tailorResume = action({
       if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not set.");
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
-      const prompt = `You are an expert resume writer and ATS optimizer.
-Your objective is to tailor the candidate's Master Profile to match the Job Description requirements, integrate user answers about missing skills, compute an ATS compatibility score, and return a single valid JSON block.
+      const prompt = `You are an expert technical resume writer specializing in ATS-optimized resumes for software engineering and CS placements at top-tier companies.
+
+OUTPUT CONTRACT (non-negotiable):
+- Return ONLY valid JSON matching the provided schema. No markdown, no prose, no code fences.
+- Every text field must be PLAIN TEXT — no LaTeX commands, no bold/italic markup, no manual spacing, no bullet characters. Formatting is applied downstream, not by you.
+- Never leave a field empty if the master profile has relevant source data; if genuinely absent, omit the field entirely rather than inventing content.
+- Do not fabricate metrics, company names, tools, or dates not present in the master profile or explicitly confirmed via skill-gap answers.
+
+CONTENT RULES:
+1. Reverse-chronological order for experience and projects.
+2. Every bullet starts with a strong past/present-tense action verb (Built, Led, Optimized, Reduced, Designed) — never "Responsible for" or "Worked on."
+3. Every bullet follows: [Action] + [What/How] + [Quantified Result] wherever the source data supports a number (%, time, scale, users, latency). If no real metric exists, do not invent one — write the qualitative impact instead.
+4. Bullets are 1–2 lines max (roughly 20–30 words). Split anything longer.
+5. Mirror the exact keywords and terminology from the job description's required skills wherever truthfully applicable to the candidate's real experience — this is for ATS keyword matching, not padding. Never claim a skill the candidate doesn't have.
+6. Technical Skills section: group into the same categories every time (languages → Languages, frameworks/tools → Frameworks & Tools, cloud/devops/infra tools → Cloud & DevOps, CS-theory items like DSA, OOP, DBMS, SDLC, Agile, OS → CS Fundamentals) — consistent category set and order across every resume.
+7. Total content must fit one page for candidates with under 3 years of experience. Trim lowest-relevance bullets first, never shrink font/margins to force fit.
+
+ATS-SAFETY RULES:
+- No tables, columns, text boxes, icons, or images in any content field — single-column linear structure only.
+- Standard section headers only: EDUCATION, TECHNICAL SKILLS, EXPERIENCE, PROJECTS, CERTIFICATIONS. Never invent creative header names.
+- Dates in "Month YYYY – Month YYYY" or "Month YYYY – Present" format, consistent across every entry.
+- No special characters in any field that would break LaTeX compilation if not escaped: treat & % $ # _ { } ~ ^ as literal characters the renderer will escape — do not attempt to escape them yourself.
 
 === EXTRACTED JOB REQUIREMENTS ===
 Required Hard Skills: ${job.extractedRequirements.hardSkills.join(", ")}
@@ -187,27 +210,6 @@ ${gapAnswers || "No gaps responded."}
 === CANDIDATE MASTER PROFILE (PII Redacted) ===
 PersonalInfo: (Keep placeholder values: [CANDIDATE_NAME], [CANDIDATE_EMAIL], [CANDIDATE_PHONE])
 ${JSON.stringify(maskedProfile, null, 2)}
-
-Instructions:
-1. **Resume Tailoring**:
-   - Rewrite bullet points in experience and projects to emphasize relevant technologies and keywords from the JD.
-   - Begin all experience/project bullets with active action verbs (e.g. "Developed", "Optimized", "Architected").
-   - Include specific metrics/impact where possible (e.g. "improving performance by 15%").
-   - Integrate the "User Skill Gap Answers" context. If the user answered "Yes" to having a skill and gave context, add this skill to the skills section, and write a realistic bullet point in projects or experience highlighting that context!
-   - Keep the general timeline, institution names, and company names unchanged.
-
-2. **ATS Scoring**:
-   - Compute a heuristic ATS score based on:
-     - keywordMatchPercent: What percentage of keywords/skills in the JD are represented in the tailored resume?
-     - formattingScore: Grade content structure (100 is clear sections, standard headings, scannable bullets).
-     - sectionCompletenessScore: Grade presence of Contact, Education, Experience, Projects, and Skills.
-     - templateFormattingScore: Expected ATS/layout fit for recommended template (100 = ats_strict single-column; styled templates may score 75-90 if visual accents are justified).
-     - recommendedTemplateId: One of ats_strict (enterprise/ATS-heavy), modern_professional (startup), modern_executive (finance/leadership), tech_innovator (engineering). Base on JD industry and culture keywords.
-     - overallScore: Weighted average of keyword, formatting, and section scores.
-   - List specific "issues" found (e.g. "Missing certifications section") and actionable "suggestions" for improvement.
-
-3. **Diff Notes**:
-   - Provide a list of brief, professional explanations (e.g. "Integrated Docker experience into AWS project description") explaining what you changed and why.
 
 Return ONLY a valid JSON block matching this schema:
 {
@@ -249,25 +251,25 @@ Return ONLY a valid JSON block matching this schema:
     ],
     "skills": {
       "languages": ["...", "..."],
-      "frameworks": ["...", "..."],
-      "tools": ["...", "..."],
-      "databases": ["...", "..."],
-      "soft": ["...", "..."]
+      "frameworksAndTools": ["...", "..."],
+      "cloudAndDevOps": ["...", "..."],
+      "csFundamentals": ["...", "..."]
     },
     "certifications": [],
     "achievements": []
   },
-  "atsCompatibilityScore": 88,
-  "atsDetails": {
-    "keywordMatchPercent": 85,
-    "formattingScore": 95,
-    "sectionCompletenessScore": 90,
-    "templateFormattingScore": 88,
+  "atsCompatibilityScore": 95,
+  "scoringBreakdown": {
+    "keywordMatchPercent": 90,
+    "formattingScore": 100,
+    "sectionCompletenessScore": 100,
+    "templateFormattingScore": 100,
     "recommendedTemplateId": "ats_strict",
-    "issues": ["...", "..."],
-    "suggestions": ["...", "..."]
+    "overallScore": 95
   },
-  "diffNotes": ["...", "..."]
+  "issues": [],
+  "suggestions": [],
+  "diffNotes": ["..."]
 }`;
 
       log.info("Invoking NIM for resume tailoring", { model: "meta/llama-3.1-70b-instruct" });

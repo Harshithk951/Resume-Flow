@@ -135,7 +135,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 | **2-Layer AI Pipeline** | Layer 1: JD analysis & gap detection → Layer 2: bullet rewriting & ATS scoring |
 | **Skill Gap Resolution** | Interactive questionnaire bridging missing JD requirements to your profile |
 | **Company Research** | Real-time Tavily web search for culture keywords and industry context |
-| **4 Templates** | `ats_strict`, `modern_professional`, `modern_executive`, `tech_innovator` |
+| **ATS-Strict Master Template** | Single-column, linear structure engineered for 100% ATS text-parser compatibility (reliability over visual variety). |
 | **ATS Compatibility Score** | Heuristic scoring (keyword match, formatting, section completeness) |
 
 ### 💼 Placement Command Center

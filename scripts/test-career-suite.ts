@@ -443,6 +443,54 @@ async function runTests() {
     }
     console.log(`✅ Test 12 Passed: DOCX compiled successfully (Size: ${docxBytes.byteLength} bytes, validated PK header).\n`);
 
+    // ────────────────────────────────────────────────────────────────────────
+    // TEST 13: Master ATS-Strict Template & Run-On Bug Regex Verification
+    // ────────────────────────────────────────────────────────────────────────
+    console.log("📋 Test 13: Master ATS-Strict Template Compilation & Run-on Bug Check...");
+    const { jsonToLatex } = await import("../lib/latex/jsonToLatex");
+
+    const fixtureContent = {
+      personalInfo: { name: "Jane Doe", email: "jane@example.com", phone: "555-0199", linkedin: "linkedin.com/in/janedoe" },
+      education: [{ institution: "Stanford University", degree: "B.S. Computer Science", year: "2024", gpa: "3.9" }],
+      skills: {
+        languages: ["TypeScript", "Python", "C++"],
+        frameworksAndTools: ["React", "Next.js", "Node.js", "Docker"],
+        cloudAndDevOps: ["AWS", "Kubernetes", "CI/CD"],
+        csFundamentals: ["Data Structures", "Algorithms", "DBMS", "OS"],
+      },
+      experience: [{
+        company: "Tech Corp",
+        role: "Software Engineer Intern",
+        duration: "May 2023 -- Aug 2023",
+        bullets: ["Built real-time web application scaling to 10k concurrent users.", "Optimized database query performance by 40%."],
+      }],
+      projects: [{
+        name: "ResumeFlow Engine",
+        date: "2024",
+        technologies: ["Next.js", "LaTeX", "Convex"],
+        bullets: ["Architected deterministic single-pass LaTeX compilation pipeline."],
+      }],
+      certifications: [],
+    };
+
+    const compiledTex = jsonToLatex(fixtureContent, "ats_strict");
+
+    // Check for runon bug: colon, closing brace, letter with zero separator
+    const RUNON_BUG = /:\}[A-Za-z]/;
+    if (RUNON_BUG.test(compiledTex)) {
+      throw new Error("Found un-spaced label:value run-on bug in compiled .tex output!");
+    }
+
+    if (!compiledTex.includes("\\skillrow{Languages}{TypeScript, Python, C++}")) {
+      throw new Error("Compiled .tex missing Languages skillrow macro");
+    }
+
+    if (compiledTex.includes("CERTIFICATIONS")) {
+      throw new Error("Empty certifications section was not omitted!");
+    }
+
+    console.log("✅ Test 13 Passed: Master ATS-Strict template compiled cleanly with zero run-on bugs and empty section omission.\n");
+
     console.log("🎉 Phase 1 tests completed successfully! All stubs registered.");
   } catch (error: unknown) {
     console.error("❌ Test Suite failed!");

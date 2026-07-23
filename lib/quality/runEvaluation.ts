@@ -26,7 +26,7 @@ import {
   scoreLlmReview,
 } from "./scorers/llmReviewScorer";
 
-const ALL_TEMPLATE_IDS = Object.keys(TEMPLATES) as TemplateId[];
+const ALL_TEMPLATE_IDS: TemplateId[] = ["ats_strict"];
 
 /** Sensible resume↔JD pairings for CI gates (avoids cross-domain keyword noise). */
 export const RESUME_JD_PAIRINGS: Record<string, string[]> = {
