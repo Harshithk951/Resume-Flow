@@ -1,10 +1,10 @@
 // lib/latex/jsonToLatex.ts
 //
-// Pure Deterministic ATS-Strict JSON-to-LaTeX Compiler
-// Single source of truth template renderer for ResumeFlow.
-// Uses macro definitions from ats-master-template.tex with single-pass character escaping.
+// Pure Deterministic Multi-Preamble JSON-to-LaTeX Compiler
+// Single unified body generation engine with lookup-based styling preambles.
 
 import { escapeLatex } from "./escapeLatex";
+import type { TemplateId } from "./resolveTemplate";
 
 export { escapeLatex };
 
@@ -22,19 +22,8 @@ function cleanUrlDisplay(url: string | undefined): string {
   return url.trim().replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, "");
 }
 
-/**
- * Hardcoded Master ATS-Strict Preamble & Macros
- */
-const PREAMBLE = `\\documentclass[11pt,letterpaper]{article}
-
-\\usepackage[T1]{fontenc}
-\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
-\\usepackage{enumitem}
-\\usepackage[hidelinks]{hyperref}
-
-\\setlength{\\parindent}{0pt}
-\\pagestyle{empty}
-
+// Fixed macro block shared across all preambles
+const COMMON_MACROS = `
 % ---------- Macros ----------
 \\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries #1\\par}}
 \\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
@@ -61,11 +50,65 @@ const PREAMBLE = `\\documentclass[11pt,letterpaper]{article}
 `;
 
 /**
- * Compiles structured JSON resume data into the single ATS-Strict LaTeX template.
- * Ignores templateName branching — all compiles pass through the single master template.
+ * Preamble lookup dictionary for styling & typography options
  */
-export function jsonToLatex(resumeJSON: any, _templateName?: string): string {
+export const PREAMBLES: Record<string, string> = {
+  ats_strict: `\\documentclass[11pt,letterpaper]{article}
+
+\\usepackage[T1]{fontenc}
+\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+
+\\setlength{\\parindent}{0pt}
+\\pagestyle{empty}
+${COMMON_MACROS}`,
+
+  startup: `\\documentclass[10.5pt,letterpaper]{article}
+
+\\usepackage[T1]{fontenc}
+\\usepackage{helvet}
+\\renewcommand{\\familydefault}{\\sfdefault}
+\\usepackage[left=0.6in,right=0.6in,top=0.5in,bottom=0.5in]{geometry}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+
+\\setlength{\\parindent}{0pt}
+\\pagestyle{empty}
+${COMMON_MACROS}`,
+
+  finance_tech: `\\documentclass[11pt,letterpaper]{article}
+
+\\usepackage[T1]{fontenc}
+\\usepackage{mathptmx}
+\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+
+\\setlength{\\parindent}{0pt}
+\\pagestyle{empty}
+${COMMON_MACROS}`,
+
+  tech_modern: `\\documentclass[10.5pt,letterpaper]{article}
+
+\\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
+\\usepackage[left=0.6in,right=0.6in,top=0.5in,bottom=0.5in]{geometry}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+
+\\setlength{\\parindent}{0pt}
+\\pagestyle{empty}
+${COMMON_MACROS}`,
+};
+
+/**
+ * Compiles structured JSON resume data into LaTeX using the requested preamble lookup.
+ */
+export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"): string {
   if (!resumeJSON) return "";
+
+  const preamble = PREAMBLES[templateName] || PREAMBLES[resolveTemplateId(templateName)] || PREAMBLES.ats_strict;
 
   const personalInfo = resumeJSON.personalInfo ?? {};
   const education = Array.isArray(resumeJSON.education) ? resumeJSON.education : [];
@@ -74,7 +117,7 @@ export function jsonToLatex(resumeJSON: any, _templateName?: string): string {
   const skills = resumeJSON.skills ?? {};
   const certifications = Array.isArray(resumeJSON.certifications) ? resumeJSON.certifications : [];
 
-  const parts: string[] = [PREAMBLE, "\\begin{document}\n"];
+  const parts: string[] = [preamble, "\n\\begin{document}\n"];
 
   // ── 1. Header (Name + Contact Info) ──
   const fullName = escapeLatex(personalInfo.name || "Candidate Name");
@@ -125,7 +168,6 @@ export function jsonToLatex(resumeJSON: any, _templateName?: string): string {
   }
 
   // ── 3. Technical Skills Section ──
-  // Resolves both new output schema keys (camelCase) and legacy profile keys
   const formatSkillList = (val: any): string => {
     if (Array.isArray(val)) {
       return val.map((s) => escapeLatex(String(s))).filter(Boolean).join(", ");
@@ -238,4 +280,13 @@ export function jsonToLatex(resumeJSON: any, _templateName?: string): string {
 
   parts.push("\n\\end{document}\n");
   return parts.join("");
+}
+
+function resolveTemplateId(id?: string): string {
+  if (!id) return "ats_strict";
+  const norm = id.toLowerCase();
+  if (norm === "startup" || norm === "modern_professional") return "startup";
+  if (norm === "finance_tech" || norm === "modern_executive") return "finance_tech";
+  if (norm === "tech_modern" || norm === "tech_innovator") return "tech_modern";
+  return id;
 }

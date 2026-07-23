@@ -473,23 +473,26 @@ async function runTests() {
       certifications: [],
     };
 
-    const compiledTex = jsonToLatex(fixtureContent, "ats_strict");
+    const templatesToTest = ["ats_strict", "startup", "finance_tech", "tech_modern"];
+    for (const tplId of templatesToTest) {
+      const compiledTex = jsonToLatex(fixtureContent, tplId);
 
-    // Check for runon bug: colon, closing brace, letter with zero separator
-    const RUNON_BUG = /:\}[A-Za-z]/;
-    if (RUNON_BUG.test(compiledTex)) {
-      throw new Error("Found un-spaced label:value run-on bug in compiled .tex output!");
+      // Check for runon bug: colon, closing brace, letter with zero separator
+      const RUNON_BUG = /:\}[A-Za-z]/;
+      if (RUNON_BUG.test(compiledTex)) {
+        throw new Error(`Found un-spaced label:value run-on bug in compiled .tex output for template '${tplId}'!`);
+      }
+
+      if (!compiledTex.includes("\\skillrow{Languages}{TypeScript, Python, C++}")) {
+        throw new Error(`Compiled .tex missing Languages skillrow macro for template '${tplId}'`);
+      }
+
+      if (compiledTex.includes("CERTIFICATIONS")) {
+        throw new Error(`Empty certifications section was not omitted for template '${tplId}'!`);
+      }
     }
 
-    if (!compiledTex.includes("\\skillrow{Languages}{TypeScript, Python, C++}")) {
-      throw new Error("Compiled .tex missing Languages skillrow macro");
-    }
-
-    if (compiledTex.includes("CERTIFICATIONS")) {
-      throw new Error("Empty certifications section was not omitted!");
-    }
-
-    console.log("✅ Test 13 Passed: Master ATS-Strict template compiled cleanly with zero run-on bugs and empty section omission.\n");
+    console.log("✅ Test 13 Passed: Multi-template compilation verified across all 4 preambles (ats_strict, startup, finance_tech, tech_modern) with zero run-on bugs and clean empty-section omission.\n");
 
     console.log("🎉 Phase 1 tests completed successfully! All stubs registered.");
   } catch (error: unknown) {

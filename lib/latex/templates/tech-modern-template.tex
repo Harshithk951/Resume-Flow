@@ -1,13 +1,9 @@
 % ============================================================
-%  ResumeFlow — STARTUP TEMPLATE (variant of the single-body architecture)
+%  ResumeFlow — TECH MODERN TEMPLATE (variant of the single-body architecture)
 % ============================================================
 %  ONLY the PREAMBLE section below differs from ats-master-template.tex.
-%  The BODY section (macro invocations) is BYTE-FOR-BYTE IDENTICAL across
-%  every template variant. jsonToLatex.ts must generate the body via the
-%  same shared function regardless of which templateId is selected —
-%  swap PREAMBLES[templateId], never fork the body-generation logic.
-%  If you find yourself editing macro *definitions* differently per
-%  template, stop — that's how the old 4-template bug class happened.
+%  The BODY section is byte-for-byte identical across every variant —
+%  see startup-template.tex header comment for why that rule is load-bearing.
 % ============================================================
 
 % ---------------------------------------------------------------
@@ -20,21 +16,23 @@
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
-\usepackage[scaled=0.92]{helvet}
+\usepackage[scaled=0.95]{helvet}
 \renewcommand{\familydefault}{\sfdefault}
 
-\definecolor{accent}{HTML}{4F46E5} % indigo — modern SaaS/startup accent
+\definecolor{accent}{HTML}{0EA5E9} % sky blue — minimal modern-tech accent
 
 \setlength{\parindent}{0pt}
 \pagestyle{empty}
 
-\newcommand{\rname}[1]{{\centering\Huge\bfseries\color{accent} #1\par}}
+\newcommand{\rname}[1]{{\centering\Huge\bfseries #1\par}}
 \newcommand{\rcontact}[1]{{\centering\small #1\par}}
 
+% Minimalist header: short accent bar under the text instead of a
+% full-width rule — the "modern tech" differentiator vs. Startup/Finance.
 \newcommand{\ressection}[1]{%
-  \vspace{9pt}
-  {\bfseries\large\color{accent}\MakeUppercase{#1}}\\[-6pt]
-  \noindent{\color{accent}\rule{\linewidth}{1pt}}\vspace{3pt}
+  \vspace{10pt}
+  {\bfseries\large #1}\\[1pt]
+  \noindent{\color{accent}\rule{0.16\linewidth}{1.4pt}}\\[4pt]
 }
 
 \newcommand{\resheading}[4]{%
@@ -49,9 +47,7 @@
 }
 \newcommand{\resitem}[1]{\item #1}
 
-% Non-breaking space after the colon — this is the run-on bug fix.
-% Do NOT remove the ~ when porting this macro; it must be identical
-% to the ats_strict and every other variant's \skillrow definition.
+% Same non-breaking space fix as every other variant — do not diverge.
 \newcommand{\skillrow}[2]{\textbf{#1:}~#2\\[2pt]}
 
 % ---------------------------------------------------------------
