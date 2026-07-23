@@ -69,7 +69,7 @@ export function GlobalSilentCompiler() {
           // If tailored resume is not found, attempt profile query as fallback
           let contentToCompile = resume?.structuredContent;
           if (!contentToCompile) {
-            const masterProfile = await convex.query(api.profiles.getProfile);
+            const masterProfile = await convex.query(api.profiles.getMyProfile);
             if (masterProfile) {
               contentToCompile = {
                 personalInfo: masterProfile.personalInfo,
