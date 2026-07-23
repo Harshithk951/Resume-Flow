@@ -147,6 +147,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   };
 
   const prevPipelineStateRef = useRef<string | undefined>(undefined);
+  const recompileToastIdRef = useRef<string | number | undefined>(undefined);
 
   useEffect(() => {
     if (
@@ -154,10 +155,23 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
       prevPipelineStateRef.current === "compiling"
     ) {
       triggerSideCannons();
-      toast.success(`Resume tailored for ${job.companyName}!`);
+      if (recompileToastIdRef.current) {
+        toast.success("Resume recompiled successfully!", { id: recompileToastIdRef.current });
+        recompileToastIdRef.current = undefined;
+      } else {
+        toast.success(`Resume tailored for ${job.companyName}!`);
+      }
+    } else if (
+      job?.pipelineState === "failed" &&
+      prevPipelineStateRef.current === "compiling"
+    ) {
+      if (recompileToastIdRef.current) {
+        toast.error("Compilation failed. Please try again.", { id: recompileToastIdRef.current });
+        recompileToastIdRef.current = undefined;
+      }
     }
     prevPipelineStateRef.current = job?.pipelineState;
-  }, [job?.pipelineState]);
+  }, [job?.pipelineState, job?.companyName]);
 
   if (authLoading || (isAuthenticated && job === undefined)) {
     return (
@@ -203,7 +217,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
       } else {
         await resetToCompiling({ jobId });
       }
-      toast.loading("Recompiling resume...");
+      recompileToastIdRef.current = toast.loading("Recompiling resume...");
     } catch (e) {
       console.error(e);
       toast.error("Failed to start recompile");
@@ -464,11 +478,12 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           <div className="flex items-center gap-2">
             <button
               type="button"
+              disabled={job?.pipelineState === "compiling"}
               onClick={handleRecompile}
-              className="px-4 h-10 border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-charcoal)] hover:bg-[var(--color-surface-soft)] text-xs font-bold rounded-xl flex items-center gap-2 transition-all active:scale-[0.97] shadow-sm"
+              className="px-4 h-10 border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-charcoal)] hover:bg-[var(--color-surface-soft)] text-xs font-bold rounded-xl flex items-center gap-2 transition-all active:scale-[0.97] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
-              Re-compile
+              <RefreshCw className={`w-3.5 h-3.5 ${job?.pipelineState === "compiling" ? "animate-spin text-rose-500" : ""}`} />
+              {job?.pipelineState === "compiling" ? "Compiling..." : "Re-compile"}
             </button>
             <Link
               href={`/resume/${jobId}/export`}
