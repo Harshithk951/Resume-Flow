@@ -55,7 +55,7 @@ ResumeFlow is the **first AI career engine** purpose-built for placement drives 
 | Role | Why ResumeFlow |
 |------|----------------|
 | **Job Seekers** | Stop rewriting the same resume 27 times. Let AI tailor for each application while you focus on interviews. |
-| **College Placement Cells** | Broadcast job drives to thousands of eligible students. Track application status across your entire cohort. |
+| **College Placement Cells** | Broadcast job drives to thousands of eligible students by CGPA & branch filters. Track application status across your entire cohort. |
 | **Career Counselors** | Help students identify skill gaps, practice mock interviews, and build ATS-optimized resumes at scale. |
 | **Recruitment Agencies** | Bulk-tailor candidate resumes to match client JDs. Outbound + inbound webhook integration with Make.com. |
 
@@ -106,7 +106,7 @@ ResumeFlow is the **first AI career engine** purpose-built for placement drives 
 
 ResumeFlow automates this through a **real-time AI pipeline** that:
 
-1. **Ingests** your master profile once (PDF, image, or manual entry)
+1. **Creates** your master profile once (manual entry or PDF upload)
 2. **Analyzes** any job description against your profile
 3. **Researches** the target company for cultural alignment
 4. **Tailors** bullet points, keywords, and skills to match
@@ -123,7 +123,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 
 | Feature | Details |
 |---------|---------|
-| **Multi-format Ingestion** | Upload PDF, PNG, or JPEG — OCR + AI extraction with Zod validation |
+| **Profile Creation** | Manual entry with Clerk pre-fill — or upload PDF resume for AI extraction with Zod validation |
 | **Bento Editor** | Human-in-the-loop verification with inline editing |
 | **Extraction State Machine** | 5-state pipeline: `idle → extracting → success \| failed` |
 | **Structured Storage** | Education, experience, projects, skills, certifications, achievements |
@@ -214,7 +214,7 @@ ResumeFlow automates this through a **real-time AI pipeline** that:
 
 | Technology | Purpose |
 |------------|---------|
-| [NVIDIA NIM](https://build.nvidia.com/) | LLM inference via OpenAI-compatible API (Llama 3.1 70B, Llama 3.2 11B Vision) |
+| [NVIDIA NIM](https://build.nvidia.com/) | LLM inference via OpenAI-compatible API (DeepSeek V4 Flash, DeepSeek V3) |
 | [Tavily](https://tavily.com/) | Real-time company web research |
 | [@tavily/core](https://www.npmjs.com/package/@tavily/core) | Typed Tavily API client |
 
@@ -284,7 +284,7 @@ flowchart TB
 
   subgraph externalTier [External Services]
     Clerk[Clerk Auth - JWT + SSO]
-    NIM[NVIDIA NIM - Llama 3.1 70B + 3.2 11B Vision]
+    NIM[NVIDIA NIM - DeepSeek V4 Flash + V3]
     Tavily[Tavily Web Search - Company Intel]
     PDFTeX[pdflatex local binary]
     Redis[Upstash Redis - Caching]
@@ -385,11 +385,11 @@ ResumeFlow's intelligence is organized into a **4-layer pipeline**, each respons
 
 | Layer | Action | Model | Input | Output |
 |-------|--------|-------|-------|--------|
-| **L0** | `extractProfile` | Llama 3.1 70B / 3.2 11B Vision | Raw resume PDF/image → OCR text | Structured `masterProfiles` document |
-| **L1** | `processJob` | Llama 3.1 70B | JD text + Master Profile | `extractedRequirements`, `skillGapQuestions`, Tavily `companyInsights` |
-| **L2** | `tailorResume` | Llama 3.1 70B | Profile + requirements + gap answers | `structuredContent`, `atsCompatibilityScore`, `diffNotes` |
+| **L0** | `extractProfile` | DeepSeek V4 Flash → V3 fallback | Raw resume PDF → OCR text | Structured `masterProfiles` document |
+| **L1** | `processJob` | DeepSeek V4 Flash → V3 fallback | JD text + Master Profile | `extractedRequirements`, `skillGapQuestions`, Tavily `companyInsights` |
+| **L2** | `tailorResume` | DeepSeek V4 Flash → V3 fallback | Profile + requirements + gap answers | `structuredContent`, `atsCompatibilityScore`, `diffNotes` |
 | **L3** | `compile-latex` | N/A (pdflatex) | LaTeX snapshot | Binary PDF → Convex `_storage` |
-| **Chat** | `chatAssistant` | Llama 3.1 70B | User message + job context | AI-Powered Assistant response (with mock interview mode) |
+| **Chat** | `chatAssistant` | DeepSeek V4 Flash → V3 fallback | User message + job context | AI-Powered Assistant response (with mock interview mode) |
 
 ### Skill Registry
 
@@ -422,7 +422,7 @@ User Upload (PDF)
 [PII Mask Layer] ←── Extracts name, email, phone → stores securely
     │                                           │
     ▼                                           ▼
-Masked Text → [NVIDIA NIM LLM]               Original PII
+Masked Text → [DeepSeek V4 Flash]              Original PII
     │                                           │
     ▼                                           ▼
 AI Response (masked placeholders) ←── [PII Re-injection Layer]
@@ -491,7 +491,7 @@ erDiagram
     string companyName
     string jobTitle
     string rawJdText "Original job description"
-    enum inputType "text | screenshot | pdf"
+    enum inputType "text | pdf" (screenshot removed)
     string pipelineState "See state machine above"
     object extractedRequirements "Skills, keywords, company insights"
     array skillGapQuestions "Interactive gap resolution"
@@ -585,7 +585,7 @@ ResumeFlow follows a **zero-trust security model** with defense in depth across 
 | **Row-Level Security** | `requireAuth` + `requireOwnership` on every mutation/query | `convex/lib/auth.ts` |
 | **PII Firewall** | Regex-based extraction → placeholder substitution → re-injection | `convex/lib/piiMask.ts`, `convex/ai/extractResume.ts` |
 | **Rate Limiting** | 5 resumes/day · 50 chat messages/day · 500 credits per resume (free tier) | `convex/lib/rateLimit.ts` |
-| **Upload Validation** | Magic byte validation · 5MB cap · PDF/PNG/JPEG only | `convex/lib/uploadValidation.ts` |
+| **Upload Validation** | Magic byte validation · 5MB cap · PDF/DOCX only | `convex/lib/uploadValidation.ts` |
 | **Content Security Policy** | Strict CSP with 15 directives · HSTS preload · X-Frame-Options | `next.config.ts` |
 | **Tenant Isolation** | `by_tenantId` indexes on all queryable tables — never full-table scan | `convex/schema.ts`, `convex/dashboard.ts` |
 | **Compiler Lock** | `Set`-based global mutex prevents duplicate compilations · 90s timeout | `components/GlobalSilentCompiler.tsx` |
