@@ -64,7 +64,16 @@ const TailoredResumeSchema = z.object({
       tools: z.array(z.string()).optional().default([]),
       databases: z.array(z.string()).optional().default([]),
       soft: z.array(z.string()).optional().default([]),
-    }).default({}),
+    }).default(() => ({
+      languages: [],
+      frameworksAndTools: [],
+      cloudAndDevOps: [],
+      csFundamentals: [],
+      frameworks: [],
+      tools: [],
+      databases: [],
+      soft: [],
+    })),
     certifications: z.array(
       z.object({
         name: z.string().default(""),

@@ -1,0 +1,96 @@
+% ============================================================
+%  ResumeFlow — FINANCE TECH TEMPLATE (variant of the single-body architecture)
+% ============================================================
+%  ONLY the PREAMBLE section below differs from ats-master-template.tex.
+%  The BODY section is byte-for-byte identical across every variant —
+%  see startup-template.tex header comment for why that rule is load-bearing.
+% ============================================================
+
+% ---------------------------------------------------------------
+% PREAMBLE — varies per template
+% ---------------------------------------------------------------
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[left=0.75in,right=0.75in,top=0.6in,bottom=0.6in]{geometry}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+% Palatino-style serif — traditional, conservative, reads as "trustworthy"
+% for finance/banking recruiters. Requires texlive-fonts-recommended.
+% If your pdflatex install is minimal (texlive-latex-base only), comment
+% out this line and the template falls back cleanly to Computer Modern —
+% in which case the microtype fix below becomes REQUIRED, not defensive.
+\usepackage{mathpazo}
+\linespread{1.02}
+% Defensive: mathpazo (Type1 PostScript Palatino clone) tested clean with
+% no ligature/dash extraction bug, unlike default Computer Modern. Kept
+% here anyway as a guard against the texlive-fonts-recommended fallback
+% case above, where this template silently reverts to Computer Modern.
+\usepackage[expansion=false]{microtype}
+\DisableLigatures{encoding = *, family = *}
+
+\setlength{\parindent}{0pt}
+\pagestyle{empty}
+
+\newcommand{\rname}[1]{{\centering\Huge\bfseries #1\par}}
+\newcommand{\rcontact}[1]{{\centering\small #1\par}}
+
+\newcommand{\ressection}[1]{%
+  \vspace{9pt}
+  {\bfseries\normalsize\textsc{#1}}\\[-6pt]
+  \noindent\rule{\linewidth}{0.5pt}\vspace{3pt}
+}
+
+\newcommand{\resheading}[4]{%
+  \noindent\textbf{#1} \hfill \textbf{#2}\\[1pt]
+  \noindent\textit{#3} \hfill \textit{#4}\\[2pt]
+}
+
+\newenvironment{resitems}{%
+  \begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\textbullet]
+}{%
+  \end{itemize}
+}
+\newcommand{\resitem}[1]{\item #1}
+
+% Same non-breaking space fix as every other variant — do not diverge.
+\newcommand{\skillrow}[2]{\textbf{#1:}~#2\\[2pt]}
+
+% ---------------------------------------------------------------
+% BODY — identical across every template variant, do not diverge
+% ---------------------------------------------------------------
+\begin{document}
+
+\rname{ {{FULL_NAME}} }
+\rcontact{ {{EMAIL}} $\vert$ {{PHONE}} $\vert$ {{LINKEDIN}} $\vert$ {{PORTFOLIO}} }
+
+\ressection{Education}
+\resheading{ {{INSTITUTION}} }{ {{GRAD_DATE}} }{ {{DEGREE}} --- CGPA: {{GPA}} }{ {{LOCATION}} }
+
+\ressection{Technical Skills}
+\skillrow{Languages}{ {{LANGUAGES}} }
+\skillrow{Frameworks \& Tools}{ {{FRAMEWORKS}} }
+\skillrow{Cloud \& DevOps}{ {{CLOUD_DEVOPS}} }
+\skillrow{CS Fundamentals}{ {{CS_FUNDAMENTALS}} }
+
+\ressection{Experience}
+\resheading{ {{ROLE}} }{ {{START}} -- {{END}} }{ {{COMPANY}} }{ {{LOCATION}} }
+\begin{resitems}
+\resitem{ {{BULLET_1}} }
+\resitem{ {{BULLET_2}} }
+\resitem{ {{BULLET_3}} }
+\end{resitems}
+
+\ressection{Projects}
+\resheading{ {{PROJECT_NAME}} }{ {{DATE}} }{ {{TECH_STACK}} }{ }
+\begin{resitems}
+\resitem{ {{BULLET_1}} }
+\resitem{ {{BULLET_2}} }
+\end{resitems}
+
+% \ressection{Certifications}  <-- only emit if certifications[] is non-empty
+\begin{resitems}
+\resitem{ {{CERT_1}} }
+\end{resitems}
+
+\end{document}
