@@ -17,6 +17,7 @@ import pdf from "@cedrugs/pdf-parse";
 
 import { z } from "zod";
 import { jobSearchSkill } from "./Skills/registry";
+import { invokeRoutedNim } from "./modelRouter";
 import { callWithResilience, NIM_SERVICE, TAVILY_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
@@ -275,28 +276,30 @@ export const processJob = action({
         if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not set.");
         const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
-        const ocrCompletion = await callWithResilience(NIM_SERVICE, async () =>
-        openai.chat.completions.create({
-          model: "meta/llama-3.2-11b-vision-instruct",
-          messages: [
-            {
-              role: "user",
-              content: [
+        const ocrCompletion = await invokeRoutedNim(
+          "vision",
+          (selectedModel) =>
+            openai.chat.completions.create({
+              model: selectedModel,
+              messages: [
                 {
-                  type: "text",
-                  text: "You are an OCR engine. Extract all readable text from this job description screenshot exactly as it appears. Output only the plain text.",
-                },
-                {
-                  type: "image_url",
-                  image_url: { url: `data:${mimeType};base64,${base64Image}` },
+                  role: "user",
+                  content: [
+                    {
+                      type: "text",
+                      text: "You are an OCR engine. Extract all readable text from this job description screenshot exactly as it appears. Output only the plain text.",
+                    },
+                    {
+                      type: "image_url",
+                      image_url: { url: `data:${mimeType};base64,${base64Image}` },
+                    },
+                  ],
                 },
               ],
-            },
-          ],
-          temperature: 0.0,
-        }),
-        true
-      );
+              temperature: 0.0,
+            }),
+          { label: "JD OCR" }
+        );
         jdText = ocrCompletion.choices[0]?.message?.content || "";
       }
 
@@ -428,18 +431,20 @@ Instructions:
 Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary or text.`;
 
       const nimStart = Date.now();
-      const nimCompletion = await callWithResilience(NIM_SERVICE, async () =>
-        openai.chat.completions.create({
-          model: "meta/llama-3.1-70b-instruct",
-          messages: [
-            { role: "system", content: jobSearchSkill },
-            { role: "user", content: prompt }
-          ],
-          response_format: { type: "json_object" },
-          temperature: 0.1,
-          max_tokens: 2048,
-        }),
-        true
+      const nimCompletion = await invokeRoutedNim(
+        "tailoring",
+        (selectedModel) =>
+          openai.chat.completions.create({
+            model: selectedModel,
+            messages: [
+              { role: "system", content: jobSearchSkill },
+              { role: "user", content: prompt }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.1,
+            max_tokens: 2048,
+          }),
+        { label: "JD requirement analysis" }
       );
       const nimDuration = Date.now() - nimStart;
       log.info("NIM analysis complete", { durationMs: nimDuration });

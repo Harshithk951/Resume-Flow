@@ -10,6 +10,7 @@ import { v } from "convex/values";
 import { api, internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { z } from "zod";
+import { invokeRoutedNim } from "./modelRouter";
 import { callWithResilience, NIM_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
@@ -98,20 +99,23 @@ Return ONLY a valid JSON block matching this schema:
 }`;
 
       // 3. Call Llama 3.3 NIM with resilience
-      log.info("Invoking NIM for outreach generation", { model: "meta/llama-3.1-8b-instruct" });
+      log.info("Invoking NIM for outreach generation", { taskCategory: "chat" });
       incrementMetric(METRICS.NIM_CALLS);
       const nimStart = Date.now();
-      const completion = await callWithResilience(NIM_SERVICE, async () =>
-        openai.chat.completions.create({
-          model: "meta/llama-3.1-8b-instruct",
-        messages: [
-          { role: "system", content: "You are a professional outreach copywriter. You output only valid JSON." },
-          { role: "user", content: prompt }
-        ],          response_format: { type: "json_object" },
-          temperature: 0.3,
-          max_tokens: 2048,
-        }),
-        true
+      const completion = await invokeRoutedNim(
+        "chat",
+        (selectedModel) =>
+          openai.chat.completions.create({
+            model: selectedModel,
+            messages: [
+              { role: "system", content: "You are a professional outreach copywriter. You output only valid JSON." },
+              { role: "user", content: prompt }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.3,
+            max_tokens: 2048,
+          }),
+        { label: "Outreach copywriter" }
       );
       const nimDuration = Date.now() - nimStart;
       log.info("Outreach generation complete", { durationMs: nimDuration });

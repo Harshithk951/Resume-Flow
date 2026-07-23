@@ -11,6 +11,7 @@ import { v, ConvexError } from "convex/values";
 import { internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { hiringManagerSkill, staffLevelSignals, projectImpactCalculator } from "./Skills/registry";
+import { invokeRoutedNim } from "./modelRouter";
 import { callWithResilience, NIM_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
@@ -233,17 +234,19 @@ Role-playing Guidelines:
       if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not configured.");
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
 
-      log.info("Invoking NIM for chat response", { model: "meta/llama-3.1-70b-instruct" });
+      log.info("Invoking NIM for chat response", { taskCategory: "chat" });
       incrementMetric(METRICS.NIM_CALLS);
       const nimStart = Date.now();
-      const completion = await callWithResilience(NIM_SERVICE, async () =>
-        openai.chat.completions.create({
-          model: "meta/llama-3.1-70b-instruct",
-          messages: messages as any,
-          temperature: 0.5,
-          max_tokens: 1536,
-        }),
-        true
+      const completion = await invokeRoutedNim(
+        "chat",
+        (selectedModel) =>
+          openai.chat.completions.create({
+            model: selectedModel,
+            messages: messages as any,
+            temperature: 0.5,
+            max_tokens: 1536,
+          }),
+        { label: "Career chat assistant" }
       );
       const nimDuration = Date.now() - nimStart;
       log.info("Chat response received", { durationMs: nimDuration });

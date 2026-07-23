@@ -1,0 +1,182 @@
+// convex/ai/modelRouter.ts
+//
+// Centralized Multi-Model Task Router for NVIDIA NIM API
+// Provides single entrypoint invokeRoutedNim(taskCategory, executeCall)
+// with task-specific model routing, primary retries, fallback handling,
+// and PII-safe structured observability logging.
+
+import { callWithResilience, NIM_SERVICE } from "./resilience";
+
+export type NimTaskCategory = "extraction" | "tailoring" | "chat" | "vision";
+
+export interface TaskRoute {
+  primary: string;
+  fallback: string;
+}
+
+/**
+ * Task-Specific Model Routing Matrix
+ */
+export const TASK_ROUTES: Record<NimTaskCategory, TaskRoute> = {
+  extraction: {
+    primary: "deepseek-ai/deepseek-v3",
+    fallback: "meta/llama-3.3-70b-instruct",
+  },
+  tailoring: {
+    primary: "meta/llama-3.3-70b-instruct",
+    fallback: "deepseek-ai/deepseek-v3",
+  },
+  chat: {
+    primary: "meta/llama-3.1-8b-instruct",
+    fallback: "deepseek-ai/deepseek-v3",
+  },
+  vision: {
+    primary: "meta/llama-3.2-90b-vision-instruct",
+    fallback: "meta/llama-3.2-11b-vision-instruct",
+  },
+};
+
+export interface InvokeRoutedNimOptions {
+  /** Optional logging context label */
+  label?: string;
+  /** Whether to apply NIM concurrency ceiling permit (default: true) */
+  useConcurrencyLimit?: boolean;
+}
+
+/**
+ * Determines whether an error is eligible for model fallback.
+ * Fallback ONLY on:
+ *   - Timeout / network errors
+ *   - HTTP 429 (rate limit)
+ *   - HTTP 500, 502, 503, 504 (server/gateway errors)
+ *   - Temporary NVIDIA endpoint failures
+ *
+ * Do NOT fallback for:
+ *   - Invalid prompts / malformed client requests
+ *   - Malformed JSON / business logic validation failures
+ *   - Client 4xx errors (except 429)
+ */
+export function isFallbackEligibleError(error: unknown): boolean {
+  if (!error) return false;
+
+  const msg = error instanceof Error ? error.message : String(error);
+  const status = (error as any)?.status || (error as any)?.statusCode || (error as any)?.code;
+
+  if (typeof status === "number") {
+    if (status === 429 || (status >= 500 && status <= 599)) {
+      return true;
+    }
+  }
+
+  const fallbackKeywords = [
+    "429",
+    "500",
+    "502",
+    "503",
+    "504",
+    "timeout",
+    "etimedout",
+    "econnreset",
+    "econnrefused",
+    "enotfound",
+    "rate limit",
+    "overloaded",
+    "fetch failed",
+    "network error",
+    "gateway",
+    "service unavailable",
+    "internal server error",
+  ];
+
+  const lowerMsg = msg.toLowerCase();
+  return fallbackKeywords.some((kw) => lowerMsg.includes(kw));
+}
+
+/**
+ * Centralized Model Router Entrypoint
+ *
+ * Calls executeCall(model) with task-specific primary model first.
+ * If fallback-eligible infrastructure failure occurs, retries via fallback model.
+ *
+ * @param taskCategory — "extraction" | "tailoring" | "chat" | "vision"
+ * @param executeCall — Async function accepting model string and returning completion
+ * @param options — Optional label and concurrency settings
+ */
+export async function invokeRoutedNim<T>(
+  taskCategory: NimTaskCategory,
+  executeCall: (model: string) => Promise<T>,
+  options?: InvokeRoutedNimOptions
+): Promise<T> {
+  const route = TASK_ROUTES[taskCategory];
+  const label = options?.label ?? taskCategory;
+  const useConcurrencyLimit = options?.useConcurrencyLimit ?? true;
+  const startTime = Date.now();
+  const requestId = `req_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 7)}`;
+
+  let retryCount = 0;
+  let fallbackUsed = false;
+  let actualModelUsed = route.primary;
+
+  // 1. Attempt Primary Model with Resilience (Up to 2 retries)
+  try {
+    const result = await callWithResilience(
+      NIM_SERVICE,
+      async () => {
+        retryCount++;
+        return await executeCall(route.primary);
+      },
+      useConcurrencyLimit
+    );
+
+    const latencyMs = Date.now() - startTime;
+    console.log(
+      `[nim-router:${label}] Task: ${taskCategory} | Primary: ${route.primary} | Used: ${actualModelUsed} | FallbackUsed: ${fallbackUsed} | Retries: ${retryCount - 1} | Latency: ${latencyMs}ms | ReqID: ${requestId}`
+    );
+
+    return result;
+  } catch (primaryErr: unknown) {
+    // Check if error is fallback-eligible
+    if (!isFallbackEligibleError(primaryErr)) {
+      const latencyMs = Date.now() - startTime;
+      console.error(
+        `[nim-router:${label}] Task: ${taskCategory} | Primary: ${route.primary} failed with non-fallback error. Latency: ${latencyMs}ms | ReqID: ${requestId}`
+      );
+      throw primaryErr;
+    }
+
+    const primaryMsg = primaryErr instanceof Error ? primaryErr.message : String(primaryErr);
+    console.warn(
+      `[nim-router:${label}] Primary model '${route.primary}' failed for task '${taskCategory}' (${primaryMsg}). Initiating fallback to '${route.fallback}'...`
+    );
+
+    // 2. Fallback Model Execution
+    fallbackUsed = true;
+    actualModelUsed = route.fallback;
+    let fallbackRetries = 0;
+
+    try {
+      const fallbackResult = await callWithResilience(
+        NIM_SERVICE,
+        async () => {
+          fallbackRetries++;
+          return await executeCall(route.fallback);
+        },
+        useConcurrencyLimit
+      );
+
+      const latencyMs = Date.now() - startTime;
+      console.log(
+        `[nim-router:${label}] Task: ${taskCategory} | Primary: ${route.primary} | Used: ${actualModelUsed} | FallbackUsed: ${fallbackUsed} | Retries: ${(retryCount - 1) + (fallbackRetries - 1)} | Latency: ${latencyMs}ms | ReqID: ${requestId}`
+      );
+
+      return fallbackResult;
+    } catch (fallbackErr: unknown) {
+      const latencyMs = Date.now() - startTime;
+      const fallbackMsg = fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr);
+      console.error(
+        `[nim-router:${label}] Task: ${taskCategory} | Both primary '${route.primary}' and fallback '${route.fallback}' failed (${fallbackMsg}). Latency: ${latencyMs}ms | ReqID: ${requestId}`
+      );
+      throw fallbackErr;
+    }
+  }
+}

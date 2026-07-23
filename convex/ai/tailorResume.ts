@@ -13,6 +13,7 @@ import { OpenAI } from "openai";
 import { maskPersonalInfo, reInjectPersonalInfo } from "../lib/piiMask";
 import { z } from "zod";
 import { atsAuditorSkill, resumeMakerSkill } from "./Skills/registry";
+import { invokeRoutedNim } from "./modelRouter";
 import { callWithResilience, NIM_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
@@ -281,21 +282,23 @@ Return ONLY a valid JSON block matching this schema:
   "diffNotes": ["..."]
 }`;
 
-      log.info("Invoking NIM for resume tailoring", { model: "meta/llama-3.1-70b-instruct" });
+      log.info("Invoking NIM for resume tailoring", { taskCategory: "tailoring" });
       incrementMetric(METRICS.NIM_CALLS);
       const nimStart = Date.now();
-      const completion = await callWithResilience(NIM_SERVICE, async () =>
-        openai.chat.completions.create({
-          model: "meta/llama-3.1-70b-instruct",
-          messages: [
-            { role: "system", content: `${resumeMakerSkill}\n\n${atsAuditorSkill}` },
-            { role: "user", content: prompt }
-          ],
-          response_format: { type: "json_object" },
-          temperature: 0.2,
-          max_tokens: 2048,
-        }),
-        true
+      const completion = await invokeRoutedNim(
+        "tailoring",
+        (selectedModel) =>
+          openai.chat.completions.create({
+            model: selectedModel,
+            messages: [
+              { role: "system", content: `${resumeMakerSkill}\n\n${atsAuditorSkill}` },
+              { role: "user", content: prompt }
+            ],
+            response_format: { type: "json_object" },
+            temperature: 0.2,
+            max_tokens: 2048,
+          }),
+        { label: "Resume tailoring" }
       );
       const nimDuration = Date.now() - nimStart;
       log.info("Tailoring NIM complete", { durationMs: nimDuration });

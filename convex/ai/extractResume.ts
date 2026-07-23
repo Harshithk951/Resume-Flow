@@ -13,7 +13,7 @@ import pdf from "@cedrugs/pdf-parse";
 import { validateUpload } from "../lib/uploadValidation";
 import { z } from "zod";
 import { api, internal } from "../_generated/api";
-import { callWithResilience, NIM_SERVICE } from "./resilience";
+import { invokeRoutedNim } from "./modelRouter";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // ─── Zod Schema for Validation ──────────────────────────────
@@ -318,28 +318,30 @@ If any section or field is completely missing in the resume, return an empty arr
 
         console.log("Step 4: Sending payload to model");
 
-        log.info("Invoking NIM for PDF extraction", { model: "meta/llama-3.1-70b-instruct" });
+        log.info("Invoking NIM for PDF extraction", { taskCategory: "extraction" });
         incrementMetric(METRICS.NIM_CALLS);
         const nimStart = Date.now();
-        const completion = await callWithResilience(NIM_SERVICE, async () =>
-          withTimeout(
-            openai.chat.completions.create({
-              model: "meta/llama-3.1-70b-instruct",
-              messages: [
-                { role: "system", content: systemPrompt },
-                {
-                  role: "user",
-                  content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
-                },
-              ],
-              response_format: { type: "json_object" },
-              temperature: 0.1,
-              max_tokens: 2048,
-            }),
-            45_000,
-            "NVIDIA NIM PDF extraction"
-          ),
-          true
+        const completion = await invokeRoutedNim(
+          "extraction",
+          (selectedModel) =>
+            withTimeout(
+              openai.chat.completions.create({
+                model: selectedModel,
+                messages: [
+                  { role: "system", content: systemPrompt },
+                  {
+                    role: "user",
+                    content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
+                  },
+                ],
+                response_format: { type: "json_object" },
+                temperature: 0.1,
+                max_tokens: 2048,
+              }),
+              45_000,
+              "NVIDIA NIM PDF extraction"
+            ),
+          { label: "PDF extraction" }
         );
         const nimDuration = Date.now() - nimStart;
         log.info("NIM PDF extraction complete", { durationMs: nimDuration });
@@ -360,26 +362,42 @@ If any section or field is completely missing in the resume, return an empty arr
 
         console.log("Step 4: Sending image payload to model");
 
-        log.info("Invoking NIM for image OCR", { model: "meta/llama-3.2-11b-vision-instruct" });
+        log.info("Invoking NIM for image OCR", { taskCategory: "vision" });
         incrementMetric(METRICS.NIM_CALLS);
         const nimStart = Date.now();
-        const completion = await callWithResilience(NIM_SERVICE, async () =>
-          withTimeout(
-            openai.chat.completions.create({
-              model: "meta/llama-3.2-11b-vision-instruct",
-              messages: [
-                { role: "system", content: systemPrompt },
-                {
-                  role: "user",
-                  content: [
-                    {
-                      type: "text",
-                      text: "Extract the resume content from this uploaded image. Output the structured JSON schema only.",
-                    },
-                    {
-                      type: "image_url",
-                      image_url: {
-                        url: `data:${mimeType};base64,${base64Image}`,
+        const completion = await invokeRoutedNim(
+          "vision",
+          (selectedModel) =>
+            withTimeout(
+              openai.chat.completions.create({
+                model: selectedModel,
+                messages: [
+                  { role: "system", content: systemPrompt },
+                  {
+                    role: "user",
+                    content: [
+                      {
+                        type: "text",
+                        text: "Extract the resume content from this uploaded image. Output the structured JSON schema only.",
+                      },
+                      {
+                        type: "image_url",
+                        image_url: {
+                          url: `data:${mimeType};base64,${base64Image}`,
+                        },
+                      },
+                    ],
+                  },
+                ],
+                response_format: { type: "json_object" },
+                temperature: 0.1,
+                max_tokens: 2048,
+              }),
+              45_000,
+              "NVIDIA NIM Image extraction"
+            ),
+          { label: "Image OCR" }
+        );,${base64Image}`,
                       },
                     },
                   ],
