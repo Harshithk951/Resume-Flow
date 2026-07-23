@@ -68,10 +68,35 @@ export interface StructuredResumeContent {
 export function normalizeStructuredContent(
   raw: unknown
 ): StructuredResumeContent {
-  const data = (raw ?? {}) as Partial<StructuredResumeContent>;
+  const data = (raw ?? {}) as Record<string, any>;
+  const rawSkills = data.skills ?? {};
+
+  const languages = Array.isArray(rawSkills.languages) ? rawSkills.languages : [];
+
+  const frameworksList = [
+    ...(Array.isArray(rawSkills.frameworksAndTools) ? rawSkills.frameworksAndTools : []),
+    ...(Array.isArray(rawSkills.frameworks) ? rawSkills.frameworks : []),
+  ];
+  // Deduplicate
+  const frameworks = Array.from(new Set(frameworksList));
+
+  const toolsList = [
+    ...(Array.isArray(rawSkills.cloudAndDevOps) ? rawSkills.cloudAndDevOps : []),
+    ...(Array.isArray(rawSkills.tools) ? rawSkills.tools : []),
+  ];
+  const tools = Array.from(new Set(toolsList));
+
+  const softList = [
+    ...(Array.isArray(rawSkills.csFundamentals) ? rawSkills.csFundamentals : []),
+    ...(Array.isArray(rawSkills.soft) ? rawSkills.soft : []),
+  ];
+  const soft = Array.from(new Set(softList));
+
+  const databases = Array.isArray(rawSkills.databases) ? rawSkills.databases : undefined;
+
   return {
     personalInfo: {
-      name: data.personalInfo?.name ?? "",
+      name: data.personalInfo?.name ?? "Candidate",
       email: data.personalInfo?.email ?? "",
       phone: data.personalInfo?.phone ?? "",
       linkedin: data.personalInfo?.linkedin,
@@ -79,17 +104,37 @@ export function normalizeStructuredContent(
       portfolio: data.personalInfo?.portfolio,
     },
     summary: data.summary ?? "",
-    education: data.education ?? [],
+    education: Array.isArray(data.education) ? data.education : [],
     skills: {
-      languages: data.skills?.languages ?? [],
-      frameworks: data.skills?.frameworks ?? [],
-      tools: data.skills?.tools ?? [],
-      databases: data.skills?.databases,
-      soft: data.skills?.soft,
+      languages,
+      frameworks,
+      tools,
+      databases,
+      soft: soft.length > 0 ? soft : undefined,
     },
-    experience: data.experience ?? [],
-    projects: data.projects ?? [],
-    certifications: data.certifications,
-    achievements: data.achievements,
+    experience: Array.isArray(data.experience)
+      ? data.experience.map((exp: any) => ({
+          company: exp.company ?? "",
+          role: exp.role ?? "",
+          duration: exp.duration ?? "",
+          location: exp.location,
+          bullets: Array.isArray(exp.bullets) ? exp.bullets : [],
+        }))
+      : [],
+    projects: Array.isArray(data.projects)
+      ? data.projects.map((proj: any) => ({
+          name: proj.name ?? "",
+          description: proj.description ?? "",
+          technologies: Array.isArray(proj.technologies)
+            ? proj.technologies
+            : Array.isArray(proj.techStack)
+            ? proj.techStack
+            : [],
+          link: proj.link,
+          bullets: Array.isArray(proj.bullets) ? proj.bullets : [],
+        }))
+      : [],
+    certifications: Array.isArray(data.certifications) ? data.certifications : undefined,
+    achievements: Array.isArray(data.achievements) ? data.achievements : undefined,
   };
 }

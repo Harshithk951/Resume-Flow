@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { AlertTriangle, UserCheck, User, Award, CheckCircle2, RotateCcw } from "lucide-react";
+import type { Id } from "@/convex/_generated/dataModel";
+import { AlertTriangle, UserCheck, User, Award, CheckCircle2, RotateCcw, Trash2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -27,6 +28,8 @@ export function NeedsAttentionPanel({
   lowAtsJobs = [],
 }: NeedsAttentionPanelProps) {
   const retryMutation = useMutation(api.jobs.retryJob);
+  const deleteJobAndResume = useMutation(api.jobs.deleteJobAndResume);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleRetry = async (jobId: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -38,9 +41,22 @@ export function NeedsAttentionPanel({
     }
   };
 
+  const handleDelete = async (jobId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await deleteJobAndResume({ jobId: jobId as Id<"jobs"> });
+    } catch (err) {
+      console.error("Delete failed:", err);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   // Compile attention items
   const items: Array<{
     id: string;
+    jobId?: string;
     type: "failed" | "needs_input" | "profile" | "low_ats";
     title: string;
     description: string;
@@ -54,6 +70,7 @@ export function NeedsAttentionPanel({
     .forEach((job) => {
       items.push({
         id: `failed-${job.id}`,
+        jobId: job.id,
         type: "failed",
         title: `${job.companyName} Ingestion Failed`,
         description: "Pipeline compilation failed. Click to retry.",
@@ -78,9 +95,10 @@ export function NeedsAttentionPanel({
     .forEach((job) => {
       items.push({
         id: `input-${job.id}`,
+        jobId: job.id,
         type: "needs_input",
         title: `${job.companyName} Skill Gaps Pending`,
-        description: "Answer questionnaire to tailer resume.",
+        description: "Answer questionnaire to tailor resume.",
         href: `/company/${job.id}`,
       });
     });
@@ -102,6 +120,7 @@ export function NeedsAttentionPanel({
     .forEach((job) => {
       items.push({
         id: `low-ats-${job.id}`,
+        jobId: job.id,
         type: "low_ats",
         title: `${job.companyName} Match Score Low`,
         description: `Optimize bullet points (${job.matchScore}% score).`,
@@ -182,16 +201,50 @@ export function NeedsAttentionPanel({
                     </span>
                   </div>
                 </div>
-                {item.action ? (
-                  <div className="shrink-0">{item.action}</div>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className="shrink-0 text-[10px] font-bold text-red-600 hover:underline transition-colors flex items-center"
-                  >
-                    Resolve
-                  </Link>
-                )}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {item.action ? (
+                    <div>{item.action}</div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="text-[10px] font-bold text-red-600 hover:underline transition-colors flex items-center"
+                    >
+                      Resolve
+                    </Link>
+                  )}
+                  {item.jobId && (
+                    <>
+                      {deletingId === item.id ? (
+                        <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                          <span className="text-[9px] font-bold text-red-600">Delete?</span>
+                          <button
+                            type="button"
+                            onClick={(e) => handleDelete(item.jobId!, e)}
+                            className="text-[9px] font-bold px-1.5 py-0.5 bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+                          >
+                            Yes
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); setDeletingId(null); }}
+                            className="text-[9px] font-bold px-1.5 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded transition-colors"
+                          >
+                            No
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); setDeletingId(item.id); }}
+                          className="p-1 rounded-lg hover:bg-red-50 hover:text-red-600 text-slate-400 transition-colors"
+                          title="Delete this drive"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
             ))}
           </div>
