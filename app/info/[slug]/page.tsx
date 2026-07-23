@@ -183,22 +183,22 @@ const infoContent: Record<string, ContentBlock> = {
             </h2>
             <p className="text-[var(--color-mute)] text-sm leading-relaxed">
               If you have any questions about resume tailoring, quota
-              limitations, or billing, our support team is available 24/7.
+              limitations, or account features, our support team responds within 24 hours.
             </p>
             <p className="text-rose-600 text-sm font-semibold">
-              support@resumeflow.ai
+              support@resumeflow.harshithkumar.in
             </p>
           </section>
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-[var(--color-ink-soft)]">
-              Enterprise Drives
+              Enterprise & Campus Drives
             </h2>
             <p className="text-[var(--color-mute)] text-sm leading-relaxed">
-              Interested in onboarding ResumeFlow for university placements or
+              Interested in onboarding ResumeFlow for university placement cells or
               corporate hiring drives? Reach out to our team.
             </p>
             <p className="text-rose-600 text-sm font-semibold">
-              partnerships@resumeflow.ai
+              partnerships@resumeflow.harshithkumar.in
             </p>
           </section>
         </div>
