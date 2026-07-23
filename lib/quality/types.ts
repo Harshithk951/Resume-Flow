@@ -39,21 +39,21 @@ export const TEMPLATE_PASS_PROFILES: Record<TemplateId, TemplatePassProfile> = {
     minLlmAtsScore: 80,
     minLlmHmScore: 80,
   },
-  modern_professional: {
+  startup: {
     minKeywordRecovery: 80,
     minFormattingScore: 75,
     minOverallScore: 75,
     minLlmAtsScore: 75,
     minLlmHmScore: 80,
   },
-  modern_executive: {
+  finance_tech: {
     minKeywordRecovery: 80,
     minFormattingScore: 75,
     minOverallScore: 75,
     minLlmAtsScore: 75,
     minLlmHmScore: 80,
   },
-  tech_innovator: {
+  tech_modern: {
     minKeywordRecovery: 80,
     minFormattingScore: 75,
     minOverallScore: 75,

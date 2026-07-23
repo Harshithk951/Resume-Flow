@@ -444,19 +444,19 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                 const next = e.target.value;
                 if (
                   next === "ats_strict" ||
-                  next === "modern_professional" ||
-                  next === "modern_executive" ||
-                  next === "tech_innovator"
+                  next === "startup" ||
+                  next === "finance_tech" ||
+                  next === "tech_modern"
                 ) {
-                  setActiveTemplate(next);
+                  setActiveTemplate(next as TemplateId);
                 }
               }}
               className="text-xs border border-[var(--color-hairline)] p-2.5 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-charcoal)] focus:outline-none focus:border-rose-500 transition-all shadow-sm cursor-pointer"
             >
               <option value="ats_strict">ATS Strict (Classic)</option>
-              <option value="modern_professional">Startup Accent</option>
-              <option value="modern_executive">Finance Classic</option>
-              <option value="tech_innovator">Tech Modern</option>
+              <option value="startup">Startup Accent (Helvetica)</option>
+              <option value="finance_tech">Finance Classic (Times)</option>
+              <option value="tech_modern">Tech Modern (Latin)</option>
             </select>
 
           </div>

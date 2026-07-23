@@ -4,7 +4,6 @@
 // Single unified body generation engine with lookup-based styling preambles.
 
 import { escapeLatex } from "./escapeLatex";
-import type { TemplateId } from "./resolveTemplate";
 
 export { escapeLatex };
 
