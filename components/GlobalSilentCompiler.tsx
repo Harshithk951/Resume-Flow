@@ -5,6 +5,8 @@ import { useQuery, useMutation, useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { compileAndUploadResume } from "@/lib/latex/compiler";
+import { compileStructuredContentToPdf } from "@/lib/pdf/compiler";
+import { uploadToConvexStorage } from "@/lib/convexStorageUpload";
 import { resolveTemplate, TEMPLATES } from "@/lib/latex/resolveTemplate";
 import { normalizeStructuredContent } from "@/lib/pdf/types";
 import { clientLog } from "@/lib/clientLogger";
@@ -82,11 +84,29 @@ export function GlobalSilentCompiler() {
                 jobId: job._id,
                 pdfStorageId: storageResult.storageId as Id<"_storage">,
               });
-            } else {
-              clientLog.info(
-                `[compiler] Compile queued for job ${jobId}. Worker will complete asynchronously.`
-              );
+              return;
             }
+
+            clientLog.info(
+              `[compiler] Compile queued. Running fast client-side fallback compilation for job ${jobId}...`
+            );
+            const fallbackBlob = await compileStructuredContentToPdf(
+              normalizeStructuredContent(resume.structuredContent),
+              templateId
+            );
+            const uploadUrl = await generateUploadUrl();
+            const { storageId: fallbackStorageId } = await uploadToConvexStorage(
+              uploadUrl,
+              fallbackBlob,
+              "resume.pdf"
+            );
+            await setCompilationCompleted({
+              jobId: job._id,
+              pdfStorageId: fallbackStorageId as Id<"_storage">,
+            });
+            clientLog.info(
+              `[compiler] Successfully completed fallback compilation for job ${jobId}.`
+            );
             return;
           }
 

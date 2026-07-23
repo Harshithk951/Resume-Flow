@@ -136,7 +136,7 @@ async function runWasmCompilation(latexCode: string): Promise<Blob> {
             "WASM compiler timeout. WASM assets not initialized in /public/wasm/."
           )
         );
-      }, 10000);
+      }, 500);
 
       worker.onmessage = (event) => {
         clearTimeout(timeout);

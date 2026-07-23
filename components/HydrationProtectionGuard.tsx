@@ -114,7 +114,7 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
   // status since these tools need a parsed resume to work.
   // ──────────────────────────────────────────────────────────
   const showAuthenticatedTools =
-    !isPublicRoute && profile?.extractionStatus === "success";
+    isClerkLoaded && isSignedIn && !isPublicRoute;
 
   return (
     <>
