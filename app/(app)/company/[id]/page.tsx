@@ -69,10 +69,6 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   const resetToCompiling = useMutation(api.jobs.resetToCompiling);
   const retryJob = useMutation(api.jobs.retryJob);
   const updateApplicationStatus = useMutation(api.jobs.updateApplicationStatus);
-  const deleteJobAndResume = useMutation(api.jobs.deleteJobAndResume);
-
-  const deleteTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const undoClickedRef = useRef(false);
 
   const [isWorkspaceMaximized, setIsWorkspaceMaximized] = useState(false);
   const [activeTab, setActiveTab] = useState<"PREVIEW" | "LATEX" | "JSON" | "OUTREACH">(
@@ -117,33 +113,6 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
     "Uploading compiled document to storage...",
     "Almost finished, rendering resume preview..."
   ];
-
-  // ─── Cleanup delete timeout on unmount ───
-  useEffect(() => {
-    return () => {
-      if (deleteTimeoutRef.current) clearTimeout(deleteTimeoutRef.current);
-    };
-  }, []);
-
-  const handleDeleteDrive = () => {
-    if (deleteTimeoutRef.current) return; // Prevent rapid double-fire
-    undoClickedRef.current = false;
-
-    toast.undo(`Drive deleted for ${job!.companyName}`, () => {
-      undoClickedRef.current = true;
-    });
-
-    deleteTimeoutRef.current = setTimeout(async () => {
-      deleteTimeoutRef.current = null;
-      if (undoClickedRef.current) return;
-      try {
-        await deleteJobAndResume({ jobId });
-        window.location.href = "/dashboard";
-      } catch {
-        toast.error("Failed to delete drive");
-      }
-    }, 6200);
-  };
 
   const prevPipelineStateRef = useRef<string | undefined>(undefined);
   const recompileToastIdRef = useRef<string | number | undefined>(undefined);
