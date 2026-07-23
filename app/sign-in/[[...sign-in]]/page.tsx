@@ -134,6 +134,10 @@ export default function SignInPage() {
     };
   }, []);
 
+  const handleFormClick = () => {
+    // Form click handler
+  };
+
   if (isLoaded && isSignedIn) {
     return (
       <div className="min-h-screen w-full bg-[#f8fafc] flex flex-col items-center justify-center p-4">
