@@ -4,13 +4,15 @@ import { useQuery, useMutation } from "convex/react";
 import { useAuth } from "@clerk/nextjs";
 import { api } from "@/convex/_generated/api";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, ReactNode, lazy, Suspense } from "react";
+import { useEffect, ReactNode, Suspense } from "react";
+import dynamic from "next/dynamic";
 
-// Lazy-load heavy components — not needed for initial render
-const GlobalSilentCompiler = lazy(() =>
-  import("./GlobalSilentCompiler").then((m) => ({ default: m.GlobalSilentCompiler }))
+// Lazy-load heavy components with next/dynamic for App Router compatibility
+const GlobalSilentCompiler = dynamic(
+  () => import("./GlobalSilentCompiler").then((m) => m.GlobalSilentCompiler),
+  { ssr: false }
 );
-const ChatBot = lazy(() => import("./ChatBot"));
+const ChatBot = dynamic(() => import("./ChatBot"), { ssr: false });
 
 export function HydrationProtectionGuard({ children }: { children: ReactNode }) {
   const { isLoaded: isClerkLoaded, isSignedIn } = useAuth();

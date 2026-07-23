@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
@@ -226,9 +225,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
-        {/* ─── Google AdSense Verification (lazy: loads after page becomes idle) ──────── */}
-        <Script
-          strategy="lazyOnload"
+        {/* ─── Google AdSense Verification ──────── */}
+        <script
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7941579236760268"
           crossOrigin="anonymous"
         />
