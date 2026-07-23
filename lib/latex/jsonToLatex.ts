@@ -56,6 +56,8 @@ export const PREAMBLES: Record<string, string> = {
   ats_strict: `\\documentclass[11pt,letterpaper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage[expansion=false]{microtype}
+\\DisableLigatures{encoding = *, family = *}
 \\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
 \\usepackage{enumitem}
 \\usepackage[hidelinks]{hyperref}
@@ -80,6 +82,8 @@ ${COMMON_MACROS}`,
   finance_tech: `\\documentclass[11pt,letterpaper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage[expansion=false]{microtype}
+\\DisableLigatures{encoding = *, family = *}
 \\usepackage{mathptmx}
 \\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
 \\usepackage{enumitem}
