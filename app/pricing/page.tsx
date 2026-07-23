@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "@/components/Navbar";
 import { PricingSection } from "@/components/blocks/pricing-section";
 import type { Metadata } from "next";

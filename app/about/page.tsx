@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "@/components/Navbar";
 import { StaticPageWrapper } from "@/components/StaticPageWrapper";
 import { Info } from "lucide-react";

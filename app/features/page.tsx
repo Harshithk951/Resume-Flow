@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "@/components/Navbar";
 import { FeatureGrid } from "@/components/grids/FeatureGrid";
 import { BentoGrid } from "@/components/grids/BentoGrid";

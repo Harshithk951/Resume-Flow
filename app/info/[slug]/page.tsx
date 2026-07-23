@@ -1,4 +1,4 @@
-import React from 'react';
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
@@ -12,8 +12,8 @@ interface ContentBlock {
   title: string;
   subtitle: string;
   category: string;
-  icon: React.ReactNode;
-  body: React.ReactNode;
+  icon: ReactNode;
+  body: ReactNode;
 }
 
 const titleMeta: Record<string, string> = {
