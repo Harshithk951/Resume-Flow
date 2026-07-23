@@ -159,6 +159,10 @@ export default function ProfilePage() {
         fileSize: file.size,
       });
 
+      if (!extractedData) {
+        throw new Error("Could not parse details from uploaded file. Please try again or enter details manually.");
+      }
+
       // 5. Populate form and go to verification edit mode
       setProfile({
         personalInfo: extractedData.personalInfo || { name: "", email: "", phone: "", linkedin: "", github: "", portfolio: "" },
