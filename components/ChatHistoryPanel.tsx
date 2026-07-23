@@ -96,7 +96,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -320, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
-            className="fixed left-[72px] md:left-[72px] top-0 bottom-0 w-80 bg-[var(--color-canvas)] border-r border-[var(--color-hairline)]/60 shadow-2xl z-50 flex flex-col"
+className="fixed left-[72px] md:left-[72px] top-0 bottom-0 w-[420px] bg-[var(--color-canvas)] border-r border-[var(--color-hairline)]/60 shadow-2xl z-50 flex flex-col"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-hairline-soft)]">

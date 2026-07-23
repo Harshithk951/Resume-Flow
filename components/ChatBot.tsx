@@ -647,10 +647,10 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
                     <MessageSquare className="w-6 h-6 text-[var(--color-primary)]" />
                   </div>
                   <p className="type-body-strong text-sm mb-1">AI-Powered Assistant</p>
-                  <p className="type-body-sm text-[var(--color-mute)] text-xs leading-relaxed">
+                  <p className="type-body-sm text-[var(--color-mute)] text-xs leading-relaxed max-w-[260px]">
                     {isGuest
                       ? "Ask how ResumeFlow works, get ATS tips, or basic interview prep. Sign in for unlimited, personalized assistance."
-                      : "Ask about interview questions, resume tips, or company-specific prep for this role."}
+                      : "Hi! I'm your placement prep assistant. Ask me anything — interview questions, resume tips, company research, or DSA/system design practice."}
                   </p>
                 </div>
               )}
