@@ -334,9 +334,9 @@ If any section or field is completely missing in the resume, return an empty arr
               ],
               response_format: { type: "json_object" },
               temperature: 0.1,
-              max_tokens: 3072,
+              max_tokens: 2048,
             }),
-            120_000,
+            45_000,
             "NVIDIA NIM PDF extraction"
           ),
           true
@@ -387,9 +387,9 @@ If any section or field is completely missing in the resume, return an empty arr
               ],
               response_format: { type: "json_object" },
               temperature: 0.1,
-              max_tokens: 3072,
+              max_tokens: 2048,
             }),
-            120_000,
+            45_000,
             "NVIDIA NIM image extraction"
           ),
           true

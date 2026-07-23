@@ -86,10 +86,10 @@ const CB_THRESHOLD = 5;
 const CB_COOLDOWN_MS = 30_000; // 30 seconds
 
 /** Max retry attempts for withRetry */
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 2;
 
-/** Max concurrent NIM calls (matches typical free-tier NIM rate limit) */
-const NIM_MAX_CONCURRENCY = 5;
+/** Max concurrent NIM calls */
+const NIM_MAX_CONCURRENCY = 10;
 
 /** Redis key prefix for NIM semaphore */
 const SEM_NIM_KEY = "sem:nim";
@@ -233,8 +233,8 @@ export async function withRetry<T>(
       lastError = err;
 
       if (attempt < maxRetries) {
-        // Exponential backoff: base 1s, doubled each retry, with full jitter
-        const baseDelayMs = 1000 * Math.pow(2, attempt - 1); // 1s, 2s, 4s
+        // Exponential backoff: base 500ms with jitter
+        const baseDelayMs = 500 * Math.pow(2, attempt - 1); // 500ms, 1000ms
         const jitterMs = Math.random() * baseDelayMs;
         const delayMs = baseDelayMs + jitterMs;
 
@@ -265,7 +265,7 @@ export async function withRetry<T>(
  *
  * When Redis is unavailable (dev), permit is auto-granted.
  */
-export async function acquireNimPermit(timeoutMs = 30_000): Promise<boolean> {
+export async function acquireNimPermit(timeoutMs = 10_000): Promise<boolean> {
   const deadline = Date.now() + timeoutMs;
   const countKey = SEM_NIM_KEY;
 
@@ -282,7 +282,7 @@ export async function acquireNimPermit(timeoutMs = 30_000): Promise<boolean> {
 
     // Over limit — decrement and retry
     await redisDecr(countKey);
-    await new Promise((r) => setTimeout(r, 300 + Math.random() * 200)); // jittered wait
+    await new Promise((r) => setTimeout(r, 100 + Math.random() * 100)); // faster jittered wait
   }
 
   console.warn(`[nim-sem] Timed out after ${timeoutMs}ms waiting for NIM permit.`);
