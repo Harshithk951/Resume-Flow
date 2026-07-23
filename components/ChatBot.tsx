@@ -352,7 +352,7 @@ export default function ChatBot({ jobId, guestMode = false }: ChatBotProps) {
       const purifier = (DOMPurify as any)?.default || DOMPurify;
       if (purifier && typeof purifier.sanitize === "function") {
         return purifier.sanitize(rawHtml, {
-          ALLOWED_TAGS: ["h4", "strong", "li", "div"],
+          ALLOWED_TAGS: ["h1", "h2", "h3", "h4", "p", "span", "ul", "ol", "li", "strong", "div"],
           ALLOWED_ATTR: ["class", "style"],
         });
       }
