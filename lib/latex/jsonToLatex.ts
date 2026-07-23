@@ -21,32 +21,7 @@ function cleanUrlDisplay(url: string | undefined): string {
   return url.trim().replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, "");
 }
 
-// Fixed macro block shared across all preambles
-const COMMON_MACROS = `
-% ---------- Macros ----------
-\\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries #1\\par}}
-\\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
 
-\\newcommand{\\ressection}[1]{%
-  \\vspace{9pt}
-  {\\bfseries\\large #1}\\[-7pt]
-  \\noindent\\rule{\\linewidth}{0.6pt}\\vspace{3pt}
-}
-
-\\newcommand{\\resheading}[4]{%
-  \\noindent\\textbf{#1} \\hfill \\textbf{#2}\\[1pt]
-  \\noindent\\textit{#3} \\hfill \\textit{#4}\\[2pt]
-}
-
-\\newenvironment{resitems}{%
-  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
-}{%
-  \\end{itemize}
-}
-\\newcommand{\\resitem}[1]{\\item #1}
-
-\\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
-`;
 
 /**
  * Preamble lookup dictionary for styling & typography options
