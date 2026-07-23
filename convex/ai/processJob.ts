@@ -24,6 +24,8 @@ import { createLogger, generateTraceId, captureError, incrementMetric, METRICS }
 // ─── Zod Schemas for LLM Output Validation ───────────────────
 
 const ExtractedRequirementsSchema = z.object({
+  isValidJobDescription: z.boolean().default(true),
+  invalidReason: z.string().optional().default(""),
   hardSkills: z.array(z.string()).default([]),
   softSkills: z.array(z.string()).default([]),
   resumeType: z.enum(["ats_strict", "modern_professional", "academic"]).default("ats_strict"),
@@ -398,7 +400,8 @@ Projects:
 ${projectsContext || "No projects details available."}
 
 Instructions:
-1. Extract the requirements from the JD (hard skills, soft skills, resume type, qualifications, nice-to-have, and ATS keywords to match).
+0. VALIDITY GATE: Determine if the provided Job Description, company name, and job title represent a genuine, readable job posting. If the input consists of meaningless random characters (e.g. "SDFGH", "dfgbn", "asdfghj"), keyboard mashes, or lacks any coherent role responsibilities/requirements, set "isValidJobDescription": false and provide an "invalidReason" explaining that a real job description is required.
+1. If valid, extract the requirements from the JD (hard skills, soft skills, resume type, qualifications, nice-to-have, and ATS keywords to match).
 2. Classify resumeType:
    - "ats_strict" (highly corporate, standard formats)
    - "modern_professional" (startups, creative tech companies)
@@ -408,6 +411,8 @@ Instructions:
 5. Return ONLY a valid JSON block matching this structure:
 {
   "requirements": {
+    "isValidJobDescription": true,
+    "invalidReason": "",
     "hardSkills": ["React", "Python"],
     "softSkills": ["Leadership"],
     "resumeType": "ats_strict",
@@ -455,6 +460,22 @@ Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary 
       // Validate schema
       const validatedResult = AnalysisResultSchema.parse(analysisResult);
       log.info("Requirements extracted and schema-validated");
+
+      // Gibberish / invalid JD check
+      if (!validatedResult.requirements.isValidJobDescription) {
+        const errorReason =
+          validatedResult.requirements.invalidReason ||
+          "The provided text or company details do not appear to be a valid job description. Please provide a clear job description with role requirements.";
+        log.warn("Job description validation failed", { errorReason });
+
+        await ctx.runMutation(internal.jobs.internalUpdateJobState, {
+          jobId: args.jobId,
+          expectedState: "extracting",
+          newState: "failed",
+          error: errorReason,
+        });
+        return;
+      }
 
       await setCache(cacheKey, validatedResult, 86400);
 

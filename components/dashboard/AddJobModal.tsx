@@ -42,10 +42,25 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
     setErrorMessage(null);
   };
 
+function isLikelyGibberish(str: string): boolean {
+  const clean = str.trim();
+  if (clean.length < 2) return true;
+  // If 4+ chars with no vowels at all (e.g. "SDFGH", "dfgbn"), it's an invalid keyboard mash
+  if (clean.length >= 4 && !/[aeiouyAEIOUY0-9]/i.test(clean)) return true;
+  // If 4+ identical characters in a row (e.g. "aaaaa")
+  if (/(.)\1{3,}/i.test(clean)) return true;
+  return false;
+}
+
   const handleStartPipeline = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!companyName.trim() || !jobTitle.trim()) {
       setErrorMessage("Please enter both Company Name and Role Title.");
+      return;
+    }
+
+    if (isLikelyGibberish(companyName) || isLikelyGibberish(jobTitle)) {
+      setErrorMessage("Please enter a valid Company Name and Role Title (e.g. 'Google', 'Software Engineer').");
       return;
     }
 
