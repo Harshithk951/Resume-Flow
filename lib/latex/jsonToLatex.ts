@@ -63,42 +63,82 @@ export const PREAMBLES: Record<string, string> = {
 
 \\setlength{\\parindent}{0pt}
 \\pagestyle{empty}
-${COMMON_MACROS}`,
 
-  startup: `\\documentclass[10.5pt,letterpaper]{article}
+% ---------- Macros ----------
+\\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries #1\\par}}
+\\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
+
+\\newcommand{\\ressection}[1]{%
+  \\vspace{9pt}
+  {\\bfseries\\large #1}\\[-7pt]
+  \\noindent\\rule{\\linewidth}{0.6pt}\\vspace{3pt}
+}
+
+\\newcommand{\\resheading}[4]{%
+  \\noindent\\textbf{#1} \\hfill \\textbf{#2}\\[1pt]
+  \\noindent\\textit{#3} \\hfill \\textit{#4}\\[2pt]
+}
+
+\\newenvironment{resitems}{%
+  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+}{%
+  \\end{itemize}
+}
+\\newcommand{\\resitem}[1]{\\item #1}
+
+\\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
+`,
+
+  startup: `\\documentclass[11pt,letterpaper]{article}
 
 \\usepackage[T1]{fontenc}
-\\usepackage{helvet}
-\\renewcommand{\\familydefault}{\\sfdefault}
-\\usepackage[left=0.6in,right=0.6in,top=0.5in,bottom=0.5in]{geometry}
+\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
 \\usepackage{enumitem}
 \\usepackage[hidelinks]{hyperref}
+\\usepackage{xcolor}
+\\usepackage[scaled=0.92]{helvet}
+\\renewcommand{\\familydefault}{\\sfdefault}
+
+\\definecolor{accent}{HTML}{4F46E5}
 
 \\setlength{\\parindent}{0pt}
 \\pagestyle{empty}
-${COMMON_MACROS}`,
+
+% ---------- Macros ----------
+\\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries\\color{accent} #1\\par}}
+\\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
+
+\\newcommand{\\ressection}[1]{%
+  \\vspace{9pt}
+  {\\bfseries\\large\\color{accent}\\MakeUppercase{#1}}\\[-6pt]
+  \\noindent{\\color{accent}\\rule{\\linewidth}{1pt}}\\vspace{3pt}
+}
+
+\\newcommand{\\resheading}[4]{%
+  \\noindent\\textbf{#1} \\hfill \\textbf{#2}\\[1pt]
+  \\noindent\\textit{#3} \\hfill \\textit{#4}\\[2pt]
+}
+
+\\newenvironment{resitems}{%
+  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+}{%
+  \\end{itemize}
+}
+\\newcommand{\\resitem}[1]{\\item #1}
+
+\\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
+`,
 
   finance_tech: `\\documentclass[11pt,letterpaper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage[left=0.75in,right=0.75in,top=0.6in,bottom=0.6in]{geometry}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+\\usepackage{mathpazo}
+\\linespread{1.02}
 \\usepackage[expansion=false]{microtype}
 \\DisableLigatures{encoding = *, family = *}
-\\usepackage{mathptmx}
-\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
-\\usepackage{enumitem}
-\\usepackage[hidelinks]{hyperref}
-
-\\setlength{\\parindent}{0pt}
-\\pagestyle{empty}
-${COMMON_MACROS}`,
-
-  tech_modern: `\\documentclass[10.5pt,letterpaper]{article}
-
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage[left=0.6in,right=0.6in,top=0.5in,bottom=0.5in]{geometry}
-\\usepackage{enumitem}
-\\usepackage[hidelinks]{hyperref}
 
 \\setlength{\\parindent}{0pt}
 \\pagestyle{empty}
@@ -108,9 +148,49 @@ ${COMMON_MACROS}`,
 \\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
 
 \\newcommand{\\ressection}[1]{%
-  \\vspace{8pt}
-  {\\bfseries\\large #1}\\[-7pt]
-  \\noindent\\rule{0.35\\linewidth}{0.8pt}\\vspace{3pt}
+  \\vspace{9pt}
+  {\\bfseries\\normalsize\\textsc{#1}}\\[-6pt]
+  \\noindent\\rule{\\linewidth}{0.5pt}\\vspace{3pt}
+}
+
+\\newcommand{\\resheading}[4]{%
+  \\noindent\\textbf{#1} \\hfill \\textbf{#2}\\[1pt]
+  \\noindent\\textit{#3} \\hfill \\textit{#4}\\[2pt]
+}
+
+\\newenvironment{resitems}{%
+  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+}{%
+  \\end{itemize}
+}
+\\newcommand{\\resitem}[1]{\\item #1}
+
+\\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
+`,
+
+  tech_modern: `\\documentclass[11pt,letterpaper]{article}
+
+\\usepackage[T1]{fontenc}
+\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
+\\usepackage{enumitem}
+\\usepackage[hidelinks]{hyperref}
+\\usepackage{xcolor}
+\\usepackage[scaled=0.95]{helvet}
+\\renewcommand{\\familydefault}{\\sfdefault}
+
+\\definecolor{accent}{HTML}{0EA5E9}
+
+\\setlength{\\parindent}{0pt}
+\\pagestyle{empty}
+
+% ---------- Macros ----------
+\\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries #1\\par}}
+\\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
+
+\\newcommand{\\ressection}[1]{%
+  \\vspace{10pt}
+  {\\bfseries\\large #1}\\[1pt]
+  \\noindent{\\color{accent}\\rule{0.16\\linewidth}{1.4pt}}\\[4pt]
 }
 
 \\newcommand{\\resheading}[4]{%
