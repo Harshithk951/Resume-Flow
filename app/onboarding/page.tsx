@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
+import { useUser, useSession } from "@clerk/nextjs";
 import { useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { uploadToConvexStorage } from "@/lib/convexStorageUpload";
