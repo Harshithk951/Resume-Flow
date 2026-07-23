@@ -397,20 +397,6 @@ If any section or field is completely missing in the resume, return an empty arr
               "NVIDIA NIM Image extraction"
             ),
           { label: "Image OCR" }
-        );,${base64Image}`,
-                      },
-                    },
-                  ],
-                },
-              ],
-              response_format: { type: "json_object" },
-              temperature: 0.1,
-              max_tokens: 2048,
-            }),
-            45_000,
-            "NVIDIA NIM image extraction"
-          ),
-          true
         );
 
         const nimDuration = Date.now() - nimStart;
