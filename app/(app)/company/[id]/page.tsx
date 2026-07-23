@@ -20,7 +20,6 @@ import {
   Mail,
   FileSpreadsheet,
   RefreshCw,
-  Trash2,
 } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -298,16 +297,6 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <span>Back to Dashboard</span>
           </Link>
 
-          {/* Delete Drive button — shows an undo toast on click */}
-          <button
-            type="button"
-            onClick={handleDeleteDrive}
-            className="flex items-center gap-1.5 text-[11px] font-bold text-[var(--color-stone)] hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg border border-transparent hover:border-red-100 transition-all duration-200"
-            title="Delete this drive and its resume"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            Delete Drive
-          </button>
         </div>
 
         <div className="space-y-6">
@@ -329,6 +318,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   job.pipelineState === "failed" ? "border-red-100 bg-red-50 text-red-700" :
                   job.pipelineState === "needs_user_input" ? "border-amber-100 bg-amber-50 text-amber-700" :
                   job.pipelineState === "compiling" ? "border-blue-100 bg-blue-50 text-blue-700" :
+                  job.pipelineState === "extracting" ? "border-emerald-200 bg-emerald-50 text-emerald-700 font-bold" :
                   "border-[var(--color-hairline)] bg-[var(--color-surface-card)] text-[var(--color-mute)]"
                 }`}>
                   <span className={`w-1.5 h-1.5 rounded-full ${
@@ -336,6 +326,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                     job.pipelineState === "failed" ? "bg-red-500" :
                     job.pipelineState === "needs_user_input" ? "bg-amber-500 animate-pulse" :
                     job.pipelineState === "compiling" ? "bg-blue-500 animate-pulse" :
+                    job.pipelineState === "extracting" ? "bg-emerald-500 animate-pulse" :
                     "bg-[var(--color-stone)]"
                   }`} />
                   {job.pipelineState.replace("_", " ")}
