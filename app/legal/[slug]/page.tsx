@@ -18,6 +18,7 @@ const titleMeta: Record<string, string> = {
   privacy: "Privacy Policy — ResumeFlow AI Resume Builder",
   terms: "Terms of Service — ResumeFlow AI Resume Builder",
   cookies: "Cookie Policy — ResumeFlow AI Resume Builder",
+  contact: "Contact Us & Support — ResumeFlow AI Resume Builder",
 };
 
 const descriptionMeta: Record<string, string> = {
@@ -27,6 +28,8 @@ const descriptionMeta: Record<string, string> = {
     "Read the ResumeFlow terms of service. Understand the rules and guidelines governing your use of our AI-powered resume engineering platform.",
   cookies:
     "Learn how ResumeFlow uses cookies and local storage to provide a secure, seamless resume building experience.",
+  contact:
+    "Contact the ResumeFlow team for support, business inquiries, partnership requests, or privacy assistance.",
 };
 
 const legalContent: Record<string, ContentBlock> = {
@@ -111,6 +114,12 @@ const legalContent: Record<string, ContentBlock> = {
               Type: Persistent Cookies<br />
               Administered by: Us<br />
               Purpose: These Cookies allow Us to remember choices You make when You use the Website, such as remembering your login details or language preference.
+            </li>
+            <li>
+              <strong className="text-slate-800">Google AdSense & Advertising Cookies</strong><br />
+              Type: Persistent Cookies<br />
+              Administered by: Third-Party Advertising Vendors (Google)<br />
+              Purpose: Google, as a third-party vendor, uses cookies to serve ads on Our Website. Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visit to Our Website and/or other websites on the Internet. You may opt out of personalized advertising by visiting Google Ads Settings (https://adssettings.google.com) or aboutads.info.
             </li>
           </ul>
         </section>
@@ -345,6 +354,41 @@ const legalContent: Record<string, ContentBlock> = {
           <p className="text-slate-600 leading-relaxed">
             These cookies are strictly necessary to provide you with secure dashboard access, database sync, and placement tools.
             Disabling essential cookies will block you from signing in or tailoring resumes.
+          </p>
+        </section>
+      </div>
+    ),
+  },
+  contact: {
+    category: "Support & Inquiries",
+    title: "Contact Support",
+    subtitle: "Get in touch with the ResumeFlow team for help, privacy requests, or business partnerships.",
+    icon: <FileText className="w-8 h-8 text-rose-600" />,
+    body: (
+      <div className="space-y-8 text-xs md:text-sm">
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">Official Contact Details</h2>
+          <p className="text-slate-600 leading-relaxed">
+            Have questions about your account, subscription credits, or Privacy Policy data rights? Our customer support team is available Monday through Friday to assist you.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <h3 className="font-bold text-slate-800 text-sm">Customer Support & Inquiries</h3>
+              <p className="text-slate-600">Email: <a href="mailto:support@resumeflow.harshithkumar.in" className="text-rose-600 hover:underline font-semibold">support@resumeflow.harshithkumar.in</a></p>
+              <p className="text-slate-500 text-[11px]">Response Time: Within 24 business hours</p>
+            </div>
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <h3 className="font-bold text-slate-800 text-sm">Operating Office & Region</h3>
+              <p className="text-slate-600">Company: ResumeFlow Engineering</p>
+              <p className="text-slate-500 text-[11px]">Location: Telangana, India</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="text-base font-bold text-slate-800">Data & Privacy Requests</h2>
+          <p className="text-slate-600 leading-relaxed">
+            For personal data deletion, GDPR/DPDP data export requests, or security disclosures, please send your email with the subject line <strong>&quot;Privacy Data Request&quot;</strong> to our support address above.
           </p>
         </section>
       </div>

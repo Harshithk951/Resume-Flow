@@ -6,6 +6,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Static pages — highest priority
   const staticPages = [
     { url: baseUrl, priority: 1.0, changeFrequency: 'daily' as const },
+    { url: `${baseUrl}/about`, priority: 0.9, changeFrequency: 'weekly' as const },
+    { url: `${baseUrl}/features`, priority: 0.9, changeFrequency: 'weekly' as const },
+    { url: `${baseUrl}/pricing`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/templates`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/free-resume-builder`, priority: 0.9, changeFrequency: 'weekly' as const },
   ] as const;
@@ -33,10 +36,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Legal pages — low priority, rarely changes
-  const legalSlugs = ['privacy', 'terms', 'cookies'];
+  const legalSlugs = ['privacy', 'terms', 'cookies', 'contact'];
   const legalPages = legalSlugs.map((slug) => ({
     url: `${baseUrl}/legal/${slug}` as const,
-    priority: 0.3,
+    priority: 0.4,
     changeFrequency: 'yearly' as const,
   }));
 
