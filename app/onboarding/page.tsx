@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 
-import { useUser, useSession } from "@clerk/nextjs";
 import { useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { uploadToConvexStorage } from "@/lib/convexStorageUpload";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
@@ -176,21 +176,9 @@ export default function OnboardingPage() {
     setIsProcessing(true);
     setError(null);
     try {
-      // 1. Get Convex Upload URL
+      // 1. Get Convex Upload URL & upload file
       const uploadUrl = await generateUploadUrl();
-
-      // 2. Upload file directly to Convex Storage
-      const response = await fetch(uploadUrl, {
-        method: "POST",
-        headers: { "Content-Type": file.type },
-        body: file,
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to upload resume to server storage.");
-      }
-
-      const { storageId } = await response.json();
+      const { storageId } = await uploadToConvexStorage(uploadUrl, file, file.name);
 
       // 3. Trigger AI extraction action with automatic retry on connection loss
       const MAX_RETRIES = 3;

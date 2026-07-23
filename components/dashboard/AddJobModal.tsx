@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { uploadToConvexStorage } from "@/lib/convexStorageUpload";
 import { motion } from "framer-motion";
 import { X, Loader2, Clipboard, FileText, Camera, Coins, AlertTriangle } from "lucide-react";
 import { toast } from "@/lib/toast";
@@ -73,22 +74,9 @@ export function AddJobModal({ isOpen, onClose, credits = 0 }: AddJobModalProps) 
         }
 
         setIsUploading(true);
-        // 1. Generate Storage Upload URL
+        // 1. Generate Storage Upload URL & upload file
         const uploadUrl = await generateUploadUrl();
-
-        // 2. PUT File to Convex Storage
-        const response = await fetch(uploadUrl, {
-          method: "PUT",
-          headers: { "Content-Type": selectedFile.type },
-          body: selectedFile,
-        });
-
-        if (!response.ok) {
-          throw new Error("File upload failed. Please try again.");
-        }
-
-        // 3. Extract storage ID
-        const { storageId } = await response.json();
+        const { storageId } = await uploadToConvexStorage(uploadUrl, selectedFile, selectedFile.name);
         setIsUploading(false);
 
         // 4. Trigger createJob mutation

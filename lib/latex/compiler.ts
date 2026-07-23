@@ -1,6 +1,7 @@
 import { compileStructuredContentToPdf } from "../pdf/compiler";
 import { StructuredResumeContent } from "../pdf/types";
 import { clientLog } from "@/lib/clientLogger";
+import { uploadToConvexStorage } from "@/lib/convexStorageUpload";
 
 export interface CompileOptions {
   jobId: string;
@@ -216,18 +217,6 @@ export async function compileAndUploadResume(
   );
 
   const uploadUrl = await generateUploadUrl();
-  const response = await fetch(uploadUrl, {
-    method: "POST",
-    headers: { "Content-Type": blob.type || "application/pdf" },
-    body: blob,
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      "Failed to upload compiled resume PDF bytes to Convex storage."
-    );
-  }
-
-  const { storageId } = (await response.json()) as { storageId: string };
+  const { storageId } = await uploadToConvexStorage(uploadUrl, blob, "resume.pdf");
   return storageId;
 }

@@ -10,6 +10,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useAction, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { uploadToConvexStorage } from "@/lib/convexStorageUpload";
 import { useUser } from "@clerk/nextjs";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
@@ -147,21 +148,9 @@ export default function ProfilePage() {
       // 1. Set db status to extracting
       await updateExtractionStatus({ status: "extracting" });
 
-      // 2. Generate Convex storage upload URL
+      // 2. Generate Convex storage upload URL & upload raw file
       const uploadUrl = await generateUploadUrl();
-
-      // 3. Upload raw file binary to storage
-      const uploadResponse = await fetch(uploadUrl, {
-        method: "POST",
-        headers: { "Content-Type": file.type },
-        body: file,
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload resume file to storage.");
-      }
-
-      const { storageId } = await uploadResponse.json();
+      const { storageId } = await uploadToConvexStorage(uploadUrl, file, file.name);
       setRawResumeStorageId(storageId);
 
       // 4. Trigger server-side background action to parse file
