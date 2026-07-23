@@ -51,25 +51,54 @@ export function GlobalSilentCompiler() {
         try {
           clientLog.info(`[compiler] Starting background build for job ${jobId}...`);
 
-          const resume = await convex.query(api.jobs.getTailoredResume, {
+          let resume = await convex.query(api.jobs.getTailoredResume, {
             jobId: job._id,
           });
+
+          // Retries up to 3 times with 1-second backoff if database write hasn't propagated yet
           if (!resume?.structuredContent) {
+            for (let retry = 0; retry < 3; retry++) {
+              await new Promise((r) => setTimeout(r, 1000));
+              resume = await convex.query(api.jobs.getTailoredResume, {
+                jobId: job._id,
+              });
+              if (resume?.structuredContent) break;
+            }
+          }
+
+          // If tailored resume is not found, attempt profile query as fallback
+          let contentToCompile = resume?.structuredContent;
+          if (!contentToCompile) {
+            const masterProfile = await convex.query(api.profiles.getProfile);
+            if (masterProfile) {
+              contentToCompile = {
+                personalInfo: masterProfile.personalInfo,
+                summary: "",
+                education: masterProfile.education,
+                skills: masterProfile.skills,
+                experience: masterProfile.experience,
+                projects: masterProfile.projects,
+                certifications: masterProfile.certifications,
+                achievements: masterProfile.achievements,
+              };
+            }
+          }
+
+          if (!contentToCompile) {
             throw new Error("Resume payload not found in database.");
           }
 
           const templateId = resolveTemplate(job.extractedRequirements?.resumeType);
+          const templateObj = TEMPLATES[templateId] || TEMPLATES.ats_strict;
           const latex =
-            resume.latexSnapshot && resume.latexSnapshot.length > 0
+            resume?.latexSnapshot && resume.latexSnapshot.length > 0
               ? resume.latexSnapshot
-              : TEMPLATES[templateId].render(resume.structuredContent);
+              : templateObj.render(contentToCompile);
 
           const storageResult = await compileAndUploadResume(generateUploadUrl, {
             jobId: job._id,
             latexCode: latex,
-            structuredContent: normalizeStructuredContent(
-              resume.structuredContent
-            ),
+            structuredContent: normalizeStructuredContent(contentToCompile),
             templateId,
           });
 
