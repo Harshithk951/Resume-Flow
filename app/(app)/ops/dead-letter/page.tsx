@@ -15,6 +15,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function SettingsPage() {
   const { user: clerkUser, isLoaded: clerkLoaded } = useUser();
@@ -135,10 +136,15 @@ export default function SettingsPage() {
           {isFree && (
             <Button
               variant="default"
-              className="animated-gradient-cta text-white border-none shadow-lg px-6"
+              onClick={() =>
+                toast.info(
+                  "Pro Plan upgrades are coming soon for new subscribers! Existing Pro accounts remain active."
+                )
+              }
+              className="animated-gradient-cta text-white border-none shadow-lg px-6 cursor-pointer"
             >
               <Zap className="w-4 h-4" />
-              <span>Upgrade to Pro — Unlimited Resumes</span>
+              <span>Pro Plan Coming Soon — Unlimited Resumes</span>
             </Button>
           )}
 

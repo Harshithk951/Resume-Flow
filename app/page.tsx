@@ -403,9 +403,10 @@ export default function LandingPage() {
                 "Skill gap questionnaire",
                 "Client-side PDF compilation",
               ],
-              cta: mounted && isSignedIn ? "Upgrade in Dashboard" : "Get Started",
-              href: "/dashboard",
+              cta: "Coming Soon",
+              href: "#",
               popular: true,
+              comingSoon: true,
             },
             {
               id: "campus",

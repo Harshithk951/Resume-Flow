@@ -7,6 +7,8 @@ import { Check } from "lucide-react";
 import { useRef } from "react";
 import { useAuth } from "@clerk/nextjs";
 
+import { toast } from "sonner";
+
 type BillingCycle = "monthly" | "yearly";
 
 interface PlanFeature {
@@ -22,6 +24,7 @@ interface PricingPlan {
   cta: string;
   href: string;
   highlighted?: boolean;
+  comingSoon?: boolean;
   features: PlanFeature[];
 }
 
@@ -50,9 +53,10 @@ const PLANS: PricingPlan[] = [
       "For active job seekers running multiple company drives. 30-day trial on yearly billing.",
     monthlyPrice: 19,
     yearlyPrice: 15,
-    cta: "Get Started",
-    href: "/sign-up",
+    cta: "Coming Soon",
+    href: "#",
     highlighted: true,
+    comingSoon: true,
     features: [
       { text: "Unlimited resume tailoring" },
       { text: "Unlimited AI-Powered Assistant messages" },
@@ -212,16 +216,33 @@ export function PricingSection() {
                   </p>
                 </div>
 
-                <Link
-                  href={ctaHref}
-                  className={`mb-10 inline-flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all active:scale-[0.98] ${
-                    plan.highlighted
-                      ? "bg-rose-600 text-white shadow-lg shadow-rose-600/25 hover:bg-rose-700"
-                      : "border border-[var(--color-secondary-bg)] bg-[var(--color-canvas)] text-[var(--color-ink)] hover:border-slate-400 hover:bg-[var(--color-surface-soft)]"
-                  }`}
-                >
-                  {ctaLabel}
-                </Link>
+                {plan.comingSoon ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      toast.info(
+                        `${plan.name} plan upgrades are coming soon for new subscribers! Existing ${plan.name} accounts remain active.`
+                      )
+                    }
+                    className="mb-10 inline-flex h-12 w-full items-center justify-center rounded-2xl border border-dashed border-rose-300 bg-rose-50/50 text-sm font-bold text-rose-700 hover:bg-rose-100/60 transition-all cursor-pointer"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                      Coming Soon — Notify Me
+                    </span>
+                  </button>
+                ) : (
+                  <Link
+                    href={ctaHref}
+                    className={`mb-10 inline-flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all active:scale-[0.98] ${
+                      plan.highlighted
+                        ? "bg-rose-600 text-white shadow-lg shadow-rose-600/25 hover:bg-rose-700"
+                        : "border border-[var(--color-secondary-bg)] bg-[var(--color-canvas)] text-[var(--color-ink)] hover:border-slate-400 hover:bg-[var(--color-surface-soft)]"
+                    }`}
+                  >
+                    {ctaLabel}
+                  </Link>
+                )}
 
                 <div className="mt-auto border-t border-[var(--color-hairline)]/80 pt-8">
                   <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--color-stone)] mb-5">

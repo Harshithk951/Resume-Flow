@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 import path from "path";
 
 const isProd = process.env.NODE_ENV === "production";
@@ -16,7 +17,7 @@ const cspDirectives = [
   "img-src 'self' data: blob: https://img.clerk.com https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://*.doubleclick.net https://*.razorpay.com",
   "worker-src 'self' blob:",
   "frame-src 'self' blob: https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://challenges.cloudflare.com https://googleads.g.doubleclick.net https://www.google.com https://ep2.adtrafficquality.google https://www.googletagmanager.com https://analytics.google.com https://*.razorpay.com",
-  "connect-src 'self' https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://img.clerk.com https://clerk-telemetry.com wss://*.convex.cloud https://*.convex.cloud https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://challenges.cloudflare.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://*.doubleclick.net https://www.termsfeed.com https://*.razorpay.com",
+  "connect-src 'self' https://*.clerk.com https://*.clerk.services https://clerk.resumeflow.harshithkumar.in https://*.clerk.accounts.dev https://img.clerk.com https://clerk-telemetry.com wss://*.convex.cloud https://*.convex.cloud https://www.google-analytics.com https://analytics.google.com https://pagead2.googlesyndication.com https://challenges.cloudflare.com https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://csi.gstatic.com https://*.doubleclick.net https://www.termsfeed.com https://*.razorpay.com https://*.ingest.sentry.io https://*.sentry.io",
 ];
 
 const securityHeaders = [
@@ -115,4 +116,20 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  org: "resume-flow",
+  project: "resumeflow",
+
+  // Source map upload auth token
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
+  // Upload a wider set of client source files for better stack trace resolution
+  widenClientFileUpload: true,
+
+  // Route for bypassing ad-blockers
+  tunnelRoute: "/monitoring",
+
+  // Suppress non-CI output
+  silent: !process.env.CI,
+});
+

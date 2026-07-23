@@ -46,6 +46,14 @@ export async function POST(req: NextRequest) {
       clerkId?: string;
     };
 
+    // Pro plan upgrades are coming soon for new subscribers
+    if (plan === "pro" || plan === "campus") {
+      return NextResponse.json(
+        { error: "Pro Plan upgrades are coming soon for new subscribers. Existing Pro accounts remain fully active." },
+        { status: 400 }
+      );
+    }
+
     // Validate plan
     const priceConfig = PLAN_PRICES[plan]?.[interval];
     if (!priceConfig) {

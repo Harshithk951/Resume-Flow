@@ -21,19 +21,13 @@ interface RazorpayCheckoutProps {
   className?: string;
   variant?: "button" | "link";
   disabled?: boolean;
+  comingSoon?: boolean;
   /** Called after successful payment & plan upgrade */
   onSuccess?: () => void;
 }
 
 /**
  * RazorpayCheckout — Handles the full Razorpay payment flow.
- *
- * Flow:
- *   1. User clicks → creates Razorpay order via server API
- *   2. Opens Razorpay checkout modal
- *   3. On success → verifies payment signature server-side
- *   4. On verify success → Convex mutation upgrades user plan
- *   5. Fires confetti + toast
  */
 export function RazorpayCheckout({
   plan,
@@ -42,6 +36,7 @@ export function RazorpayCheckout({
   className = "",
   variant = "button",
   disabled = false,
+  comingSoon = true,
   onSuccess,
 }: RazorpayCheckoutProps) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -56,7 +51,9 @@ export function RazorpayCheckout({
 
   const displayLabel =
     label ||
-    `Upgrade to ${plan.charAt(0).toUpperCase() + plan.slice(1)}`;
+    (comingSoon
+      ? `Pro - Coming Soon`
+      : `Upgrade to ${plan.charAt(0).toUpperCase() + plan.slice(1)}`);
 
   const fireConfetti = useCallback(() => {
     const duration = 2000;
@@ -93,6 +90,14 @@ export function RazorpayCheckout({
     }
 
     if (isProcessing) return;
+
+    if (comingSoon) {
+      toast.info(
+        "Pro Plan upgrades are coming soon for new subscribers! Existing Pro accounts remain fully active.",
+        { duration: 5000 }
+      );
+      return;
+    }
 
     setIsProcessing(true);
     setStatus("creating");

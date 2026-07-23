@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
+
 import { ConvexClerkProvider } from "@/components/providers/ConvexClerkProvider";
 import { Analytics } from "@vercel/analytics/next";
 import { HydrationProtectionGuard } from "@/components/HydrationProtectionGuard";
@@ -225,11 +227,12 @@ export default function RootLayout({
         />
 
         {/* ─── Google AdSense Verification (lazy: loads after page becomes idle) ──────── */}
-        <script
-          defer
+        <Script
+          strategy="lazyOnload"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7941579236760268"
           crossOrigin="anonymous"
         />
+
 
         {/* ─── TermsFeed Cookie Consent (Client Component) ──────── */}
         <TermsFeedConsent />

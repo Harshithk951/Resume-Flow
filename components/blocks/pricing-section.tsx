@@ -5,6 +5,7 @@ import { motion, useSpring, useMotionValue, useTransform } from "framer-motion";
 import { Check, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export interface Tier {
   id: string;
@@ -273,17 +274,23 @@ export function PricingSection({
                   </div>
 
                   {tier.comingSoon ? (
-                    <div
+                    <button
+                      type="button"
+                      onClick={() =>
+                        toast.info(
+                          `${tier.name} plan upgrades are coming soon for new subscribers! Existing ${tier.name} accounts remain active.`
+                        )
+                      }
                       className={cn(
-                        "mb-6 inline-flex h-11 w-full items-center justify-center rounded-xl text-sm font-bold transition-all",
-                        "border border-dashed border-[var(--color-secondary-bg)] bg-[var(--color-surface-soft)] text-[var(--color-stone)] cursor-not-allowed"
+                        "mb-6 inline-flex h-11 w-full items-center justify-center rounded-xl text-sm font-bold transition-all hover:bg-slate-100/80 active:scale-[0.98]",
+                        "border border-dashed border-slate-300 bg-[var(--color-surface-soft)] text-slate-700 cursor-pointer"
                       )}
                     >
                       <span className="flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400/60" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                         {tier.cta}
                       </span>
-                    </div>
+                    </button>
                   ) : (
                     <Link
                       href={tier.href || "#"}
