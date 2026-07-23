@@ -150,8 +150,10 @@ export default function Navbar() {
           <Menu className="w-5 h-5 text-slate-600" />
         </button>
 
-        <div className="flex items-center gap-2">
-          {mounted && isSignedIn ? (
+        <div className="flex items-center gap-2 min-w-[150px] justify-end">
+          {!mounted ? (
+            <div className="h-9 w-32 bg-slate-100 rounded-full animate-pulse" />
+          ) : isSignedIn ? (
             <Link
               href="/dashboard"
               className="inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-[0_8px_30px_rgba(225,29,72,0.25)] transition-all duration-300 px-6 py-2 text-sm active:scale-[0.97]"
@@ -163,7 +165,7 @@ export default function Navbar() {
             <>
               <Link
                 href="/sign-in"
-                className="text-slate-600 hover:text-slate-900 text-sm font-semibold transition-colors duration-300"
+                className="text-slate-600 hover:text-slate-900 text-sm font-semibold transition-colors duration-300 px-2"
               >
                 Log in
               </Link>

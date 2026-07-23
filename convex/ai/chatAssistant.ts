@@ -12,7 +12,6 @@ import { internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { hiringManagerSkill, staffLevelSignals, projectImpactCalculator } from "./Skills/registry";
 import { invokeRoutedNim } from "./modelRouter";
-import { callWithResilience, NIM_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // Helper to sanitize chat messages for the OpenAI completions API

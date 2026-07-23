@@ -102,6 +102,33 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/pricing",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/features",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
+      {
+        source: "/about",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
       // Static images in public/
       {
         source: "/:asset((?:logo|hero-poster|chatbot-icon)\\.(?:png|jpg|webp))",

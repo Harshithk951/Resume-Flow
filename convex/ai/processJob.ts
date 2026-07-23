@@ -18,7 +18,7 @@ import pdf from "@cedrugs/pdf-parse";
 import { z } from "zod";
 import { jobSearchSkill } from "./Skills/registry";
 import { invokeRoutedNim } from "./modelRouter";
-import { callWithResilience, NIM_SERVICE, TAVILY_SERVICE } from "./resilience";
+import { callWithResilience, TAVILY_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // ─── Zod Schemas for LLM Output Validation ───────────────────

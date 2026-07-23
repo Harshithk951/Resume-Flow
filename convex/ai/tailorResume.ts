@@ -14,7 +14,6 @@ import { maskPersonalInfo, reInjectPersonalInfo } from "../lib/piiMask";
 import { z } from "zod";
 import { atsAuditorSkill, resumeMakerSkill } from "./Skills/registry";
 import { invokeRoutedNim } from "./modelRouter";
-import { callWithResilience, NIM_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 // ─── Zod Schema for Layer 2 JSON Output ──────────────────────

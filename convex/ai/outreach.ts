@@ -11,7 +11,6 @@ import { api, internal } from "../_generated/api";
 import { OpenAI } from "openai";
 import { z } from "zod";
 import { invokeRoutedNim } from "./modelRouter";
-import { callWithResilience, NIM_SERVICE } from "./resilience";
 import { createLogger, generateTraceId, captureError, incrementMetric, METRICS } from "../../lib/tracing";
 
 const OutreachPayloadSchema = z.object({

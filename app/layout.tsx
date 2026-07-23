@@ -10,6 +10,7 @@ import TermsFeedConsent from "@/components/TermsFeedConsent";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import { WebVitals } from "@/components/WebVitals";
 import MobileBanner from "@/components/MobileBanner";
+import { NetworkErrorLogger } from "@/components/NetworkErrorLogger";
 
 const SITE_URL = "https://resumeflow.harshithkumar.in";
 
@@ -247,6 +248,9 @@ export default function RootLayout({
 
         {/* ─── Vercel Analytics ──────── */}
         <Analytics />
+
+        {/* ─── Client Network Error Logger ──────── */}
+        <NetworkErrorLogger />
 
         <ConvexClerkProvider>
             <HydrationProtectionGuard>
