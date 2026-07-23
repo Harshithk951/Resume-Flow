@@ -7,7 +7,7 @@
 
 import { callWithResilience, NIM_SERVICE } from "./resilience";
 
-export type NimTaskCategory = "extraction" | "tailoring" | "chat" | "vision";
+export type NimTaskCategory = "extraction" | "tailoring" | "chat";
 
 export interface TaskRoute {
   primary: string;
@@ -19,20 +19,16 @@ export interface TaskRoute {
  */
 export const TASK_ROUTES: Record<NimTaskCategory, TaskRoute> = {
   extraction: {
-    primary: "deepseek-ai/deepseek-v3",
-    fallback: "meta/llama-3.3-70b-instruct",
+    primary: "deepseek-ai/deepseek-v4-flash",
+    fallback: "deepseek-ai/deepseek-v3",
   },
   tailoring: {
-    primary: "meta/llama-3.3-70b-instruct",
+    primary: "deepseek-ai/deepseek-v4-flash",
     fallback: "deepseek-ai/deepseek-v3",
   },
   chat: {
-    primary: "meta/llama-3.1-8b-instruct",
+    primary: "deepseek-ai/deepseek-v4-flash",
     fallback: "deepseek-ai/deepseek-v3",
-  },
-  vision: {
-    primary: "meta/llama-3.2-90b-vision-instruct",
-    fallback: "meta/llama-3.2-11b-vision-instruct",
   },
 };
 
@@ -98,7 +94,7 @@ export function isFallbackEligibleError(error: unknown): boolean {
  * Calls executeCall(model) with task-specific primary model first.
  * If fallback-eligible infrastructure failure occurs, retries via fallback model.
  *
- * @param taskCategory — "extraction" | "tailoring" | "chat" | "vision"
+ * @param taskCategory — "extraction" | "tailoring" | "chat"
  * @param executeCall — Async function accepting model string and returning completion
  * @param options — Optional label and concurrency settings
  */

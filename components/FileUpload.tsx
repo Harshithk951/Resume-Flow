@@ -4,7 +4,7 @@
 //
 // FileUpload component using react-dropzone.
 // Designed with Design.md tokens: warm cream theme, 16px radius, Lucide icons.
-// Performs client-side validations for size (<5MB) and mime type (PDF, PNG, JPEG).
+// Performs client-side validations for size (<5MB) and mime type (PDF, DOCX).
 
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
@@ -29,7 +29,7 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
         if (rejection.file.size > 5 * 1024 * 1024) {
           setError("File size exceeds 5MB limit.");
         } else {
-          setError("Unsupported format. Please upload a PDF, DOCX, PNG, or JPEG.");
+          setError("Unsupported format. Please upload a PDF or DOCX file.");
         }
         return;
       }
@@ -87,8 +87,6 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
     accept: {
       "application/pdf": [".pdf"],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-      "image/png": [".png"],
-      "image/jpeg": [".jpg", ".jpeg"],
     },
   });
 
@@ -134,7 +132,7 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
               ⚠️ Strict Rule: Resumes must be 1 to 4 pages maximum
             </span>
             <span className="text-[10px] text-[var(--color-ash)] uppercase tracking-wider block mt-1">
-              Accepted: PDF, DOCX, PNG, JPG (up to 5MB)
+              Accepted: PDF, DOCX (up to 5MB)
             </span>
           </div>
         </div>

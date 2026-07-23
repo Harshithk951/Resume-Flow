@@ -221,10 +221,9 @@ export const extractProfile = action({
         }
       }
 
-      // Final default fallback
-      if (!mimeType) {
-        console.log("MIME type undetermined after fallback. Defaulting safely to image/png.");
-        mimeType = "image/png";
+      // Reject non-PDF files
+      if (mimeType !== "application/pdf") {
+        throw new Error("Unsupported file format. Only PDF files are accepted for resume extraction.");
       }
 
       // Initialize OpenAI client for NVIDIA NIM
@@ -305,104 +304,54 @@ Follow this exact JSON structure:
 
 If any section or field is completely missing in the resume, return an empty array [] or empty string "" for that field rather than skipping the key. Do not hallucinate any information.`;
 
-      if (mimeType === "application/pdf") {
-        log.info("Processing file as PDF");
-        // ─── PDF Parsing Stream ───
-        const pdfBuffer = Buffer.from(arrayBuffer);
-        const parsedPdf = await pdf(pdfBuffer);
-        const rawText = parsedPdf.text;
+      log.info("Processing file as PDF");
+      // ─── PDF Parsing Stream ───
+      const pdfBuffer = Buffer.from(arrayBuffer);
+      const parsedPdf = await pdf(pdfBuffer);
+      const rawText = parsedPdf.text;
 
-        // Mask PII on the server before sending to LLM
-        const { maskedText, pii } = extractAndMaskPII(rawText);
-        extractedPii = pii;
+      // Mask PII on the server before sending to LLM
+      const { maskedText, pii } = extractAndMaskPII(rawText);
+      extractedPii = pii;
 
-        console.log("Step 4: Sending payload to model");
+      console.log("Step 4: Sending payload to model");
 
-        log.info("Invoking NIM for PDF extraction", { taskCategory: "extraction" });
-        incrementMetric(METRICS.NIM_CALLS);
-        const nimStart = Date.now();
-        const completion = await invokeRoutedNim(
-          "extraction",
-          (selectedModel) =>
-            withTimeout(
-              openai.chat.completions.create({
-                model: selectedModel,
-                messages: [
-                  { role: "system", content: systemPrompt },
-                  {
-                    role: "user",
-                    content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
-                  },
-                ],
-                response_format: { type: "json_object" },
-                temperature: 0.1,
-                max_tokens: 2048,
-              }),
-              45_000,
-              "NVIDIA NIM PDF extraction"
-            ),
-          { label: "PDF extraction" }
-        );
-        const nimDuration = Date.now() - nimStart;
-        log.info("NIM PDF extraction complete", { durationMs: nimDuration });
+      log.info("Invoking NIM for PDF extraction", { taskCategory: "extraction" });
+      incrementMetric(METRICS.NIM_CALLS);
+      const nimStart = Date.now();
+      const completion = await invokeRoutedNim(
+        "extraction",
+        (selectedModel) =>
+          withTimeout(
+            openai.chat.completions.create({
+              model: selectedModel,
+              messages: [
+                { role: "system", content: systemPrompt },
+                {
+                  role: "user",
+                  content: `Extract the resume content from the following MASKED text:\n\n${maskedText}`,
+                },
+              ],
+              response_format: { type: "json_object" },
+              temperature: 0.1,
+              max_tokens: 2048,
+            }),
+            45_000,
+            "NVIDIA NIM PDF extraction"
+          ),
+        { label: "PDF extraction" }
+      );
+      const nimDuration = Date.now() - nimStart;
+      log.info("NIM PDF extraction complete", { durationMs: nimDuration });
 
-        const responseText = completion.choices[0]?.message?.content || "";
-        resumeData = cleanAndParseJSON(responseText);
+      const responseText = completion.choices[0]?.message?.content || "";
+      resumeData = cleanAndParseJSON(responseText);
 
-        // Re-inject PII
-        if (resumeData && resumeData.personalInfo) {
-          if (extractedPii.name) resumeData.personalInfo.name = extractedPii.name;
-          if (extractedPii.email) resumeData.personalInfo.email = extractedPii.email;
-          if (extractedPii.phone) resumeData.personalInfo.phone = extractedPii.phone;
-        }
-      } else {
-        log.info("Processing file as Image", { mimeType });
-        // ─── Image Vision Parsing Stream ───
-        const base64Image = Buffer.from(arrayBuffer).toString("base64");
-
-        console.log("Step 4: Sending image payload to model");
-
-        log.info("Invoking NIM for image OCR", { taskCategory: "vision" });
-        incrementMetric(METRICS.NIM_CALLS);
-        const nimStart = Date.now();
-        const completion = await invokeRoutedNim(
-          "vision",
-          (selectedModel) =>
-            withTimeout(
-              openai.chat.completions.create({
-                model: selectedModel,
-                messages: [
-                  { role: "system", content: systemPrompt },
-                  {
-                    role: "user",
-                    content: [
-                      {
-                        type: "text",
-                        text: "Extract the resume content from this uploaded image. Output the structured JSON schema only.",
-                      },
-                      {
-                        type: "image_url",
-                        image_url: {
-                          url: `data:${mimeType};base64,${base64Image}`,
-                        },
-                      },
-                    ],
-                  },
-                ],
-                response_format: { type: "json_object" },
-                temperature: 0.1,
-                max_tokens: 2048,
-              }),
-              45_000,
-              "NVIDIA NIM Image extraction"
-            ),
-          { label: "Image OCR" }
-        );
-
-        const nimDuration = Date.now() - nimStart;
-        log.info("NIM image OCR complete", { durationMs: nimDuration });
-        const responseText = completion.choices[0]?.message?.content || "";
-        resumeData = cleanAndParseJSON(responseText);
+      // Re-inject PII
+      if (resumeData && resumeData.personalInfo) {
+        if (extractedPii.name) resumeData.personalInfo.name = extractedPii.name;
+        if (extractedPii.email) resumeData.personalInfo.email = extractedPii.email;
+        if (extractedPii.phone) resumeData.personalInfo.phone = extractedPii.phone;
       }
 
       // 3. Schema validation with Zod

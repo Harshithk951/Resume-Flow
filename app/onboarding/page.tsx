@@ -5,11 +5,9 @@ import React, { useState, useEffect } from "react";
 import { useUser, useSession } from "@clerk/nextjs";
 import { useMutation, useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { uploadToConvexStorage } from "@/lib/convexStorageUpload";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
-
   CheckCircle,
   Award,
   BookOpen,
@@ -18,11 +16,9 @@ import {
   Mail,
   GraduationCap,
   Sparkles,
-  ChevronRight,
   ShieldCheck,
   AlertCircle
 } from "lucide-react";
-import FileUpload from "@/components/FileUpload";
 import { triggerSideCannons } from "@/lib/confetti";
 
 // Custom Cubic Bezier Easing from Awards Design Guidelines
@@ -65,16 +61,11 @@ export default function OnboardingPage() {
   const { user, isLoaded: isClerkLoaded } = useUser();
   const { session } = useSession();
 
-
   const [step, setStep] = useState(0);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [processStatus, setProcessStatus] = useState("");
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
 
   // Convex integration
   const createOrGetUser = useMutation(api.users.createOrGetUser);
-  const extractProfileFromPdf = useAction(api.onboarding.extractProfileFromPdf);
   const confirmProfile = useMutation(api.onboarding.confirmProfile);
   const markOnboardingComplete = useAction(api.onboarding.markOnboardingComplete);
 
@@ -87,9 +78,7 @@ export default function OnboardingPage() {
   const [cgpa, setCgpa] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [github, setGithub] = useState("");
-  const [portfolio, setPortfolio] = useState("");
-
-  const generateUploadUrl = useMutation(api.profiles.generateUploadUrl);
+  const [portfolio] = useState("");
 
   // Establish Convex User record
   useEffect(() => {
@@ -110,56 +99,20 @@ export default function OnboardingPage() {
     };
   }, [isClerkLoaded, user, createOrGetUser]);
 
-  // Trigger confetti celebration when onboarding finishes (Step 3)
+  // Trigger confetti celebration when onboarding finishes (Step 2)
   useEffect(() => {
-    if (step === 3) {
+    if (step === 2) {
       triggerSideCannons();
     }
   }, [step]);
 
-  // Smoothly increment progress percentage and update status message to keep users hooked
+  // Pre-fill name and email from Clerk user when entering the form step
   useEffect(() => {
-    if (!isProcessing) {
-      setUploadProgress(0);
-      setProcessStatus("");
-      return;
+    if (step === 1 && user) {
+      setName((prev) => prev || user.fullName || "");
+      setEmail((prev) => prev || user?.primaryEmailAddress?.emailAddress || "");
     }
-
-    const messages = [
-      "Uploading document securely...",
-      "Extracting text headers...",
-      "Tuning AI weights for parse...",
-      "Extracting education metrics...",
-      "Parsing project structures...",
-      "Removing PII tracking data...",
-      "Finalizing profile data structure..."
-    ];
-
-    setUploadProgress(0);
-    setProcessStatus(messages[0]);
-
-    // Interval to increment progress percentage
-    const progressTimer = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 98) return prev; // Hold at 98% until completely finished
-        const remaining = 99 - prev;
-        // Step size decays as progress approaches 99%
-        const step = Math.max(1, Math.round(Math.random() * (remaining * 0.25)));
-        const nextProgress = Math.min(prev + step, 98);
-
-        // Sync status message dynamically based on progress brackets
-        const msgIndex = Math.min(
-          Math.floor((nextProgress / 100) * messages.length),
-          messages.length - 1
-        );
-        setProcessStatus(messages[msgIndex]);
-
-        return nextProgress;
-      });
-    }, 1000);
-
-    return () => clearInterval(progressTimer);
-  }, [isProcessing]);
+  }, [step, user]);
 
   if (!isClerkLoaded) {
     return (
@@ -172,105 +125,6 @@ export default function OnboardingPage() {
       </div>
     );
   }
-
-  const handleFileUpload = async (file: File) => {
-    setIsProcessing(true);
-    setError(null);
-    try {
-      // 1. Get Convex Upload URL & upload file
-      const uploadUrl = await generateUploadUrl();
-      const { storageId } = await uploadToConvexStorage(uploadUrl, file, file.name);
-
-      // 3. Trigger AI extraction action with automatic retry on connection loss
-      const MAX_RETRIES = 3;
-      let extractionResult: any = null;
-      let lastError: any = null;
-
-      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        try {
-          setProcessStatus(
-            attempt > 1
-              ? `Reconnecting to AI pipeline (attempt ${attempt}/${MAX_RETRIES})…`
-              : "Initializing AI extraction engine..."
-          );
-
-          extractionResult = await extractProfileFromPdf({
-            storageId,
-            fileSize: file.size,
-          });
-          break; // Success — exit retry loop
-        } catch (retryErr: any) {
-          lastError = retryErr;
-          const msg = retryErr?.message || String(retryErr);
-          const isConnectionLost =
-            msg.includes("Connection lost") ||
-            msg.includes("WebSocket") ||
-            msg.includes("action was in flight") ||
-            msg.includes("Failed to fetch");
-
-          if (isConnectionLost && attempt < MAX_RETRIES) {
-            // Exponential backoff: 2s, 4s
-            const delay = Math.pow(2, attempt) * 1000;
-            setProcessStatus(
-              `Connection interrupted — retrying in ${delay / 1000}s (${attempt}/${MAX_RETRIES})…`
-            );
-            setUploadProgress((prev) => Math.max(prev - 15, 10)); // Reset progress slightly
-            await new Promise((resolve) => setTimeout(resolve, delay));
-            continue;
-          }
-          throw retryErr; // Non-retriable error or max retries exhausted
-        }
-      }
-
-      if (!extractionResult && lastError) {
-        throw lastError;
-      }
-
-      if (extractionResult) {
-        setUploadProgress(100);
-        setProcessStatus("Extraction complete!");
-        const info = extractionResult.personalInfo;
-        setName(info.name || user?.fullName || "");
-        setEmail(info.email || user?.primaryEmailAddress?.emailAddress || "");
-        setPhone(info.phone || "");
-        setLinkedin(info.linkedin || "");
-        setGithub(info.github || "");
-        setPortfolio(info.portfolio || "");
-
-        // Prefill CGPA and branch if they exist in education
-        if (extractionResult.education && extractionResult.education.length > 0) {
-          const edu = extractionResult.education[0];
-          if (edu.gpa) {
-            // Attempt to extract cgpa number
-            const gpaMatch = edu.gpa.match(/([0-9]*\.[0-9]+|[0-9]+)/);
-            if (gpaMatch) {
-              setCgpa(gpaMatch[0]);
-            }
-          }
-        }
-        
-        setStep(2);
-      }
-    } catch (err: any) {
-      console.error(err);
-      const msg = err?.message || String(err);
-      if (msg.includes("Connection lost") || msg.includes("action was in flight")) {
-        setError(
-          "The AI extraction took too long and the connection was lost. Please try again — or use Manual Setup below."
-        );
-      } else {
-        setError(msg || "Failed to extract resume data. Please try again.");
-      }
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleManualEntry = () => {
-    setName(user?.fullName || "");
-    setEmail(user?.primaryEmailAddress?.emailAddress || "");
-    setStep(2);
-  };
 
   const handleConfirmProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -329,7 +183,7 @@ export default function OnboardingPage() {
         }
       }
 
-      setStep(3);
+      setStep(2);
     } catch (err: any) {
       console.error(err);
       const msg = err.data || err.message || "Failed to confirm profile. Please try again.";
@@ -369,11 +223,11 @@ export default function OnboardingPage() {
           <span className="font-extrabold tracking-tight text-xl">ResumeFlow</span>
         </div>
         <div className="flex items-center gap-2 type-body-sm text-[var(--color-mute)]">
-          <span>Step {step + 1} of 4</span>
+          <span>Step {step + 1} of 3</span>
           <div className="w-24 h-1.5 bg-[var(--color-hairline)] rounded-full overflow-hidden">
             <motion.div
               initial={{ width: "0%" }}
-              animate={{ width: `${((step + 1) / 4) * 100}%` }}
+              animate={{ width: `${((step + 1) / 3) * 100}%` }}
               transition={{ ease: easeOutExpo, duration: 0.8 }}
               className="h-full bg-[var(--color-primary)]"
             />
@@ -409,29 +263,13 @@ export default function OnboardingPage() {
                       Begin your placement journey.
                     </h1>
                     <p className="type-body-md text-[var(--color-mute)]">
-                      Connect your academic profile, auto-extract resume fields with AI, and gain access to the campus recruiter CRM.
+                      Set up your academic profile to start matching and tailoring applications for campus placements.
                     </p>
                   </motion.div>
                 )}
                 {step === 1 && (
                   <motion.div
                     key="intro-1"
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    variants={stepVariants}
-                  >
-                    <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-[1.1] mb-6 no-orphans">
-                      AI Profile Extraction.
-                    </h1>
-                    <p className="type-body-md text-[var(--color-mute)]">
-                      Upload your current PDF resume. Our AI pipeline will securely extract your education, skills, and projects.
-                    </p>
-                  </motion.div>
-                )}
-                {step === 2 && (
-                  <motion.div
-                    key="intro-2"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -445,9 +283,9 @@ export default function OnboardingPage() {
                     </p>
                   </motion.div>
                 )}
-                {step === 3 && (
+                {step === 2 && (
                   <motion.div
-                    key="intro-3"
+                    key="intro-2"
                     initial="hidden"
                     animate="visible"
                     exit="hidden"
@@ -519,91 +357,10 @@ export default function OnboardingPage() {
                 </motion.div>
               )}
 
-              {/* STEP 1: Upload Resume */}
+              {/* STEP 1: Profile Form (Manual Entry) */}
               {step === 1 && (
                 <motion.div
                   key="step-1"
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={stepVariants}
-                  className="flex flex-col gap-6"
-                >
-                  {isProcessing ? (
-                    <div className="flex flex-col items-center justify-center py-12 gap-6">
-                      {/* Premium Circular Progress / Spinner Hybrid */}
-                      <div className="relative w-20 h-20 flex items-center justify-center">
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                          className="absolute w-full h-full border-4 border-[var(--color-hairline-soft)] border-t-[var(--color-primary)] rounded-full"
-                        />
-                        <span className="text-sm font-extrabold text-[var(--color-ink-soft)] tabular-nums">
-                          {uploadProgress}%
-                        </span>
-                      </div>
-
-                      <div className="space-y-1 text-center w-full max-w-sm">
-                        <h3 className="type-heading-md font-bold text-[var(--color-ink-soft)] transition-all duration-300 min-h-[28px]">
-                          {processStatus}
-                        </h3>
-                        <p className="type-body-sm text-[var(--color-mute)] max-w-[280px] mx-auto text-xs leading-relaxed">
-                          Our AI is extracting parameters using a secure, masked data pipeline.
-                        </p>
-                      </div>
-
-                      {/* Premium Horizontal Progress Bar */}
-                      <div className="w-full max-w-xs space-y-1.5 mt-2">
-                        <div className="h-1.5 w-full bg-[var(--color-surface-card)] rounded-full overflow-hidden border border-[var(--color-hairline)]/40">
-                          <motion.div
-                            initial={{ width: "0%" }}
-                            animate={{ width: `${uploadProgress}%` }}
-                            transition={{ ease: "easeOut", duration: 0.4 }}
-                            className="h-full bg-gradient-to-r from-rose-500 to-rose-600 rounded-full"
-                          />
-                        </div>
-                        <div className="flex justify-between text-[10px] font-bold text-[var(--color-ash)] uppercase tracking-wider px-0.5">
-                          <span>Parsing Resume</span>
-                          <span className="animate-pulse text-rose-600">Active Pipeline</span>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <FileUpload onFileAccepted={handleFileUpload} isProcessing={isProcessing} />
-                      
-                      {error && (
-                        <div className="flex items-center gap-2 p-3 rounded-xl bg-red-50 text-[var(--color-error)] text-sm border border-red-100">
-                          <AlertCircle className="w-4 h-4 shrink-0" />
-                          <span>{error}</span>
-                        </div>
-                      )}
-
-                      <div className="relative flex items-center justify-center my-2">
-                        <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-[var(--color-hairline)]"></div>
-                        </div>
-                        <span className="relative px-3 bg-[var(--color-canvas)] text-xs text-[var(--color-ash)] uppercase tracking-wider">
-                          Or Setup Manually
-                        </span>
-                      </div>
-
-                      <button
-                        onClick={handleManualEntry}
-                        className="btn-secondary w-full h-12 flex items-center justify-center gap-2"
-                      >
-                        <span>Fill Profile Manually</span>
-                        <ChevronRight className="w-4 h-4" />
-                      </button>
-                    </>
-                  )}
-                </motion.div>
-              )}
-
-              {/* STEP 2: Confirm Profile */}
-              {step === 2 && (
-                <motion.div
-                  key="step-2"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -740,10 +497,10 @@ export default function OnboardingPage() {
                 </motion.div>
               )}
 
-              {/* STEP 3: Completion Screen */}
-              {step === 3 && (
+              {/* STEP 2: Completion Screen */}
+              {step === 2 && (
                 <motion.div
-                  key="step-3"
+                  key="step-2"
                   initial="hidden"
                   animate="visible"
                   exit="exit"

@@ -253,7 +253,7 @@ export const processJob = action({
         throw new Error("Master Profile is incomplete. Please setup your profile first.");
       }
 
-      // 3. Extract text from JD (handles text, PDF, and screenshots)
+      // 3. Extract text from JD (handles text and PDF)
       let jdText = job.rawJdText;
 
       if (job.inputType === "pdf" && job.rawFileStorageId) {
@@ -264,45 +264,6 @@ export const processJob = action({
         const buffer = await fileResponse.arrayBuffer();
         const parsed = await pdf(Buffer.from(buffer));
         jdText = parsed.text;
-      } else if (job.inputType === "screenshot" && job.rawFileStorageId) {
-        const downloadUrl = await ctx.storage.getUrl(job.rawFileStorageId);
-        if (!downloadUrl) throw new Error("Could not retrieve JD Image from storage.");
-        const fileResponse = await fetch(downloadUrl);
-        if (!fileResponse.ok) throw new Error("Failed to download JD Image.");
-        const buffer = await fileResponse.arrayBuffer();
-        const mimeType = fileResponse.headers.get("content-type") || "image/png";
-        const base64Image = Buffer.from(buffer).toString("base64");
-
-        // Use Qwen 3.5 NIM Vision to OCR the screenshot
-        const apiKey = process.env.NVIDIA_NIM_API_KEY;
-        if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not set.");
-        const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
-
-        const ocrCompletion = await invokeRoutedNim(
-          "vision",
-          (selectedModel) =>
-            openai.chat.completions.create({
-              model: selectedModel,
-              messages: [
-                {
-                  role: "user",
-                  content: [
-                    {
-                      type: "text",
-                      text: "You are an OCR engine. Extract all readable text from this job description screenshot exactly as it appears. Output only the plain text.",
-                    },
-                    {
-                      type: "image_url",
-                      image_url: { url: `data:${mimeType};base64,${base64Image}` },
-                    },
-                  ],
-                },
-              ],
-              temperature: 0.0,
-            }),
-          { label: "JD OCR" }
-        );
-        jdText = ocrCompletion.choices[0]?.message?.content || "";
       }
 
       if (!jdText || jdText.trim().length === 0) {
