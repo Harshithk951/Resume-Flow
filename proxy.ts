@@ -9,11 +9,25 @@ const isProtectedRoute = createRouteMatcher([
   "/api/compile-latex(.*)",
 ]);
 
+const isAuthRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
+
 export default clerkMiddleware(async (auth, req) => {
+  const { userId, sessionClaims } = await auth();
+
+  // If user is already authenticated and visits sign-in/sign-up, redirect immediately
+  if (isAuthRoute(req) && userId) {
+    const onboardingComplete =
+      ((sessionClaims?.metadata as { onboardingComplete?: boolean })
+        ?.onboardingComplete) ||
+      req.cookies.get(`onboarding_complete_${userId}`)?.value === "true";
+
+    const destination = onboardingComplete ? "/dashboard" : "/onboarding";
+    return NextResponse.redirect(new URL(destination, req.url));
+  }
+
   if (isProtectedRoute(req)) {
     await auth.protect();
 
-    const { userId, sessionClaims } = await auth();
     const onboardingComplete =
       ((sessionClaims?.metadata as { onboardingComplete?: boolean })
         ?.onboardingComplete) ||

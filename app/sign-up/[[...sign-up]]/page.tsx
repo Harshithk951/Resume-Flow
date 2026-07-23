@@ -1,20 +1,29 @@
 "use client";
 
-import { SignUp } from "@clerk/nextjs";
+import { SignUp, useAuth } from "@clerk/nextjs";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { InteractiveCharacters, ExpressionState } from "@/components/auth/InteractiveCharacters";
 
 export default function SignUpPage() {
+  const router = useRouter();
   const formRef = useRef<HTMLDivElement>(null);
+  const { isLoaded, isSignedIn } = useAuth();
 
   const [expression, setExpression] = useState<ExpressionState>("neutral");
   const [isEmailFocused, setIsEmailFocused] = useState(false);
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      router.replace("/dashboard");
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     // Force light theme on auth route mount
@@ -110,9 +119,16 @@ export default function SignUpPage() {
     };
   }, []);
 
-  const handleFormClick = () => {
-    // Form click handler — kept for future interactivity
-  };
+  if (isLoaded && isSignedIn) {
+    return (
+      <div className="min-h-screen w-full bg-[#f8fafc] flex flex-col items-center justify-center p-4">
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="w-8 h-8 animate-spin text-slate-900" />
+          <p className="text-sm font-bold text-slate-700">Signing you in... Redirecting to dashboard</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen w-full bg-[#f8fafc] flex flex-col items-center justify-center p-4 md:p-8">
@@ -352,6 +368,7 @@ export default function SignUpPage() {
             <SignUp
               routing="path"
               path="/sign-up"
+              forceRedirectUrl="/dashboard"
               fallbackRedirectUrl="/dashboard"
               signInFallbackRedirectUrl="/dashboard"
               appearance={{
