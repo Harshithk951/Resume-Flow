@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ShieldCheck, FileText, Sparkles, Briefcase, Layout } from "lucide-react";
+import { Check, ShieldCheck, Sparkles, Briefcase, Layout } from "lucide-react";
 
 interface TemplateSelectTabProps {
   selectedTemplate: string;
@@ -64,23 +64,6 @@ export default function TemplateSelectTab({
 
   return (
     <div className="space-y-6">
-      {/* SPACING & TYPOGRAPHY PRESET */}
-      <div>
-        <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-stone)] mb-3 flex items-center gap-1.5">
-          <FileText className="w-3.5 h-3.5 text-[var(--color-stone)]" />
-          Preamble & Typography
-        </p>
-        <div className="bg-[var(--color-surface-card)]/80 rounded-2xl p-3 border border-[var(--color-hairline)]/40">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-xs font-bold text-[var(--color-charcoal)]">Deterministic Macro Skeleton</span>
-              <p className="text-[10px] text-[var(--color-stone)] mt-0.5">Single-pass character escaping · Non-breaking skill colons · Auto-omitted empty sections</p>
-            </div>
-            <span className="h-5 px-2 rounded-full bg-emerald-100 text-emerald-700 text-[9px] font-bold flex items-center">Active</span>
-          </div>
-        </div>
-      </div>
-
       {/* TEMPLATE LIST */}
       <div>
         <p className="text-[11px] font-bold uppercase tracking-wider text-[var(--color-stone)] mb-3">
