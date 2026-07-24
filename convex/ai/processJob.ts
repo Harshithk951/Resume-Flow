@@ -398,7 +398,7 @@ Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary 
 
       const nimStart = Date.now();
       const nimCompletion = await invokeRoutedNim(
-        "tailoring",
+        "extraction",
         (selectedModel) =>
           openai.chat.completions.create({
             model: selectedModel,
@@ -408,7 +408,7 @@ Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary 
             ],
             response_format: { type: "json_object" },
             temperature: 0.1,
-            max_tokens: 2048,
+            max_tokens: 1024,
           }),
         { label: "JD requirement analysis" }
       );

@@ -295,7 +295,7 @@ Return ONLY a valid JSON block matching this schema:
             ],
             response_format: { type: "json_object" },
             temperature: 0.2,
-            max_tokens: 2048,
+            max_tokens: 1400,
           }),
         { label: "Resume tailoring" }
       );

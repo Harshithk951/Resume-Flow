@@ -19,16 +19,16 @@ export interface TaskRoute {
  */
 export const TASK_ROUTES: Record<NimTaskCategory, TaskRoute> = {
   extraction: {
-    primary: "meta/llama-3.3-70b-instruct",
+    primary: "meta/llama-3.1-8b-instruct",
     fallback: "deepseek-ai/deepseek-v3",
   },
   tailoring: {
-    primary: "meta/llama-3.3-70b-instruct",
+    primary: "meta/llama-3.1-8b-instruct",
     fallback: "deepseek-ai/deepseek-v3",
   },
   chat: {
     primary: "meta/llama-3.1-8b-instruct",
-    fallback: "meta/llama-3.3-70b-instruct",
+    fallback: "deepseek-ai/deepseek-v3",
   },
 };
 
