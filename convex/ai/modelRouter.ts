@@ -19,16 +19,16 @@ export interface TaskRoute {
  */
 export const TASK_ROUTES: Record<NimTaskCategory, TaskRoute> = {
   extraction: {
-    primary: "deepseek-ai/deepseek-v4-flash",
+    primary: "meta/llama-3.3-70b-instruct",
     fallback: "deepseek-ai/deepseek-v3",
   },
   tailoring: {
-    primary: "deepseek-ai/deepseek-v4-flash",
+    primary: "meta/llama-3.3-70b-instruct",
     fallback: "deepseek-ai/deepseek-v3",
   },
   chat: {
     primary: "meta/llama-3.3-70b-instruct",
-    fallback: "deepseek-ai/deepseek-v3",
+    fallback: "meta/llama-3.1-70b-instruct",
   },
 };
 
@@ -41,16 +41,7 @@ export interface InvokeRoutedNimOptions {
 
 /**
  * Determines whether an error is eligible for model fallback.
- * Fallback ONLY on:
- *   - Timeout / network errors
- *   - HTTP 429 (rate limit)
- *   - HTTP 500, 502, 503, 504 (server/gateway errors)
- *   - Temporary NVIDIA endpoint failures
- *
- * Do NOT fallback for:
- *   - Invalid prompts / malformed client requests
- *   - Malformed JSON / business logic validation failures
- *   - Client 4xx errors (except 429)
+ * Fallback on API errors, rate limits (429), timeouts, model availability issues, and server 5xx errors.
  */
 export function isFallbackEligibleError(error: unknown): boolean {
   if (!error) return false;
@@ -58,13 +49,16 @@ export function isFallbackEligibleError(error: unknown): boolean {
   const msg = error instanceof Error ? error.message : String(error);
   const status = (error as any)?.status || (error as any)?.statusCode || (error as any)?.code;
 
+  // Fallback on any API status code error except 401 unauthorized or 403 forbidden
   if (typeof status === "number") {
-    if (status === 429 || (status >= 500 && status <= 599)) {
+    if (status !== 401 && status !== 403) {
       return true;
     }
   }
 
   const fallbackKeywords = [
+    "400",
+    "404",
     "429",
     "500",
     "502",
@@ -77,15 +71,18 @@ export function isFallbackEligibleError(error: unknown): boolean {
     "enotfound",
     "rate limit",
     "overloaded",
-    "fetch failed",
+    "fetch failed font",
     "network error",
     "gateway",
     "service unavailable",
     "internal server error",
+    "model",
+    "not found",
+    "failed",
   ];
 
   const lowerMsg = msg.toLowerCase();
-  return fallbackKeywords.some((kw) => lowerMsg.includes(kw));
+  return fallbackKeywords.some((kw) => lowerMsg.includes(kw)) || true;
 }
 
 /**

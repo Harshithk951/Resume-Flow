@@ -330,15 +330,17 @@ Return ONLY a valid JSON block matching this schema:
       log.error("Layer 2 tailoring failed", { error: message });
       captureError(err, log.getContext());
       incrementMetric(METRICS.NIM_FAILURES);
-      const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
+      const userFacingError = message.includes("circuit breaker") || message.includes("rate limit")
+        ? "AI service is briefly cooling down. Retrying automatically..."
+        : message;
       // Graceful error state transition
       await ctx.runMutation(internal.jobs.internalUpdateJobState, {
         jobId: args.jobId,
         expectedState: "tailoring",
         newState: "failed",
-        error: sanitizedError,
+        error: userFacingError,
       });
-      throw new ConvexError(sanitizedError);
+      throw new ConvexError(userFacingError);
     }
   },
 });

@@ -306,14 +306,16 @@ FORMATTING RULES:
       log.error("Chat assistant failed", { error: message });
       captureError(err, log.getContext());
       incrementMetric(METRICS.NIM_FAILURES);
-      const sanitizedError = "ResumeFlow AI is currently experiencing high traffic. Please try again in a few moments.";
+      const userFacingError = message.includes("circuit breaker") || message.includes("rate limit")
+        ? "AI assistant is briefly busy cooling down. Please retry your message in a few seconds."
+        : message;
       // Graceful error response save
       await ctx.runMutation(internal.chat.saveAssistantMessage, {
         userId: args.userId,
         jobId: args.jobId,
-        content: sanitizedError,
+        content: userFacingError,
       });
-      throw new ConvexError(sanitizedError);
+      throw new ConvexError(userFacingError);
     }
   },
 });

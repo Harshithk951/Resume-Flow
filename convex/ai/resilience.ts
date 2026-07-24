@@ -80,16 +80,16 @@ async function redisDecr(key: string): Promise<void> {
 // ─── Constants ────────────────────────────────────────────────
 
 /** How many consecutive failures trip the breaker */
-const CB_THRESHOLD = 5;
+const CB_THRESHOLD = 10;
 
 /** How long the breaker stays OPEN (ms) before transitioning to HALF-OPEN */
-const CB_COOLDOWN_MS = 30_000; // 30 seconds
+const CB_COOLDOWN_MS = 5_000; // 5 seconds auto-recovery
 
 /** Max retry attempts for withRetry */
 const MAX_RETRIES = 2;
 
 /** Max concurrent NIM calls */
-const NIM_MAX_CONCURRENCY = 10;
+const NIM_MAX_CONCURRENCY = 15;
 
 /** Redis key prefix for NIM semaphore */
 const SEM_NIM_KEY = "sem:nim";
