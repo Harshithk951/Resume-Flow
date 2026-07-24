@@ -27,7 +27,7 @@ export const TASK_ROUTES: Record<NimTaskCategory, TaskRoute> = {
     fallback: "deepseek-ai/deepseek-v3",
   },
   chat: {
-    primary: "deepseek-ai/deepseek-v4-flash",
+    primary: "meta/llama-3.3-70b-instruct",
     fallback: "deepseek-ai/deepseek-v3",
   },
 };
