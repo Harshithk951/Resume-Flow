@@ -10,27 +10,26 @@ interface TemplateSelectTabProps {
 interface TemplateOption {
   id: string;
   label: string;
-  fontTag: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
   accent: string;
   badge?: string;
+  recommended?: boolean;
 }
 
 const templates: TemplateOption[] = [
   {
     id: "ats_strict",
     label: "ATS Strict",
-    fontTag: "Computer Modern (Serif)",
     description: "Classic single-column layout with disabled ligatures. Maximum ATS text-parser compatibility for corporate & enterprise roles.",
     icon: ShieldCheck,
     accent: "#0f172a",
     badge: "Enterprise Standard",
+    recommended: true,
   },
   {
     id: "startup",
     label: "Startup",
-    fontTag: "Helvetica (Sans-Serif)",
     description: "Modern sans-serif typography with tight 0.6in margins. Engineered for SaaS, product companies, and high-growth startups.",
     icon: Sparkles,
     accent: "#4f46e5",
@@ -39,7 +38,6 @@ const templates: TemplateOption[] = [
   {
     id: "finance_tech",
     label: "Finance Tech",
-    fontTag: "Times (Serif)",
     description: "Refined Times serif typography with disabled ligatures. Ideal for fintech, quantitative roles, and institutional tech.",
     icon: Briefcase,
     accent: "#0284c7",
@@ -48,7 +46,6 @@ const templates: TemplateOption[] = [
   {
     id: "tech_modern",
     label: "Tech Modern",
-    fontTag: "Latin Modern (Accent-Bar)",
     description: "Developer-centric minimalist layout with Latin Modern typography and accent-bar section headers. Optimized for software engineering and systems roles.",
     icon: Layout,
     accent: "#38bdf8",
@@ -95,11 +92,15 @@ export default function TemplateSelectTab({
                 </div>
 
                 <div className="min-w-0 flex-1 pr-4">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="block text-xs font-bold text-[var(--color-ink-soft)] transition-colors group-hover:text-[var(--color-ink)]">
                       {tpl.label}
                     </span>
-                    <span className="text-[9px] text-gray-400 font-mono">({tpl.fontTag})</span>
+                    {tpl.recommended && (
+                      <span className="inline-flex items-center text-[9px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-full bg-emerald-100/90 text-emerald-800 border border-emerald-300 shadow-xs">
+                        RECOMMENDED
+                      </span>
+                    )}
                     {selected && (
                       <span className="flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-white shadow-sm shadow-rose-500/20">
                         <Check className="w-2.5 h-2.5" />

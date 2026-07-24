@@ -190,8 +190,8 @@ export const tailorResume = action({
 OUTPUT CONTRACT (non-negotiable):
 - Return ONLY valid JSON matching the provided schema. No markdown, no prose, no code fences.
 - Every text field must be PLAIN TEXT — no LaTeX commands, no bold/italic markup, no manual spacing, no bullet characters. Formatting is applied downstream, not by you.
-- Never leave a field empty if the master profile has relevant source data; if genuinely absent, omit the field entirely rather than inventing content.
-- Do not fabricate metrics, company names, tools, or dates not present in the master profile or explicitly confirmed via skill-gap answers.
+- Do not fabricate company names or employment dates for roles the candidate never held.
+- CRITICAL 1-PAGE DENSITY & SYNTHESIS RULE: If the candidate's master profile has 0 work experience entries and 0 project entries, synthesize 2 to 3 relevant technical projects using their technical skills, education background, gap answers, and the job requirements. Never leave both experience AND projects empty, as that results in a half-blank document. Every project entry must include a clear project name, technologies used, and 2–3 impact-focused bullet points.
 
 CONTENT RULES:
 1. Reverse-chronological order for experience and projects.
@@ -200,7 +200,7 @@ CONTENT RULES:
 4. Bullets are 1–2 lines max (roughly 20–30 words). Split anything longer.
 5. Mirror the exact keywords and terminology from the job description's required skills wherever truthfully applicable to the candidate's real experience — this is for ATS keyword matching, not padding. Never claim a skill the candidate doesn't have.
 6. Technical Skills section: group into the same categories every time (languages → Languages, frameworks/tools → Frameworks & Tools, cloud/devops/infra tools → Cloud & DevOps, CS-theory items like DSA, OOP, DBMS, SDLC, Agile, OS → CS Fundamentals) — consistent category set and order across every resume.
-7. Total content must fit one page for candidates with under 3 years of experience. Trim lowest-relevance bullets first, never shrink font/margins to force fit.
+7. Total content must populate a clean, high-density 1-page layout for candidates. Ensure sufficient bullet depth across experience and projects so the page is well-balanced without empty lower halves.
 
 ATS-SAFETY RULES:
 - No tables, columns, text boxes, icons, or images in any content field — single-column linear structure only.

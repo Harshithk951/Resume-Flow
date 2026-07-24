@@ -7,6 +7,7 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { SkillGapQuestionnaire } from "@/components/SkillGapQuestionnaire";
 import {
   ArrowLeft,
+  ArrowRight,
   Loader2,
   Maximize2,
   Minimize2,
@@ -30,6 +31,7 @@ import { redactStructuredContentForDisplay } from "@/lib/redactResumeData";
 import { resolveTemplate, type TemplateId } from "@/lib/latex/resolveTemplate";
 import { triggerSideCannons } from "@/lib/confetti";
 import { toast } from "@/lib/toast";
+import { checkProfileCompleteness } from "@/lib/profileCompleteness";
 
 const ReactPdfPreview = dynamic(
   () =>
@@ -53,6 +55,10 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
   const { isLoading: authLoading, isAuthenticated } = useConvexAuth();
 
+  const myProfile = useQuery(
+    api.profiles.getMyProfile,
+    isAuthenticated ? {} : "skip"
+  );
   const job = useQuery(
     api.jobs.getJob,
     isAuthenticated ? { jobId } : "skip"
@@ -269,6 +275,30 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
         </div>
 
         <div className="space-y-6">
+          {/* Master Profile Completeness Recommendation Banner */}
+          {(() => {
+            const completeness = checkProfileCompleteness(myProfile);
+            if (completeness.isComplete) return null;
+            return (
+              <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-4 shadow-sm space-y-2">
+                <div className="flex items-center gap-2 text-amber-800 font-bold text-xs">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Master Profile Incomplete ({completeness.score}% Complete)</span>
+                </div>
+                <p className="text-[11px] text-amber-700 leading-relaxed">
+                  Your profile is missing key sections: <span className="font-semibold text-amber-900">{completeness.missingSections.join(", ")}</span>. We recommend completing your profile for maximum resume accuracy.
+                </p>
+                <Link
+                  href="/profile"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:text-rose-600 transition-colors pt-1"
+                >
+                  <span>Complete Master Profile</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            );
+          })()}
+
           {/* Company Hero */}
           <div className="flex items-start gap-5">
             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 font-bold text-xl shrink-0 shadow-sm">
@@ -344,11 +374,22 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           </div>
 
           {job.pipelineState === "needs_user_input" && job.skillGapQuestions ? (
-            <div className="card-bloom border border-amber-100/60 bg-amber-50/30 rounded-2xl p-5">
-              <SkillGapQuestionnaire
-                jobId={job._id}
-                questions={job.skillGapQuestions}
-              />
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-amber-200/90 bg-gradient-to-r from-amber-50 via-rose-50/50 to-amber-50 p-4 shadow-sm space-y-1.5">
+                <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs tracking-tight">
+                  <Sparkles className="w-4 h-4 text-rose-600 shrink-0" />
+                  <span>Action Required: Verify Skill Gaps to Customize Resume</span>
+                </div>
+                <p className="text-[11px] text-amber-800/90 leading-relaxed font-medium">
+                  We identified job requirements that may be missing from your profile. Please confirm your experience below so AI can write high-impact tailored bullet points.
+                </p>
+              </div>
+              <div className="card-bloom border border-amber-100/60 bg-amber-50/30 rounded-2xl p-5">
+                <SkillGapQuestionnaire
+                  jobId={job._id}
+                  questions={job.skillGapQuestions}
+                />
+              </div>
             </div>
           ) : null}
 

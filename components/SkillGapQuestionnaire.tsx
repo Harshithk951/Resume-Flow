@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
-import { Loader2, Check } from "lucide-react";
+import { Loader2, Check, Sparkles } from "lucide-react";
 
 interface Question {
   skill: string;
@@ -68,10 +68,13 @@ export function SkillGapQuestionnaire({
   };
 
   return (
-    <div className="space-y-6 mt-6">
-      <h3 className="font-bold text-[var(--color-ink-soft)] text-sm tracking-tight border-b pb-2">
-        Confirm Skill Gaps
-      </h3>
+    <div className="space-y-6">
+      <div className="flex items-center gap-2 border-b border-[var(--color-hairline)]/80 pb-3">
+        <Sparkles className="w-4 h-4 text-rose-600" />
+        <h3 className="font-bold text-[var(--color-ink-soft)] text-sm tracking-tight">
+          Confirm Skill Requirements
+        </h3>
+      </div>
       <div className="space-y-4">
         {answers.map((q, idx) => (
           <div
