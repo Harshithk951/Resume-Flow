@@ -261,11 +261,12 @@ FORMATTING RULES:
         }
       }
 
-      // 6. Build conversation message stack
-      const formattedHistory = formatChatMessages(chatHistory);
+      // 6. Build conversation message stack (slice to last 10 messages for high-speed performance)
+      const recentHistory = chatHistory.slice(-10);
+      const formattedHistory = formatChatMessages(recentHistory);
       const messages = [{ role: "system", content: systemPrompt }, ...formattedHistory];
 
-      // 7. Invoke Llama 3.1 70B NIM
+      // 7. Invoke high-speed conversational NIM model
       const apiKey = process.env.NVIDIA_NIM_API_KEY;
       if (!apiKey) throw new Error("NVIDIA_NIM_API_KEY is not configured.");
       const openai = new OpenAI({ apiKey, baseURL: "https://integrate.api.nvidia.com/v1" });
@@ -280,7 +281,7 @@ FORMATTING RULES:
             model: selectedModel,
             messages: messages as any,
             temperature: 0.5,
-            max_tokens: 1536,
+            max_tokens: 600,
           }),
         { label: "Career chat assistant" }
       );
