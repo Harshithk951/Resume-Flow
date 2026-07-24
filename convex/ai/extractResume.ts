@@ -121,30 +121,7 @@ function extractAndMaskPII(text: string): {
   return { maskedText, pii };
 }
 
-// Helper to clean Markdown tags and parse JSON with robust fallbacks
-function cleanAndParseJSON(text: string): any {
-  let cleaned = text.trim();
-  if (cleaned.startsWith("```")) {
-    cleaned = cleaned.replace(/^```[a-zA-Z]*\n/, "").replace(/\n```$/, "");
-  }
-  cleaned = cleaned.trim();
-  
-  try {
-    return JSON.parse(cleaned);
-  } catch (e: any) {
-    console.warn("Standard JSON.parse failed, attempting automatic comma cleanup...", e.message);
-  }
-
-  // Attempt to fix trailing commas before closing brackets/braces
-  cleaned = cleaned.replace(/,\s*([\]}])/g, "$1");
-
-  try {
-    return JSON.parse(cleaned);
-  } catch (innerError: any) {
-    console.error("Failed to parse JSON content from LLM response:", cleaned);
-    throw new Error(`AI returned invalid JSON format: ${innerError.message}`);
-  }
-}
+import { cleanAndParseJSON } from "./jsonSanitizer";
 
 // ─── Timeout Helper ──────────────────────────────────────────
 

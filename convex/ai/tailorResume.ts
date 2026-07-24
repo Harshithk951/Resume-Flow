@@ -117,34 +117,7 @@ const TailoredResumeSchema = z.object({
   diffNotes: z.array(z.string()).default([]),
 });
 
-// Helper to clean Markdown tags and parse JSON with robust fallbacks
-function cleanAndParseJSON(text: string): any {
-  let cleaned = text.trim();
-  
-  // Extract JSON block using first '{' and last '}'
-  const startIdx = cleaned.indexOf("{");
-  const endIdx = cleaned.lastIndexOf("}");
-  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-    cleaned = cleaned.substring(startIdx, endIdx + 1);
-  }
-  cleaned = cleaned.trim();
-  
-  try {
-    return JSON.parse(cleaned);
-  } catch (e: any) {
-    console.warn("Standard JSON.parse failed, attempting automatic comma cleanup...", e.message);
-  }
-
-  // Attempt to fix trailing commas before closing brackets/braces
-  cleaned = cleaned.replace(/,\s*([\]}])/g, "$1");
-
-  try {
-    return JSON.parse(cleaned);
-  } catch (innerError: any) {
-    console.error("Failed to parse JSON content from LLM response:", cleaned);
-    throw new Error(`AI returned invalid JSON format: ${innerError.message}`);
-  }
-}
+import { cleanAndParseJSON } from "./jsonSanitizer";
 
 // ─── Convex Action ───────────────────────────────────────────
 
@@ -295,7 +268,7 @@ Return ONLY a valid JSON block matching this schema:
             ],
             response_format: { type: "json_object" },
             temperature: 0.2,
-            max_tokens: 1400,
+            max_tokens: 2500,
           }),
         { label: "Resume tailoring" }
       );

@@ -19,25 +19,7 @@ const OutreachPayloadSchema = z.object({
   linkedinNote: z.string(),
 });
 
-function cleanAndParseJSON(text: string): any {
-  let cleaned = text.trim();
-  
-  // Extract JSON block using first '{' and last '}'
-  const startIdx = cleaned.indexOf("{");
-  const endIdx = cleaned.lastIndexOf("}");
-  if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-    cleaned = cleaned.substring(startIdx, endIdx + 1);
-  }
-  cleaned = cleaned.trim();
-  
-  try {
-    return JSON.parse(cleaned);
-  } catch (e: any) {
-    // Attempt to fix trailing commas before closing brackets/braces
-    cleaned = cleaned.replace(/,\s*([\]}])/g, "$1");
-    return JSON.parse(cleaned);
-  }
-}
+import { cleanAndParseJSON } from "./jsonSanitizer";
 
 export const generateCoverLetterAndOutreach = action({
   args: { jobId: v.id("jobs") },
