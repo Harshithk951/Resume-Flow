@@ -15,7 +15,7 @@ import { staggerContainerSlow, scrollRevealUp } from "@/lib/animations";
 
 // ─── ATS Score Gauge ───────────────────────────────────────
 const ATS_RING_CIRCUMFERENCE = 251.2;
-const ATS_RING_TARGET_OFFSET = 5.02;
+const ATS_RING_TARGET_OFFSET = 25.12;
 
 function AtsScoreGauge() {
   const gaugeRef = useRef<HTMLDivElement>(null);
@@ -29,7 +29,7 @@ function AtsScoreGauge() {
     const duration = 2000;
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
-      setScore(Math.round(progress * 98));
+      setScore(Math.round(progress * 90));
       if (progress < 1) rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
@@ -64,7 +64,7 @@ function AtsScoreGauge() {
           />
         </svg>
         <div className="absolute flex flex-col items-center justify-center text-center">
-          {/* Continuously animated 98 score */}
+          {/* Continuously animated 90+ score */}
           <motion.span
             className="text-3xl font-black text-[var(--color-ink-soft)] leading-none tabular-nums"
             animate={{
@@ -72,7 +72,7 @@ function AtsScoreGauge() {
               transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
             }}
           >
-            {score}%
+            {score}{score >= 90 ? "+" : ""}
           </motion.span>
           <span className="text-[11px] font-bold text-[var(--color-ash)] uppercase tracking-widest mt-1.5">
             ATS Score

@@ -151,12 +151,6 @@ const faqSchema = {
           description: "Unlimited resumes, priority AI, advanced features",
         },
       ],
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.8",
-        ratingCount: "150",
-        bestRating: "5",
-      },
     },
   ],
 };
@@ -409,10 +403,10 @@ export default function FreeResumeBuilderPage() {
           </div>
           <div className="bg-white border border-slate-200/60 rounded-2xl p-8">
             <div className="text-4xl font-extrabold text-slate-900 mb-2">
-              4.8/5
+              10x
             </div>
             <div className="text-sm text-slate-500">
-              Average rating from users
+              Faster tailoring than manual editing
             </div>
           </div>
           <div className="bg-white border border-slate-200/60 rounded-2xl p-8">

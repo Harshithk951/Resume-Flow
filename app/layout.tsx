@@ -144,12 +144,6 @@ const jsonLd = {
         priceCurrency: "USD",
         description: "Free tier with 5 resume compiles per day",
       },
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: "4.8",
-        ratingCount: "150",
-        bestRating: "5",
-      },
     },
     {
       "@type": "FAQPage",
