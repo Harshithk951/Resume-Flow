@@ -6,6 +6,7 @@ import { api } from "@/convex/_generated/api";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, ReactNode, Suspense } from "react";
 import dynamic from "next/dynamic";
+import { BrandLoadingScreen } from "@/components/BrandLoadingScreen";
 
 // Lazy-load heavy components with next/dynamic for App Router compatibility
 const GlobalSilentCompiler = dynamic(
@@ -84,11 +85,11 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
     } else {
       // User HAS completed onboarding → never show /onboarding
       if (pathname === "/onboarding") {
-        router.replace("/dashboard");
+        router.replace("/optimize");
       } else if (pathname === "/profile") {
         const searchParams = new URLSearchParams(window.location.search);
         if (searchParams.get("mode") !== "edit") {
-          router.replace("/dashboard");
+          router.replace("/optimize");
         }
       }
     }
@@ -99,14 +100,14 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
   // ──────────────────────────────────────────────────────────
   if (!isClerkLoaded) {
     if (!isPublicRoute) {
-      return <GlobalAppLoadingSkeleton />;
+      return <BrandLoadingScreen />;
     }
   } else if (!isPublicRoute && !isSignedIn) {
-    return <GlobalAppLoadingSkeleton />;
+    return <BrandLoadingScreen />;
   }
 
   if (user === undefined && isSignedIn && !isPublicRoute) {
-    return <GlobalAppLoadingSkeleton />;
+    return <BrandLoadingScreen />;
   }
 
   // ──────────────────────────────────────────────────────────
@@ -143,29 +144,5 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
         </Suspense>
       )}
     </>
-  );
-}
-
-function GlobalAppLoadingSkeleton() {
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--color-surface-soft)] px-4">
-      <div className="w-full max-w-md space-y-6 text-center">
-        <div className="mx-auto h-12 w-12 rounded-xl bg-rose-100 flex items-center justify-center animate-pulse">
-          <div className="h-6 w-6 rounded bg-rose-500 opacity-75" />
-        </div>
-
-        <div className="space-y-3">
-          <div className="mx-auto h-5 w-48 rounded bg-[var(--color-secondary-bg)] animate-pulse" />
-          <div className="mx-auto h-4 w-64 rounded bg-[var(--color-secondary-bg)]/70 animate-pulse" />
-        </div>
-
-        <div className="mt-8 grid grid-cols-3 gap-3 opacity-40">
-          <div className="h-20 rounded-xl bg-[var(--color-secondary-bg)] animate-pulse" />
-          <div className="h-20 rounded-xl bg-[var(--color-secondary-bg)] animate-pulse col-span-2" />
-          <div className="h-28 rounded-xl bg-[var(--color-secondary-bg)] animate-pulse col-span-2" />
-          <div className="h-28 rounded-xl bg-[var(--color-secondary-bg)] animate-pulse" />
-        </div>
-      </div>
-    </div>
   );
 }

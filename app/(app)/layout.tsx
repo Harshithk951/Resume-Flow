@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { SignOutButton, UserButton, useAuth, useUser } from "@clerk/nextjs";
-import { Loader2, Menu, X, History, LogOut } from "lucide-react";
+import { Menu, X, History, LogOut } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { CreditsBadge } from "@/components/CreditsBadge";
 import { ChatHistoryPanel } from "@/components/ChatHistoryPanel";
 import { DashboardThemeProvider } from "@/components/DashboardThemeProvider";
+import { BrandLoadingScreen } from "@/components/BrandLoadingScreen";
 
 const navItems = [
   { name: "Should I apply?", href: "/job-check" },
@@ -44,11 +45,7 @@ export default function AuthenticatedLayout({
   }, [isLoaded, isSignedIn, router]);
 
   if (!isLoaded || !isSignedIn) {
-    return (
-      <div className="flex h-screen w-screen items-center justify-center bg-[var(--color-surface-soft)]">
-        <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
-      </div>
-    );
+    return <BrandLoadingScreen />;
   }
 
   return (
