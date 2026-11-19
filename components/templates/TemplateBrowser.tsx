@@ -309,7 +309,7 @@ export default function TemplateBrowser() {
                     onClick={() => setActiveSection(sec.id)}
                     className={`border-b-2 px-2 pb-2.5 text-xs font-bold transition-colors whitespace-nowrap ${
                       active
-                        ? "border-rose-500 text-[var(--color-ink)]"
+                        ? "border-purple-600 text-[var(--color-ink)]"
                         : "border-transparent text-[var(--color-ash)] hover:text-[var(--color-charcoal)]"
                     }`}
                   >
@@ -346,7 +346,7 @@ export default function TemplateBrowser() {
                           type="text"
                           value={profile.personalInfo.name}
                           onChange={(e) => updatePersonalInfo("name", e.target.value)}
-                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                           placeholder="John Doe"
                         />
                       </div>
@@ -356,7 +356,7 @@ export default function TemplateBrowser() {
                           type="email"
                           value={profile.personalInfo.email}
                           onChange={(e) => updatePersonalInfo("email", e.target.value)}
-                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                           placeholder="john@doe.com"
                         />
                       </div>
@@ -366,7 +366,7 @@ export default function TemplateBrowser() {
                           type="text"
                           value={profile.personalInfo.phone}
                           onChange={(e) => updatePersonalInfo("phone", e.target.value)}
-                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                           placeholder="+91 99999 88888"
                         />
                       </div>
@@ -376,7 +376,7 @@ export default function TemplateBrowser() {
                           type="url"
                           value={profile.personalInfo.portfolio}
                           onChange={(e) => updatePersonalInfo("portfolio", e.target.value)}
-                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                           placeholder="https://johndoe.dev"
                         />
                       </div>
@@ -386,7 +386,7 @@ export default function TemplateBrowser() {
                           type="url"
                           value={profile.personalInfo.linkedin}
                           onChange={(e) => updatePersonalInfo("linkedin", e.target.value)}
-                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                           placeholder="https://linkedin.com/in/username"
                         />
                       </div>
@@ -396,7 +396,7 @@ export default function TemplateBrowser() {
                           type="url"
                           value={profile.personalInfo.github}
                           onChange={(e) => updatePersonalInfo("github", e.target.value)}
-                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                          className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                           placeholder="https://github.com/username"
                         />
                       </div>
@@ -407,7 +407,7 @@ export default function TemplateBrowser() {
                         rows={5}
                         value={profile.summary}
                         onChange={(e) => setProfile((prev: any) => ({ ...prev, summary: e.target.value }))}
-                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50 resize-none"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50 resize-none"
                         placeholder="Brief professional profile summary..."
                       />
                     </div>
@@ -438,7 +438,7 @@ export default function TemplateBrowser() {
                         <button
                           type="button"
                           onClick={() => removeEducation(index)}
-                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -448,7 +448,7 @@ export default function TemplateBrowser() {
                             type="text"
                             value={edu.institution}
                             onChange={(e) => updateEducation(index, "institution", e.target.value)}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="University Name"
                           />
                         </div>
@@ -458,7 +458,7 @@ export default function TemplateBrowser() {
                             type="text"
                             value={edu.degree}
                             onChange={(e) => updateEducation(index, "degree", e.target.value)}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="B.Tech Computer Science"
                           />
                         </div>
@@ -469,7 +469,7 @@ export default function TemplateBrowser() {
                               type="text"
                               value={edu.gpa}
                               onChange={(e) => updateEducation(index, "gpa", e.target.value)}
-                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                               placeholder="e.g. 9.15"
                             />
                           </div>
@@ -479,7 +479,7 @@ export default function TemplateBrowser() {
                               type="text"
                               value={edu.year}
                               onChange={(e) => updateEducation(index, "year", e.target.value)}
-                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                               placeholder="2025"
                             />
                           </div>
@@ -516,7 +516,7 @@ export default function TemplateBrowser() {
                         <button
                           type="button"
                           onClick={() => removeExperience(index)}
-                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -526,7 +526,7 @@ export default function TemplateBrowser() {
                             type="text"
                             value={exp.company}
                             onChange={(e) => updateExperience(index, "company", e.target.value)}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="e.g. Google"
                           />
                         </div>
@@ -536,7 +536,7 @@ export default function TemplateBrowser() {
                             type="text"
                             value={exp.role}
                             onChange={(e) => updateExperience(index, "role", e.target.value)}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="e.g. Software Engineer Intern"
                           />
                         </div>
@@ -547,7 +547,7 @@ export default function TemplateBrowser() {
                               type="text"
                               value={exp.duration}
                               onChange={(e) => updateExperience(index, "duration", e.target.value)}
-                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                               placeholder="May 2024 - Aug 2024"
                             />
                           </div>
@@ -557,7 +557,7 @@ export default function TemplateBrowser() {
                               type="text"
                               value={exp.location}
                               onChange={(e) => updateExperience(index, "location", e.target.value)}
-                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                               placeholder="Remote / Bangalore"
                             />
                           </div>
@@ -568,7 +568,7 @@ export default function TemplateBrowser() {
                             rows={4}
                             value={exp.bullets?.join("\n")}
                             onChange={(e) => updateExperience(index, "bullets", e.target.value.split("\n"))}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500 resize-none leading-relaxed"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600 resize-none leading-relaxed"
                             placeholder="Developed features...&#10;Optimized queries..."
                           />
                         </div>
@@ -604,7 +604,7 @@ export default function TemplateBrowser() {
                         <button
                           type="button"
                           onClick={() => removeProject(index)}
-                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -614,7 +614,7 @@ export default function TemplateBrowser() {
                             type="text"
                             value={proj.name}
                             onChange={(e) => updateProject(index, "name", e.target.value)}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="Project title"
                           />
                         </div>
@@ -624,7 +624,7 @@ export default function TemplateBrowser() {
                             type="url"
                             value={proj.link}
                             onChange={(e) => updateProject(index, "link", e.target.value)}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="https://github.com/..."
                           />
                         </div>
@@ -634,7 +634,7 @@ export default function TemplateBrowser() {
                             type="text"
                             value={proj.technologies?.join(", ")}
                             onChange={(e) => updateProject(index, "technologies", e.target.value.split(",").map((t: string) => t.trim()))}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="React, Node.js, Convex"
                           />
                         </div>
@@ -644,7 +644,7 @@ export default function TemplateBrowser() {
                             rows={4}
                             value={proj.bullets?.join("\n")}
                             onChange={(e) => updateProject(index, "bullets", e.target.value.split("\n"))}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500 resize-none leading-relaxed"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600 resize-none leading-relaxed"
                             placeholder="Detail 1...&#10;Detail 2..."
                           />
                         </div>
@@ -672,7 +672,7 @@ export default function TemplateBrowser() {
                         type="text"
                         value={profile.skills.languages?.join(", ")}
                         onChange={(e) => updateSkillsList("languages", e.target.value)}
-                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                         placeholder="Typescript, Rust, Python, Go"
                       />
                     </div>
@@ -682,7 +682,7 @@ export default function TemplateBrowser() {
                         type="text"
                         value={profile.skills.frameworks?.join(", ")}
                         onChange={(e) => updateSkillsList("frameworks", e.target.value)}
-                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                         placeholder="React, Next.js, FastAPI, Actix"
                       />
                     </div>
@@ -692,7 +692,7 @@ export default function TemplateBrowser() {
                         type="text"
                         value={profile.skills.tools?.join(", ")}
                         onChange={(e) => updateSkillsList("tools", e.target.value)}
-                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                         placeholder="Docker, Kubernetes, AWS, Git"
                       />
                     </div>
@@ -702,7 +702,7 @@ export default function TemplateBrowser() {
                         type="text"
                         value={profile.skills.databases?.join(", ")}
                         onChange={(e) => updateSkillsList("databases", e.target.value)}
-                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                         placeholder="PostgreSQL, Redis, MongoDB"
                       />
                     </div>
@@ -712,7 +712,7 @@ export default function TemplateBrowser() {
                         type="text"
                         value={profile.skills.soft?.join(", ")}
                         onChange={(e) => updateSkillsList("soft", e.target.value)}
-                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                        className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                         placeholder="Data Structures, OOP, DBMS"
                       />
                     </div>
@@ -743,7 +743,7 @@ export default function TemplateBrowser() {
                         <button
                           type="button"
                           onClick={() => removeCertification(index)}
-                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                          className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -753,7 +753,7 @@ export default function TemplateBrowser() {
                             type="text"
                             value={cert.name}
                             onChange={(e) => updateCertification(index, "name", e.target.value)}
-                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                            className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                             placeholder="AWS Solutions Architect"
                           />
                         </div>
@@ -764,7 +764,7 @@ export default function TemplateBrowser() {
                               type="text"
                               value={cert.issuer}
                               onChange={(e) => updateCertification(index, "issuer", e.target.value)}
-                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                               placeholder="Amazon Web Services"
                             />
                           </div>
@@ -774,7 +774,7 @@ export default function TemplateBrowser() {
                               type="text"
                               value={cert.year}
                               onChange={(e) => updateCertification(index, "year", e.target.value)}
-                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                              className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                               placeholder="2024"
                             />
                           </div>
@@ -799,7 +799,7 @@ export default function TemplateBrowser() {
                 </span>
               ) : isSaving ? (
                 <span className="flex items-center gap-1.5">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-rose-500" /> Syncing data...
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-purple-600" /> Syncing data...
                 </span>
               ) : (
                 <span>Updates compile locally.</span>
@@ -810,7 +810,7 @@ export default function TemplateBrowser() {
               type="button"
               onClick={handleSaveProfile}
               disabled={isSaving}
-              className="w-full flex items-center justify-center gap-2 h-11 px-4 rounded-2xl text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-md shadow-rose-500/10 hover:shadow-lg hover:shadow-rose-500/15 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none"
+              className="w-full flex items-center justify-center gap-2 h-11 px-4 rounded-2xl text-sm font-semibold bg-[#5B50E6] hover:bg-[#4E43D8] text-white shadow-md shadow-purple-500/10 hover:shadow-lg hover:shadow-purple-500/15 active:scale-[0.98] transition-all disabled:opacity-50 disabled:pointer-events-none"
             >
               <Save className="w-4 h-4" />
               <span>Save to Master Profile</span>

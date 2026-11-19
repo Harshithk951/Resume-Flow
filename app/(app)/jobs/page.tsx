@@ -184,7 +184,7 @@ export default function JobTrackerPage() {
                 className="py-2.5 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E44D6] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md active:scale-[0.99] cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
-                <span>+ Add application</span>
+                <span>Add application</span>
               </button>
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function JobTrackerPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search company or role..."
-                className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-white"
+                className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white"
               />
               {searchQuery && (
                 <button
@@ -313,7 +313,7 @@ export default function JobTrackerPage() {
                 href="/optimize"
                 className="w-full sm:w-auto py-3 px-5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs"
               >
-                <Sparkles className="w-4 h-4 text-rose-600" />
+                <Sparkles className="w-4 h-4 text-purple-600" />
                 <span>Optimize a resume</span>
               </Link>
             </div>
@@ -327,7 +327,7 @@ export default function JobTrackerPage() {
                 setSearchQuery("");
                 setActiveTab("all");
               }}
-              className="mt-2 text-xs font-bold text-rose-600 hover:underline"
+              className="mt-2 text-xs font-bold text-purple-600 hover:underline"
             >
               Clear filters
             </button>
@@ -368,7 +368,7 @@ export default function JobTrackerPage() {
                         >
                           <div className="flex items-start justify-between gap-1">
                             <div className="min-w-0">
-                              <span className="text-[10px] font-bold text-rose-600 uppercase tracking-wider block truncate">
+                              <span className="text-[10px] font-bold text-purple-600 uppercase tracking-wider block truncate">
                                 {job.companyName}
                               </span>
                               <h4 className="text-xs font-bold text-slate-900 truncate mt-0.5">
@@ -382,7 +382,7 @@ export default function JobTrackerPage() {
                                 <button
                                   type="button"
                                   onClick={() => handleDelete(job._id)}
-                                  className="text-[9px] bg-rose-600 text-white font-bold px-1.5 py-0.5 rounded"
+                                  className="text-[9px] bg-red-600 text-white font-bold px-1.5 py-0.5 rounded"
                                 >
                                   Del
                                 </button>
@@ -398,7 +398,7 @@ export default function JobTrackerPage() {
                               <button
                                 type="button"
                                 onClick={() => setDeleteConfirmId(job._id)}
-                                className="text-slate-300 hover:text-rose-600 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                className="text-slate-300 hover:text-red-600 p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                                 title="Delete"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -546,7 +546,7 @@ export default function JobTrackerPage() {
                             <button
                               type="button"
                               onClick={() => handleDelete(job._id)}
-                              className="p-1 text-slate-400 hover:text-rose-600"
+                              className="p-1 text-slate-400 hover:text-red-600"
                               title="Delete application"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -583,7 +583,7 @@ export default function JobTrackerPage() {
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Company Name <span className="text-rose-500">*</span>
+                  Company Name <span className="text-purple-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -597,7 +597,7 @@ export default function JobTrackerPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Job Title <span className="text-rose-500">*</span>
+                  Job Title <span className="text-purple-600">*</span>
                 </label>
                 <input
                   type="text"

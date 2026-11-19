@@ -46,7 +46,7 @@ export default function AuthenticatedLayout({
   if (!isLoaded || !isSignedIn) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-[var(--color-surface-soft)]">
-        <Loader2 className="h-6 w-6 animate-spin text-rose-500" />
+        <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
       </div>
     );
   }
@@ -170,13 +170,13 @@ export default function AuthenticatedLayout({
                         aria-current={active ? "page" : undefined}
                         className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                           active
-                            ? "bg-rose-50 text-rose-600 font-semibold border border-rose-100/70"
+                            ? "bg-purple-50 text-purple-700 font-semibold border border-purple-100/70"
                             : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                         }`}
                       >
                         <span>{item.name}</span>
                         {active && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-rose-600" />
+                          <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
                         )}
                       </Link>
                     );
@@ -218,7 +218,7 @@ export default function AuthenticatedLayout({
                 <SignOutButton redirectUrl="/sign-in?from=logout">
                   <button
                     type="button"
-                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-rose-50 hover:text-rose-600"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-purple-50 hover:text-purple-600"
                   >
                     <LogOut className="h-4 w-4 text-slate-400" />
                     <span>Log out</span>

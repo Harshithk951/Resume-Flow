@@ -358,7 +358,7 @@ export default function OptimizePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200/80 text-rose-700 text-xs font-semibold mb-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200/80 text-purple-700 text-xs font-semibold mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>AI Resume Optimizer</span>
               </div>
@@ -396,7 +396,7 @@ export default function OptimizePage() {
             >
               <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
                     1
                   </div>
                   <h2 className="text-base sm:text-lg font-bold text-slate-900">
@@ -450,7 +450,7 @@ export default function OptimizePage() {
                     onChange={(e) => setResumeText(e.target.value)}
                     placeholder="Paste your resume here (Summary, Work Experience, Education, Projects, Skills)..."
                     rows={8}
-                    className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 resize-y font-mono leading-relaxed transition-all"
+                    className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y font-mono leading-relaxed transition-all"
                   />
                   <div className="flex items-center justify-between text-xs text-slate-500 px-1">
                     <span>
@@ -464,7 +464,7 @@ export default function OptimizePage() {
                       <button
                         type="button"
                         onClick={() => setResumeText("")}
-                        className="text-slate-400 hover:text-rose-600 transition-colors"
+                        className="text-slate-400 hover:text-purple-600 transition-colors"
                       >
                         Clear
                       </button>
@@ -478,7 +478,7 @@ export default function OptimizePage() {
                 <div className="space-y-4">
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="border-2 border-dashed border-slate-200 hover:border-rose-400 rounded-2xl p-8 text-center cursor-pointer bg-slate-50/50 hover:bg-rose-50/20 transition-all group"
+                    className="border-2 border-dashed border-slate-200 hover:border-purple-400 rounded-2xl p-8 text-center cursor-pointer bg-slate-50/50 hover:bg-purple-50/20 transition-all group"
                   >
                     <input
                       ref={fileInputRef}
@@ -487,7 +487,7 @@ export default function OptimizePage() {
                       onChange={handleFileUpload}
                       className="hidden"
                     />
-                    <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 text-rose-600 flex items-center justify-center mx-auto mb-3 shadow-2xs group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 text-purple-600 flex items-center justify-center mx-auto mb-3 shadow-2xs group-hover:scale-105 transition-transform">
                       <Upload className="w-5 h-5" />
                     </div>
                     <p className="text-sm font-semibold text-slate-800">
@@ -512,7 +512,7 @@ export default function OptimizePage() {
                       <button
                         type="button"
                         onClick={() => setResumeTab("paste")}
-                        className="text-rose-600 font-semibold hover:underline"
+                        className="text-purple-600 font-semibold hover:underline"
                       >
                         View & Edit Text
                       </button>
@@ -535,7 +535,7 @@ export default function OptimizePage() {
                       </p>
                       <Link
                         href="/resumes"
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-rose-600 hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-purple-600 hover:underline"
                       >
                         <span>Manage Saved Resumes</span>
                         <ChevronRight className="w-3.5 h-3.5" />
@@ -551,7 +551,7 @@ export default function OptimizePage() {
                             onClick={() => handleSelectSavedResume(resume)}
                             className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
                               isSelected
-                                ? "border-rose-600 bg-rose-50/50 shadow-2xs ring-1 ring-rose-500"
+                                ? "border-purple-600 bg-purple-50/50 shadow-2xs ring-1 ring-purple-500"
                                 : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
                             }`}
                           >
@@ -584,7 +584,7 @@ export default function OptimizePage() {
             >
               <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
                     2
                   </div>
                   <h2 className="text-base sm:text-lg font-bold text-slate-900">
@@ -633,7 +633,7 @@ export default function OptimizePage() {
                         value={jobUrl}
                         onChange={(e) => setJobUrl(e.target.value)}
                         placeholder="https://linkedin.com/jobs/view/... or Indeed / Greenhouse URL"
-                        className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-white"
+                        className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white"
                       />
                     </div>
                     <button
@@ -662,26 +662,26 @@ export default function OptimizePage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Role Title <span className="text-rose-500">*</span>
+                    Role Title <span className="text-purple-600">*</span>
                   </label>
                   <input
                     type="text"
                     value={roleTitle}
                     onChange={(e) => setRoleTitle(e.target.value)}
                     placeholder="e.g. Senior Frontend Engineer"
-                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-white"
+                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Company Name <span className="text-rose-500">*</span>
+                    Company Name <span className="text-purple-600">*</span>
                   </label>
                   <input
                     type="text"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="e.g. Stripe, Google, or Startup"
-                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-white"
+                    className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white"
                   />
                 </div>
               </div>
@@ -693,7 +693,7 @@ export default function OptimizePage() {
                   onChange={(e) => setJobDescription(e.target.value)}
                   placeholder="Paste the full job description here (Responsibilities, Requirements, Tech Stack)..."
                   rows={7}
-                  className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 resize-y font-mono leading-relaxed transition-all"
+                  className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y font-mono leading-relaxed transition-all"
                 />
                 <div className="flex items-center justify-between text-xs px-1">
                   <span className="text-slate-500">
@@ -705,7 +705,7 @@ export default function OptimizePage() {
                   {/* HireRaft reference link */}
                   <Link
                     href="/job-check"
-                    className="text-rose-600 hover:text-rose-700 font-semibold inline-flex items-center gap-1 transition-colors"
+                    className="text-purple-600 hover:text-purple-700 font-semibold inline-flex items-center gap-1 transition-colors"
                   >
                     <span>Not sure? Check the fit first, it&apos;s free</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -721,7 +721,7 @@ export default function OptimizePage() {
             >
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
                     3
                   </div>
                   <div>
@@ -744,7 +744,7 @@ export default function OptimizePage() {
                 maxLength={490}
                 placeholder="Example: I led a team of 4 engineers last quarter, got promoted in January, and want to highlight distributed systems architecture over frontend work."
                 rows={3}
-                className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 resize-none leading-relaxed transition-all"
+                className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-none leading-relaxed transition-all"
               />
             </section>
 
@@ -754,7 +754,7 @@ export default function OptimizePage() {
               id="section-length"
             >
               <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100 mb-4">
-                <div className="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
                   4
                 </div>
                 <h2 className="text-base sm:text-lg font-bold text-slate-900">
@@ -771,7 +771,7 @@ export default function OptimizePage() {
                       onClick={() => setOutputLength(opt.id)}
                       className={`p-3.5 rounded-xl border cursor-pointer transition-all flex flex-col justify-between ${
                         isSelected
-                          ? "border-rose-600 bg-rose-50/70 shadow-2xs ring-1 ring-rose-500"
+                          ? "border-purple-600 bg-purple-50/70 shadow-2xs ring-1 ring-purple-500"
                           : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
                       }`}
                     >
@@ -782,7 +782,7 @@ export default function OptimizePage() {
                         <div
                           className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                             isSelected
-                              ? "border-rose-600 bg-rose-600 text-white"
+                              ? "border-purple-600 bg-purple-600 text-white"
                               : "border-slate-300"
                           }`}
                         >
@@ -806,7 +806,7 @@ export default function OptimizePage() {
                   type="checkbox"
                   checked={consentImprovement}
                   onChange={(e) => setConsentImprovement(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 rounded border-slate-300 text-rose-600 focus:ring-rose-500 cursor-pointer"
+                  className="mt-0.5 h-4 w-4 rounded border-slate-300 text-purple-600 focus:ring-purple-500 cursor-pointer"
                 />
                 <span className="text-xs text-slate-600 leading-relaxed">
                   Can your data be used anonymously to improve our models?{" "}
@@ -820,7 +820,7 @@ export default function OptimizePage() {
                   type="button"
                   disabled={isOptimizing}
                   onClick={handleOptimize}
-                  className="w-full py-4 px-6 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white font-bold text-base transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 disabled:opacity-60 cursor-pointer"
+                  className="w-full py-4 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] active:scale-[0.99] text-white font-bold text-base transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 disabled:opacity-60 cursor-pointer"
                 >
                   {isOptimizing ? (
                     <>
@@ -836,7 +836,7 @@ export default function OptimizePage() {
                   ) : (
                     <>
                       <span>Optimize my resume ✦</span>
-                      <span className="text-xs font-normal opacity-80 px-2 py-0.5 rounded-md bg-rose-700/60">
+                      <span className="text-xs font-normal opacity-80 px-2 py-0.5 rounded-md bg-[#4E43D8]/60">
                         Takes about 27 secs
                       </span>
                     </>
@@ -852,7 +852,7 @@ export default function OptimizePage() {
                   </span>
                   <Link
                     href="/pricing"
-                    className="text-rose-600 font-semibold hover:underline"
+                    className="text-purple-600 font-semibold hover:underline"
                   >
                     See plans →
                   </Link>
@@ -871,7 +871,7 @@ export default function OptimizePage() {
 
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 font-bold text-xs flex items-center justify-center shrink-0 border border-rose-100">
+                  <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 font-bold text-xs flex items-center justify-center shrink-0 border border-purple-100">
                     1
                   </div>
                   <div>
@@ -885,7 +885,7 @@ export default function OptimizePage() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 font-bold text-xs flex items-center justify-center shrink-0 border border-rose-100">
+                  <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 font-bold text-xs flex items-center justify-center shrink-0 border border-purple-100">
                     2
                   </div>
                   <div>
@@ -899,7 +899,7 @@ export default function OptimizePage() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 font-bold text-xs flex items-center justify-center shrink-0 border border-rose-100">
+                  <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-600 font-bold text-xs flex items-center justify-center shrink-0 border border-purple-100">
                     3
                   </div>
                   <div>
@@ -937,7 +937,7 @@ export default function OptimizePage() {
                   </div>
                   <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                     <div
-                      className="bg-rose-500 h-full rounded-full transition-all"
+                      className="bg-purple-600 h-full rounded-full transition-all"
                       style={{ width: `${(freeRemaining / 2) * 100}%` }}
                     />
                   </div>
@@ -964,7 +964,7 @@ export default function OptimizePage() {
                   )}
                   <Link
                     href="/pricing"
-                    className="inline-block text-rose-600 font-semibold hover:underline pt-1"
+                    className="inline-block text-purple-600 font-semibold hover:underline pt-1"
                   >
                     Manage plan →
                   </Link>
@@ -980,7 +980,7 @@ export default function OptimizePage() {
                 </h3>
                 <Link
                   href="/resumes"
-                  className="text-xs font-semibold text-rose-600 hover:underline"
+                  className="text-xs font-semibold text-purple-600 hover:underline"
                 >
                   Manage →
                 </Link>
@@ -991,7 +991,7 @@ export default function OptimizePage() {
                   <p className="text-xs text-slate-500 mb-2">No saved resumes yet</p>
                   <Link
                     href="/resumes"
-                    className="text-xs font-semibold text-rose-600 hover:underline"
+                    className="text-xs font-semibold text-purple-600 hover:underline"
                   >
                     + Add baseline resume
                   </Link>
@@ -1012,7 +1012,7 @@ export default function OptimizePage() {
                           {r.targetRole || "General"}
                         </p>
                       </div>
-                      <span className="text-[10px] font-semibold text-rose-600 hover:underline shrink-0">
+                      <span className="text-[10px] font-semibold text-purple-600 hover:underline shrink-0">
                         Use
                       </span>
                     </div>
@@ -1028,13 +1028,13 @@ export default function OptimizePage() {
       {wizardStep !== null && (
         <div className="fixed bottom-4 inset-x-4 max-w-2xl mx-auto z-40 animate-in slide-in-from-bottom-4 duration-300">
           <div className="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800 flex items-start gap-4">
-            <div className="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
               {wizardStep}
             </div>
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[10px] font-bold text-rose-400 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">
                   Quick Guide · Step {wizardStep} of 4
                 </span>
                 <button
@@ -1070,7 +1070,7 @@ export default function OptimizePage() {
                     <span
                       key={step}
                       className={`w-2 h-2 rounded-full transition-all ${
-                        step === wizardStep ? "bg-rose-500 w-4" : "bg-slate-700"
+                        step === wizardStep ? "bg-purple-500 w-4" : "bg-slate-700"
                       }`}
                     />
                   ))}
@@ -1095,7 +1095,7 @@ export default function OptimizePage() {
                   ) : (
                     <button
                       onClick={dismissWizard}
-                      className="px-3 py-1 bg-rose-600 text-white rounded-lg text-xs font-bold hover:bg-rose-500"
+                      className="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-500"
                     >
                       Got it
                     </button>
@@ -1147,7 +1147,7 @@ export default function OptimizePage() {
               </Link>
               <Link
                 href="/history"
-                className="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs transition-colors"
+                className="w-full sm:flex-1 py-2.5 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold text-xs transition-colors"
               >
                 View in History →
               </Link>

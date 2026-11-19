@@ -93,7 +93,7 @@ function ResumeBuilderPageContent() {
   if (authLoading || (isAuthenticated && myProfile === undefined)) {
     return (
       <div className="h-[50vh] w-full flex items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-rose-600" />
+        <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
       </div>
     );
   }
@@ -268,7 +268,7 @@ function ResumeBuilderPageContent() {
                 onClick={() => setActiveSection(sec)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition-all whitespace-nowrap ${
                   active
-                    ? "bg-rose-50 text-rose-600"
+                    ? "bg-purple-50 text-purple-600"
                     : "text-[var(--color-ash)] hover:bg-[var(--color-surface-soft)] hover:text-[var(--color-charcoal)]"
                 }`}
               >
@@ -298,7 +298,7 @@ function ResumeBuilderPageContent() {
                       type="text"
                       value={profile.personalInfo.name}
                       onChange={(e) => updatePersonalInfo("name", e.target.value)}
-                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="John Doe"
                       autoComplete="name"
                     />
@@ -309,7 +309,7 @@ function ResumeBuilderPageContent() {
                       type="email"
                       value={profile.personalInfo.email}
                       onChange={(e) => updatePersonalInfo("email", e.target.value)}
-                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="john@doe.com"
                       autoComplete="email"
                       inputMode="email"
@@ -323,7 +323,7 @@ function ResumeBuilderPageContent() {
                       type="tel"
                       value={profile.personalInfo.phone}
                       onChange={(e) => updatePersonalInfo("phone", e.target.value)}
-                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="+91 99999 88888"
                       autoComplete="tel"
                       inputMode="tel"
@@ -335,7 +335,7 @@ function ResumeBuilderPageContent() {
                       type="url"
                       value={profile.personalInfo.portfolio}
                       onChange={(e) => updatePersonalInfo("portfolio", e.target.value)}
-                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="https://johndoe.dev"
                     />
                   </div>
@@ -347,7 +347,7 @@ function ResumeBuilderPageContent() {
                       type="url"
                       value={profile.personalInfo.linkedin}
                       onChange={(e) => updatePersonalInfo("linkedin", e.target.value)}
-                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="https://linkedin.com/in/username"
                     />
                   </div>
@@ -357,7 +357,7 @@ function ResumeBuilderPageContent() {
                       type="url"
                       value={profile.personalInfo.github}
                       onChange={(e) => updatePersonalInfo("github", e.target.value)}
-                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                      className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                       placeholder="https://github.com/username"
                     />
                   </div>
@@ -368,7 +368,7 @@ function ResumeBuilderPageContent() {
                     rows={4}
                     value={profile.summary}
                     onChange={(e) => setProfile((prev: any) => ({ ...prev, summary: e.target.value }))}
-                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50 resize-none"
+                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50 resize-none"
                     placeholder="Brief professional profile summary..."
                     onFocus={(e) => e.currentTarget.scrollIntoView({ block: 'center', behavior: 'smooth' })}
                   />
@@ -400,7 +400,7 @@ function ResumeBuilderPageContent() {
                     <button
                       type="button"
                       onClick={() => removeEducation(index)}
-                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -411,7 +411,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={edu.institution}
                           onChange={(e) => updateEducation(index, "institution", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="University Name"
                           autoComplete="organization"
                         />
@@ -422,7 +422,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={edu.degree}
                           onChange={(e) => updateEducation(index, "degree", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="B.Tech Computer Science"
                         />
                       </div>
@@ -434,7 +434,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={edu.gpa}
                           onChange={(e) => updateEducation(index, "gpa", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="e.g. 9.15"
                           inputMode="decimal"
                         />
@@ -445,7 +445,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={edu.year}
                           onChange={(e) => updateEducation(index, "year", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="2025"
                           inputMode="numeric"
                         />
@@ -480,7 +480,7 @@ function ResumeBuilderPageContent() {
                     <button
                       type="button"
                       onClick={() => removeExperience(index)}
-                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -491,7 +491,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={exp.company}
                           onChange={(e) => updateExperience(index, "company", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="e.g. Google"
                         />
                       </div>
@@ -501,7 +501,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={exp.role}
                           onChange={(e) => updateExperience(index, "role", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="e.g. Software Engineer Intern"
                         />
                       </div>
@@ -513,7 +513,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={exp.duration}
                           onChange={(e) => updateExperience(index, "duration", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="May 2024 - Aug 2024"
                         />
                       </div>
@@ -523,7 +523,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={exp.location}
                           onChange={(e) => updateExperience(index, "location", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="Remote / Bangalore"
                         />
                       </div>
@@ -534,7 +534,7 @@ function ResumeBuilderPageContent() {
                         rows={3}
                         value={exp.bullets?.join("\n")}
                         onChange={(e) => updateExperience(index, "bullets", e.target.value.split("\n"))}
-                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500 resize-none leading-relaxed"
+                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600 resize-none leading-relaxed"
                         placeholder="Bullet point 1&#10;Bullet point 2..."
                       />
                     </div>
@@ -567,7 +567,7 @@ function ResumeBuilderPageContent() {
                     <button
                       type="button"
                       onClick={() => removeProject(index)}
-                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -578,7 +578,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={proj.name}
                           onChange={(e) => updateProject(index, "name", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="Project title"
                         />
                       </div>
@@ -588,7 +588,7 @@ function ResumeBuilderPageContent() {
                           type="url"
                           value={proj.link}
                           onChange={(e) => updateProject(index, "link", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="https://github.com/..."
                         />
                       </div>
@@ -599,7 +599,7 @@ function ResumeBuilderPageContent() {
                         type="text"
                         value={proj.technologies?.join(", ")}
                         onChange={(e) => updateProject(index, "technologies", e.target.value.split(",").map(t => t.trim()))}
-                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                         placeholder="React, Node.js, Convex"
                       />
                     </div>
@@ -609,7 +609,7 @@ function ResumeBuilderPageContent() {
                         rows={3}
                         value={proj.bullets?.join("\n")}
                         onChange={(e) => updateProject(index, "bullets", e.target.value.split("\n"))}
-                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500 resize-none leading-relaxed"
+                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600 resize-none leading-relaxed"
                         placeholder="Detail 1&#10;Detail 2..."
                       />
                     </div>
@@ -634,7 +634,7 @@ function ResumeBuilderPageContent() {
                     type="text"
                     value={profile.skills.languages?.join(", ")}
                     onChange={(e) => updateSkillsList("languages", e.target.value)}
-                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                     placeholder="Typescript, Rust, Python, Go"
                   />
                 </div>
@@ -644,7 +644,7 @@ function ResumeBuilderPageContent() {
                     type="text"
                     value={profile.skills.frameworks?.join(", ")}
                     onChange={(e) => updateSkillsList("frameworks", e.target.value)}
-                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                     placeholder="React, Next.js, FastAPI, Actix"
                   />
                 </div>
@@ -654,7 +654,7 @@ function ResumeBuilderPageContent() {
                     type="text"
                     value={profile.skills.tools?.join(", ")}
                     onChange={(e) => updateSkillsList("tools", e.target.value)}
-                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                     placeholder="Docker, Kubernetes, AWS, Git"
                   />
                 </div>
@@ -664,7 +664,7 @@ function ResumeBuilderPageContent() {
                     type="text"
                     value={profile.skills.databases?.join(", ")}
                     onChange={(e) => updateSkillsList("databases", e.target.value)}
-                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                     placeholder="PostgreSQL, Redis, MongoDB"
                   />
                 </div>
@@ -674,7 +674,7 @@ function ResumeBuilderPageContent() {
                     type="text"
                     value={profile.skills.soft?.join(", ")}
                     onChange={(e) => updateSkillsList("soft", e.target.value)}
-                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-rose-500 transition-all text-sm bg-[var(--color-surface-soft)]/50"
+                    className="px-4 py-2.5 rounded-xl border border-[var(--color-hairline)] focus:outline-none focus:border-purple-600 transition-all text-sm bg-[var(--color-surface-soft)]/50"
                     placeholder="Data Structures, OOP, DBMS"
                   />
                 </div>
@@ -705,7 +705,7 @@ function ResumeBuilderPageContent() {
                     <button
                       type="button"
                       onClick={() => removeCertification(index)}
-                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-rose-600 transition-colors"
+                      className="absolute top-4 right-4 text-[var(--color-stone)] hover:text-red-600 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -716,7 +716,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={cert.name}
                           onChange={(e) => updateCertification(index, "name", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="AWS Solutions Architect"
                         />
                       </div>
@@ -726,7 +726,7 @@ function ResumeBuilderPageContent() {
                           type="text"
                           value={cert.year}
                           onChange={(e) => updateCertification(index, "year", e.target.value)}
-                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                          className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                           placeholder="2024"
                         />
                       </div>
@@ -737,7 +737,7 @@ function ResumeBuilderPageContent() {
                         type="text"
                         value={cert.issuer}
                         onChange={(e) => updateCertification(index, "issuer", e.target.value)}
-                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-rose-500"
+                        className="px-3 py-2 rounded-lg border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-xs focus:outline-none focus:border-purple-600"
                         placeholder="Amazon Web Services"
                       />
                     </div>
@@ -783,7 +783,7 @@ function ResumeBuilderPageContent() {
             <select
               value={activeTemplate}
               onChange={(e) => setActiveTemplate(e.target.value)}
-              className="text-xs border border-[var(--color-hairline)] p-2.5 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-charcoal)] focus:outline-none focus:border-rose-500 cursor-pointer"
+              className="text-xs border border-[var(--color-hairline)] p-2.5 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-charcoal)] focus:outline-none focus:border-purple-600 cursor-pointer"
             >
               <option value="ats_strict">ATS Strict (Classic)</option>
               <option value="modern_professional">Startup Accent</option>
@@ -812,7 +812,7 @@ export default function ResumeBuilderPage() {
     <Suspense
       fallback={
         <div className="h-[50vh] w-full flex items-center justify-center bg-[var(--color-surface-soft)]">
-          <Loader2 className="h-6 w-6 animate-spin text-rose-600" />
+          <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
         </div>
       }
     >

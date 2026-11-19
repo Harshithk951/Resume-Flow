@@ -35,7 +35,7 @@ export const LiveSandboxPreview: React.FC<PreviewProps> = ({ compiledHtml }) => 
         />
       ) : (
         <div className="flex-grow flex items-center justify-center bg-[var(--color-surface-soft)] border border-[var(--color-hairline)]/50 rounded-2xl h-[600px] text-[var(--color-stone)] text-xs">
-          <Loader2 className="w-4 h-4 animate-spin text-rose-500 mr-2" />
+          <Loader2 className="w-4 h-4 animate-spin text-purple-600 mr-2" />
           <span>Loading preview...</span>
         </div>
       )}

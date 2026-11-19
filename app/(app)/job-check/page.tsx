@@ -220,7 +220,7 @@ export default function JobCheckPage() {
       {/* ─── PAGE HEADER ─────────────────────────────────────── */}
       <div className="border-b border-slate-200/80 bg-white/60 backdrop-blur-xs">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200/80 text-rose-700 text-xs font-semibold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200/80 text-purple-700 text-xs font-semibold mb-2">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Pre-Application Diagnostic</span>
           </div>
@@ -241,7 +241,7 @@ export default function JobCheckPage() {
           <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
                   1
                 </div>
                 <h2 className="text-base sm:text-lg font-bold text-slate-900">
@@ -295,7 +295,7 @@ export default function JobCheckPage() {
                   onChange={(e) => setResumeText(e.target.value)}
                   placeholder="Paste your baseline resume text here (experience, skills, projects)..."
                   rows={6}
-                  className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 resize-y font-mono leading-relaxed"
+                  className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y font-mono leading-relaxed"
                 />
                 <div className="flex items-center justify-between text-xs text-slate-500 px-1">
                   <span>
@@ -307,7 +307,7 @@ export default function JobCheckPage() {
                     <button
                       type="button"
                       onClick={() => setResumeText("")}
-                      className="text-slate-400 hover:text-rose-600 transition-colors"
+                      className="text-slate-400 hover:text-purple-600 transition-colors"
                     >
                       Clear
                     </button>
@@ -321,7 +321,7 @@ export default function JobCheckPage() {
               <div className="space-y-3">
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-slate-200 hover:border-rose-400 rounded-2xl p-6 text-center cursor-pointer bg-slate-50/50 hover:bg-rose-50/20 transition-all group"
+                  className="border-2 border-dashed border-slate-200 hover:border-purple-400 rounded-2xl p-6 text-center cursor-pointer bg-slate-50/50 hover:bg-purple-50/20 transition-all group"
                 >
                   <input
                     ref={fileInputRef}
@@ -330,7 +330,7 @@ export default function JobCheckPage() {
                     onChange={handleFileUpload}
                     className="hidden"
                   />
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-rose-600 flex items-center justify-center mx-auto mb-2 shadow-2xs group-hover:scale-105 transition-transform">
+                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 text-purple-600 flex items-center justify-center mx-auto mb-2 shadow-2xs group-hover:scale-105 transition-transform">
                     <Upload className="w-4 h-4" />
                   </div>
                   <p className="text-sm font-semibold text-slate-800">
@@ -355,7 +355,7 @@ export default function JobCheckPage() {
                     <p className="text-xs text-slate-600">No saved resumes found.</p>
                     <Link
                       href="/resumes"
-                      className="inline-block text-xs font-semibold text-rose-600 hover:underline mt-1"
+                      className="inline-block text-xs font-semibold text-purple-600 hover:underline mt-1"
                     >
                       Manage Saved Resumes →
                     </Link>
@@ -370,7 +370,7 @@ export default function JobCheckPage() {
                           onClick={() => handleSelectSavedResume(r)}
                           className={`p-3 rounded-xl border cursor-pointer transition-all ${
                             isSelected
-                              ? "border-rose-600 bg-rose-50/70 shadow-2xs ring-1 ring-rose-500"
+                              ? "border-purple-600 bg-purple-50/70 shadow-2xs ring-1 ring-purple-500"
                               : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50"
                           }`}
                         >
@@ -393,7 +393,7 @@ export default function JobCheckPage() {
           <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
               <div className="flex items-center gap-2.5">
-                <div className="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
                   2
                 </div>
                 <h2 className="text-base sm:text-lg font-bold text-slate-900">
@@ -442,7 +442,7 @@ export default function JobCheckPage() {
                       value={jobUrl}
                       onChange={(e) => setJobUrl(e.target.value)}
                       placeholder="https://linkedin.com/jobs/... or Indeed/Greenhouse URL"
-                      className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 bg-white"
+                      className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white"
                     />
                   </div>
                   <button
@@ -471,7 +471,7 @@ export default function JobCheckPage() {
                 onChange={(e) => setJobText(e.target.value)}
                 placeholder="Paste the target job description (Requirements, Responsibilities, Qualifications)..."
                 rows={6}
-                className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 resize-y font-mono leading-relaxed"
+                className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y font-mono leading-relaxed"
               />
               <div className="flex items-center justify-between text-xs text-slate-500 px-1">
                 <span>
@@ -483,7 +483,7 @@ export default function JobCheckPage() {
                   <button
                     type="button"
                     onClick={() => setJobText("")}
-                    className="text-slate-400 hover:text-rose-600 transition-colors"
+                    className="text-slate-400 hover:text-purple-600 transition-colors"
                   >
                     Clear
                   </button>
@@ -554,7 +554,7 @@ export default function JobCheckPage() {
                       ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                       : result.matchScore >= 50
                       ? "bg-amber-50 text-amber-700 border border-amber-200"
-                      : "bg-rose-50 text-rose-700 border border-rose-200"
+                      : "bg-red-50 text-red-700 border border-red-200"
                   }`}
                 >
                   <span>{result.matchScore}%</span>
@@ -639,7 +639,7 @@ export default function JobCheckPage() {
                         ? "bg-emerald-100 text-emerald-800"
                         : result.genuineness.rating === "moderate"
                         ? "bg-blue-100 text-blue-800"
-                        : "bg-rose-100 text-rose-800"
+                        : "bg-red-100 text-red-800"
                     }`}
                   >
                     {result.genuineness.rating} ({result.genuineness.score}%)
@@ -724,7 +724,7 @@ export default function JobCheckPage() {
             <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
               <div className="flex items-center gap-2">
                 {result.redFlags.length > 0 ? (
-                  <ShieldAlert className="w-5 h-5 text-rose-600" />
+                  <ShieldAlert className="w-5 h-5 text-red-600" />
                 ) : (
                   <ShieldCheck className="w-5 h-5 text-emerald-600" />
                 )}
@@ -744,11 +744,11 @@ export default function JobCheckPage() {
                   {result.redFlags.map((flag, idx) => (
                     <div
                       key={idx}
-                      className="p-3 bg-white rounded-xl border border-rose-200 text-xs space-y-1"
+                      className="p-3 bg-white rounded-xl border border-red-200 text-xs space-y-1"
                     >
                       <div className="flex items-center justify-between">
-                        <strong className="text-rose-700">{flag.flag}</strong>
-                        <span className="uppercase text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-rose-100 text-rose-800">
+                        <strong className="text-red-700">{flag.flag}</strong>
+                        <span className="uppercase text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-red-100 text-red-800">
                           {flag.severity} risk
                         </span>
                       </div>
@@ -760,7 +760,7 @@ export default function JobCheckPage() {
             </div>
 
             {/* BOTTOM CALL TO ACTION: OPTIMIZE RESUME */}
-            <div className="p-6 rounded-2xl bg-gradient-to-r from-rose-50 via-rose-100/50 to-purple-50 border border-rose-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="p-6 rounded-2xl bg-gradient-to-r from-purple-50 via-purple-100/50 to-indigo-50 border border-purple-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <h4 className="text-base font-extrabold text-slate-900">
                   Ready to optimize your resume for this role?
@@ -773,7 +773,7 @@ export default function JobCheckPage() {
               <button
                 type="button"
                 onClick={handleProceedToOptimize}
-                className="py-3 px-5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shrink-0 cursor-pointer"
+                className="py-3 px-5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold text-sm flex items-center gap-2 transition-all shadow-md shrink-0 cursor-pointer"
               >
                 <span>Optimize resume for this role</span>
                 <ArrowRight className="w-4 h-4" />

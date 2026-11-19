@@ -26,7 +26,7 @@ export default function SettingsPage() {
   if (isLoading) {
     return (
       <div className="h-full w-full flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-6 w-6 animate-spin text-rose-500" />
+        <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
       </div>
     );
   }
@@ -40,7 +40,7 @@ export default function SettingsPage() {
     <div className="space-y-8 max-w-4xl mx-auto pb-12">
       {/* ─── Header ─── */}
       <div className="flex items-center gap-3 border-b border-[var(--color-hairline)]/60 pb-6">
-        <div className="p-2.5 rounded-2xl bg-rose-50 text-rose-600">
+        <div className="p-2.5 rounded-2xl bg-purple-50 text-purple-600">
           <SettingsIcon className="w-5 h-5" />
         </div>
         <div>
@@ -57,14 +57,14 @@ export default function SettingsPage() {
       <Card variant="elevated">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <User className="w-4 h-4 text-rose-500" />
+            <User className="w-4 h-4 text-purple-600" />
             <CardTitle>Account</CardTitle>
           </div>
           <CardDescription>Your account details are up to date and synced across sessions.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-100 to-rose-50 border-2 border-rose-200 flex items-center justify-center text-rose-600 font-bold text-lg shadow-sm">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-100 to-purple-50 border-2 border-purple-200 flex items-center justify-center text-purple-600 font-bold text-lg shadow-sm">
               {(clerkUser?.fullName || appUser?.name || "U").charAt(0).toUpperCase()}
             </div>
             <div className="flex-1">
@@ -90,7 +90,7 @@ export default function SettingsPage() {
       <Card variant="elevated">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Coins className="w-4 h-4 text-rose-500" />
+            <Coins className="w-4 h-4 text-purple-600" />
             <CardTitle>Credits & Usage</CardTitle>
           </div>
           <CardDescription>
@@ -101,7 +101,7 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent className="space-y-5">
           {/* Credit Progress — card-bloom effect */}
-          <div className="relative card-bloom p-5 bg-gradient-to-br from-rose-50/40 to-white border border-rose-100/60 rounded-2xl space-y-3 credit-card-gradient">
+          <div className="relative card-bloom p-5 bg-gradient-to-br from-purple-50/40 to-white border border-purple-100/60 rounded-2xl space-y-3 credit-card-gradient">
             <div className="flex items-center justify-between relative z-10">
               <span className="text-xs font-semibold text-[var(--color-ash)] uppercase tracking-wider">
                 Available Credits
@@ -117,7 +117,7 @@ export default function SettingsPage() {
                       ? "bg-gradient-to-r from-emerald-400 to-emerald-500"
                       : (appUser?.credits ?? 0) > 1000
                         ? "bg-gradient-to-r from-amber-400 to-amber-500"
-                        : "bg-gradient-to-r from-rose-400 to-rose-500"
+                        : "bg-gradient-to-r from-red-400 to-red-500"
                   }`}
                   style={{ width: `${((appUser?.credits ?? 0) / 10000) * 100}%` }}
               />
@@ -160,7 +160,7 @@ export default function SettingsPage() {
         <SignOutButton redirectUrl="/sign-in?from=logout">
           <button
             type="button"
-            className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl border border-[var(--color-hairline)] bg-[var(--color-canvas)] hover:bg-rose-50 hover:border-rose-200 text-[var(--color-mute)] hover:text-rose-600 text-sm font-semibold transition-all active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl border border-[var(--color-hairline)] bg-[var(--color-canvas)] hover:bg-purple-50 hover:border-purple-200 text-[var(--color-mute)] hover:text-purple-600 text-sm font-semibold transition-all active:scale-[0.98]"
           >
             <LogOut className="w-4 h-4" />
             Sign Out

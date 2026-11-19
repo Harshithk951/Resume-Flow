@@ -40,7 +40,7 @@ const ReactPdfPreview = dynamic(
     ),
   { ssr: false, loading: () => (
     <div className="h-[600px] w-full rounded-2xl bg-[var(--color-surface-card)] animate-pulse flex items-center justify-center">
-      <Loader2 className="w-6 h-6 animate-spin text-rose-600" />
+      <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
     </div>
   ) }
 );
@@ -150,7 +150,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
   if (authLoading || (isAuthenticated && job === undefined)) {
     return (
       <div className="h-screen w-full flex items-center justify-center bg-[var(--color-surface-soft)]">
-        <Loader2 className="h-6 w-6 animate-spin text-rose-500" />
+        <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
       </div>
     );
   }
@@ -160,10 +160,10 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
       <div className="h-screen w-full flex flex-col items-center justify-center bg-[var(--color-surface-soft)] gap-3">
         <p className="text-sm font-semibold text-[var(--color-charcoal)]">Job not found</p>
         <Link
-          href="/dashboard"
-          className="text-xs font-bold text-rose-600 hover:underline"
+          href="/jobs"
+          className="text-xs font-bold text-purple-600 hover:underline"
         >
-          Back to Dashboard
+          Back to Jobs
         </Link>
       </div>
     );
@@ -265,11 +265,11 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
       >
         <div className="flex items-center justify-between mb-6">
           <Link
-            href="/dashboard"
-            className="flex items-center gap-2 text-xs font-semibold text-[var(--color-ash)] hover:text-rose-600 transition-all duration-200 group"
+            href="/jobs"
+            className="flex items-center gap-2 text-xs font-semibold text-[var(--color-ash)] hover:text-purple-600 transition-all duration-200 group"
           >
             <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-1" />
-            <span>Back to Dashboard</span>
+            <span>Back to Jobs</span>
           </Link>
 
         </div>
@@ -290,7 +290,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                 </p>
                 <Link
                   href="/profile"
-                  className="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:text-rose-600 transition-colors pt-1"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-amber-900 hover:text-purple-600 transition-colors pt-1"
                 >
                   <span>Complete Master Profile</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -301,11 +301,11 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
           {/* Company Hero */}
           <div className="flex items-start gap-5">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-100 to-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 font-bold text-xl shrink-0 shadow-sm">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-50 border border-purple-200 flex items-center justify-center text-purple-600 font-bold text-xl shrink-0 shadow-sm">
               {job.companyName.charAt(0).toUpperCase()}
             </div>
             <div className="min-w-0 flex-1">
-              <span className="text-[11px] font-bold text-rose-600 uppercase tracking-wider">
+              <span className="text-[11px] font-bold text-purple-600 uppercase tracking-wider">
                 {job.companyName}
               </span>
               <h1 className="text-2xl font-bold tracking-tight text-[var(--color-ink)] mt-0.5">
@@ -375,9 +375,9 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
           {job.pipelineState === "needs_user_input" && job.skillGapQuestions ? (
             <div className="space-y-4">
-              <div className="rounded-2xl border border-amber-200/90 bg-gradient-to-r from-amber-50 via-rose-50/50 to-amber-50 p-4 shadow-sm space-y-1.5">
+              <div className="rounded-2xl border border-amber-200/90 bg-gradient-to-r from-amber-50 via-purple-50/50 to-amber-50 p-4 shadow-sm space-y-1.5">
                 <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs tracking-tight">
-                  <Sparkles className="w-4 h-4 text-rose-600 shrink-0" />
+                  <Sparkles className="w-4 h-4 text-purple-600 shrink-0" />
                   <span>Action Required: Verify Skill Gaps to Customize Resume</span>
                 </div>
                 <p className="text-[11px] text-amber-800/90 leading-relaxed font-medium">
@@ -395,7 +395,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
 
           {job.pipelineState === "tailoring" ? (
             <div className="card-bloom p-6 border border-[var(--color-hairline)]/60 rounded-2xl bg-white/50 flex flex-col items-center justify-center text-center space-y-4">
-              <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+              <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
               <p className="text-sm font-semibold text-[var(--color-ink-soft)]">
                 Optimizing Bullet Points...
               </p>
@@ -421,7 +421,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                     console.error(e);
                   }
                 }}
-                className="w-full sm:w-auto px-5 py-2.5 bg-red-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-red-600/10 transition-all active:scale-[0.97]"
+                className="w-full sm:w-auto px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow-lg shadow-red-600/10 transition-all active:scale-[0.97]"
               >
                 Retry Full Pipeline
               </button>
@@ -433,7 +433,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           job.extractedRequirements?.hardSkills ? (
             <div className="space-y-4">
               <h3 className="font-bold text-sm text-[var(--color-ink-soft)] uppercase tracking-tight flex items-center gap-2">
-                <Code className="w-4 h-4 text-rose-500" />
+                <Code className="w-4 h-4 text-purple-600" />
                 Required Skills
               </h3>
               <div className="flex flex-wrap gap-1.5">
@@ -466,7 +466,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
                   setActiveTemplate(next as TemplateId);
                 }
               }}
-              className="text-xs border border-[var(--color-hairline)] p-2.5 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-charcoal)] focus:outline-none focus:border-rose-500 transition-all shadow-sm cursor-pointer"
+              className="text-xs border border-[var(--color-hairline)] p-2.5 rounded-xl font-bold bg-[var(--color-canvas)] text-[var(--color-charcoal)] focus:outline-none focus:border-purple-600 transition-all shadow-sm cursor-pointer"
             >
               <option value="ats_strict">ATS Strict (Classic)</option>
               <option value="startup">Startup Accent (Helvetica)</option>
@@ -483,7 +483,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               onClick={handleRecompile}
               className="px-4 h-10 border border-[var(--color-hairline)] bg-[var(--color-canvas)] text-[var(--color-charcoal)] hover:bg-[var(--color-surface-soft)] text-xs font-bold rounded-xl flex items-center gap-2 transition-all active:scale-[0.97] shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${job?.pipelineState === "compiling" ? "animate-spin text-rose-500" : ""}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${job?.pipelineState === "compiling" ? "animate-spin text-purple-600" : ""}`} />
               {job?.pipelineState === "compiling" ? "Compiling..." : "Re-compile"}
             </button>
             <Link
@@ -497,7 +497,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               type="button"
               onClick={handleDownload}
               disabled={isDownloading || (!pdfUrl && !structuredContent)}
-              className="px-4 h-10 bg-rose-600 hover:bg-rose-700 disabled:opacity-50 text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-rose-600/20 transition-all active:scale-[0.97]"
+              className="px-4 h-10 bg-[#5B50E6] hover:bg-[#4E43D8] disabled:opacity-50 text-white text-xs font-bold rounded-xl flex items-center gap-2 shadow-lg shadow-purple-600/20 transition-all active:scale-[0.97]"
             >
               {isDownloading ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -532,7 +532,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
               onClick={() => setActiveTab(id)}
               className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[11px] font-bold transition-all ${
                 activeTab === id
-                  ? "bg-[var(--color-canvas)] text-rose-600 shadow-sm border border-[var(--color-hairline)]/40"
+                  ? "bg-[var(--color-canvas)] text-purple-600 shadow-sm border border-[var(--color-hairline)]/40"
                   : "text-[var(--color-ash)] hover:text-[var(--color-charcoal)] hover:bg-white/50"
               }`}
             >
@@ -547,7 +547,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <div className="h-full w-full">
               {job.pipelineState === "compiling" ? (
                 <div className="h-[600px] w-full rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 animate-pulse border border-[var(--color-hairline)]/50 flex flex-col items-center justify-center space-y-3">
-                  <Loader2 className="w-6 h-6 animate-spin text-rose-600" />
+                  <Loader2 className="w-6 h-6 animate-spin text-purple-600" />
                   <span className="text-xs text-[var(--color-ash)] font-medium min-h-[16px] flex items-center justify-center">
                     {compilingMessages[loadingStep % compilingMessages.length]}
                   </span>
@@ -638,7 +638,7 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
   if (!resume) {
     return (
       <div className="h-[400px] flex flex-col items-center justify-center text-center p-6 border border-[var(--color-hairline)]/60 rounded-3xl bg-[var(--color-surface-soft)]/30">
-        <Loader2 className="w-8 h-8 animate-spin text-rose-500 mb-3" />
+        <Loader2 className="w-8 h-8 animate-spin text-purple-600 mb-3" />
         <p className="text-sm font-semibold text-[var(--color-charcoal)]">Loading resume variant...</p>
       </div>
     );
@@ -665,7 +665,7 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
   if (generating) {
     return (
       <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border border-[var(--color-hairline-soft)] rounded-3xl bg-[var(--color-surface-soft)]/50 space-y-4">
-        <Loader2 className="w-10 h-10 animate-spin text-rose-600" />
+        <Loader2 className="w-10 h-10 animate-spin text-purple-600" />
         <p className="text-sm font-bold text-[var(--color-ink-soft)]">Drafting Outreach Materials...</p>
         <p className="text-xs text-[var(--color-ash)] max-w-xs leading-relaxed">
           Our AI copywriter is analyzing the job description and your tailored experience to draft formal and casual templates.
@@ -677,7 +677,7 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
   if (!hasGenerated) {
     return (
       <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border border-[var(--color-hairline)]/85 rounded-[32px] bg-[var(--color-canvas)] space-y-5 shadow-sm max-w-xl mx-auto my-6">
-        <div className="w-14 h-14 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 shadow-sm shadow-rose-500/5">
+        <div className="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 shadow-sm shadow-purple-500/5">
           <Sparkles className="w-7 h-7" />
         </div>
         <div className="space-y-2">
@@ -687,14 +687,14 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
           </p>
         </div>
         {error && (
-          <p className="text-xs text-rose-600 bg-rose-50/50 border border-rose-100 px-4 py-2.5 rounded-xl">
+          <p className="text-xs text-red-600 bg-red-50/50 border border-red-100 px-4 py-2.5 rounded-xl">
             {error}
           </p>
         )}
         <button
           type="button"
           onClick={handleGenerate}
-          className="bg-rose-600 hover:bg-rose-700 text-white px-6 h-12 text-xs font-bold rounded-2xl flex items-center gap-2 shadow-lg shadow-rose-600/10 hover:shadow-rose-600/15 transition-all active:scale-95 mx-auto"
+          className="bg-[#5B50E6] hover:bg-[#4E43D8] text-white px-6 h-12 text-xs font-bold rounded-2xl flex items-center gap-2 shadow-lg shadow-purple-600/10 hover:shadow-purple-600/15 transition-all active:scale-95 mx-auto"
         >
           <Sparkles className="w-4 h-4" />
           <span>Generate outreach materials</span>
@@ -709,7 +709,7 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
       <div className="bg-[var(--color-canvas)] p-6 rounded-[32px] border border-[var(--color-hairline)]/80 shadow-sm space-y-4">
         <div className="flex items-center justify-between border-b border-[var(--color-hairline-soft)] pb-3">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600">
+            <div className="w-9 h-9 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600">
               <FileSpreadsheet className="w-4 h-4" />
             </div>
             <div>
@@ -764,7 +764,7 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
         </div>
         <div className="flex items-center justify-between text-[10px] text-[var(--color-stone)] px-1 font-semibold font-mono">
           <span>Character Count:</span>
-          <span className={linkedinNote.length > 300 ? "text-rose-500" : "text-[var(--color-ash)]"}>
+          <span className={linkedinNote.length > 300 ? "text-red-500" : "text-[var(--color-ash)]"}>
             {linkedinNote.length} / 300
           </span>
         </div>

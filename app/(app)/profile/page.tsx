@@ -365,7 +365,7 @@ export default function ProfilePage() {
   if (!isLoaded || isLoading || isQueryLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--color-surface-soft)]">
-        <Loader2 className="w-8 h-8 animate-spin text-rose-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
       </div>
     );
   }
@@ -373,7 +373,7 @@ export default function ProfilePage() {
   if (isConvexLoading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center bg-[var(--color-surface-soft)] p-6">
-        <Loader2 className="w-8 h-8 animate-spin text-rose-600 mb-4" />
+        <Loader2 className="w-8 h-8 animate-spin text-purple-600 mb-4" />
         <div className="text-center max-w-md bg-[var(--color-canvas)] p-8 rounded-3xl border border-[var(--color-hairline-soft)] shadow-sm">
           <p className="text-md font-semibold text-[var(--color-ink-soft)] mb-2">Connecting to Realtime Database...</p>
           <p className="text-sm text-[var(--color-ash)]">
@@ -414,7 +414,7 @@ export default function ProfilePage() {
                           {profile.personalInfo.linkedin && (
                             <>
                               <span>•</span>
-                              <a href={`https://${profile.personalInfo.linkedin}`} target="_blank" rel="noreferrer" className="text-rose-600 hover:underline">
+                              <a href={`https://${profile.personalInfo.linkedin}`} target="_blank" rel="noreferrer" className="text-purple-600 hover:underline">
                                 LinkedIn
                               </a>
                             </>
@@ -422,7 +422,7 @@ export default function ProfilePage() {
                           {profile.personalInfo.github && (
                             <>
                               <span>•</span>
-                              <a href={`https://${profile.personalInfo.github}`} target="_blank" rel="noreferrer" className="text-rose-600 hover:underline">
+                              <a href={`https://${profile.personalInfo.github}`} target="_blank" rel="noreferrer" className="text-purple-600 hover:underline">
                                 GitHub
                               </a>
                             </>
@@ -445,7 +445,7 @@ export default function ProfilePage() {
                       <div className="md:col-span-1 flex flex-col gap-6">
                         <div>
                           <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-3 flex items-center gap-2">
-                            <GraduationCap className="w-4 h-4 text-rose-500" /> Education
+                            <GraduationCap className="w-4 h-4 text-purple-600" /> Education
                           </h3>
                           <div className="flex flex-col gap-4">
                             {profile.education.map((edu: any, index: number) => (
@@ -465,7 +465,7 @@ export default function ProfilePage() {
 
                         <div>
                           <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-3 flex items-center gap-2">
-                            <Sparkles className="w-4 h-4 text-rose-500" /> Skills
+                            <Sparkles className="w-4 h-4 text-purple-600" /> Skills
                           </h3>
                           <div className="flex flex-col gap-3">
                             {Object.entries(profile.skills).map(([key, value]: [string, any]) => {
@@ -496,7 +496,7 @@ export default function ProfilePage() {
                       <div className="md:col-span-2 flex flex-col gap-6">
                         <div>
                           <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-4 flex items-center gap-2">
-                            <Briefcase className="w-4 h-4 text-rose-500" /> Experience
+                            <Briefcase className="w-4 h-4 text-purple-600" /> Experience
                           </h3>
                           <div className="flex flex-col gap-6 divide-y divide-[var(--color-hairline-soft)]">
                             {profile.experience.map((exp: any, index: number) => (
@@ -523,7 +523,7 @@ export default function ProfilePage() {
 
                         <div>
                           <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-4 flex items-center gap-2">
-                            <Code className="w-4 h-4 text-rose-500" /> Projects
+                            <Code className="w-4 h-4 text-purple-600" /> Projects
                           </h3>
                           <div className="flex flex-col gap-6 divide-y divide-[var(--color-hairline-soft)]">
                             {profile.projects.map((proj: any, index: number) => (
@@ -534,7 +534,7 @@ export default function ProfilePage() {
                                     <p className="text-[var(--color-ash)]">{proj.description}</p>
                                   </div>
                                   {proj.link && (
-                                    <a href={`https://${proj.link}`} target="_blank" rel="noreferrer" className="text-rose-600 hover:underline font-medium">
+                                    <a href={`https://${proj.link}`} target="_blank" rel="noreferrer" className="text-purple-600 hover:underline font-medium">
                                       Link
                                     </a>
                                   )}
@@ -589,8 +589,8 @@ export default function ProfilePage() {
             {engineState === "EXTRACTING" && (
               <div className="bg-[var(--color-canvas)] rounded-3xl border border-[var(--color-hairline-soft)] p-12 shadow-sm flex flex-col items-center justify-center text-center gap-6 min-h-[400px]">
                 <div className="relative flex items-center justify-center">
-                  <div className="absolute w-24 h-24 rounded-full bg-rose-500/20 blur-xl animate-pulse" />
-                  <Loader2 className="w-12 h-12 text-rose-600 animate-spin relative z-10" />
+                  <div className="absolute w-24 h-24 rounded-full bg-purple-500/20 blur-xl animate-pulse" />
+                  <Loader2 className="w-12 h-12 text-purple-600 animate-spin relative z-10" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--color-ink-soft)]">Processing Master Profile</h3>
@@ -619,7 +619,7 @@ export default function ProfilePage() {
                 <div className="flex gap-4">
                   <button
                     onClick={handleCancelRetry}
-                    className="px-6 py-3 rounded-2xl bg-rose-600 text-white text-sm font-semibold hover:bg-rose-700 transition-all flex items-center gap-2 justify-center shadow-md active:scale-95"
+                    className="px-6 py-3 rounded-2xl bg-[#5B50E6] text-white text-sm font-semibold hover:bg-[#4E43D8] transition-all flex items-center gap-2 justify-center shadow-md active:scale-95"
                   >
                     Cancel & Retry
                   </button>
@@ -664,7 +664,7 @@ export default function ProfilePage() {
                         onClick={() => setActiveSection(tab.id as Section)}
                         className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-xl border transition-all ${
                           isActive
-                            ? "bg-rose-50 border-rose-200 text-rose-700 shadow-sm"
+                            ? "bg-purple-50 border-purple-200 text-purple-700 shadow-sm"
                             : "bg-[var(--color-canvas)] border-[var(--color-hairline-soft)] text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)]"
                         }`}
                       >
@@ -686,7 +686,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Full Name</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.personalInfo.name || ""}
                             onChange={(e) => handlePersonalChange("name", e.target.value)}
                             placeholder="John Doe"
@@ -696,7 +696,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Email Address</label>
                           <input
                             type="email"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.personalInfo.email || ""}
                             onChange={(e) => handlePersonalChange("email", e.target.value)}
                             placeholder="john@example.com"
@@ -706,7 +706,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Phone Number</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.personalInfo.phone || ""}
                             onChange={(e) => handlePersonalChange("phone", e.target.value)}
                             placeholder="+91 9876543210"
@@ -716,7 +716,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">LinkedIn Profile (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.personalInfo.linkedin || ""}
                             onChange={(e) => handlePersonalChange("linkedin", e.target.value)}
                             placeholder="linkedin.com/in/johndoe"
@@ -726,7 +726,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">GitHub Profile (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.personalInfo.github || ""}
                             onChange={(e) => handlePersonalChange("github", e.target.value)}
                             placeholder="github.com/johndoe"
@@ -736,7 +736,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Portfolio Link (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.personalInfo.portfolio || ""}
                             onChange={(e) => handlePersonalChange("portfolio", e.target.value)}
                             placeholder="johndoe.dev"
@@ -753,7 +753,7 @@ export default function ProfilePage() {
                         <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Degree History</span>
                         <button
                           onClick={addEducation}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-100 bg-purple-50/50 hover:bg-purple-50 text-purple-700 text-xs font-semibold transition-all active:scale-95"
                         >
                           <Plus className="w-3.5 h-3.5" /> Add Education
                         </button>
@@ -777,7 +777,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Institution</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={edu.institution || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -791,7 +791,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Degree / Branch</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={edu.degree || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -805,7 +805,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">GPA / CGPA (Optional)</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={edu.gpa || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -819,7 +819,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Graduation Year</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={edu.year || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.education];
@@ -849,7 +849,7 @@ export default function ProfilePage() {
                         <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Employment Timeline</span>
                         <button
                           onClick={addExperience}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-100 bg-purple-50/50 hover:bg-purple-50 text-purple-700 text-xs font-semibold transition-all active:scale-95"
                         >
                           <Plus className="w-3.5 h-3.5" /> Add Experience
                         </button>
@@ -873,7 +873,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Company</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={exp.company || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -887,7 +887,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Role Title</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={exp.role || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -901,7 +901,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Duration</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={exp.duration || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -917,7 +917,7 @@ export default function ProfilePage() {
                               <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Technologies Used (comma separated)</label>
                               <input
                                 type="text"
-                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                 value={exp.technologies ? exp.technologies.join(", ") : ""}
                                 onChange={(e) => {
                                     const updated = [...profile.experience];
@@ -939,7 +939,7 @@ export default function ProfilePage() {
                                     updated[index].bullets = [...(updated[index].bullets || []), ""];
                                     setProfile({ ...profile, experience: updated });
                                   }}
-                                  className="text-xs font-semibold text-rose-600 hover:text-rose-700 flex items-center gap-1"
+                                  className="text-xs font-semibold text-purple-600 hover:text-purple-700 flex items-center gap-1"
                                 >
                                   <Plus className="w-3.5 h-3.5" /> Add Bullet
                                 </button>
@@ -950,7 +950,7 @@ export default function ProfilePage() {
                                   <div key={bIndex} className="flex gap-2">
                                     <input
                                       type="text"
-                                      className="flex-1 px-4 py-2.5 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                      className="flex-1 px-4 py-2.5 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                       value={bullet}
                                       onChange={(e) => {
                                         const updated = [...profile.experience];
@@ -993,7 +993,7 @@ export default function ProfilePage() {
                         <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Independent Projects</span>
                         <button
                           onClick={addProject}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-100 bg-purple-50/50 hover:bg-purple-50 text-purple-700 text-xs font-semibold transition-all active:scale-95"
                         >
                           <Plus className="w-3.5 h-3.5" /> Add Project
                         </button>
@@ -1017,7 +1017,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Project Name</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={proj.name || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.projects];
@@ -1031,7 +1031,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Project Link (Optional)</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={proj.link || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.projects];
@@ -1047,7 +1047,7 @@ export default function ProfilePage() {
                               <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Short Description</label>
                               <input
                                 type="text"
-                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                 value={proj.description || ""}
                                 onChange={(e) => {
                                   const updated = [...profile.projects];
@@ -1062,7 +1062,7 @@ export default function ProfilePage() {
                               <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Technologies Used (comma separated)</label>
                               <input
                                 type="text"
-                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                 value={proj.technologies ? proj.technologies.join(", ") : ""}
                                 onChange={(e) => {
                                   const updated = [...profile.projects];
@@ -1083,7 +1083,7 @@ export default function ProfilePage() {
                                     updated[index].bullets = [...(updated[index].bullets || []), ""];
                                     setProfile({ ...profile, projects: updated });
                                   }}
-                                  className="text-xs font-semibold text-rose-600 hover:text-rose-700 flex items-center gap-1"
+                                  className="text-xs font-semibold text-purple-600 hover:text-purple-700 flex items-center gap-1"
                                 >
                                   <Plus className="w-3.5 h-3.5" /> Add Bullet
                                 </button>
@@ -1094,7 +1094,7 @@ export default function ProfilePage() {
                                   <div key={bIndex} className="flex gap-2">
                                     <input
                                       type="text"
-                                      className="flex-1 px-4 py-2.5 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-xs focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                      className="flex-1 px-4 py-2.5 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-xs focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                       value={bullet}
                                       onChange={(e) => {
                                         const updated = [...profile.projects];
@@ -1140,7 +1140,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Languages</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.skills.languages ? profile.skills.languages.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("languages", e.target.value)}
                             placeholder="C++, Python, JavaScript, TypeScript"
@@ -1150,7 +1150,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Frameworks & Libraries</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.skills.frameworks ? profile.skills.frameworks.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("frameworks", e.target.value)}
                             placeholder="React, Next.js, PyTorch, Node.js"
@@ -1160,7 +1160,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Tools & Clouds</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.skills.tools ? profile.skills.tools.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("tools", e.target.value)}
                             placeholder="Git, Docker, Kubernetes, AWS"
@@ -1170,7 +1170,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Databases & Cache (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.skills.databases ? profile.skills.databases.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("databases", e.target.value)}
                             placeholder="PostgreSQL, MongoDB, Redis"
@@ -1180,7 +1180,7 @@ export default function ProfilePage() {
                           <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Soft Skills / Domains (Optional)</label>
                           <input
                             type="text"
-                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                            className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                             value={profile.skills.soft ? profile.skills.soft.join(", ") : ""}
                             onChange={(e) => handleSkillsChange("soft", e.target.value)}
                             placeholder="System Design, Agile, Communication"
@@ -1200,7 +1200,7 @@ export default function ProfilePage() {
                           <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Certifications</span>
                           <button
                             onClick={addCertification}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-100 bg-purple-50/50 hover:bg-purple-50 text-purple-700 text-xs font-semibold transition-all active:scale-95"
                           >
                             <Plus className="w-3.5 h-3.5" /> Add Cert
                           </button>
@@ -1213,7 +1213,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Name</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={cert.name || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.certifications];
@@ -1227,7 +1227,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Issuer</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={cert.issuer || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.certifications];
@@ -1249,7 +1249,7 @@ export default function ProfilePage() {
                                 </div>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={cert.year || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.certifications];
@@ -1270,7 +1270,7 @@ export default function ProfilePage() {
                           <span className="text-xs font-bold text-[var(--color-ash)] uppercase">Achievements & Honors</span>
                           <button
                             onClick={addAchievement}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-rose-100 bg-rose-50/50 hover:bg-rose-50 text-rose-700 text-xs font-semibold transition-all active:scale-95"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-purple-100 bg-purple-50/50 hover:bg-purple-50 text-purple-700 text-xs font-semibold transition-all active:scale-95"
                           >
                             <Plus className="w-3.5 h-3.5" /> Add Achievement
                           </button>
@@ -1283,7 +1283,7 @@ export default function ProfilePage() {
                                 <label className="text-xs font-bold text-[var(--color-ash)] uppercase tracking-wider block mb-1.5">Description</label>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={ach.description || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.achievements];
@@ -1305,7 +1305,7 @@ export default function ProfilePage() {
                                 </div>
                                 <input
                                   type="text"
-                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all"
+                                  className="w-full px-4 py-3 bg-[var(--color-surface-soft)] border border-[var(--color-hairline)] rounded-xl text-[var(--color-ink-soft)] text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all"
                                   value={ach.year || ""}
                                   onChange={(e) => {
                                     const updated = [...profile.achievements];
@@ -1345,7 +1345,7 @@ export default function ProfilePage() {
                   <button
                     onClick={handleSaveProfile}
                     disabled={isSaving}
-                    className="px-6 py-2.5 text-xs font-semibold rounded-xl bg-rose-600 hover:bg-rose-700 text-white shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50 active:scale-95"
+                    className="px-6 py-2.5 text-xs font-semibold rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50 active:scale-95"
                   >
                     {isSaving ? (
                       <>
@@ -1369,7 +1369,7 @@ export default function ProfilePage() {
               
               <div className="flex flex-col gap-6">
                 <div className="flex gap-4 items-start">
-                  <div className="p-2.5 bg-rose-50 text-rose-600 rounded-2xl shrink-0">
+                  <div className="p-2.5 bg-purple-50 text-purple-600 rounded-2xl shrink-0">
                     <BookOpen className="w-5 h-5" />
                   </div>
                   <div>
@@ -1381,7 +1381,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="flex gap-4 items-start">
-                  <div className="p-2.5 bg-rose-50 text-rose-600 rounded-2xl shrink-0">
+                  <div className="p-2.5 bg-purple-50 text-purple-600 rounded-2xl shrink-0">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
                   <div>
@@ -1393,7 +1393,7 @@ export default function ProfilePage() {
                 </div>
 
                 <div className="flex gap-4 items-start">
-                  <div className="p-2.5 bg-rose-50 text-rose-600 rounded-2xl shrink-0">
+                  <div className="p-2.5 bg-purple-50 text-purple-600 rounded-2xl shrink-0">
                     <ClipboardCheck className="w-5 h-5" />
                   </div>
                   <div>

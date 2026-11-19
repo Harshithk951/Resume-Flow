@@ -22,7 +22,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      router.replace("/dashboard");
+      router.replace("/optimize");
     }
   }, [isLoaded, isSignedIn, router]);
 
@@ -97,7 +97,7 @@ export default function SignUpPage() {
       <div className="min-h-screen w-full bg-[#FAF7FD] flex flex-col items-center justify-center p-4">
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="w-8 h-8 animate-spin text-[#6d28d9]" />
-          <p className="text-sm font-bold text-slate-700">Signing you in... Redirecting to dashboard</p>
+          <p className="text-sm font-bold text-slate-700">Signing you up... Redirecting to Optimizer</p>
         </div>
       </div>
     );
@@ -383,9 +383,9 @@ export default function SignUpPage() {
             <SignUp
               routing="path"
               path="/sign-up"
-              forceRedirectUrl="/dashboard"
-              fallbackRedirectUrl="/dashboard"
-              signInFallbackRedirectUrl="/sign-in"
+              forceRedirectUrl="/optimize"
+              fallbackRedirectUrl="/optimize"
+              signInFallbackRedirectUrl="/optimize"
               appearance={{
                 layout: {
                   socialButtonsPlacement: "top",

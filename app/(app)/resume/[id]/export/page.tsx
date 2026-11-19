@@ -141,7 +141,7 @@ export default function ExportPage({ params }: PageProps) {
   if (authLoading || (isAuthenticated && job === undefined)) {
     return (
       <div className="min-h-[50vh] w-full flex items-center justify-center">
-        <Loader2 className="h-6 w-6 animate-spin text-rose-600" />
+        <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
       </div>
     );
   }
@@ -150,8 +150,8 @@ export default function ExportPage({ params }: PageProps) {
     return (
       <div className="min-h-[50vh] w-full flex flex-col items-center justify-center gap-3">
         <p className="text-sm font-semibold text-slate-700">Job not found</p>
-        <Link href="/dashboard" className="text-xs font-bold text-rose-600 hover:underline">
-          Back to Dashboard
+        <Link href="/jobs" className="text-xs font-bold text-purple-600 hover:underline">
+          Back to Jobs
         </Link>
       </div>
     );
@@ -232,7 +232,7 @@ export default function ExportPage({ params }: PageProps) {
       {/* Back button */}
       <Link
         href={`/company/${jobId}`}
-        className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-rose-600 transition-colors mb-8 inline-flex"
+        className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-purple-600 transition-colors mb-8 inline-flex"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         <span>Back to Workspace</span>
@@ -240,7 +240,7 @@ export default function ExportPage({ params }: PageProps) {
 
       {/* Hero Header */}
       <div className="mb-10">
-        <span className="text-xs font-bold text-rose-600 uppercase tracking-widest block mb-1">
+        <span className="text-xs font-bold text-purple-600 uppercase tracking-widest block mb-1">
           Exporter Hub
         </span>
         <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
@@ -252,7 +252,7 @@ export default function ExportPage({ params }: PageProps) {
       </div>
 
       {exportError && (
-        <div className="flex items-center gap-2 p-4 rounded-2xl bg-red-50 text-rose-700 text-sm border border-red-100 mb-8 animate-fade-in">
+        <div className="flex items-center gap-2 p-4 rounded-2xl bg-red-50 text-red-700 text-sm border border-red-100 mb-8 animate-fade-in">
           <AlertCircle className="w-5 h-5 shrink-0" />
           <span>{exportError}</span>
         </div>
@@ -266,7 +266,7 @@ export default function ExportPage({ params }: PageProps) {
           className="bg-white p-8 rounded-[32px] border border-slate-200/80 shadow-sm flex flex-col justify-between"
         >
           <div className="space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600">
+            <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600">
               <FileText className="w-6 h-6" />
             </div>
             <div>

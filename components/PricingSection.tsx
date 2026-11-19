@@ -164,13 +164,13 @@ export function PricingSection() {
             const price =
               billing === "monthly" ? plan.monthlyPrice : plan.yearlyPrice;
             const ctaHref = mounted && isSignedIn && plan.id !== "campus"
-              ? "/dashboard"
+              ? "/optimize"
               : plan.href;
             const ctaLabel =
               mounted && isSignedIn && plan.id === "starter"
-                ? "Go to Dashboard"
+                ? "Go to Optimizer"
                 : mounted && isSignedIn && plan.id === "pro"
-                  ? "Upgrade in Dashboard"
+                  ? "Upgrade Plan"
                   : plan.cta;
 
             return (
@@ -185,12 +185,12 @@ export function PricingSection() {
                 }}
                 className={`relative flex flex-col rounded-[2rem] border bg-[var(--color-canvas)] p-8 md:p-10 shadow-[0_20px_40px_-20px_rgba(15,23,42,0.08)] transition-shadow hover:shadow-[0_24px_48px_-20px_rgba(15,23,42,0.12)] ${
                   plan.highlighted
-                    ? "border-rose-600 ring-1 ring-rose-600/20 lg:scale-[1.02] z-10"
+                    ? "border-purple-600 ring-1 ring-purple-600/20 lg:scale-[1.02] z-10"
                     : "border-[var(--color-hairline)]/80"
                 }`}
               >
                 {plan.highlighted ? (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-rose-600 px-4 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-md shadow-rose-600/25">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-[#5B50E6] px-4 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-md shadow-purple-600/25">
                     Most Popular
                   </div>
                 ) : null}
@@ -224,10 +224,10 @@ export function PricingSection() {
                         `${plan.name} plan upgrades are coming soon for new subscribers! Existing ${plan.name} accounts remain active.`
                       )
                     }
-                    className="mb-10 inline-flex h-12 w-full items-center justify-center rounded-2xl border border-dashed border-rose-300 bg-rose-50/50 text-sm font-bold text-rose-700 hover:bg-rose-100/60 transition-all cursor-pointer"
+                    className="mb-10 inline-flex h-12 w-full items-center justify-center rounded-2xl border border-dashed border-purple-300 bg-purple-50/50 text-sm font-bold text-purple-700 hover:bg-purple-100/60 transition-all cursor-pointer"
                   >
                     <span className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse" />
                       Coming Soon — Notify Me
                     </span>
                   </button>
@@ -236,7 +236,7 @@ export function PricingSection() {
                     href={ctaHref}
                     className={`mb-10 inline-flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all active:scale-[0.98] ${
                       plan.highlighted
-                        ? "bg-rose-600 text-white shadow-lg shadow-rose-600/25 hover:bg-rose-700"
+                        ? "bg-[#5B50E6] text-white shadow-lg shadow-purple-600/25 hover:bg-[#4E43D8]"
                         : "border border-[var(--color-secondary-bg)] bg-[var(--color-canvas)] text-[var(--color-ink)] hover:border-slate-400 hover:bg-[var(--color-surface-soft)]"
                     }`}
                   >
@@ -257,7 +257,7 @@ export function PricingSection() {
                         <span
                           className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
                             plan.highlighted
-                              ? "bg-rose-50 text-rose-600"
+                              ? "bg-purple-50 text-purple-600"
                               : "bg-[var(--color-surface-card)] text-[var(--color-mute)]"
                           }`}
                         >

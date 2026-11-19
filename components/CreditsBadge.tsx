@@ -31,7 +31,7 @@ export function CreditsBadge({ className = "", onClick }: CreditsBadgeProps) {
   if (plan === "pro_pass") {
     label = `Pro Pass · ${daysRemaining}d left`;
     pillStyle =
-      "border-rose-200/90 bg-rose-50/90 text-rose-700 hover:bg-rose-100 hover:border-rose-300 hover:shadow-[0_0_12px_rgba(244,63,94,0.25)]";
+      "border-purple-200/90 bg-purple-50/90 text-purple-700 hover:bg-purple-100 hover:border-purple-300 hover:shadow-[0_0_12px_rgba(147,51,234,0.25)]";
   } else if (plan === "power" || isPower) {
     label = "Power · Unlimited";
     pillStyle =
@@ -43,7 +43,7 @@ export function CreditsBadge({ className = "", onClick }: CreditsBadgeProps) {
   } else if (plan === "pro" || isPro) {
     label = "Pro · Active";
     pillStyle =
-      "border-rose-200/90 bg-rose-50/90 text-rose-700 hover:bg-rose-100 hover:border-rose-300 hover:shadow-[0_0_12px_rgba(244,63,94,0.25)]";
+      "border-purple-200/90 bg-purple-50/90 text-purple-700 hover:bg-purple-100 hover:border-purple-300 hover:shadow-[0_0_12px_rgba(147,51,234,0.25)]";
   } else if (plan === "campus") {
     label = "Campus · Active";
     pillStyle =

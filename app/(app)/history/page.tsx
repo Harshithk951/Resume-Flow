@@ -143,7 +143,7 @@ export default function OptimizationHistoryPage() {
             {creditsStatus?.plan === "free" && (
               <Link
                 href="/pricing"
-                className="text-xs font-bold text-rose-600 hover:underline"
+                className="text-xs font-bold text-purple-600 hover:underline"
               >
                 Extend retention →
               </Link>
@@ -210,7 +210,7 @@ export default function OptimizationHistoryPage() {
                     {/* Role & Company */}
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-rose-600 uppercase tracking-wider">
+                        <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">
                           {opt.companyName}
                         </span>
                         <span className="text-slate-300">·</span>
@@ -251,7 +251,7 @@ export default function OptimizationHistoryPage() {
                       <div
                         className={`px-3 py-1.5 rounded-xl border text-center ${
                           opt.isExpired
-                            ? "bg-rose-50 border-rose-200 text-rose-700"
+                            ? "bg-slate-100 border-slate-200 text-slate-600"
                             : isExpiringSoon
                             ? "bg-amber-50 border-amber-200 text-amber-800"
                             : "bg-emerald-50 border-emerald-200 text-emerald-800"
@@ -294,7 +294,7 @@ export default function OptimizationHistoryPage() {
                             <button
                               type="button"
                               onClick={() => handleDelete(opt._id)}
-                              className="text-[10px] bg-rose-600 text-white font-bold px-2 py-1 rounded-lg"
+                              className="text-[10px] bg-red-600 text-white font-bold px-2 py-1 rounded-lg"
                             >
                               Delete
                             </button>
@@ -310,7 +310,7 @@ export default function OptimizationHistoryPage() {
                           <button
                             type="button"
                             onClick={() => setDeleteConfirmId(opt._id)}
-                            className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                            className="p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                             title="Delete optimization"
                           >
                             <Trash2 className="w-4 h-4" />

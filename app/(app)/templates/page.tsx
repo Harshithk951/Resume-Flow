@@ -12,7 +12,7 @@ export default function TemplatesPage() {
   if (!isLoaded) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
-        <Loader2 className="h-8 w-8 animate-spin text-rose-500" />
+        <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
       </div>
     );
   }
@@ -23,7 +23,7 @@ export default function TemplatesPage() {
       <Suspense
         fallback={
           <div className="flex h-full w-full items-center justify-center bg-white min-h-[400px]">
-            <Loader2 className="h-8 w-8 animate-spin text-rose-500" />
+            <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
           </div>
         }
       >
@@ -34,18 +34,18 @@ export default function TemplatesPage() {
 
   // Public preview — showcase master template with sign-up CTA
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-rose-50/30 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-white via-purple-50/30 to-white">
       {/* Hero */}
       <div className="relative overflow-hidden border-b border-gray-100">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-rose-100/40 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-100/40 via-transparent to-transparent" />
         <div className="relative max-w-6xl mx-auto px-4 py-20 sm:py-28 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-100/80 text-rose-700 text-xs font-bold uppercase tracking-wider mb-6 border border-rose-200/50">
-            <ShieldCheck className="w-4 h-4 text-rose-600" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-100/80 text-purple-700 text-xs font-bold uppercase tracking-wider mb-6 border border-purple-200/50">
+            <ShieldCheck className="w-4 h-4 text-purple-600" />
             <span>Single Source of Truth — ATS Strict Template</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-4">
             Master{" "}
-            <span className="bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               ATS-Strict
             </span>{" "}
             Resume Engine
@@ -56,7 +56,7 @@ export default function TemplatesPage() {
           <div className="flex items-center justify-center gap-4">
             <Link
               href="/sign-up"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 text-white font-bold shadow-lg shadow-rose-500/20 hover:from-rose-700 hover:to-rose-600 transition-all active:scale-[0.98]"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold shadow-lg shadow-purple-500/20 transition-all active:scale-[0.98]"
             >
               <FileText className="w-4 h-4" />
               <span>Try Free — Build Your Resume</span>
@@ -74,9 +74,9 @@ export default function TemplatesPage() {
 
       {/* Master Template Showcase */}
       <div className="max-w-4xl mx-auto px-4 py-16 sm:py-20">
-        <div className="rounded-2xl border border-rose-200/70 bg-white p-8 shadow-xl">
+        <div className="rounded-2xl border border-purple-200/70 bg-white p-8 shadow-xl">
           <div className="h-48 rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 mb-6 flex flex-col items-center justify-center text-white border border-slate-700 p-6 text-center">
-            <LayoutTemplate className="w-12 h-12 text-rose-400 mb-3" />
+            <LayoutTemplate className="w-12 h-12 text-purple-400 mb-3" />
             <h2 className="text-xl font-extrabold tracking-tight">ATS-Strict Master Skeleton</h2>
             <p className="text-xs text-slate-300 max-w-md mt-1">
               Guaranteed single-column layout, fixed category headers, and double-escape-safe compilation.
@@ -106,7 +106,7 @@ export default function TemplatesPage() {
 
           <Link
             href="/sign-up"
-            className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-gradient-to-r from-rose-600 to-rose-500 text-white font-bold shadow-md hover:from-rose-700 hover:to-rose-600 transition-all"
+            className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold shadow-md transition-all"
           >
             <span>Start Building With ATS Strict Master</span>
             <ArrowRight className="w-4 h-4" />

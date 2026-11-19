@@ -70,7 +70,7 @@ export function SkillGapQuestionnaire({
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 border-b border-[var(--color-hairline)]/80 pb-3">
-        <Sparkles className="w-4 h-4 text-rose-600" />
+        <Sparkles className="w-4 h-4 text-purple-600" />
         <h3 className="font-bold text-[var(--color-ink-soft)] text-sm tracking-tight">
           Confirm Skill Requirements
         </h3>
@@ -102,7 +102,7 @@ export function SkillGapQuestionnaire({
                 onClick={() => handleToggleSkill(idx, false)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                   !q.hasSkill
-                    ? "bg-rose-50 border-rose-200 text-rose-700"
+                    ? "bg-slate-100 border-slate-200 text-slate-700"
                     : "bg-[var(--color-canvas)] border-[var(--color-hairline)] text-[var(--color-mute)] hover:bg-[var(--color-surface-soft)]"
                 }`}
               >
@@ -123,7 +123,7 @@ export function SkillGapQuestionnaire({
                 value={q.userResponse}
                 onChange={(e) => handleResponseChange(idx, e.target.value)}
                 placeholder="How did you use this skill? (e.g. 'Used it for 2 years at TechCorp')"
-                className="w-full mt-2 p-3 text-xs border border-[var(--color-hairline)] rounded-xl focus:outline-none focus:border-rose-500 bg-[var(--color-canvas)]"
+                className="w-full mt-2 p-3 text-xs border border-[var(--color-hairline)] rounded-xl focus:outline-none focus:border-purple-600 bg-[var(--color-canvas)]"
                 rows={3}
               />
             </motion.div>
@@ -135,7 +135,7 @@ export function SkillGapQuestionnaire({
         type="button"
         onClick={handleSubmit}
         disabled={isSubmitting}
-        className="w-full h-12 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-rose-600/20 transition-all focus:outline-none disabled:opacity-50"
+        className="w-full h-12 bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-semibold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-purple-600/20 transition-all focus:outline-none disabled:opacity-50"
       >
         {isSubmitting ? (
           <Loader2 className="w-4 h-4 animate-spin" />

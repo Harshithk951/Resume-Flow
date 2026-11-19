@@ -128,7 +128,7 @@ export default function FileUpload({ onFileAccepted, isProcessing }: FileUploadP
               : "Drag & drop your resume file here, or click to browse"}
           </p>
           <div className="flex flex-col gap-1 mt-3">
-            <span className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-lg inline-block mx-auto uppercase tracking-wider">
+            <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg inline-block mx-auto uppercase tracking-wider">
               ⚠️ Strict Rule: Resumes must be 1 to 4 pages maximum
             </span>
             <span className="text-[10px] text-[var(--color-ash)] uppercase tracking-wider block mt-1">
