@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/about`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/features`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/pricing`, priority: 0.9, changeFrequency: 'weekly' as const },
-    { url: `${baseUrl}/templates`, priority: 0.9, changeFrequency: 'weekly' as const },
+    { url: `${baseUrl}/resume-templates`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/free-resume-builder`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/resume-optimizer`, priority: 0.9, changeFrequency: 'weekly' as const },
   ] as const;

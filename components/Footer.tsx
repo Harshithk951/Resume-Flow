@@ -114,6 +114,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/resume-templates" className="hover:text-slate-900 transition-colors">
+                  Templates
+                </Link>
+              </li>
+              <li>
                 <Link href="/pricing" className="hover:text-slate-900 transition-colors">
                   Pricing
                 </Link>

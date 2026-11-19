@@ -50,6 +50,15 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: isProd ? { exclude: ["error", "warn"] } : false,
   },
+  async redirects() {
+    return [
+      {
+        source: "/templates",
+        destination: "/resume-templates",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

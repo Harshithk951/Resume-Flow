@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { Menu, X } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
 
 export default function Navbar() {
   const { isSignedIn } = useAuth();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -66,8 +68,12 @@ export default function Navbar() {
             Features
           </Link>
           <Link
-            href="/#templates"
-            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
+            href="/resume-templates"
+            className={`text-sm transition-colors duration-200 ${
+              pathname === "/resume-templates"
+                ? "font-bold text-[#5B50E6]"
+                : "font-medium text-slate-600 hover:text-purple-600"
+            }`}
           >
             Templates
           </Link>
@@ -162,7 +168,7 @@ export default function Navbar() {
             <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
               {[
                 { id: "features", label: "Features", href: "/#features" },
-                { id: "templates", label: "Templates", href: "/#templates" },
+                { id: "templates", label: "Templates", href: "/resume-templates" },
                 { id: "ats-checker", label: "ATS Checker", href: "/ats-resume-checker" },
                 { id: "resources", label: "Resources", href: "/resources/handbook" },
                 { id: "pricing", label: "Pricing", href: "/pricing" },
@@ -171,7 +177,11 @@ export default function Navbar() {
                   key={item.id}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
+                  className={`block w-full text-left px-4 py-3 rounded-xl text-sm transition-colors border border-transparent hover:border-slate-200 ${
+                    pathname === item.href
+                      ? "font-bold text-[#5B50E6] bg-purple-50/50"
+                      : "font-semibold text-slate-700 hover:bg-slate-50 hover:text-purple-600"
+                  }`}
                 >
                   {item.label}
                 </Link>
