@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { RazorpayCheckout } from "@/components/RazorpayCheckout";
 import {
   Check,
@@ -542,9 +543,7 @@ export default function PricingPage() {
         </section>
       </main>
 
-      <footer className="py-8 border-t border-slate-200 text-center text-xs text-slate-500 bg-[#FAFAFA]">
-        © {new Date().getFullYear()} ResumeFlow. All rights reserved. Made with authentic precision.
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 import { ArrowRight, Star, Check, X, ExternalLink } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
 
@@ -617,12 +618,7 @@ export default function BestFreeResumeBuilders2026() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-50 border-t border-slate-200 py-8 px-6">
-        <div className="max-w-[900px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <BrandLogo size="sm" className="gap-2.5 text-slate-900 dark:text-white" />
-          <span>&copy; 2026 ResumeFlow. All rights reserved.</span>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

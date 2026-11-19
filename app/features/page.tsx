@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import { FeatureGrid } from "@/components/grids/FeatureGrid";
 import { BentoGrid } from "@/components/grids/BentoGrid";
 import { WhyResumeFlow } from "@/components/WhyResumeFlow";
@@ -19,9 +20,7 @@ export default function FeaturesPage() {
         <BentoGrid />
         <WhyResumeFlow />
       </main>
-      <footer className="py-8 border-t border-slate-800 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} ResumeFlow. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 }

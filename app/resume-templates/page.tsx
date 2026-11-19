@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { X } from "lucide-react";
+import { X, Download, ArrowRight, Eye, CheckCircle2 } from "lucide-react";
 
 interface TemplateItem {
   id: string;
@@ -12,6 +12,8 @@ interface TemplateItem {
   description: string;
   slug: string;
   accentColor: string;
+  pdfUrl: string;
+  previewImage: string;
 }
 
 const TEMPLATES: TemplateItem[] = [
@@ -21,7 +23,9 @@ const TEMPLATES: TemplateItem[] = [
     description:
       "The Harvard/McKinsey-style format trusted by recruiters at banks, consulting firms, and Fortune 500 companies.",
     slug: "classic-professional",
-    accentColor: "#1e293b",
+    accentColor: "#0f172a",
+    pdfUrl: "/templates/classic-professional-resume-template.pdf",
+    previewImage: "/images/templates/classic-professional.png",
   },
   {
     id: "modern",
@@ -30,6 +34,8 @@ const TEMPLATES: TemplateItem[] = [
       "A bold color header and clean sans-serif layout that stands out without sacrificing ATS compatibility.",
     slug: "modern",
     accentColor: "#2563eb",
+    pdfUrl: "/templates/modern-resume-template.pdf",
+    previewImage: "/images/templates/modern.png",
   },
   {
     id: "minimal",
@@ -38,6 +44,8 @@ const TEMPLATES: TemplateItem[] = [
       "Maximum whitespace, zero decoration — built for when the content needs to do all the talking.",
     slug: "minimal",
     accentColor: "#475569",
+    pdfUrl: "/templates/minimal-resume-template.pdf",
+    previewImage: "/images/templates/minimal.png",
   },
   {
     id: "two-column",
@@ -46,536 +54,397 @@ const TEMPLATES: TemplateItem[] = [
       "A dark sidebar for skills and education, a main column for experience — fits more on one page without feeling cramped.",
     slug: "two-column",
     accentColor: "#0f172a",
+    pdfUrl: "/templates/two-column-resume-template.pdf",
+    previewImage: "/images/templates/two-column.png",
   },
 ];
 
-/* ─── MINIATURE MOCKUP COMPONENTS ────────────────────────────────────── */
-
-function ClassicThumbnail() {
-  return (
-    <div className="w-full h-full bg-white p-3 text-[5.5px] leading-tight text-slate-800 flex flex-col shadow-xs border border-slate-200/60 rounded select-none pointer-events-none">
-      {/* Header */}
-      <div className="text-center pb-1.5 border-b border-slate-800">
-        <div className="font-bold text-[7.5px] tracking-wide text-slate-900">Jordan Alvarez</div>
-        <div className="text-[4.5px] text-slate-500 mt-0.5">
-          San Francisco, CA • jordan@example.com • linkedin.com/in/jordan • github.com/jordan
-        </div>
-      </div>
-
-      {/* Summary */}
-      <div className="mt-1 pb-1 border-b border-slate-300">
-        <div className="font-bold text-[5.5px] uppercase tracking-wider text-slate-900">Summary</div>
-        <div className="text-[4.5px] text-slate-600 mt-0.5 line-clamp-1">
-          Full-stack software engineer with 5+ years experience building distributed cloud systems and real-time APIs.
-        </div>
-      </div>
-
-      {/* Experience */}
-      <div className="mt-1 pb-1 border-b border-slate-300">
-        <div className="font-bold text-[5.5px] uppercase tracking-wider text-slate-900">Experience</div>
-        <div className="mt-0.5">
-          <div className="flex justify-between font-bold text-[5px]">
-            <span>Senior Software Engineer — TechCorp</span>
-            <span className="text-slate-400 font-normal">2022 – Present</span>
-          </div>
-          <div className="text-[4.5px] text-slate-600 pl-1.5 mt-0.5 space-y-0.5">
-            <div>• Architected high-throughput ingestion pipeline processing 40M+ events/day.</div>
-            <div>• Reduced p99 API latency by 42% through distributed caching and query optimization.</div>
-          </div>
-        </div>
-        <div className="mt-1">
-          <div className="flex justify-between font-bold text-[5px]">
-            <span>Software Engineer — StartupLab</span>
-            <span className="text-slate-400 font-normal">2020 – 2022</span>
-          </div>
-          <div className="text-[4.5px] text-slate-600 pl-1.5 mt-0.5">
-            <div>• Engineered core user authentication and role-based permissions serving 150K active users.</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Education */}
-      <div className="mt-1 pb-1 border-b border-slate-300">
-        <div className="font-bold text-[5.5px] uppercase tracking-wider text-slate-900">Education</div>
-        <div className="flex justify-between text-[4.5px] mt-0.5">
-          <span className="font-semibold">B.S. in Computer Science — University of Washington</span>
-          <span className="text-slate-400">2016 – 2020</span>
-        </div>
-      </div>
-
-      {/* Skills */}
-      <div className="mt-1">
-        <div className="font-bold text-[5.5px] uppercase tracking-wider text-slate-900">Skills</div>
-        <div className="text-[4.5px] text-slate-600 mt-0.5">
-          <span className="font-semibold">Languages:</span> TypeScript, Python, Go, SQL • <span className="font-semibold">Frameworks:</span> Next.js, React, Node.js
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ModernThumbnail() {
-  return (
-    <div className="w-full h-full bg-white flex flex-col shadow-xs border border-slate-200/60 rounded overflow-hidden select-none pointer-events-none">
-      {/* Bold Colored Top Banner */}
-      <div className="bg-[#2563EB] text-white p-2.5">
-        <div className="font-bold text-[8px] tracking-wide">Jordan Alvarez</div>
-        <div className="text-[5px] text-blue-100 font-medium mt-0.5">Senior Software Engineer</div>
-        <div className="text-[4px] text-blue-200 mt-0.5">
-          San Francisco, CA • jordan@example.com • linkedin.com/in/jordan
-        </div>
-      </div>
-
-      {/* Body */}
-      <div className="p-2.5 text-[5.5px] leading-tight text-slate-800 flex-1 flex flex-col justify-between">
-        <div>
-          <div className="font-bold text-[6px] uppercase tracking-wider text-[#2563EB] border-b border-blue-200 pb-0.5">
-            Professional Experience
-          </div>
-          <div className="mt-1">
-            <div className="flex justify-between font-bold text-[5px]">
-              <span>Senior Software Engineer — TechCorp</span>
-              <span className="text-slate-400 font-normal">2022 – Present</span>
-            </div>
-            <div className="text-[4.5px] text-slate-600 pl-1.5 mt-0.5 space-y-0.5">
-              <div>• Scaled distributed ingestion cluster handling 40M daily mutations.</div>
-              <div>• Reduced server footprint by 35% with optimized async workers.</div>
-            </div>
-          </div>
-          <div className="mt-1">
-            <div className="flex justify-between font-bold text-[5px]">
-              <span>Software Engineer — StartupLab</span>
-              <span className="text-slate-400 font-normal">2020 – 2022</span>
-            </div>
-            <div className="text-[4.5px] text-slate-600 pl-1.5 mt-0.5">
-              <div>• Built microservices and payment workflows with Stripe & Webhooks.</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-1">
-          <div className="font-bold text-[6px] uppercase tracking-wider text-[#2563EB] border-b border-blue-200 pb-0.5">
-            Education & Skills
-          </div>
-          <div className="flex justify-between text-[4.5px] mt-0.5">
-            <span className="font-semibold">B.S. Computer Science — Univ. of Washington</span>
-            <span className="text-slate-400">2016 – 2020</span>
-          </div>
-          <div className="text-[4.5px] text-slate-600 mt-0.5">
-            TypeScript, React, Python, PostgreSQL, AWS, Docker, GraphQL
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MinimalThumbnail() {
-  return (
-    <div className="w-full h-full bg-white p-3 text-[5.5px] leading-relaxed text-slate-700 flex flex-col justify-between shadow-xs border border-slate-200/60 rounded select-none pointer-events-none">
-      {/* Header */}
-      <div>
-        <div className="font-bold text-[8px] tracking-tight text-slate-900">Jordan Alvarez</div>
-        <div className="text-[4.5px] text-slate-400 mt-0.5">
-          jordan@example.com · +1 (415) 555-0192 · San Francisco, CA
-        </div>
-      </div>
-
-      {/* Experience */}
-      <div>
-        <div className="text-[5px] font-semibold text-slate-400 uppercase tracking-widest mb-0.5">
-          Experience
-        </div>
-        <div>
-          <div className="flex justify-between font-semibold text-[5.5px] text-slate-900">
-            <span>TechCorp — Senior Software Engineer</span>
-            <span className="text-slate-400 font-normal">2022 — Present</span>
-          </div>
-          <div className="text-[4.5px] text-slate-500 mt-0.5 space-y-0.5">
-            <div>Led transition of legacy monololith to event-driven serverless architecture.</div>
-            <div>Built automated CI/CD pipeline cutting deployment release time from 45m to 4m.</div>
-          </div>
-        </div>
-        <div className="mt-1">
-          <div className="flex justify-between font-semibold text-[5.5px] text-slate-900">
-            <span>StartupLab — Software Engineer</span>
-            <span className="text-slate-400 font-normal">2020 — 2022</span>
-          </div>
-          <div className="text-[4.5px] text-slate-500 mt-0.5">
-            <div>Created responsive real-time dashboards with Next.js and Tailwind CSS.</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Education & Skills */}
-      <div>
-        <div className="text-[5px] font-semibold text-slate-400 uppercase tracking-widest mb-0.5">
-          Education & Expertise
-        </div>
-        <div className="text-[4.5px] text-slate-600">
-          <span className="text-slate-900 font-medium">B.S. Computer Science</span>, Univ. of Washington · 2020
-        </div>
-        <div className="text-[4.5px] text-slate-500 mt-0.5">
-          TypeScript · React · Next.js · Go · PostgreSQL · Redis · Docker · Tailwind
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TwoColumnThumbnail() {
-  return (
-    <div className="w-full h-full bg-white flex shadow-xs border border-slate-200/60 rounded overflow-hidden select-none pointer-events-none">
-      {/* Dark Sidebar */}
-      <div className="w-[36%] bg-[#0F172A] text-white p-2 flex flex-col justify-between text-[4.5px] leading-tight">
-        <div>
-          <div className="font-bold text-[7px] text-white leading-tight">Jordan Alvarez</div>
-          <div className="text-[4px] text-slate-400 mt-0.5">Full Stack Engineer</div>
-
-          <div className="mt-2 text-[4px] text-slate-300 space-y-0.5">
-            <div>✉ jordan@example.com</div>
-            <div>📍 San Francisco, CA</div>
-            <div>🔗 linkedin/in/jordan</div>
-          </div>
-
-          <div className="mt-2 pt-1 border-t border-slate-700/80">
-            <div className="font-bold text-[5px] text-slate-200 uppercase tracking-wider mb-0.5">Skills</div>
-            <div className="text-[4px] text-slate-400 space-y-0.5">
-              <div>• TypeScript</div>
-              <div>• React / Next.js</div>
-              <div>• Node.js / Go</div>
-              <div>• PostgreSQL</div>
-              <div>• AWS & Docker</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-1 border-t border-slate-700/80">
-          <div className="font-bold text-[5px] text-slate-200 uppercase tracking-wider mb-0.5">Education</div>
-          <div className="text-[4px] text-slate-300 font-semibold">B.S. Computer Science</div>
-          <div className="text-[3.5px] text-slate-400">Univ. of Washington · 2020</div>
-        </div>
-      </div>
-
-      {/* Main Right Column */}
-      <div className="w-[64%] p-2 text-[5px] leading-tight text-slate-800 flex flex-col justify-between">
-        <div>
-          <div className="font-bold text-[5.5px] text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-0.5">
-            Executive Summary
-          </div>
-          <div className="text-[4.5px] text-slate-600 mt-0.5">
-            Results-driven engineer specialized in scalable cloud microservices, developer productivity, and reliable distributed systems.
-          </div>
-        </div>
-
-        <div className="mt-1">
-          <div className="font-bold text-[5.5px] text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-0.5">
-            Experience
-          </div>
-          <div className="mt-0.5">
-            <div className="font-bold text-[5px] text-slate-900">Senior Software Engineer</div>
-            <div className="text-[4px] text-slate-500">TechCorp · 2022 – Present</div>
-            <div className="text-[4px] text-slate-600 mt-0.5 space-y-0.5">
-              <div>• Led team of 6 engineers delivering multi-region message broker.</div>
-              <div>• Reduced cloud infrastructure spend by 28% through autoscaling.</div>
-            </div>
-          </div>
-          <div className="mt-1">
-            <div className="font-bold text-[5px] text-slate-900">Software Engineer</div>
-            <div className="text-[4px] text-slate-500">StartupLab · 2020 – 2022</div>
-            <div className="text-[4px] text-slate-600 mt-0.5">
-              <div>• Designed RESTful APIs and real-time WebSocket client notifications.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ─── FULL PREVIEW COMPONENT FOR MODAL ───────────────────────────────── */
 
-function FullTemplatePreview({ templateId }: { templateId: string }) {
-  if (templateId === "modern") {
-    return (
-      <div className="bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden text-slate-800 max-w-2xl mx-auto">
-        <div className="bg-[#2563EB] text-white p-6 sm:p-8">
-          <h2 className="text-2xl font-bold tracking-tight">Jordan Alvarez</h2>
-          <p className="text-sm text-blue-100 font-medium mt-1">Senior Full-Stack Software Engineer</p>
-          <div className="flex flex-wrap gap-4 text-xs text-blue-200 mt-3">
-            <span>📍 San Francisco, CA</span>
-            <span>✉ jordan.alvarez@example.com</span>
-            <span>📞 +1 (415) 555-0192</span>
-            <span>🔗 linkedin.com/in/jordan-alvarez</span>
-          </div>
-        </div>
-        <div className="p-6 sm:p-8 space-y-6 text-xs sm:text-sm">
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#2563EB] border-b-2 border-blue-200 pb-1">
-              Professional Summary
-            </h3>
-            <p className="mt-2 text-slate-600 leading-relaxed">
-              Full-Stack Software Engineer with 5+ years of experience designing and scaling high-throughput distributed systems. Demonstrated expertise in React, Next.js, Go, and PostgreSQL. Track record of improving system uptime to 99.99% and reducing cloud spend by 30%.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#2563EB] border-b-2 border-blue-200 pb-1">
-              Work Experience
-            </h3>
-            <div className="mt-3 space-y-4">
-              <div>
-                <div className="flex justify-between items-baseline font-bold text-slate-900">
-                  <span className="text-sm">Senior Software Engineer — TechCorp Inc.</span>
-                  <span className="text-xs text-slate-500 font-normal">2022 – Present</span>
-                </div>
-                <ul className="list-disc pl-5 mt-1.5 space-y-1 text-slate-600">
-                  <li>Architected real-time ingestion pipeline handling 40M+ events per day with zero data loss.</li>
-                  <li>Spearheaded transition from monolith to containerized microservices on AWS EKS, slashing deployment cycle time by 65%.</li>
-                  <li>Mentored 5 junior engineers and instituted code review standards across the organization.</li>
-                </ul>
-              </div>
-              <div>
-                <div className="flex justify-between items-baseline font-bold text-slate-900">
-                  <span className="text-sm">Software Engineer — StartupLab</span>
-                  <span className="text-xs text-slate-500 font-normal">2020 – 2022</span>
-                </div>
-                <ul className="list-disc pl-5 mt-1.5 space-y-1 text-slate-600">
-                  <li>Built core payment workflows using Stripe Connect, processing $12M in gross volume in year one.</li>
-                  <li>Optimized PostgreSQL queries and database indices to reduce average API response latency by 45%.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#2563EB] border-b-2 border-blue-200 pb-1">
-              Education & Certifications
-            </h3>
-            <div className="mt-2 flex justify-between text-slate-700">
-              <span className="font-semibold">B.S. in Computer Science — University of Washington</span>
-              <span className="text-slate-500">2016 – 2020</span>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider text-[#2563EB] border-b-2 border-blue-200 pb-1">
-              Technical Skills
-            </h3>
-            <p className="mt-2 text-slate-600">
-              <strong className="text-slate-800">Languages:</strong> TypeScript, JavaScript, Python, Go, SQL<br />
-              <strong className="text-slate-800">Frameworks & Libraries:</strong> React, Next.js, Node.js, Express, Tailwind CSS<br />
-              <strong className="text-slate-800">Cloud & Tools:</strong> AWS, Docker, Kubernetes, PostgreSQL, Redis, Git, CI/CD
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+function FullTemplatePreview({ template }: { template: TemplateItem }) {
+  const [activeTab, setActiveTab] = useState<"visual" | "html">("visual");
 
-  if (templateId === "two-column") {
-    return (
-      <div className="bg-white rounded-lg shadow-lg border border-slate-200 overflow-hidden flex flex-col md:flex-row max-w-2xl mx-auto">
-        {/* Dark Left Sidebar */}
-        <div className="w-full md:w-1/3 bg-[#0F172A] text-white p-6 space-y-6">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight">Jordan Alvarez</h2>
-            <p className="text-xs text-slate-400 font-medium mt-1">Software Engineer</p>
-          </div>
-          <div className="space-y-2 text-xs text-slate-300">
-            <p className="font-bold uppercase tracking-wider text-[10px] text-slate-400">Contact</p>
-            <p>✉ jordan@example.com</p>
-            <p>📍 San Francisco, CA</p>
-            <p>📞 +1 (415) 555-0192</p>
-            <p>🔗 linkedin.com/in/jordan</p>
-          </div>
-          <div className="space-y-2 text-xs text-slate-300">
-            <p className="font-bold uppercase tracking-wider text-[10px] text-slate-400">Skills</p>
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              {["TypeScript", "React", "Next.js", "Node.js", "Python", "Go", "PostgreSQL", "Docker", "AWS"].map((s) => (
-                <span key={s} className="px-2 py-0.5 rounded bg-slate-800 text-[11px] text-slate-300 border border-slate-700">
-                  {s}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-1 text-xs text-slate-300">
-            <p className="font-bold uppercase tracking-wider text-[10px] text-slate-400">Education</p>
-            <p className="font-semibold text-white">B.S. Computer Science</p>
-            <p className="text-slate-400 text-[11px]">Univ. of Washington · 2020</p>
-          </div>
-        </div>
-
-        {/* Right Main Column */}
-        <div className="w-full md:w-2/3 p-6 sm:p-8 space-y-6 text-xs sm:text-sm text-slate-800">
-          <div>
-            <h3 className="font-bold text-xs uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
-              Profile Summary
-            </h3>
-            <p className="mt-2 text-slate-600 leading-relaxed text-xs sm:text-sm">
-              Engineering leader with 5+ years of experience delivering robust web platforms and cloud-native backend services.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-bold text-xs uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
-              Experience
-            </h3>
-            <div className="mt-3 space-y-4">
-              <div>
-                <div className="flex justify-between items-baseline font-bold text-slate-900">
-                  <span>Senior Software Engineer</span>
-                  <span className="text-xs text-slate-500 font-normal">2022 – Present</span>
-                </div>
-                <p className="text-xs text-purple-700 font-medium">TechCorp Inc. · San Francisco, CA</p>
-                <ul className="list-disc pl-4 mt-1.5 space-y-1 text-slate-600 text-xs">
-                  <li>Orchestrated event-driven microservices processing 40M+ messages daily.</li>
-                  <li>Cut p99 response times from 340ms to 48ms via multi-tier caching.</li>
-                </ul>
-              </div>
-              <div>
-                <div className="flex justify-between items-baseline font-bold text-slate-900">
-                  <span>Software Engineer</span>
-                  <span className="text-xs text-slate-500 font-normal">2020 – 2022</span>
-                </div>
-                <p className="text-xs text-purple-700 font-medium">StartupLab · Seattle, WA</p>
-                <ul className="list-disc pl-4 mt-1.5 space-y-1 text-slate-600 text-xs">
-                  <li>Created responsive web apps with Next.js, Redux, and Tailwind CSS.</li>
-                  <li>Spearheaded automated testing increasing code coverage to 92%.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (templateId === "minimal") {
-    return (
-      <div className="bg-white rounded-lg shadow-lg border border-slate-200 p-8 sm:p-12 text-slate-800 max-w-2xl mx-auto space-y-8">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">Jordan Alvarez</h2>
-          <p className="text-xs text-slate-400 mt-1">
-            jordan.alvarez@example.com · +1 (415) 555-0192 · San Francisco, CA · linkedin.com/in/jordan
-          </p>
-        </div>
-
-        <div>
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3">
-            Experience
-          </h3>
-          <div className="space-y-5">
-            <div>
-              <div className="flex justify-between text-sm font-semibold text-slate-900">
-                <span>TechCorp — Senior Software Engineer</span>
-                <span className="text-xs text-slate-400 font-normal">2022 — Present</span>
-              </div>
-              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                Led the platform core architecture. Built distributed message pipeline handling 40M+ events daily. Mentored junior engineers and revamped code review workflows.
-              </p>
-            </div>
-            <div>
-              <div className="flex justify-between text-sm font-semibold text-slate-900">
-                <span>StartupLab — Software Engineer</span>
-                <span className="text-xs text-slate-400 font-normal">2020 — 2022</span>
-              </div>
-              <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
-                Built real-time billing integrations and frontend dashboards. Improved query latency by 45% using database tuning and Redis caches.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
-            Education
-          </h3>
-          <div className="flex justify-between text-xs text-slate-700">
-            <span className="font-medium text-slate-900">University of Washington</span>
-            <span className="text-slate-400">2016 — 2020</span>
-          </div>
-          <p className="text-xs text-slate-500 mt-0.5">B.S. in Computer Science</p>
-        </div>
-
-        <div>
-          <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2">
-            Skills
-          </h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            TypeScript · React · Next.js · Node.js · Python · Go · PostgreSQL · Redis · Docker · AWS · Tailwind CSS
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Default: Classic Professional (Harvard/McKinsey)
   return (
-    <div className="bg-white rounded-lg shadow-lg border border-slate-200 p-8 sm:p-12 text-slate-900 max-w-2xl mx-auto space-y-6">
-      <div className="text-center pb-3 border-b-2 border-slate-900">
-        <h2 className="text-2xl font-bold tracking-wide uppercase">Jordan Alvarez</h2>
-        <p className="text-xs text-slate-600 mt-1">
-          San Francisco, CA • (415) 555-0192 • jordan@example.com • linkedin.com/in/jordan
-        </p>
+    <div className="flex flex-col items-center max-w-3xl mx-auto">
+      {/* View Switcher */}
+      <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl mb-4 text-xs font-medium text-slate-600">
+        <button
+          type="button"
+          onClick={() => setActiveTab("visual")}
+          className={`px-3 py-1.5 rounded-lg transition-all ${
+            activeTab === "visual"
+              ? "bg-white text-slate-900 shadow-xs font-semibold"
+              : "hover:text-slate-900"
+          }`}
+        >
+          4K Document View
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("html")}
+          className={`px-3 py-1.5 rounded-lg transition-all ${
+            activeTab === "html"
+              ? "bg-white text-slate-900 shadow-xs font-semibold"
+              : "hover:text-slate-900"
+          }`}
+        >
+          Selectable Text View
+        </button>
       </div>
 
-      <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-400 pb-0.5 mb-2">
-          Summary
-        </h3>
-        <p className="text-xs text-slate-700 leading-relaxed">
-          Accomplished software engineer with 5+ years of experience in distributed cloud infrastructure, microservices, and modern web application development. Proven record of delivering resilient products at scale.
-        </p>
-      </div>
-
-      <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-400 pb-0.5 mb-2">
-          Professional Experience
-        </h3>
-        <div className="space-y-4">
-          <div>
-            <div className="flex justify-between font-bold text-xs">
-              <span>TECHCORP INC. — San Francisco, CA</span>
-              <span className="font-normal text-slate-600">2022 – Present</span>
-            </div>
-            <p className="text-xs italic text-slate-700">Senior Software Engineer</p>
-            <ul className="list-disc pl-5 mt-1 text-xs text-slate-700 space-y-1">
-              <li>Architected high-throughput ingestion pipeline processing 40M+ daily events with 99.99% reliability.</li>
-              <li>Reduced API p99 latency by 42% through distributed Redis caching and database indexing.</li>
-              <li>Guided team through SOC 2 Type II compliance audit and implemented strict data isolation.</li>
-            </ul>
-          </div>
-          <div>
-            <div className="flex justify-between font-bold text-xs">
-              <span>STARTUPLAB — Seattle, WA</span>
-              <span className="font-normal text-slate-600">2020 – 2022</span>
-            </div>
-            <p className="text-xs italic text-slate-700">Software Engineer</p>
-            <ul className="list-disc pl-5 mt-1 text-xs text-slate-700 space-y-1">
-              <li>Built core user authentication and role-based permissions serving 150K active users.</li>
-              <li>Engineered interactive analytical dashboards using React and Next.js.</li>
-            </ul>
-          </div>
+      {activeTab === "visual" ? (
+        <div className="bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden w-full max-w-2xl">
+          <img
+            src={template.previewImage}
+            alt={`${template.name} preview`}
+            className="w-full h-auto block"
+          />
         </div>
-      </div>
+      ) : (
+        <div className="w-full">
+          {template.id === "two-column" && (
+            <div className="bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden flex flex-col sm:flex-row text-xs max-w-2xl mx-auto">
+              {/* Dark Left Sidebar */}
+              <div className="w-full sm:w-[36%] bg-[#0B1528] text-white p-6 space-y-5">
+                <div>
+                  <h2 className="text-xl font-bold tracking-tight text-white">Jordan Alvarez</h2>
+                  <div className="mt-2 space-y-1 text-slate-300 text-[11px]">
+                    <div>jordan.alvarez@email.com</div>
+                    <div>(555) 123-4567</div>
+                    <div>San Francisco, CA</div>
+                    <div>linkedin.com/in/jordanalvarez</div>
+                  </div>
+                </div>
 
-      <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-400 pb-0.5 mb-2">
-          Education
-        </h3>
-        <div className="flex justify-between text-xs">
-          <span className="font-bold">UNIVERSITY OF WASHINGTON — Seattle, WA</span>
-          <span className="text-slate-600">Graduated 2020</span>
+                <div className="pt-2">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#93c5fd]">
+                    EDUCATION
+                  </h3>
+                  <div className="mt-1.5 text-[11px]">
+                    <p className="font-semibold text-slate-100">B.S. Computer Science — University of Washington</p>
+                    <p className="text-slate-400 mt-0.5">2015 – 2019</p>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#93c5fd]">
+                    SKILLS
+                  </h3>
+                  <ul className="mt-1.5 space-y-1 text-slate-300 text-[11px]">
+                    <li>• Languages: JavaScript, TypeScript, Python, SQL</li>
+                    <li>• Frameworks: React, Next.js, Node.js, Express</li>
+                    <li>• Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Right Main Column */}
+              <div className="w-full sm:w-[64%] p-6 space-y-5 text-slate-800">
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
+                    SUMMARY
+                  </h3>
+                  <p className="mt-2 text-slate-700 leading-relaxed text-xs">
+                    Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
+                    EXPERIENCE
+                  </h3>
+                  <div className="mt-3 space-y-4">
+                    <div>
+                      <div className="font-bold text-xs text-slate-900">
+                        Senior Software Engineer — Northwind Digital
+                      </div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">Jan 2022 – Present</div>
+                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px] list-disc pl-4">
+                        <li>Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</li>
+                        <li>Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</li>
+                        <li>Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <div className="font-bold text-xs text-slate-900">
+                        Software Engineer — Brightline Labs
+                      </div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">Jun 2019 – Dec 2021</div>
+                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px] list-disc pl-4">
+                        <li>Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</li>
+                        <li>Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</li>
+                        <li>Collaborated with design and product to launch 3 major features on a 6-week release cadence</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {template.id === "minimal" && (
+            <div className="bg-white rounded-lg shadow-xl border border-slate-200 p-8 sm:p-10 text-slate-800 max-w-2xl mx-auto space-y-5 text-xs font-sans">
+              <div>
+                <h2 className="text-2xl font-bold tracking-tight text-slate-950">Jordan Alvarez</h2>
+                <p className="text-[11px] text-slate-500 mt-1 flex flex-wrap gap-x-4">
+                  <span>jordan.alvarez@email.com</span>
+                  <span>(555) 123-4567</span>
+                  <span>San Francisco, CA</span>
+                  <span>linkedin.com/in/jordanalvarez</span>
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  SUMMARY
+                </h3>
+                <p className="text-slate-700 leading-relaxed text-xs">
+                  Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                  EXPERIENCE
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <div className="font-bold text-xs text-slate-900">
+                      Senior Software Engineer — Northwind Digital
+                    </div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">Jan 2022 – Present</div>
+                    <div className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
+                      <div>— Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</div>
+                      <div>— Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</div>
+                      <div>— Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="font-bold text-xs text-slate-900">
+                      Software Engineer — Brightline Labs
+                    </div>
+                    <div className="text-[11px] text-slate-500 mt-0.5">Jun 2019 – Dec 2021</div>
+                    <div className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
+                      <div>— Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</div>
+                      <div>— Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</div>
+                      <div>— Collaborated with design and product to launch 3 major features on a 6-week release cadence</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  EDUCATION
+                </h3>
+                <div className="font-bold text-xs text-slate-900">
+                  B.S. Computer Science — University of Washington
+                </div>
+                <div className="text-[11px] text-slate-500 mt-0.5">2015 – 2019</div>
+              </div>
+
+              <div>
+                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
+                  SKILLS
+                </h3>
+                <div className="space-y-1 text-slate-700 text-[11px]">
+                  <div>— Languages: JavaScript, TypeScript, Python, SQL</div>
+                  <div>— Frameworks: React, Next.js, Node.js, Express</div>
+                  <div>— Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {template.id === "classic-professional" && (
+            <div className="bg-white rounded-lg shadow-xl border border-slate-200 p-8 sm:p-10 text-slate-900 max-w-2xl mx-auto space-y-4 font-serif">
+              <div className="text-center pb-2">
+                <h2 className="text-2xl font-bold text-slate-950 font-serif">Jordan Alvarez</h2>
+                <p className="text-[11px] text-slate-600 mt-1 font-sans">
+                  jordan.alvarez@email.com &nbsp;·&nbsp; (555) 123-4567 &nbsp;·&nbsp; San Francisco, CA &nbsp;·&nbsp; linkedin.com/in/jordanalvarez
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
+                  S U M M A R Y
+                </h3>
+                <p className="text-xs text-slate-800 leading-relaxed font-serif">
+                  Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
+                  E X P E R I E N C E
+                </h3>
+                <div className="space-y-3 font-sans">
+                  <div>
+                    <div className="font-bold text-xs text-slate-950">
+                      Senior Software Engineer — Northwind Digital
+                    </div>
+                    <div className="text-[11px] text-slate-600">Jan 2022 – Present</div>
+                    <ul className="mt-1 space-y-1 text-[11px] text-slate-800 list-disc pl-4 font-serif">
+                      <li>Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</li>
+                      <li>Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</li>
+                      <li>Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <div className="font-bold text-xs text-slate-950">
+                      Software Engineer — Brightline Labs
+                    </div>
+                    <div className="text-[11px] text-slate-600">Jun 2019 – Dec 2021</div>
+                    <ul className="mt-1 space-y-1 text-[11px] text-slate-800 list-disc pl-4 font-serif">
+                      <li>Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</li>
+                      <li>Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</li>
+                      <li>Collaborated with design and product to launch 3 major features on a 6-week release cadence</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
+                  E D U C A T I O N
+                </h3>
+                <div className="font-sans">
+                  <div className="font-bold text-xs text-slate-950">
+                    B.S. Computer Science — University of Washington
+                  </div>
+                  <div className="text-[11px] text-slate-600">2015 – 2019</div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
+                  S K I L L S
+                </h3>
+                <ul className="space-y-1 text-[11px] text-slate-800 list-disc pl-4 font-serif">
+                  <li>Languages: JavaScript, TypeScript, Python, SQL</li>
+                  <li>Frameworks: React, Next.js, Node.js, Express</li>
+                  <li>Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {template.id === "modern" && (
+            <div className="bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden text-slate-800 max-w-2xl mx-auto">
+              {/* Bold Blue Top Banner */}
+              <div className="bg-[#2563EB] text-white p-6 sm:p-7">
+                <h2 className="text-2xl font-bold tracking-tight text-white">Jordan Alvarez</h2>
+                <p className="text-[11px] text-blue-100 mt-2 flex flex-wrap gap-x-3">
+                  <span>jordan.alvarez@email.com</span>
+                  <span>·</span>
+                  <span>(555) 123-4567</span>
+                  <span>·</span>
+                  <span>San Francisco, CA</span>
+                  <span>·</span>
+                  <span>linkedin.com/in/jordanalvarez</span>
+                </p>
+              </div>
+
+              <div className="p-6 sm:p-8 space-y-5 text-xs">
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
+                    <span>SUMMARY</span>
+                  </h3>
+                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
+                  <p className="text-slate-700 leading-relaxed text-xs">
+                    Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
+                    <span>EXPERIENCE</span>
+                  </h3>
+                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="font-bold text-xs text-slate-900">
+                        Senior Software Engineer — Northwind Digital
+                      </div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">Jan 2022 – Present</div>
+                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#2563EB] font-bold">•</span>
+                          <span>Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#2563EB] font-bold">•</span>
+                          <span>Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#2563EB] font-bold">•</span>
+                          <span>Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <div className="font-bold text-xs text-slate-900">
+                        Software Engineer — Brightline Labs
+                      </div>
+                      <div className="text-[11px] text-slate-500 mt-0.5">Jun 2019 – Dec 2021</div>
+                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#2563EB] font-bold">•</span>
+                          <span>Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#2563EB] font-bold">•</span>
+                          <span>Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#2563EB] font-bold">•</span>
+                          <span>Collaborated with design and product to launch 3 major features on a 6-week release cadence</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
+                    <span>EDUCATION</span>
+                  </h3>
+                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
+                  <div className="font-bold text-xs text-slate-900">
+                    B.S. Computer Science — University of Washington
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">2015 – 2019</div>
+                </div>
+
+                <div>
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
+                    <span>SKILLS</span>
+                  </h3>
+                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
+                  <ul className="space-y-1 text-slate-700 text-[11px]">
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#2563EB] font-bold">•</span>
+                      <span>Languages: JavaScript, TypeScript, Python, SQL</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#2563EB] font-bold">•</span>
+                      <span>Frameworks: React, Next.js, Node.js, Express</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-[#2563EB] font-bold">•</span>
+                      <span>Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        <p className="text-xs text-slate-700">Bachelor of Science in Computer Science</p>
-      </div>
-
-      <div>
-        <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-400 pb-0.5 mb-2">
-          Skills
-        </h3>
-        <p className="text-xs text-slate-700">
-          <strong>Languages:</strong> TypeScript, JavaScript, Python, Go, SQL<br />
-          <strong>Technologies:</strong> React, Next.js, Node.js, Express, Docker, AWS, PostgreSQL, Redis, Git
-        </p>
-      </div>
+      )}
     </div>
   );
 }
@@ -586,100 +455,13 @@ export default function ResumeTemplatesPage() {
   const [selectedPreview, setSelectedPreview] = useState<TemplateItem | null>(null);
 
   const handleDownload = (template: TemplateItem) => {
-    // Generates a clean styled HTML document and triggers print/save as PDF dialog directly in the browser
-    const printWindow = window.open("", "_blank");
-    if (!printWindow) {
-      alert("Please allow popups to download this resume template.");
-      return;
-    }
-
-    const templateMarkup = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${template.name} - Free Resume Template | ResumeFlow</title>
-          <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <style>
-            @page { size: letter; margin: 15mm; }
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color: #1e293b; line-height: 1.5; margin: 0; padding: 20px; font-size: 10pt; }
-            h1 { font-size: 18pt; margin: 0 0 4px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-            h2 { font-size: 11pt; text-transform: uppercase; border-bottom: 1px solid #1e293b; padding-bottom: 2px; margin: 16px 0 6px 0; letter-spacing: 0.5px; }
-            .subtitle { font-size: 8.5pt; color: #64748b; margin-bottom: 12px; }
-            .entry-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 9.5pt; margin-top: 8px; }
-            .entry-subheader { display: flex; justify-content: space-between; font-style: italic; font-size: 9pt; color: #475569; margin-bottom: 4px; }
-            ul { margin: 4px 0 10px 0; padding-left: 18px; }
-            li { margin-bottom: 3px; font-size: 9pt; color: #334155; }
-            @media print {
-              body { padding: 0; }
-              .no-print { display: none; }
-            }
-          </style>
-        </head>
-        <body>
-          <div style="text-align: center; border-bottom: 2px solid #0f172a; padding-bottom: 8px;">
-            <h1>Jordan Alvarez</h1>
-            <div class="subtitle">San Francisco, CA • (415) 555-0192 • jordan.alvarez@example.com • linkedin.com/in/jordan</div>
-          </div>
-
-          <h2>Summary</h2>
-          <p style="margin: 4px 0 8px 0; font-size: 9pt;">
-            Accomplished Software Engineer with 5+ years of experience designing and scaling distributed systems, microservices, and modern web applications. Proven record of delivering resilient products with 99.99% uptime.
-          </p>
-
-          <h2>Experience</h2>
-          <div class="entry-header">
-            <span>TECHCORP INC. — San Francisco, CA</span>
-            <span>2022 – Present</span>
-          </div>
-          <div class="entry-subheader">
-            <span>Senior Software Engineer</span>
-          </div>
-          <ul>
-            <li>Architected high-throughput ingestion pipeline processing 40M+ daily events with 99.99% reliability.</li>
-            <li>Reduced API p99 latency by 42% through distributed Redis caching and database query optimization.</li>
-            <li>Mentored 5 engineers and established architectural review processes across the organization.</li>
-          </ul>
-
-          <div class="entry-header">
-            <span>STARTUPLAB — Seattle, WA</span>
-            <span>2020 – 2022</span>
-          </div>
-          <div class="entry-subheader">
-            <span>Software Engineer</span>
-          </div>
-          <ul>
-            <li>Built core user authentication, billing workflows, and role-based permissions serving 150K active users.</li>
-            <li>Engineered interactive analytical dashboards using Next.js, React, and Tailwind CSS.</li>
-          </ul>
-
-          <h2>Education</h2>
-          <div class="entry-header">
-            <span>UNIVERSITY OF WASHINGTON — Seattle, WA</span>
-            <span>Graduated 2020</span>
-          </div>
-          <div class="entry-subheader">
-            <span>Bachelor of Science in Computer Science</span>
-          </div>
-
-          <h2>Skills</h2>
-          <p style="margin: 4px 0; font-size: 9pt;">
-            <strong>Languages:</strong> TypeScript, JavaScript, Python, Go, SQL<br/>
-            <strong>Technologies:</strong> React, Next.js, Node.js, Express, Docker, AWS, PostgreSQL, Redis, Git
-          </p>
-
-          <script>
-            window.onload = function() {
-              window.print();
-            };
-          </script>
-        </body>
-      </html>
-    `;
-
-    printWindow.document.open();
-    printWindow.document.write(templateMarkup);
-    printWindow.document.close();
+    // Downloads the genuine, crisp ATS-compliant PDF directly
+    const link = document.createElement("a");
+    link.href = template.pdfUrl;
+    link.download = `${template.slug}-resume-template.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -690,7 +472,7 @@ export default function ResumeTemplatesPage() {
       {/* ─── HERO SECTION ─────────────────────────────────────── */}
       <main className="flex-1">
         <div className="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
-          {/* Subtle Right Blob from Screenshot */}
+          {/* Subtle Right Ambient Blob */}
           <div
             className="absolute top-0 right-0 w-[420px] h-[340px] bg-[#F4F1FD] rounded-full blur-3xl opacity-75 pointer-events-none -mr-20 -mt-10"
             aria-hidden="true"
@@ -718,14 +500,29 @@ export default function ResumeTemplatesPage() {
               {TEMPLATES.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-3.5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                  className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-3.5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
                 >
-                  {/* Miniature Preview Container */}
-                  <div className="bg-slate-50/80 rounded-xl p-2.5 border border-slate-100 aspect-[1/1.28] flex items-center justify-center overflow-hidden relative group">
-                    {item.id === "classic-professional" && <ClassicThumbnail />}
-                    {item.id === "modern" && <ModernThumbnail />}
-                    {item.id === "minimal" && <MinimalThumbnail />}
-                    {item.id === "two-column" && <TwoColumnThumbnail />}
+                  {/* Miniature 4K Template Preview */}
+                  <div
+                    onClick={() => setSelectedPreview(item)}
+                    className="bg-slate-50/80 rounded-xl p-2 border border-slate-100 aspect-[1/1.38] flex items-center justify-center overflow-hidden relative cursor-pointer group-hover:border-purple-200 transition-colors"
+                  >
+                    <div className="relative w-full h-full rounded shadow-xs overflow-hidden border border-slate-200/70 bg-white">
+                      <img
+                        src={item.previewImage}
+                        alt={`${item.name} Resume Template`}
+                        className="w-full h-full object-cover object-top select-none pointer-events-none group-hover:scale-[1.03] transition-transform duration-300"
+                        loading="eager"
+                      />
+                    </div>
+
+                    {/* Hover Overlay with Preview Icon */}
+                    <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                      <span className="bg-white/95 text-slate-900 text-[11px] font-semibold px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 backdrop-blur-xs">
+                        <Eye className="w-3.5 h-3.5 text-[#5B50E6]" />
+                        <span>Preview</span>
+                      </span>
+                    </div>
                   </div>
 
                   {/* Information */}
@@ -738,21 +535,23 @@ export default function ResumeTemplatesPage() {
                     </p>
                   </div>
 
-                  {/* Actions matching screenshot */}
+                  {/* Actions matching exact design */}
                   <div className="flex flex-col gap-2 pt-2 px-1">
                     <button
                       type="button"
                       onClick={() => handleDownload(item)}
-                      className="w-full py-2.5 px-3 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs transition-all shadow-xs cursor-pointer active:scale-[0.99] text-center"
+                      className="w-full py-2.5 px-3 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs transition-all shadow-xs cursor-pointer active:scale-[0.99] text-center flex items-center justify-center gap-1.5"
                     >
-                      Download Free Template
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download Free Template</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setSelectedPreview(item)}
-                      className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-700 font-medium text-xs transition-all shadow-2xs cursor-pointer text-center active:scale-[0.99]"
+                      className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-700 font-medium text-xs transition-all shadow-2xs cursor-pointer text-center active:scale-[0.99] flex items-center justify-center gap-1.5"
                     >
-                      Preview
+                      <Eye className="w-3.5 h-3.5 text-slate-500" />
+                      <span>Preview</span>
                     </button>
                   </div>
                 </div>
@@ -762,6 +561,10 @@ export default function ResumeTemplatesPage() {
             {/* ─── CALLOUT BANNER: STEP ONE OF TWO ────────────── */}
             <div className="mt-16 bg-[#f7f5ff] rounded-2xl border border-purple-100/90 p-6 sm:p-8 md:p-10 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="max-w-xl">
+                <div className="flex items-center gap-2 text-[#5B50E6] font-bold text-xs uppercase tracking-wider mb-1">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>ATS Optimization Ready</span>
+                </div>
                 <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                   A blank template is step one of two
                 </h2>
@@ -772,9 +575,10 @@ export default function ResumeTemplatesPage() {
               <div className="shrink-0">
                 <Link
                   href="/optimize"
-                  className="inline-flex items-center justify-center py-2.5 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] whitespace-nowrap cursor-pointer"
+                  className="inline-flex items-center justify-center py-2.5 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] whitespace-nowrap cursor-pointer gap-1.5"
                 >
-                  Fill it against a job →
+                  <span>Fill it against a job</span>
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
             </div>
@@ -796,34 +600,37 @@ export default function ResumeTemplatesPage() {
                 type="button"
                 onClick={() => setSelectedPreview(null)}
                 className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close modal"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Modal Body: Scrollable Preview */}
-            <div className="flex-1 overflow-y-auto p-6 bg-slate-50/60">
-              <FullTemplatePreview templateId={selectedPreview.id} />
+            <div className="flex-1 overflow-y-auto p-6 bg-slate-50/70">
+              <FullTemplatePreview template={selectedPreview} />
             </div>
 
             {/* Modal Footer */}
             <div className="px-6 py-4 border-t border-slate-100 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-xs text-slate-500">
-                100% ATS-Compliant · Single or Multi-Column Compatible
+                100% ATS-Compliant · Tested with Greenhouse, Lever, Workday &amp; Taleo
               </div>
               <div className="flex items-center gap-2.5 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() => handleDownload(selectedPreview)}
-                  className="flex-1 sm:flex-initial py-2 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium text-xs transition-all shadow-2xs cursor-pointer"
+                  className="flex-1 sm:flex-initial py-2 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium text-xs transition-all shadow-2xs cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  Download Free Template
+                  <Download className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Download Free PDF</span>
                 </button>
                 <Link
                   href="/optimize"
-                  className="flex-1 sm:flex-initial py-2 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs transition-all shadow-xs text-center"
+                  className="flex-1 sm:flex-initial py-2 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs transition-all shadow-xs text-center flex items-center justify-center gap-1.5"
                 >
-                  Fill it against a job →
+                  <span>Fill it against a job</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Footer from "@/components/Footer";
 import { BrandLogo } from "@/components/BrandLogo";
 import {
   ArrowRight,
@@ -501,20 +502,7 @@ export default function FreeResumeBuilderPage() {
       </section>
 
       {/* ─── FOOTER ─── */}
-      <footer className="bg-white border-t border-slate-200 py-12 px-6">
-        <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <BrandLogo size="sm" className="gap-2.5 text-slate-900 dark:text-white" />
-          <div className="flex items-center gap-4">
-            <Link href="/legal/privacy" className="hover:text-slate-600 transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="/legal/terms" className="hover:text-slate-600 transition-colors">
-              Terms of Service
-            </Link>
-            <span>&copy; 2026 ResumeFlow. All rights reserved.</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
