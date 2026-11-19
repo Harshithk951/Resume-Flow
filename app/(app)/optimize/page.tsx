@@ -7,7 +7,6 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import {
-  Sparkles,
   Upload,
   Globe,
   CheckCircle2,
@@ -358,10 +357,6 @@ export default function OptimizePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200/80 text-purple-700 text-xs font-semibold mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>AI Resume Optimizer</span>
-              </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
                 Tailor your resume for the role
               </h1>
@@ -394,14 +389,14 @@ export default function OptimizePage() {
               className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative"
               id="section-resume"
             >
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                    1
-                  </div>
-                  <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                    Your resume
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-base font-bold text-slate-900">
+                    1 · Your resume
                   </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Paste the text, or upload the PDF you already send out.
+                  </p>
                 </div>
 
                 {/* Tabs */}
@@ -582,14 +577,14 @@ export default function OptimizePage() {
               className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative"
               id="section-job"
             >
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                    2
-                  </div>
-                  <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                    The job you want
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-base font-bold text-slate-900">
+                    2 · The job you want
                   </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Paste the posting, or give us its link and we&apos;ll read it.
+                  </p>
                 </div>
 
                 {/* Tabs */}
@@ -719,19 +714,14 @@ export default function OptimizePage() {
               className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative"
               id="section-context"
             >
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                    3
-                  </div>
-                  <div>
-                    <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                      Anything we can&apos;t see?
-                    </h2>
-                    <span className="text-[11px] text-slate-500 block">
-                      Optional context: promotions, career gaps, leadership highlights, or tone preferences.
-                    </span>
-                  </div>
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <h2 className="text-base font-bold text-slate-900">
+                    3 · Anything we can&apos;t see?
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Optional context: promotions, career gaps, leadership highlights, or tone preferences.
+                  </p>
                 </div>
                 <span className="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-md">
                   {additionalContext.length} / 490
@@ -753,13 +743,13 @@ export default function OptimizePage() {
               className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative"
               id="section-length"
             >
-              <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100 mb-4">
-                <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                  4
-                </div>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                  Output length
+              <div className="mb-4">
+                <h2 className="text-base font-bold text-slate-900">
+                  4 · Output length
                 </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Choose format length based on target role seniority.
+                </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
@@ -820,11 +810,11 @@ export default function OptimizePage() {
                   type="button"
                   disabled={isOptimizing}
                   onClick={handleOptimize}
-                  className="w-full py-4 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] active:scale-[0.99] text-white font-bold text-base transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 disabled:opacity-60 cursor-pointer"
+                  className="w-full py-3.5 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] active:scale-[0.99] text-white font-semibold text-sm transition-all shadow-xs flex items-center justify-center gap-2 disabled:opacity-60 cursor-pointer"
                 >
                   {isOptimizing ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
                       <span>
                         {optimizingStep === 1
                           ? "Analyzing job requirements..."
@@ -834,12 +824,7 @@ export default function OptimizePage() {
                       </span>
                     </>
                   ) : (
-                    <>
-                      <span>Optimize my resume ✦</span>
-                      <span className="text-xs font-normal opacity-80 px-2 py-0.5 rounded-md bg-[#4E43D8]/60">
-                        Takes about 27 secs
-                      </span>
-                    </>
+                    <span>Optimize my resume</span>
                   )}
                 </button>
               </div>

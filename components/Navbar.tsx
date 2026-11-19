@@ -84,7 +84,7 @@ export default function Navbar() {
             ATS Checker
           </Link>
           <Link
-            href="/resources/handbook"
+            href="/blog"
             className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
           >
             Resources
@@ -170,7 +170,7 @@ export default function Navbar() {
                 { id: "features", label: "Features", href: "/#features" },
                 { id: "templates", label: "Templates", href: "/resume-templates" },
                 { id: "ats-checker", label: "ATS Checker", href: "/ats-resume-checker" },
-                { id: "resources", label: "Resources", href: "/resources/handbook" },
+                { id: "resources", label: "Resources", href: "/blog" },
                 { id: "pricing", label: "Pricing", href: "/pricing" },
               ].map((item) => (
                 <Link

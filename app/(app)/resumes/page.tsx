@@ -12,7 +12,6 @@ import {
   Upload,
   Trash2,
   Edit3,
-  Sparkles,
   Star,
   LayoutTemplate,
   Loader2,
@@ -228,11 +227,6 @@ export default function SavedResumesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-extrabold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200/60">
-                  Profile Management
-                </span>
-              </div>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
                 Saved resumes
               </h1>
@@ -382,9 +376,8 @@ export default function SavedResumesPage() {
                     <button
                       type="button"
                       onClick={() => handleOptimizeResume(resume)}
-                      className="px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold inline-flex items-center gap-1 transition-colors"
+                      className="px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-semibold inline-flex items-center gap-1 transition-colors"
                     >
-                      <Sparkles className="w-3.5 h-3.5" />
                       <span>Optimize</span>
                     </button>
                     <button

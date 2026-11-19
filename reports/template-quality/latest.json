@@ -1,7 +1,7 @@
 {
-  "runId": "2026-07-20T08-23-56-637Z-ci",
-  "createdAt": "2026-07-20T08:24:15.901Z",
-  "ciMode": true,
+  "runId": "2026-11-19T17-25-38-867Z",
+  "createdAt": "2026-11-19T17:28:57.175Z",
+  "ciMode": false,
   "combinations": [
     {
       "templateId": "ats_strict",
@@ -16,113 +16,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
-          ],
-          "suggestions": []
-        },
-        {
-          "id": "xyz",
-          "label": "Content Impact (XYZ Bullets)",
-          "score": 92,
-          "weight": 0.2,
-          "passed": false,
-          "blocking": false,
-          "issues": [
-            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
-          ],
-          "suggestions": [
-            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
-          ],
-          "metadata": {
-            "bulletCount": 4,
-            "pctPerfect": 75,
-            "avgScore": 2.75
-          }
-        },
-        {
-          "id": "compile",
-          "label": "PDF Compile Reliability",
-          "score": 0,
-          "weight": 0.15,
-          "passed": false,
-          "blocking": true,
-          "issues": [
-            "pdflatex compilation failed",
-            "Log tail: strings out of 469006\n 8844 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,260b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
-          ],
-          "suggestions": [
-            "Fix LaTeX syntax errors and missing packages"
-          ],
-          "metadata": {
-            "durationMs": 341,
-            "engine": "none"
-          }
-        },
-        {
-          "id": "atsParse",
-          "label": "ATS Parse & Text Recovery",
-          "score": 0,
-          "weight": 0.25,
-          "passed": false,
-          "blocking": true,
-          "issues": [
-            "No PDF available for text extraction"
-          ],
-          "suggestions": [
-            "Fix LaTeX compile errors first"
-          ]
-        },
-        {
-          "id": "visual",
-          "label": "Recruiter Scan / Visual Quality",
-          "score": 85,
-          "weight": 0.1,
-          "passed": false,
-          "blocking": false,
-          "issues": [
-            "PDF page count is 0, expected exactly 1"
-          ],
-          "suggestions": [
-            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
-          ],
-          "metadata": {
-            "pageCount": 0
-          }
-        },
-        {
-          "id": "llmReview",
-          "label": "LLM Shortlist Review",
-          "score": 0,
-          "weight": 0.15,
-          "passed": true,
-          "blocking": false,
-          "skipped": true,
-          "issues": [
-            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
-          ],
-          "suggestions": []
-        }
-      ],
-      "overallScore": 48,
-      "passed": false,
-      "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/finance-analyst__finance-analyst/resume.tex"
-      }
-    },
-    {
-      "templateId": "ats_strict",
-      "resumeId": "swe-mid",
-      "jdId": "swe-bigtech",
-      "dimensions": [
-        {
-          "id": "latex",
-          "label": "LaTeX Structural Integrity",
-          "score": 95,
-          "weight": 0.15,
-          "passed": true,
-          "blocking": false,
-          "issues": [
-            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -136,7 +30,7 @@
           "issues": [],
           "suggestions": [],
           "metadata": {
-            "bulletCount": 7,
+            "bulletCount": 4,
             "pctPerfect": 100,
             "avgScore": 3
           }
@@ -150,13 +44,13 @@
           "blocking": true,
           "issues": [
             "pdflatex compilation failed",
-            "Log tail: strings out of 469006\n 8796 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,248b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1135b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
           ],
           "suggestions": [
             "Fix LaTeX syntax errors and missing packages"
           ],
           "metadata": {
-            "durationMs": 230,
+            "durationMs": 4491,
             "engine": "none"
           }
         },
@@ -208,13 +102,13 @@
       "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-mid__swe-bigtech/resume.tex"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/finance-analyst__finance-analyst/resume.tex"
       }
     },
     {
       "templateId": "ats_strict",
-      "resumeId": "swe-mid",
-      "jdId": "swe-startup",
+      "resumeId": "finance-analyst",
+      "jdId": "swe-bigtech",
       "dimensions": [
         {
           "id": "latex",
@@ -224,7 +118,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -238,7 +132,7 @@
           "issues": [],
           "suggestions": [],
           "metadata": {
-            "bulletCount": 7,
+            "bulletCount": 4,
             "pctPerfect": 100,
             "avgScore": 3
           }
@@ -252,13 +146,13 @@
           "blocking": true,
           "issues": [
             "pdflatex compilation failed",
-            "Log tail: strings out of 469006\n 8796 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,248b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1131b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
           ],
           "suggestions": [
             "Fix LaTeX syntax errors and missing packages"
           ],
           "metadata": {
-            "durationMs": 228,
+            "durationMs": 2747,
             "engine": "none"
           }
         },
@@ -310,12 +204,216 @@
       "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-mid__swe-startup/resume.tex"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/finance-analyst__swe-bigtech/resume.tex"
       }
     },
     {
       "templateId": "ats_strict",
-      "resumeId": "swe-staff",
+      "resumeId": "finance-analyst",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1131b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 2413,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/finance-analyst__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-mid",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1127b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1686,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/swe-mid__finance-analyst/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-mid",
       "jdId": "swe-bigtech",
       "dimensions": [
         {
@@ -326,7 +424,211 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1123b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1633,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/swe-mid__swe-bigtech/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1123b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1647,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/swe-mid__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "ats_strict",
+      "resumeId": "swe-staff",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -338,7 +640,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -359,13 +661,13 @@
           "blocking": true,
           "issues": [
             "pdflatex compilation failed",
-            "Log tail: strings out of 469006\n 8804 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,250b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1129b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
           ],
           "suggestions": [
             "Fix LaTeX syntax errors and missing packages"
           ],
           "metadata": {
-            "durationMs": 231,
+            "durationMs": 1760,
             "engine": "none"
           }
         },
@@ -417,13 +719,13 @@
       "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-staff__swe-bigtech/resume.tex"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/swe-staff__finance-analyst/resume.tex"
       }
     },
     {
       "templateId": "ats_strict",
       "resumeId": "swe-staff",
-      "jdId": "swe-startup",
+      "jdId": "swe-bigtech",
       "dimensions": [
         {
           "id": "latex",
@@ -433,7 +735,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: #, #, &, #, #, &, #, #, &, #"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -445,7 +747,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -466,13 +768,13 @@
           "blocking": true,
           "issues": [
             "pdflatex compilation failed",
-            "Log tail: strings out of 469006\n 8804 string characters out of 5454813\n 433756 words of memory out of 5000000\n 29384 multiletter control sequences out of 15000+600000\n 627721 words of font info for 40 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 35i,0n,38p,250b,36s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1125b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
           ],
           "suggestions": [
             "Fix LaTeX syntax errors and missing packages"
           ],
           "metadata": {
-            "durationMs": 238,
+            "durationMs": 2663,
             "engine": "none"
           }
         },
@@ -524,11 +826,118 @@
       "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/ats_strict/swe-staff__swe-startup/resume.tex"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/swe-staff__swe-bigtech/resume.tex"
       }
     },
     {
-      "templateId": "modern_professional",
+      "templateId": "ats_strict",
+      "resumeId": "swe-staff",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: 00000\n 39138 multiletter control sequences out of 15000+600000\n 635786 words of font info for 56 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,5n,79p,1125b,455s stack positions out of 10000i,1000n,20000p,200000b,200000s\n\n!pdfTeX error: /Library/TeX/texbin/pdflatex (file ecrm1095): Font ecrm1095 at 6\n00 not found\n ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1868,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 46,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/ats_strict/swe-staff__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "startup",
       "resumeId": "finance-analyst",
       "jdId": "finance-analyst",
       "dimensions": [
@@ -540,41 +949,42 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
         {
           "id": "xyz",
           "label": "Content Impact (XYZ Bullets)",
-          "score": 92,
+          "score": 100,
           "weight": 0.2,
-          "passed": false,
+          "passed": true,
           "blocking": false,
-          "issues": [
-            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
-          ],
-          "suggestions": [
-            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
-          ],
+          "issues": [],
+          "suggestions": [],
           "metadata": {
             "bulletCount": 4,
-            "pctPerfect": 75,
-            "avgScore": 2.75
+            "pctPerfect": 100,
+            "avgScore": 3
           }
         },
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail:  written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/finance-analyst__finance-analyst/resume_3t2ymg2.pdf \n(1 page, 36357 bytes).\nPDF statistics:\n 30 PDF objects out of 1000 (max. 8388607)\n 20 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 920,
-            "engine": "pdflatex"
+            "durationMs": 10658,
+            "engine": "none"
           }
         },
         {
@@ -585,21 +995,52 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 64,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/finance-analyst__finance-analyst/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/finance-analyst__finance-analyst/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/finance-analyst__finance-analyst/resume.tex"
       }
     },
     {
-      "templateId": "modern_professional",
-      "resumeId": "swe-mid",
+      "templateId": "startup",
+      "resumeId": "finance-analyst",
       "jdId": "swe-bigtech",
       "dimensions": [
         {
@@ -610,7 +1051,211 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: tput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/finance-analyst__swe-bigtech/resume_s9byc98.pdf (1 p\nage, 36357 bytes).\nPDF statistics:\n 30 PDF objects out of 1000 (max. 8388607)\n 20 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 8142,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/finance-analyst__swe-bigtech/resume.tex"
+      }
+    },
+    {
+      "templateId": "startup",
+      "resumeId": "finance-analyst",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: tput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/finance-analyst__swe-startup/resume_djdcqsl.pdf (1 p\nage, 36357 bytes).\nPDF statistics:\n 30 PDF objects out of 1000 (max. 8388607)\n 20 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 11539,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/finance-analyst__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "startup",
+      "resumeId": "swe-mid",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -632,15 +1277,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: >\nOutput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/swe-mid__finance-analyst/resume_fv44l09.pdf (1 page,\n 36917 bytes).\nPDF statistics:\n 32 PDF objects out of 1000 (max. 8388607)\n 22 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 876,
-            "engine": "pdflatex"
+            "durationMs": 8156,
+            "engine": "none"
           }
         },
         {
@@ -651,22 +1301,53 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 66,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-bigtech/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-bigtech/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/swe-mid__finance-analyst/resume.tex"
       }
     },
     {
-      "templateId": "modern_professional",
+      "templateId": "startup",
       "resumeId": "swe-mid",
-      "jdId": "swe-startup",
+      "jdId": "swe-bigtech",
       "dimensions": [
         {
           "id": "latex",
@@ -676,7 +1357,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -698,15 +1379,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: .pfb>\nOutput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/swe-mid__swe-bigtech/resume_agr66mr.pdf (1 page, 369\n17 bytes).\nPDF statistics:\n 32 PDF objects out of 1000 (max. 8388607)\n 22 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 893,
-            "engine": "pdflatex"
+            "durationMs": 8339,
+            "engine": "none"
           }
         },
         {
@@ -717,20 +1403,260 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 66,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-startup/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-mid__swe-startup/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/swe-mid__swe-bigtech/resume.tex"
       }
     },
     {
-      "templateId": "modern_professional",
+      "templateId": "startup",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: .pfb>\nOutput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/swe-mid__swe-startup/resume_a7ld0e2.pdf (1 page, 369\n17 bytes).\nPDF statistics:\n 32 PDF objects out of 1000 (max. 8388607)\n 22 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 9107,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/swe-mid__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "startup",
+      "resumeId": "swe-staff",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: Output written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/swe-staff__finance-analyst/resume_2mts0vi.pdf (1 pag\ne, 36075 bytes).\nPDF statistics:\n 31 PDF objects out of 1000 (max. 8388607)\n 21 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 8190,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 46,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/swe-staff__finance-analyst/resume.tex"
+      }
+    },
+    {
+      "templateId": "startup",
       "resumeId": "swe-staff",
       "jdId": "swe-bigtech",
       "dimensions": [
@@ -742,7 +1668,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -754,7 +1680,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -769,15 +1695,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: fb>\nOutput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/swe-staff__swe-bigtech/resume_g578l8q.pdf (1 page, 3\n6075 bytes).\nPDF statistics:\n 31 PDF objects out of 1000 (max. 8388607)\n 21 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 884,
-            "engine": "pdflatex"
+            "durationMs": 8945,
+            "engine": "none"
           }
         },
         {
@@ -788,20 +1719,51 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 61,
+      "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-bigtech/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-bigtech/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/swe-staff__swe-bigtech/resume.tex"
       }
     },
     {
-      "templateId": "modern_professional",
+      "templateId": "startup",
       "resumeId": "swe-staff",
       "jdId": "swe-startup",
       "dimensions": [
@@ -813,7 +1775,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -825,7 +1787,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -840,15 +1802,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: fb>\nOutput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/startup/swe-staff__swe-startup/resume_1v1sakn.pdf (1 page, 3\n6075 bytes).\nPDF statistics:\n 31 PDF objects out of 1000 (max. 8388607)\n 21 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 884,
-            "engine": "pdflatex"
+            "durationMs": 8197,
+            "engine": "none"
           }
         },
         {
@@ -859,20 +1826,51 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 61,
+      "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-startup/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_professional/swe-staff__swe-startup/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/startup/swe-staff__swe-startup/resume.tex"
       }
     },
     {
-      "templateId": "modern_executive",
+      "templateId": "finance_tech",
       "resumeId": "finance-analyst",
       "jdId": "finance-analyst",
       "dimensions": [
@@ -884,41 +1882,42 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
         {
           "id": "xyz",
           "label": "Content Impact (XYZ Bullets)",
-          "score": 92,
+          "score": 100,
           "weight": 0.2,
-          "passed": false,
+          "passed": true,
           "blocking": false,
-          "issues": [
-            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
-          ],
-          "suggestions": [
-            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
-          ],
+          "issues": [],
+          "suggestions": [],
           "metadata": {
             "bulletCount": 4,
-            "pctPerfect": 75,
-            "avgScore": 2.75
+            "pctPerfect": 100,
+            "avgScore": 3
           }
         },
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165064 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1137b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 1022,
-            "engine": "pdflatex"
+            "durationMs": 1806,
+            "engine": "none"
           }
         },
         {
@@ -929,21 +1928,52 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 64,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/finance-analyst__finance-analyst/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/finance-analyst__finance-analyst/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/finance-analyst__finance-analyst/resume.tex"
       }
     },
     {
-      "templateId": "modern_executive",
-      "resumeId": "swe-mid",
+      "templateId": "finance_tech",
+      "resumeId": "finance-analyst",
       "jdId": "swe-bigtech",
       "dimensions": [
         {
@@ -954,7 +1984,211 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165044 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1133b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1492,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/finance-analyst__swe-bigtech/resume.tex"
+      }
+    },
+    {
+      "templateId": "finance_tech",
+      "resumeId": "finance-analyst",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165044 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1133b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1924,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/finance-analyst__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "finance_tech",
+      "resumeId": "swe-mid",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -976,15 +2210,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165024 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1129b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 911,
-            "engine": "pdflatex"
+            "durationMs": 1671,
+            "engine": "none"
           }
         },
         {
@@ -995,22 +2234,53 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 66,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-bigtech/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-bigtech/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/swe-mid__finance-analyst/resume.tex"
       }
     },
     {
-      "templateId": "modern_executive",
+      "templateId": "finance_tech",
       "resumeId": "swe-mid",
-      "jdId": "swe-startup",
+      "jdId": "swe-bigtech",
       "dimensions": [
         {
           "id": "latex",
@@ -1020,7 +2290,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -1042,15 +2312,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165004 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1125b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 854,
-            "engine": "pdflatex"
+            "durationMs": 2471,
+            "engine": "none"
           }
         },
         {
@@ -1061,20 +2336,260 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 66,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-startup/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-mid__swe-startup/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/swe-mid__swe-bigtech/resume.tex"
       }
     },
     {
-      "templateId": "modern_executive",
+      "templateId": "finance_tech",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165004 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1125b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1971,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/swe-mid__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "finance_tech",
+      "resumeId": "swe-staff",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165034 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1131b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 1907,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 46,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/swe-staff__finance-analyst/resume.tex"
+      }
+    },
+    {
+      "templateId": "finance_tech",
       "resumeId": "swe-staff",
       "jdId": "swe-bigtech",
       "dimensions": [
@@ -1086,7 +2601,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -1098,7 +2613,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -1113,15 +2628,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165014 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1127b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 884,
-            "engine": "pdflatex"
+            "durationMs": 1702,
+            "engine": "none"
           }
         },
         {
@@ -1132,20 +2652,51 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 61,
+      "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-bigtech/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-bigtech/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/swe-staff__swe-bigtech/resume.tex"
       }
     },
     {
-      "templateId": "modern_executive",
+      "templateId": "finance_tech",
       "resumeId": "swe-staff",
       "jdId": "swe-startup",
       "dimensions": [
@@ -1157,7 +2708,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -1169,7 +2720,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -1184,15 +2735,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ngs out of 469006\n 165014 string characters out of 5454813\n 608320 words of memory out of 5000000\n 39069 multiletter control sequences out of 15000+600000\n 628790 words of font info for 42 fonts, out of 8000000 for 9000\n 319 hyphenation exceptions out of 8191\n 75i,0n,79p,1127b,105s stack positions out of 10000i,1000n,20000p,200000b,200000s\n!  ==> Fatal error occurred, no output PDF file produced!\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 867,
-            "engine": "pdflatex"
+            "durationMs": 1598,
+            "engine": "none"
           }
         },
         {
@@ -1203,20 +2759,51 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 61,
+      "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-startup/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/modern_executive/swe-staff__swe-startup/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/finance_tech/swe-staff__swe-startup/resume.tex"
       }
     },
     {
-      "templateId": "tech_innovator",
+      "templateId": "tech_modern",
       "resumeId": "finance-analyst",
       "jdId": "finance-analyst",
       "dimensions": [
@@ -1228,41 +2815,42 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
         {
           "id": "xyz",
           "label": "Content Impact (XYZ Bullets)",
-          "score": 92,
+          "score": 100,
           "weight": 0.2,
-          "passed": false,
+          "passed": true,
           "blocking": false,
-          "issues": [
-            "Conducted credit risk analysis on 40+ fixed-income instrumen…: Missing method/technology (Z)"
-          ],
-          "suggestions": [
-            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
-          ],
+          "issues": [],
+          "suggestions": [],
           "metadata": {
             "bulletCount": 4,
-            "pctPerfect": 75,
-            "avgScore": 2.75
+            "pctPerfect": 100,
+            "avgScore": 3
           }
         },
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: tten on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/finance-analyst__finance-analyst/resume_10ye67c.\npdf (1 page, 34133 bytes).\nPDF statistics:\n 30 PDF objects out of 1000 (max. 8388607)\n 20 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 893,
-            "engine": "pdflatex"
+            "durationMs": 11826,
+            "engine": "none"
           }
         },
         {
@@ -1273,21 +2861,52 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 64,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/finance-analyst__finance-analyst/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/finance-analyst__finance-analyst/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/finance-analyst__finance-analyst/resume.tex"
       }
     },
     {
-      "templateId": "tech_innovator",
-      "resumeId": "swe-mid",
+      "templateId": "tech_modern",
+      "resumeId": "finance-analyst",
       "jdId": "swe-bigtech",
       "dimensions": [
         {
@@ -1298,7 +2917,211 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &, &"
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail:  written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/finance-analyst__swe-bigtech/resume_eviyzpt.pdf \n(1 page, 34133 bytes).\nPDF statistics:\n 30 PDF objects out of 1000 (max. 8388607)\n 20 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 11437,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/finance-analyst__swe-bigtech/resume.tex"
+      }
+    },
+    {
+      "templateId": "tech_modern",
+      "resumeId": "finance-analyst",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 4,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail:  written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/finance-analyst__swe-startup/resume_us24men.pdf \n(1 page, 34133 bytes).\nPDF statistics:\n 30 PDF objects out of 1000 (max. 8388607)\n 20 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 9489,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/finance-analyst__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "tech_modern",
+      "resumeId": "swe-mid",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -1320,15 +3143,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: tput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/swe-mid__finance-analyst/resume_ax7okir.pdf (1 p\nage, 35205 bytes).\nPDF statistics:\n 32 PDF objects out of 1000 (max. 8388607)\n 22 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 935,
-            "engine": "pdflatex"
+            "durationMs": 9003,
+            "engine": "none"
           }
         },
         {
@@ -1339,22 +3167,53 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 66,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-bigtech/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-bigtech/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/swe-mid__finance-analyst/resume.tex"
       }
     },
     {
-      "templateId": "tech_innovator",
+      "templateId": "tech_modern",
       "resumeId": "swe-mid",
-      "jdId": "swe-startup",
+      "jdId": "swe-bigtech",
       "dimensions": [
         {
           "id": "latex",
@@ -1364,7 +3223,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &, &"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -1386,15 +3245,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: >\nOutput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/swe-mid__swe-bigtech/resume_p3cphhm.pdf (1 page,\n 35205 bytes).\nPDF statistics:\n 32 PDF objects out of 1000 (max. 8388607)\n 22 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 945,
-            "engine": "pdflatex"
+            "durationMs": 9190,
+            "engine": "none"
           }
         },
         {
@@ -1405,20 +3269,260 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 66,
+      "overallScore": 50,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-startup/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-mid__swe-startup/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/swe-mid__swe-bigtech/resume.tex"
       }
     },
     {
-      "templateId": "tech_innovator",
+      "templateId": "tech_modern",
+      "resumeId": "swe-mid",
+      "jdId": "swe-startup",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 100,
+          "weight": 0.2,
+          "passed": true,
+          "blocking": false,
+          "issues": [],
+          "suggestions": [],
+          "metadata": {
+            "bulletCount": 7,
+            "pctPerfect": 100,
+            "avgScore": 3
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: >\nOutput written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/swe-mid__swe-startup/resume_hhhkn5y.pdf (1 page,\n 35205 bytes).\nPDF statistics:\n 32 PDF objects out of 1000 (max. 8388607)\n 22 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 8155,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 50,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/swe-mid__swe-startup/resume.tex"
+      }
+    },
+    {
+      "templateId": "tech_modern",
+      "resumeId": "swe-staff",
+      "jdId": "finance-analyst",
+      "dimensions": [
+        {
+          "id": "latex",
+          "label": "LaTeX Structural Integrity",
+          "score": 95,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "issues": [
+            "Possible unescaped special characters: %, #"
+          ],
+          "suggestions": []
+        },
+        {
+          "id": "xyz",
+          "label": "Content Impact (XYZ Bullets)",
+          "score": 83,
+          "weight": 0.2,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
+          ],
+          "suggestions": [
+            "Rewrite bullets using XYZ: Accomplished [X] as measured by [Y] by doing [Z]"
+          ],
+          "metadata": {
+            "bulletCount": 6,
+            "pctPerfect": 67,
+            "avgScore": 2.5
+          }
+        },
+        {
+          "id": "compile",
+          "label": "PDF Compile Reliability",
+          "score": 0,
+          "weight": 0.15,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: ut written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/swe-staff__finance-analyst/resume_k5q4gqm.pdf (1\n page, 34876 bytes).\nPDF statistics:\n 31 PDF objects out of 1000 (max. 8388607)\n 21 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
+          "metadata": {
+            "durationMs": 6919,
+            "engine": "none"
+          }
+        },
+        {
+          "id": "atsParse",
+          "label": "ATS Parse & Text Recovery",
+          "score": 0,
+          "weight": 0.25,
+          "passed": false,
+          "blocking": true,
+          "issues": [
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
+          ],
+          "suggestions": []
+        }
+      ],
+      "overallScore": 46,
+      "passed": false,
+      "artifacts": {
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/swe-staff__finance-analyst/resume.tex"
+      }
+    },
+    {
+      "templateId": "tech_modern",
       "resumeId": "swe-staff",
       "jdId": "swe-bigtech",
       "dimensions": [
@@ -1430,7 +3534,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -1442,7 +3546,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -1457,15 +3561,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: Output written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/swe-staff__swe-bigtech/resume_x5rdrtz.pdf (1 pag\ne, 34876 bytes).\nPDF statistics:\n 31 PDF objects out of 1000 (max. 8388607)\n 21 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 918,
-            "engine": "pdflatex"
+            "durationMs": 7083,
+            "engine": "none"
           }
         },
         {
@@ -1476,20 +3585,51 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 61,
+      "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-bigtech/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-bigtech/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/swe-staff__swe-bigtech/resume.tex"
       }
     },
     {
-      "templateId": "tech_innovator",
+      "templateId": "tech_modern",
       "resumeId": "swe-staff",
       "jdId": "swe-startup",
       "dimensions": [
@@ -1501,7 +3641,7 @@
           "passed": true,
           "blocking": false,
           "issues": [
-            "Possible unescaped special characters: %, %, %, %, %, #, #, #, &, #, #, &, #, #, &, #, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, %, &, &, &, &"
+            "Possible unescaped special characters: %, #"
           ],
           "suggestions": []
         },
@@ -1513,7 +3653,7 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "Facilitated RFC process aligning research and infra orgs, bu…: Missing quantifiable metric; Missing method/technology (Z)",
+            "Facilitated RFC process aligning research and infra orgs acr…: Missing quantifiable metric; Missing method/technology (Z)",
             "Mentored 5 engineers through promotion cycles by designing s…: Missing quantifiable metric"
           ],
           "suggestions": [
@@ -1528,15 +3668,20 @@
         {
           "id": "compile",
           "label": "PDF Compile Reliability",
-          "score": 100,
+          "score": 0,
           "weight": 0.15,
-          "passed": true,
+          "passed": false,
           "blocking": true,
-          "issues": [],
-          "suggestions": [],
+          "issues": [
+            "pdflatex compilation failed",
+            "Log tail: Output written on /Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-1\n1-19T17-25-38-867Z/tech_modern/swe-staff__swe-startup/resume_n6ni6p6.pdf (1 pag\ne, 34876 bytes).\nPDF statistics:\n 31 PDF objects out of 1000 (max. 8388607)\n 21 compressed objects within 1 object stream\n 2 named destinations out of 1000 (max. 500000)\n 1 words of extra memory for PDF output out of 10000 (max. 10000000)\n\n"
+          ],
+          "suggestions": [
+            "Fix LaTeX syntax errors and missing packages"
+          ],
           "metadata": {
-            "durationMs": 896,
-            "engine": "pdflatex"
+            "durationMs": 6364,
+            "engine": "none"
           }
         },
         {
@@ -1547,30 +3692,70 @@
           "passed": false,
           "blocking": true,
           "issues": [
-            "pdf-parse failed to extract text"
+            "No PDF available for text extraction"
+          ],
+          "suggestions": [
+            "Fix LaTeX compile errors first"
+          ]
+        },
+        {
+          "id": "visual",
+          "label": "Recruiter Scan / Visual Quality",
+          "score": 85,
+          "weight": 0.1,
+          "passed": false,
+          "blocking": false,
+          "issues": [
+            "PDF page count is 0, expected exactly 1"
+          ],
+          "suggestions": [
+            "Tighten spacing, reduce bullets, or use compact preset to fit one page"
+          ],
+          "metadata": {
+            "pageCount": 0
+          }
+        },
+        {
+          "id": "llmReview",
+          "label": "LLM Shortlist Review",
+          "score": 0,
+          "weight": 0.15,
+          "passed": true,
+          "blocking": false,
+          "skipped": true,
+          "issues": [
+            "NVIDIA_NIM_API_KEY not set — LLM review skipped"
           ],
           "suggestions": []
         }
       ],
-      "overallScore": 61,
+      "overallScore": 46,
       "passed": false,
       "artifacts": {
-        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-startup/resume.tex",
-        "pdfPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-07-20T08-23-56-637Z-ci/tech_innovator/swe-staff__swe-startup/resume.pdf"
+        "texPath": "/Users/pro/Desktop/ResumeFlow/reports/template-quality/2026-11-19T17-25-38-867Z/tech_modern/swe-staff__swe-startup/resume.tex"
       }
     }
   ],
   "templateSummary": {
     "ats_strict": {
-      "avgOverall": 48,
+      "avgOverall": 49,
       "passRate": 0,
       "blockingFailures": [
         "finance-analyst/finance-analyst: PDF Compile Reliability",
         "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "finance-analyst/swe-bigtech: PDF Compile Reliability",
+        "finance-analyst/swe-bigtech: ATS Parse & Text Recovery",
+        "finance-analyst/swe-startup: PDF Compile Reliability",
+        "finance-analyst/swe-startup: ATS Parse & Text Recovery",
+        "swe-mid/finance-analyst: PDF Compile Reliability",
+        "swe-mid/finance-analyst: ATS Parse & Text Recovery",
         "swe-mid/swe-bigtech: PDF Compile Reliability",
         "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
         "swe-mid/swe-startup: PDF Compile Reliability",
         "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/finance-analyst: Content Impact (XYZ Bullets)",
+        "swe-staff/finance-analyst: PDF Compile Reliability",
+        "swe-staff/finance-analyst: ATS Parse & Text Recovery",
         "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
         "swe-staff/swe-bigtech: PDF Compile Reliability",
         "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
@@ -1579,42 +3764,84 @@
         "swe-staff/swe-startup: ATS Parse & Text Recovery"
       ]
     },
-    "modern_professional": {
-      "avgOverall": 64,
+    "startup": {
+      "avgOverall": 49,
       "passRate": 0,
       "blockingFailures": [
+        "finance-analyst/finance-analyst: PDF Compile Reliability",
         "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "finance-analyst/swe-bigtech: PDF Compile Reliability",
+        "finance-analyst/swe-bigtech: ATS Parse & Text Recovery",
+        "finance-analyst/swe-startup: PDF Compile Reliability",
+        "finance-analyst/swe-startup: ATS Parse & Text Recovery",
+        "swe-mid/finance-analyst: PDF Compile Reliability",
+        "swe-mid/finance-analyst: ATS Parse & Text Recovery",
+        "swe-mid/swe-bigtech: PDF Compile Reliability",
         "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-mid/swe-startup: PDF Compile Reliability",
         "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/finance-analyst: Content Impact (XYZ Bullets)",
+        "swe-staff/finance-analyst: PDF Compile Reliability",
+        "swe-staff/finance-analyst: ATS Parse & Text Recovery",
         "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-bigtech: PDF Compile Reliability",
         "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
         "swe-staff/swe-startup: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-startup: PDF Compile Reliability",
         "swe-staff/swe-startup: ATS Parse & Text Recovery"
       ]
     },
-    "modern_executive": {
-      "avgOverall": 64,
+    "finance_tech": {
+      "avgOverall": 49,
       "passRate": 0,
       "blockingFailures": [
+        "finance-analyst/finance-analyst: PDF Compile Reliability",
         "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "finance-analyst/swe-bigtech: PDF Compile Reliability",
+        "finance-analyst/swe-bigtech: ATS Parse & Text Recovery",
+        "finance-analyst/swe-startup: PDF Compile Reliability",
+        "finance-analyst/swe-startup: ATS Parse & Text Recovery",
+        "swe-mid/finance-analyst: PDF Compile Reliability",
+        "swe-mid/finance-analyst: ATS Parse & Text Recovery",
+        "swe-mid/swe-bigtech: PDF Compile Reliability",
         "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-mid/swe-startup: PDF Compile Reliability",
         "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/finance-analyst: Content Impact (XYZ Bullets)",
+        "swe-staff/finance-analyst: PDF Compile Reliability",
+        "swe-staff/finance-analyst: ATS Parse & Text Recovery",
         "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-bigtech: PDF Compile Reliability",
         "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
         "swe-staff/swe-startup: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-startup: PDF Compile Reliability",
         "swe-staff/swe-startup: ATS Parse & Text Recovery"
       ]
     },
-    "tech_innovator": {
-      "avgOverall": 64,
+    "tech_modern": {
+      "avgOverall": 49,
       "passRate": 0,
       "blockingFailures": [
+        "finance-analyst/finance-analyst: PDF Compile Reliability",
         "finance-analyst/finance-analyst: ATS Parse & Text Recovery",
+        "finance-analyst/swe-bigtech: PDF Compile Reliability",
+        "finance-analyst/swe-bigtech: ATS Parse & Text Recovery",
+        "finance-analyst/swe-startup: PDF Compile Reliability",
+        "finance-analyst/swe-startup: ATS Parse & Text Recovery",
+        "swe-mid/finance-analyst: PDF Compile Reliability",
+        "swe-mid/finance-analyst: ATS Parse & Text Recovery",
+        "swe-mid/swe-bigtech: PDF Compile Reliability",
         "swe-mid/swe-bigtech: ATS Parse & Text Recovery",
+        "swe-mid/swe-startup: PDF Compile Reliability",
         "swe-mid/swe-startup: ATS Parse & Text Recovery",
+        "swe-staff/finance-analyst: Content Impact (XYZ Bullets)",
+        "swe-staff/finance-analyst: PDF Compile Reliability",
+        "swe-staff/finance-analyst: ATS Parse & Text Recovery",
         "swe-staff/swe-bigtech: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-bigtech: PDF Compile Reliability",
         "swe-staff/swe-bigtech: ATS Parse & Text Recovery",
         "swe-staff/swe-startup: Content Impact (XYZ Bullets)",
+        "swe-staff/swe-startup: PDF Compile Reliability",
         "swe-staff/swe-startup: ATS Parse & Text Recovery"
       ]
     }

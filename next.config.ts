@@ -57,6 +57,11 @@ const nextConfig: NextConfig = {
         destination: "/resume-templates",
         permanent: true,
       },
+      {
+        source: "/resources",
+        destination: "/blog",
+        permanent: true,
+      },
     ];
   },
   async headers() {
@@ -104,6 +109,15 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/resources/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=1800, s-maxage=1800, stale-while-revalidate=43200",
+          },
+        ],
+      },
+      {
+        source: "/blog/:path*",
         headers: [
           {
             key: "Cache-Control",

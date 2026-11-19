@@ -38,6 +38,7 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
     pathname?.startsWith("/legal") ||
     pathname?.startsWith("/info") ||
     pathname?.startsWith("/resources") ||
+    pathname?.startsWith("/blog") ||
     pathname?.startsWith("/pricing") ||
     pathname?.startsWith("/features") ||
     pathname?.startsWith("/about") ||

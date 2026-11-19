@@ -71,19 +71,13 @@ export default function AuthenticatedLayout({
                     key={item.href}
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className={`relative flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium transition-all rounded-lg select-none ${
+                    className={`relative flex items-center px-3 py-1.5 text-sm transition-all rounded-lg select-none ${
                       active
-                        ? "font-semibold text-purple-700 bg-purple-50 shadow-2xs"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
+                        ? "font-semibold text-purple-600"
+                        : "font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
                     }`}
                   >
-                    {active && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
-                    )}
                     <span>{item.name}</span>
-                    {active && (
-                      <span className="absolute -bottom-[17px] left-2 right-2 h-[2px] bg-purple-600 rounded-full" />
-                    )}
                   </Link>
                 );
               })}
@@ -172,9 +166,6 @@ export default function AuthenticatedLayout({
                         }`}
                       >
                         <span>{item.name}</span>
-                        {active && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
-                        )}
                       </Link>
                     );
                   })}

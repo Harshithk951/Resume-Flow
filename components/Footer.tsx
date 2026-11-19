@@ -147,7 +147,7 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
                 </Link>
               </li>
               <li>
-                <Link href="/info/blog" className="hover:text-purple-600 transition-colors">
+                <Link href="/blog" className="hover:text-purple-600 transition-colors">
                   Blog
                 </Link>
               </li>

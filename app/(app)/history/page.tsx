@@ -7,7 +7,6 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import {
-  Sparkles,
   Clock,
   Trash2,
   CheckCircle2,
@@ -85,11 +84,6 @@ export default function OptimizationHistoryPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-extrabold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200/60">
-                  Optimization Archives
-                </span>
-              </div>
               <div className="flex items-center gap-3">
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
                   Your optimizations
@@ -172,9 +166,8 @@ export default function OptimizationHistoryPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <Link
                 href="/optimize"
-                className="w-full sm:w-auto py-3 px-5 rounded-xl bg-[#5B50E6] hover:bg-[#4E44D6] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md"
+                className="w-full sm:w-auto py-3 px-5 rounded-xl bg-[#5B50E6] hover:bg-[#4E44D6] text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-xs"
               >
-                <Sparkles className="w-4 h-4" />
                 <span>Optimize a resume</span>
               </Link>
 

@@ -81,9 +81,6 @@ export default function PricingPage() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-[#EEF0FF] via-[#FAF8FF] to-transparent blur-[90px] rounded-full pointer-events-none" />
 
           <div className="relative">
-            <span className="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-50 border border-purple-200/60 px-3 py-1 rounded-full mb-3 inline-block">
-              PRICING
-            </span>
             <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 mb-4 leading-tight">
               Simple, honest pricing
             </h1>

@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { ALL_ROLES_RAW } from '@/lib/roleGuides';
+import { getAllGuideSlugs } from '@/lib/blogData';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://resumeflow.harshithkumar.in';
@@ -7,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Static pages — highest priority
   const staticPages = [
     { url: baseUrl, priority: 1.0, changeFrequency: 'daily' as const },
+    { url: `${baseUrl}/blog`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/about`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/features`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/pricing`, priority: 0.9, changeFrequency: 'weekly' as const },
@@ -44,6 +46,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'monthly' as const,
   }));
 
+  // Guides & Career Articles (/blog/[slug])
+  const guideSlugs = getAllGuideSlugs();
+  const guidePages = guideSlugs.map((slug) => ({
+    url: `${baseUrl}/blog/${slug}` as const,
+    priority: 0.85,
+    changeFrequency: 'weekly' as const,
+  }));
+
   // Legal pages — low priority, rarely changes
   const legalSlugs = ['privacy', 'terms', 'cookies', 'contact'];
   const legalPages = legalSlugs.map((slug) => ({
@@ -58,6 +68,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...infoPages,
     ...blogPosts,
     ...resourcePages,
+    ...guidePages,
     ...legalPages,
   ];
 

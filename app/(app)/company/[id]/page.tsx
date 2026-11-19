@@ -694,9 +694,8 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
         <button
           type="button"
           onClick={handleGenerate}
-          className="bg-[#5B50E6] hover:bg-[#4E43D8] text-white px-6 h-12 text-xs font-bold rounded-2xl flex items-center gap-2 shadow-lg shadow-purple-600/10 hover:shadow-purple-600/15 transition-all active:scale-95 mx-auto"
+          className="bg-[#5B50E6] hover:bg-[#4E43D8] text-white px-6 h-12 text-xs font-semibold rounded-2xl flex items-center justify-center transition-all active:scale-95 mx-auto shadow-xs"
         >
-          <Sparkles className="w-4 h-4" />
           <span>Generate outreach materials</span>
         </button>
       </div>

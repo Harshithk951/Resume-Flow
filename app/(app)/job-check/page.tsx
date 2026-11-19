@@ -7,7 +7,6 @@ import { useAction, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import {
-  Sparkles,
   Upload,
   Globe,
   CheckCircle2,
@@ -220,16 +219,11 @@ export default function JobCheckPage() {
       {/* ─── PAGE HEADER ─────────────────────────────────────── */}
       <div className="border-b border-slate-200/80 bg-white/60 backdrop-blur-xs">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200/80 text-purple-700 text-xs font-semibold mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Pre-Application Diagnostic</span>
-          </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
             Should I apply?
           </h1>
           <p className="text-sm text-slate-600 mt-1 max-w-2xl">
-            Check a job against your resume first. Get an objective match score, skill breakdown,
-            seniority alignment, and detect toxic red flags before investing your time.
+            Check a job against your resume first. In a few seconds you&apos;ll know if it&apos;s worth your time, what&apos;s missing, and whether the posting looks genuine. Free, and you always decide.
           </p>
         </div>
       </div>
@@ -239,14 +233,14 @@ export default function JobCheckPage() {
         <div className="space-y-6">
           {/* SECTION 1: YOUR RESUME */}
           <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                  1
-                </div>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                  Your resume
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-base font-bold text-slate-900">
+                  1 · Your resume
                 </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Paste the text, or upload the PDF you already send out.
+                </p>
               </div>
 
               {/* Tabs */}
@@ -273,17 +267,19 @@ export default function JobCheckPage() {
                 >
                   Upload file
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setResumeTab("saved")}
-                  className={`px-3 py-1.5 rounded-lg transition-all ${
-                    resumeTab === "saved"
-                      ? "bg-white text-slate-900 font-semibold shadow-2xs"
-                      : "hover:text-slate-900"
-                  }`}
-                >
-                  Saved resumes
-                </button>
+                {savedResumesData && savedResumesData.resumes.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setResumeTab("saved")}
+                    className={`px-3 py-1.5 rounded-lg transition-all ${
+                      resumeTab === "saved"
+                        ? "bg-white text-slate-900 font-semibold shadow-2xs"
+                        : "hover:text-slate-900"
+                    }`}
+                  >
+                    Saved resumes
+                  </button>
+                )}
               </div>
             </div>
 
@@ -293,16 +289,12 @@ export default function JobCheckPage() {
                 <textarea
                   value={resumeText}
                   onChange={(e) => setResumeText(e.target.value)}
-                  placeholder="Paste your baseline resume text here (experience, skills, projects)..."
+                  placeholder="Paste your resume text here — or your LaTeX source (we'll convert it)... Include your work experience, education, skills, and any other relevant sections."
                   rows={6}
-                  className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y font-mono leading-relaxed"
+                  className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y leading-relaxed"
                 />
-                <div className="flex items-center justify-between text-xs text-slate-500 px-1">
-                  <span>
-                    {resumeText.trim().length > 0
-                      ? `${resumeText.trim().length} characters`
-                      : "No text added"}
-                  </span>
+                <div className="flex items-center justify-between text-xs text-slate-400 px-1 font-mono">
+                  <span>{resumeText.trim().length} characters</span>
                   {resumeText.length > 0 && (
                     <button
                       type="button"
@@ -391,14 +383,14 @@ export default function JobCheckPage() {
 
           {/* SECTION 2: THE JOB YOU WANT */}
           <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
-              <div className="flex items-center gap-2.5">
-                <div className="w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                  2
-                </div>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                  The job you want
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-base font-bold text-slate-900">
+                  2 · The job you want
                 </h2>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Paste the posting, or give us its link and we&apos;ll read it.
+                </p>
               </div>
 
               {/* Tabs */}
@@ -469,16 +461,12 @@ export default function JobCheckPage() {
               <textarea
                 value={jobText}
                 onChange={(e) => setJobText(e.target.value)}
-                placeholder="Paste the target job description (Requirements, Responsibilities, Qualifications)..."
+                placeholder="Paste the full job description here... Include requirements, responsibilities, qualifcations, and any preferred skills."
                 rows={6}
-                className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y font-mono leading-relaxed"
+                className="w-full rounded-xl border border-slate-200 p-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 resize-y leading-relaxed"
               />
-              <div className="flex items-center justify-between text-xs text-slate-500 px-1">
-                <span>
-                  {jobText.trim().length > 0
-                    ? `${jobText.trim().length} characters`
-                    : "No job text added"}
-                </span>
+              <div className="flex items-center justify-between text-xs text-slate-400 px-1 font-mono">
+                <span>{jobText.trim().length} characters</span>
                 {jobText.length > 0 && (
                   <button
                     type="button"
@@ -493,37 +481,31 @@ export default function JobCheckPage() {
           </section>
 
           {/* ACTION CTA: CHECK THIS JOB */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-xs text-center space-y-3">
-            <button
-              type="button"
-              disabled={isAnalyzing}
-              onClick={handleCheckFit}
-              className="w-full py-4 px-6 rounded-xl bg-purple-700 hover:bg-purple-800 active:scale-[0.99] text-white font-bold text-base transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-3 disabled:opacity-60 cursor-pointer"
-            >
-              {isAnalyzing ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>
-                    {analysisStep === 1
-                      ? "Analyzing technical skill overlaps..."
-                      : analysisStep === 2
-                      ? "Evaluating seniority & experience requirements..."
-                      : "Scanning for workplace red flags..."}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span>Check this job ✦</span>
-                  <span className="text-xs font-normal opacity-90 px-2 py-0.5 rounded-md bg-purple-900/60">
-                    Instant Fit Analysis
-                  </span>
-                </>
-              )}
-            </button>
-            <p className="text-xs text-slate-500">
-              Free pre-application evaluation. Does not consume optimization credits.
-            </p>
-          </div>
+          <button
+            type="button"
+            disabled={isAnalyzing}
+            onClick={handleCheckFit}
+            className={`w-full py-3.5 px-6 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
+              !resumeText.trim() || !jobText.trim()
+                ? "bg-[#dedbf7] text-white"
+                : "bg-[#5B50E6] hover:bg-[#4E43D8] text-white shadow-xs active:scale-[0.99]"
+            }`}
+          >
+            {isAnalyzing ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-white" />
+                <span>
+                  {analysisStep === 1
+                    ? "Analyzing technical skill overlaps..."
+                    : analysisStep === 2
+                    ? "Evaluating seniority & experience requirements..."
+                    : "Scanning for workplace red flags..."}
+                </span>
+              </>
+            ) : (
+              <span>Check this job</span>
+            )}
+          </button>
         </div>
 
         {/* ─── RESULTS PANEL (DIAGNOSTIC DASHBOARD) ─────────────── */}
