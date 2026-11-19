@@ -6,10 +6,7 @@ import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import {
-  Briefcase,
-  Search,
   Plus,
-  Sparkles,
   ExternalLink,
   Trash2,
   Table as TableIcon,
@@ -20,6 +17,133 @@ import {
 import { toast } from "sonner";
 
 type CrmStatus = "Saved" | "Applied" | "Interviewing" | "Offered" | "Rejected";
+
+function JobTrackerEmptyIllustration() {
+  return (
+    <svg
+      width="240"
+      height="130"
+      viewBox="0 0 240 130"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="max-w-full h-auto select-none"
+    >
+      {/* Background Soft Mint Cloud / Blob */}
+      <path
+        d="M32 75C24 64 28 46 42 38C53 32 68 36 78 32C92 26 108 20 126 22C144 24 158 35 174 36C188 37 202 44 208 57C214 70 206 86 193 94C180 102 163 98 148 101C132 104 116 112 100 110C84 108 72 98 58 96C46 94 36 85 32 75Z"
+        fill="#E8FAF3"
+      />
+
+      {/* Purple Star Sparkle (Top Left) */}
+      <path
+        d="M26 43C26 39 23 36 19 36C23 36 26 33 26 29C26 33 29 36 33 36C29 36 26 39 26 43Z"
+        fill="#6355FF"
+      />
+      <circle cx="21" cy="48" r="1.5" fill="#6355FF" opacity="0.6" />
+
+      {/* Mint Star Sparkle (Right) */}
+      <path
+        d="M218 45C218 41.5 215.5 39 212 39C215.5 39 218 36.5 218 33C218 36.5 220.5 39 224 39C220.5 39 218 41.5 218 45Z"
+        fill="#10B981"
+      />
+      <circle cx="221" cy="51" r="1.5" fill="#10B981" opacity="0.6" />
+
+      {/* Card 1 (Left - Active/In-Progress) */}
+      <g filter="drop-shadow(0 4px 10px rgba(0,0,0,0.03))">
+        <rect
+          x="54"
+          y="35"
+          width="48"
+          height="62"
+          rx="6"
+          fill="white"
+          stroke="#E2E8F0"
+          strokeWidth="1.2"
+        />
+        {/* Top Header Strip */}
+        <rect x="58" y="39" width="40" height="7" rx="3" fill="#6355FF" />
+        {/* Bullet Row 1 */}
+        <circle cx="62" cy="53" r="2" fill="#6355FF" />
+        <rect x="67" y="51.5" width="27" height="3" rx="1.5" fill="#CBD5E1" />
+        {/* Bullet Row 2 */}
+        <circle cx="62" cy="62" r="2" fill="#6355FF" />
+        <rect x="67" y="60.5" width="22" height="3" rx="1.5" fill="#E2E8F0" />
+        {/* Bullet Row 3 */}
+        <circle cx="62" cy="71" r="2" fill="#6355FF" />
+        <rect x="67" y="69.5" width="25" height="3" rx="1.5" fill="#E2E8F0" />
+        {/* Row 4 Line */}
+        <rect x="59" y="81" width="38" height="2.5" rx="1.2" fill="#F1F5F9" />
+      </g>
+
+      {/* Card 2 (Middle - In Pipeline) */}
+      <g filter="drop-shadow(0 4px 10px rgba(0,0,0,0.03))">
+        <rect
+          x="110"
+          y="30"
+          width="50"
+          height="67"
+          rx="6"
+          fill="white"
+          stroke="#CBD5E1"
+          strokeWidth="1.2"
+          strokeDasharray="2.5 2"
+        />
+        <rect x="115" y="36" width="22" height="4" rx="2" fill="#E2E8F0" />
+        {/* Badge / Document Icon */}
+        <rect
+          x="115"
+          y="46"
+          width="40"
+          height="28"
+          rx="4"
+          fill="#F8FAFC"
+          stroke="#E2E8F0"
+          strokeWidth="1"
+        />
+        <rect x="120" y="52" width="20" height="3" rx="1.5" fill="#94A3B8" />
+        <rect x="120" y="59" width="30" height="2.5" rx="1.2" fill="#CBD5E1" />
+        <rect x="120" y="65" width="16" height="2.5" rx="1.2" fill="#E2E8F0" />
+        <rect x="115" y="82" width="32" height="3" rx="1.5" fill="#F1F5F9" />
+      </g>
+
+      {/* Card 3 (Right - Target / Completed) */}
+      <g filter="drop-shadow(0 4px 10px rgba(0,0,0,0.03))">
+        <rect
+          x="168"
+          y="38"
+          width="46"
+          height="58"
+          rx="6"
+          fill="white"
+          stroke="#E2E8F0"
+          strokeWidth="1.2"
+        />
+        <rect x="173" y="44" width="26" height="4" rx="2" fill="#E2E8F0" />
+        <rect x="173" y="53" width="36" height="3" rx="1.5" fill="#F1F5F9" />
+        <rect x="173" y="60" width="30" height="3" rx="1.5" fill="#F1F5F9" />
+        <rect x="173" y="67" width="34" height="3" rx="1.5" fill="#F1F5F9" />
+        <rect x="173" y="74" width="22" height="3" rx="1.5" fill="#F1F5F9" />
+      </g>
+
+      {/* Curved Mint Dashed Arrow from Card 1 to Card 3 */}
+      <path
+        d="M86 42C102 24 150 22 178 46"
+        stroke="#10B981"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeDasharray="3.5 3.5"
+      />
+      {/* Arrowhead */}
+      <path
+        d="M174 46L180 47L178 41"
+        stroke="#10B981"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 const KANBAN_STAGES: Array<{
   id: CrmStatus;
@@ -144,72 +268,94 @@ export default function JobTrackerPage() {
 
   return (
     <div className="min-h-screen bg-[#fbfbf9] text-slate-900 pb-28">
-      {/* ─── PAGE HEADER & TOOLBAR ───────────────────────────── */}
-      <div className="border-b border-slate-200/80 bg-white/60 backdrop-blur-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-extrabold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200/60">
-                  Application Management
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-                  Job tracker
-                </h1>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700">
-                  {totalCount} {totalCount === 1 ? "application" : "applications"}
-                </span>
-              </div>
-              <p className="text-sm text-slate-600 mt-1 max-w-xl">
-                Track all your job opportunities from initial fit evaluation to final offer. Runs from
-                the Optimizer automatically log here.
-              </p>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 shrink-0">
-              <Link
-                href="/job-check"
-                className="py-2.5 px-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-all shadow-2xs"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
-                <span>Should I apply?</span>
-              </Link>
-
-              <button
-                type="button"
-                onClick={() => setIsAddModalOpen(true)}
-                className="py-2.5 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E44D6] text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md active:scale-[0.99] cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add application</span>
-              </button>
-            </div>
+      {/* ─── PAGE HEADER & CONTROLS ───────────────────────────── */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              Job tracker
+            </h1>
+            <p className="text-xs text-slate-400 mt-1 font-medium">
+              {totalCount} {totalCount === 1 ? "application" : "applications"}
+            </p>
           </div>
 
-          {/* Controls Bar: Search, View Mode, Filter Chips */}
-          <div className="mt-6 pt-5 border-t border-slate-200/60 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+          {/* Action Header Controls */}
+          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
             {/* Search Input */}
-            <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+            <div className="relative">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search company or role..."
-                className="w-full rounded-xl border border-slate-200 pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 bg-white"
+                placeholder="Search company or ro..."
+                className="w-44 sm:w-56 rounded-xl border border-slate-200/90 bg-white px-3 py-2 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6] shadow-2xs transition-all"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-2 text-xs text-slate-400 hover:text-slate-600"
+                  className="absolute right-2.5 top-2.5 text-xs text-slate-400 hover:text-slate-600"
                 >
                   ✕
                 </button>
               )}
+            </div>
+
+            <Link
+              href="/job-check"
+              className="py-2 px-3.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-700 font-semibold text-xs transition-all shadow-2xs"
+            >
+              Should I apply?
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setIsAddModalOpen(true)}
+              className="py-2 px-3.5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-semibold text-xs flex items-center gap-1.5 transition-all shadow-xs active:scale-[0.99] cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Add application</span>
+            </button>
+          </div>
+        </div>
+
+        {/* View Switcher & Filter Tabs: Only when applications exist */}
+        {jobsData.length > 0 && (
+          <div className="mt-6 pt-5 border-t border-slate-200/60 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            {/* Quick Stage Filter Tabs */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+              <button
+                type="button"
+                onClick={() => setActiveTab("all")}
+                className={`px-3 py-1 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
+                  activeTab === "all"
+                    ? "bg-slate-900 text-white shadow-2xs"
+                    : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                All ({jobsData.length})
+              </button>
+              {KANBAN_STAGES.map((s) => {
+                const stageCount = jobsData.filter((j) => (j.crmStatus || "Saved") === s.id).length;
+                const isActive = activeTab === s.id;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => setActiveTab(s.id)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                      isActive
+                        ? "bg-slate-900 text-white shadow-2xs"
+                        : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+                    }`}
+                  >
+                    <span className={`w-1.5 h-1.5 rounded-full ${s.dotColor}`} />
+                    <span>{s.label}</span>
+                    <span className="opacity-70 text-[10px]">({stageCount})</span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* View Switcher: Kanban vs Table */}
@@ -242,79 +388,42 @@ export default function JobTrackerPage() {
               </div>
             </div>
           </div>
-
-          {/* Quick Stage Filter Tabs */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 mt-3 scrollbar-none">
-            <button
-              type="button"
-              onClick={() => setActiveTab("all")}
-              className={`px-3 py-1 rounded-full text-xs font-bold transition-all whitespace-nowrap ${
-                activeTab === "all"
-                  ? "bg-slate-900 text-white shadow-2xs"
-                  : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              All ({jobsData.length})
-            </button>
-            {KANBAN_STAGES.map((s) => {
-              const stageCount = jobsData.filter((j) => (j.crmStatus || "Saved") === s.id).length;
-              const isActive = activeTab === s.id;
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => setActiveTab(s.id)}
-                  className={`px-3 py-1 rounded-full text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                    isActive
-                      ? "bg-slate-900 text-white shadow-2xs"
-                      : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
-                  }`}
-                >
-                  <span className={`w-1.5 h-1.5 rounded-full ${s.dotColor}`} />
-                  <span>{s.label}</span>
-                  <span className="opacity-70 text-[10px]">({stageCount})</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        )}
       </div>
 
       {/* ─── MAIN CONTENT: EMPTY STATE OR VIEWS ──────────────── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {jobsData.length === 0 ? (
-          /* EMPTY STATE */
-          <div className="max-w-xl mx-auto my-12 text-center bg-white rounded-3xl border border-slate-200/80 p-8 sm:p-12 shadow-xs space-y-5">
-            <div className="w-16 h-16 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto shadow-2xs border border-purple-100">
-              <Briefcase className="w-8 h-8" />
+          /* EMPTY STATE CARD MATCHING SCREENSHOT */
+          <div className="w-full bg-white rounded-2xl border border-slate-200/80 py-16 sm:py-20 px-6 sm:px-12 text-center shadow-xs flex flex-col items-center justify-center space-y-6">
+            {/* Vector Illustration */}
+            <div className="flex justify-center">
+              <JobTrackerEmptyIllustration />
             </div>
 
-            <div className="space-y-1">
-              <h3 className="text-xl font-extrabold text-slate-900">
+            <div className="space-y-1.5">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
                 Nothing tracked yet
               </h3>
-              <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-                Add your first application, or let the optimizer log it for you the next time you
-                tailor a resume.
+              <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+                Add your first application, or let the optimizer log it for you the next time you tailor a resume.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <div className="flex flex-row items-center justify-center gap-3 pt-1">
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(true)}
-                className="w-full sm:w-auto py-3 px-5 rounded-xl bg-[#5B50E6] hover:bg-[#4E44D6] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer"
+                className="py-2.5 px-5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs sm:text-sm transition-all shadow-xs cursor-pointer active:scale-[0.99]"
               >
-                <Plus className="w-4 h-4" />
-                <span>Add an application</span>
+                Add an application
               </button>
 
               <Link
                 href="/optimize"
-                className="w-full sm:w-auto py-3 px-5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs"
+                className="py-2.5 px-5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium text-xs sm:text-sm transition-all shadow-2xs"
               >
-                <Sparkles className="w-4 h-4 text-purple-600" />
-                <span>Optimize a resume</span>
+                Optimize a resume
               </Link>
             </div>
           </div>
