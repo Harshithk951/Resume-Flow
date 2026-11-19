@@ -70,6 +70,11 @@ export default function Footer() {
             </p>
             <ul className="space-y-2 text-sm text-slate-600">
               <li>
+                <Link href="/resume-optimizer" className="hover:text-slate-900 transition-colors font-medium text-cyan-700 dark:text-cyan-400">
+                  Role Guides (203 Roles)
+                </Link>
+              </li>
+              <li>
                 <Link href="/resources/handbook" className="hover:text-slate-900 transition-colors">
                   Resume Handbook
                 </Link>
@@ -162,7 +167,7 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-slate-200 text-xs text-slate-400 gap-4">
-          <BrandLogo size="sm" className="gap-2.5" />
+          <BrandLogo size="sm" className="gap-2.5 text-slate-900 dark:text-white" />
           <span>© {new Date().getFullYear()} ResumeFlow. All rights reserved.</span>
         </div>
       </div>

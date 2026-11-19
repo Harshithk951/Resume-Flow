@@ -503,7 +503,7 @@ export default function FreeResumeBuilderPage() {
       {/* ─── FOOTER ─── */}
       <footer className="bg-white border-t border-slate-200 py-12 px-6">
         <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <BrandLogo size="sm" className="gap-2.5 opacity-60" />
+          <BrandLogo size="sm" className="gap-2.5 text-slate-900 dark:text-white" />
           <div className="flex items-center gap-4">
             <Link href="/legal/privacy" className="hover:text-slate-600 transition-colors">
               Privacy Policy

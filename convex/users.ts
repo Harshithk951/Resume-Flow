@@ -168,6 +168,129 @@ export const getUser = query({
       imageUrl: user.imageUrl,
       tenantId: user.tenantId,
       onboardingComplete: user.onboardingComplete,
+      freeOptimizationsUsed: user.freeOptimizationsUsed ?? 0,
+      passExpiresAt: user.passExpiresAt,
+      teamWalletBalance: user.teamWalletBalance ?? 0,
+    };
+  },
+});
+
+/**
+ * Returns the current credit allowance and active subscription status.
+ * Free tier starts with 2 lifetime free optimizations.
+ */
+export const getCreditsStatus = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return {
+        plan: "free",
+        freeOptimizationsRemaining: 2,
+        freeOptimizationsUsed: 0,
+        passExpiresAt: undefined,
+        daysRemaining: 0,
+        isPro: false,
+        isPower: false,
+        isTeam: false,
+        isCampus: false,
+      };
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      return {
+        plan: "free",
+        freeOptimizationsRemaining: 2,
+        freeOptimizationsUsed: 0,
+        passExpiresAt: undefined,
+        daysRemaining: 0,
+        isPro: false,
+        isPower: false,
+        isTeam: false,
+        isCampus: false,
+      };
+    }
+
+    const now = Date.now();
+    const isProPassActive =
+      user.plan === "pro_pass" && (!user.passExpiresAt || user.passExpiresAt > now);
+    const isPro = user.plan === "pro" || isProPassActive;
+    const isPower = user.plan === "power";
+    const isTeam = user.plan === "team";
+    const isCampus = user.plan === "campus";
+
+    const daysRemaining =
+      user.plan === "pro_pass" && user.passExpiresAt
+        ? Math.max(0, Math.ceil((user.passExpiresAt - now) / 86400000))
+        : 0;
+
+    const freeOptimizationsUsed = user.freeOptimizationsUsed ?? 0;
+    const freeOptimizationsRemaining = Math.max(0, 2 - freeOptimizationsUsed);
+
+    return {
+      plan: user.plan || "free",
+      freeOptimizationsRemaining,
+      freeOptimizationsUsed,
+      passExpiresAt: user.passExpiresAt,
+      daysRemaining,
+      isPro,
+      isPower,
+      isTeam,
+      isCampus,
+    };
+  },
+});
+
+/**
+ * Consumes an optimization credit.
+ * Verifies eligibility (free remaining > 0 or paid active) and increments
+ * freeOptimizationsUsed for free users.
+ */
+export const consumeOptimizationCredit = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireAuth(ctx);
+    const now = Date.now();
+    const isPaid =
+      user.plan === "pro" ||
+      user.plan === "power" ||
+      user.plan === "team" ||
+      user.plan === "campus" ||
+      (user.plan === "pro_pass" && (!user.passExpiresAt || user.passExpiresAt > now));
+
+    if (isPaid) {
+      return {
+        success: true,
+        plan: user.plan,
+        paid: true,
+        freeOptimizationsRemaining: 0,
+        freeOptimizationsUsed: user.freeOptimizationsUsed ?? 0,
+      };
+    }
+
+    const currentUsed = user.freeOptimizationsUsed ?? 0;
+    if (currentUsed >= 2) {
+      throw new ConvexError(
+        "NO_FREE_CREDITS_REMAINING: You have used all 2 lifetime free optimizations. Please upgrade to Pro Pass or a subscription."
+      );
+    }
+
+    const newUsed = currentUsed + 1;
+    await ctx.db.patch(user._id, {
+      freeOptimizationsUsed: newUsed,
+    });
+
+    return {
+      success: true,
+      plan: "free",
+      paid: false,
+      freeOptimizationsUsed: newUsed,
+      freeOptimizationsRemaining: Math.max(0, 2 - newUsed),
     };
   },
 });
@@ -281,7 +404,13 @@ export const verifyRazorpayPaymentAndUpgrade = mutation({
     razorpay_order_id: v.string(),
     razorpay_payment_id: v.string(),
     razorpay_signature: v.string(),
-    plan: v.union(v.literal("pro"), v.literal("campus")),
+    plan: v.union(
+      v.literal("pro_pass"),
+      v.literal("pro"),
+      v.literal("power"),
+      v.literal("team"),
+      v.literal("campus")
+    ),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -333,10 +462,23 @@ export const verifyRazorpayPaymentAndUpgrade = mutation({
       throw new Error("User not found");
     }
 
-    await ctx.db.patch(user._id, {
+    const patchData: {
+      plan: "pro_pass" | "pro" | "power" | "team" | "campus";
+      credits: number;
+      passExpiresAt?: number;
+      teamWalletBalance?: number;
+    } = {
       plan: args.plan,
-      credits: 100000, // Give ample credits for pro users
-    });
+      credits: 100000, // Give ample credits for paid users
+    };
+
+    if (args.plan === "pro_pass") {
+      patchData.passExpiresAt = Date.now() + 30 * 86400000; // 30-day pass
+    } else if (args.plan === "team") {
+      patchData.teamWalletBalance = (user.teamWalletBalance ?? 0) + 500;
+    }
+
+    await ctx.db.patch(user._id, patchData);
 
     console.log(
       `[Razorpay] Payment verified & plan upgraded: ${identity.subject} → ${args.plan}`
@@ -357,7 +499,13 @@ export const verifyRazorpayPaymentAndUpgrade = mutation({
 export const upgradeUserPlan = internalMutation({
   args: {
     clerkId: v.string(),
-    plan: v.union(v.literal("pro"), v.literal("campus")),
+    plan: v.union(
+      v.literal("pro_pass"),
+      v.literal("pro"),
+      v.literal("power"),
+      v.literal("team"),
+      v.literal("campus")
+    ),
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -367,10 +515,24 @@ export const upgradeUserPlan = internalMutation({
     if (!user) {
       throw new Error(`User not found for clerkId: ${args.clerkId}`);
     }
-    await ctx.db.patch(user._id, {
+
+    const patchData: {
+      plan: "pro_pass" | "pro" | "power" | "team" | "campus";
+      credits: number;
+      passExpiresAt?: number;
+      teamWalletBalance?: number;
+    } = {
       plan: args.plan,
-      credits: 100000, // Give ample credits for pro users
-    });
+      credits: 100000,
+    };
+
+    if (args.plan === "pro_pass") {
+      patchData.passExpiresAt = Date.now() + 30 * 86400000;
+    } else if (args.plan === "team") {
+      patchData.teamWalletBalance = (user.teamWalletBalance ?? 0) + 500;
+    }
+
+    await ctx.db.patch(user._id, patchData);
     console.log(`[Razorpay] Upgraded user ${user.email} (${user._id}) to ${args.plan} plan`);
     return { success: true, userId: user._id, plan: args.plan };
   },

@@ -212,7 +212,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`scroll-smooth ${jakartaSans.variable} ${outfitFont.variable} ${interFont.variable}`} data-scroll-behavior="smooth">
+    <html lang="en" suppressHydrationWarning className={`light scroll-smooth ${jakartaSans.variable} ${outfitFont.variable} ${interFont.variable}`} data-scroll-behavior="smooth">
       <body className={`min-h-screen antialiased ${jakartaSans.className}`}>
         {/* ─── JSON-LD Structured Data ──────── */}
         <script

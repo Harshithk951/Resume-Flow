@@ -43,6 +43,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Backups
+backup/
+tmp/
+
 # Template quality run artifacts (keep scorecard summaries)
 reports/template-quality/**/*
 !reports/template-quality/.gitkeep

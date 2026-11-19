@@ -1,0 +1,2108 @@
+{
+  "total": 203,
+  "letters": [
+    ".",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W"
+  ],
+  "grouped": {
+    ".": [
+      {
+        "title": ".NET Developer",
+        "slug": "dotnet-developer",
+        "letter": "."
+      }
+    ],
+    "A": [
+      {
+        "title": "Academic Advisor",
+        "slug": "academic-advisor",
+        "letter": "A"
+      },
+      {
+        "title": "Account Executive",
+        "slug": "account-executive",
+        "letter": "A"
+      },
+      {
+        "title": "Account Manager",
+        "slug": "account-manager",
+        "letter": "A"
+      },
+      {
+        "title": "Accountant",
+        "slug": "accountant",
+        "letter": "A"
+      },
+      {
+        "title": "Actuary",
+        "slug": "actuary",
+        "letter": "A"
+      },
+      {
+        "title": "Administrative Assistant",
+        "slug": "administrative-assistant",
+        "letter": "A"
+      },
+      {
+        "title": "Aerospace Engineer",
+        "slug": "aerospace-engineer",
+        "letter": "A"
+      },
+      {
+        "title": "Affiliate Marketing Manager",
+        "slug": "affiliate-marketing-manager",
+        "letter": "A"
+      },
+      {
+        "title": "Analytics Engineer",
+        "slug": "analytics-engineer",
+        "letter": "A"
+      },
+      {
+        "title": "Android Developer",
+        "slug": "android-developer",
+        "letter": "A"
+      },
+      {
+        "title": "Architect",
+        "slug": "architect",
+        "letter": "A"
+      },
+      {
+        "title": "Associate Product Manager",
+        "slug": "associate-product-manager",
+        "letter": "A"
+      }
+    ],
+    "B": [
+      {
+        "title": "Backend Developer",
+        "slug": "backend-developer",
+        "letter": "B"
+      },
+      {
+        "title": "Bank Teller",
+        "slug": "bank-teller",
+        "letter": "B"
+      },
+      {
+        "title": "BI Developer",
+        "slug": "bi-developer",
+        "letter": "B"
+      },
+      {
+        "title": "Biomedical Engineer",
+        "slug": "biomedical-engineer",
+        "letter": "B"
+      },
+      {
+        "title": "Blockchain Developer",
+        "slug": "blockchain-developer",
+        "letter": "B"
+      },
+      {
+        "title": "Bookkeeper",
+        "slug": "bookkeeper",
+        "letter": "B"
+      },
+      {
+        "title": "Brand Manager",
+        "slug": "brand-manager",
+        "letter": "B"
+      },
+      {
+        "title": "Business Analyst",
+        "slug": "business-analyst",
+        "letter": "B"
+      },
+      {
+        "title": "Business Development Manager",
+        "slug": "business-development-manager",
+        "letter": "B"
+      }
+    ],
+    "C": [
+      {
+        "title": "Call Center Manager",
+        "slug": "call-center-manager",
+        "letter": "C"
+      },
+      {
+        "title": "Category Manager",
+        "slug": "category-manager",
+        "letter": "C"
+      },
+      {
+        "title": "Chef",
+        "slug": "chef",
+        "letter": "C"
+      },
+      {
+        "title": "Chemical Engineer",
+        "slug": "chemical-engineer",
+        "letter": "C"
+      },
+      {
+        "title": "Chief of Staff",
+        "slug": "chief-of-staff",
+        "letter": "C"
+      },
+      {
+        "title": "Civil Engineer",
+        "slug": "civil-engineer",
+        "letter": "C"
+      },
+      {
+        "title": "Claims Adjuster",
+        "slug": "claims-adjuster",
+        "letter": "C"
+      },
+      {
+        "title": "Clinical Data Manager",
+        "slug": "clinical-data-manager",
+        "letter": "C"
+      },
+      {
+        "title": "Clinical Research Associate",
+        "slug": "clinical-research-associate",
+        "letter": "C"
+      },
+      {
+        "title": "Cloud Architect",
+        "slug": "cloud-architect",
+        "letter": "C"
+      },
+      {
+        "title": "Cloud Engineer",
+        "slug": "cloud-engineer",
+        "letter": "C"
+      },
+      {
+        "title": "Community Manager",
+        "slug": "community-manager",
+        "letter": "C"
+      },
+      {
+        "title": "Compensation & Benefits Analyst",
+        "slug": "compensation-benefits-analyst",
+        "letter": "C"
+      },
+      {
+        "title": "Compliance Officer",
+        "slug": "compliance-officer",
+        "letter": "C"
+      },
+      {
+        "title": "Content Marketing Manager",
+        "slug": "content-marketing-manager",
+        "letter": "C"
+      },
+      {
+        "title": "Content Writer",
+        "slug": "content-writer",
+        "letter": "C"
+      },
+      {
+        "title": "Contract Manager",
+        "slug": "contract-manager",
+        "letter": "C"
+      },
+      {
+        "title": "Copywriter",
+        "slug": "copywriter",
+        "letter": "C"
+      },
+      {
+        "title": "Credit Analyst",
+        "slug": "credit-analyst",
+        "letter": "C"
+      },
+      {
+        "title": "Curriculum Developer",
+        "slug": "curriculum-developer",
+        "letter": "C"
+      },
+      {
+        "title": "Customer Onboarding Specialist",
+        "slug": "customer-onboarding-specialist",
+        "letter": "C"
+      },
+      {
+        "title": "Customer Success Manager",
+        "slug": "customer-success-manager",
+        "letter": "C"
+      },
+      {
+        "title": "Customer Support Specialist",
+        "slug": "customer-support-specialist",
+        "letter": "C"
+      },
+      {
+        "title": "Cybersecurity Analyst",
+        "slug": "cybersecurity-analyst",
+        "letter": "C"
+      }
+    ],
+    "D": [
+      {
+        "title": "Data Analyst",
+        "slug": "data-analyst",
+        "letter": "D"
+      },
+      {
+        "title": "Data Engineer",
+        "slug": "data-engineer",
+        "letter": "D"
+      },
+      {
+        "title": "Data Quality Analyst",
+        "slug": "data-quality-analyst",
+        "letter": "D"
+      },
+      {
+        "title": "Data Scientist",
+        "slug": "data-scientist",
+        "letter": "D"
+      },
+      {
+        "title": "Database Administrator",
+        "slug": "database-administrator",
+        "letter": "D"
+      },
+      {
+        "title": "Dental Hygienist",
+        "slug": "dental-hygienist",
+        "letter": "D"
+      },
+      {
+        "title": "DevOps Engineer",
+        "slug": "devops-engineer",
+        "letter": "D"
+      },
+      {
+        "title": "Digital Marketing Manager",
+        "slug": "digital-marketing-manager",
+        "letter": "D"
+      },
+      {
+        "title": "Director of Operations",
+        "slug": "director-of-operations",
+        "letter": "D"
+      },
+      {
+        "title": "Director of Product",
+        "slug": "director-of-product",
+        "letter": "D"
+      }
+    ],
+    "E": [
+      {
+        "title": "E-commerce Manager",
+        "slug": "e-commerce-manager",
+        "letter": "E"
+      },
+      {
+        "title": "Electrical Engineer",
+        "slug": "electrical-engineer",
+        "letter": "E"
+      },
+      {
+        "title": "Email Marketing Specialist",
+        "slug": "email-marketing-specialist",
+        "letter": "E"
+      },
+      {
+        "title": "Embedded Systems Engineer",
+        "slug": "embedded-systems-engineer",
+        "letter": "E"
+      },
+      {
+        "title": "Engineering Manager",
+        "slug": "engineering-manager",
+        "letter": "E"
+      },
+      {
+        "title": "Environmental Engineer",
+        "slug": "environmental-engineer",
+        "letter": "E"
+      },
+      {
+        "title": "Event Coordinator",
+        "slug": "event-coordinator",
+        "letter": "E"
+      },
+      {
+        "title": "Executive Assistant",
+        "slug": "executive-assistant",
+        "letter": "E"
+      }
+    ],
+    "F": [
+      {
+        "title": "Fashion Designer",
+        "slug": "fashion-designer",
+        "letter": "F"
+      },
+      {
+        "title": "Field Service Engineer",
+        "slug": "field-service-engineer",
+        "letter": "F"
+      },
+      {
+        "title": "Finance Analyst",
+        "slug": "finance-analyst",
+        "letter": "F"
+      },
+      {
+        "title": "Financial Controller",
+        "slug": "financial-controller",
+        "letter": "F"
+      },
+      {
+        "title": "FP&A Analyst",
+        "slug": "fp-and-a-analyst",
+        "letter": "F"
+      },
+      {
+        "title": "Frontend Developer",
+        "slug": "frontend-developer",
+        "letter": "F"
+      },
+      {
+        "title": "Full Stack Developer",
+        "slug": "full-stack-developer",
+        "letter": "F"
+      },
+      {
+        "title": "Fundraising Manager",
+        "slug": "fundraising-manager",
+        "letter": "F"
+      }
+    ],
+    "G": [
+      {
+        "title": "Game Developer",
+        "slug": "game-developer",
+        "letter": "G"
+      },
+      {
+        "title": "Go Developer",
+        "slug": "golang-developer",
+        "letter": "G"
+      },
+      {
+        "title": "Grant Writer",
+        "slug": "grant-writer",
+        "letter": "G"
+      },
+      {
+        "title": "Graphic Designer",
+        "slug": "graphic-designer",
+        "letter": "G"
+      },
+      {
+        "title": "Growth Marketing Manager",
+        "slug": "growth-marketing-manager",
+        "letter": "G"
+      },
+      {
+        "title": "Growth Product Manager",
+        "slug": "growth-product-manager",
+        "letter": "G"
+      }
+    ],
+    "H": [
+      {
+        "title": "Healthcare Administrator",
+        "slug": "healthcare-administrator",
+        "letter": "H"
+      },
+      {
+        "title": "Help Desk Technician",
+        "slug": "help-desk-technician",
+        "letter": "H"
+      },
+      {
+        "title": "Hotel Manager",
+        "slug": "hotel-manager",
+        "letter": "H"
+      },
+      {
+        "title": "HR Business Partner",
+        "slug": "hr-business-partner",
+        "letter": "H"
+      },
+      {
+        "title": "HR Coordinator",
+        "slug": "hr-coordinator",
+        "letter": "H"
+      },
+      {
+        "title": "HR Generalist",
+        "slug": "hr-generalist",
+        "letter": "H"
+      },
+      {
+        "title": "HR Manager",
+        "slug": "hr-manager",
+        "letter": "H"
+      }
+    ],
+    "I": [
+      {
+        "title": "Implementation Consultant",
+        "slug": "implementation-consultant",
+        "letter": "I"
+      },
+      {
+        "title": "Industrial Designer",
+        "slug": "industrial-designer",
+        "letter": "I"
+      },
+      {
+        "title": "Industrial Engineer",
+        "slug": "industrial-engineer",
+        "letter": "I"
+      },
+      {
+        "title": "Inside Sales Representative",
+        "slug": "inside-sales-representative",
+        "letter": "I"
+      },
+      {
+        "title": "Instructional Designer",
+        "slug": "instructional-designer",
+        "letter": "I"
+      },
+      {
+        "title": "Insurance Underwriter",
+        "slug": "insurance-underwriter",
+        "letter": "I"
+      },
+      {
+        "title": "Interior Designer",
+        "slug": "interior-designer",
+        "letter": "I"
+      },
+      {
+        "title": "Internal Auditor",
+        "slug": "internal-auditor",
+        "letter": "I"
+      },
+      {
+        "title": "Inventory Manager",
+        "slug": "inventory-manager",
+        "letter": "I"
+      },
+      {
+        "title": "Investment Banking Analyst",
+        "slug": "investment-banking-analyst",
+        "letter": "I"
+      },
+      {
+        "title": "iOS Developer",
+        "slug": "ios-developer",
+        "letter": "I"
+      },
+      {
+        "title": "IT Consultant",
+        "slug": "it-consultant",
+        "letter": "I"
+      },
+      {
+        "title": "IT Project Manager",
+        "slug": "it-project-manager",
+        "letter": "I"
+      },
+      {
+        "title": "IT Support Specialist",
+        "slug": "it-support-specialist",
+        "letter": "I"
+      }
+    ],
+    "J": [
+      {
+        "title": "Java Developer",
+        "slug": "java-developer",
+        "letter": "J"
+      },
+      {
+        "title": "Journalist",
+        "slug": "journalist",
+        "letter": "J"
+      }
+    ],
+    "L": [
+      {
+        "title": "Learning & Development Manager",
+        "slug": "learning-development-manager",
+        "letter": "L"
+      },
+      {
+        "title": "Legal Assistant",
+        "slug": "legal-assistant",
+        "letter": "L"
+      },
+      {
+        "title": "Legal Counsel",
+        "slug": "legal-counsel",
+        "letter": "L"
+      },
+      {
+        "title": "Librarian",
+        "slug": "librarian",
+        "letter": "L"
+      },
+      {
+        "title": "Loan Officer",
+        "slug": "loan-officer",
+        "letter": "L"
+      },
+      {
+        "title": "Logistics Manager",
+        "slug": "logistics-manager",
+        "letter": "L"
+      }
+    ],
+    "M": [
+      {
+        "title": "Machine Learning Engineer",
+        "slug": "machine-learning-engineer",
+        "letter": "M"
+      },
+      {
+        "title": "Management Consultant",
+        "slug": "management-consultant",
+        "letter": "M"
+      },
+      {
+        "title": "Manufacturing Engineer",
+        "slug": "manufacturing-engineer",
+        "letter": "M"
+      },
+      {
+        "title": "Market Research Analyst",
+        "slug": "market-research-analyst",
+        "letter": "M"
+      },
+      {
+        "title": "Marketing Analyst",
+        "slug": "marketing-analyst",
+        "letter": "M"
+      },
+      {
+        "title": "Marketing Coordinator",
+        "slug": "marketing-coordinator",
+        "letter": "M"
+      },
+      {
+        "title": "Marketing Manager",
+        "slug": "marketing-manager",
+        "letter": "M"
+      },
+      {
+        "title": "Mechanical Engineer",
+        "slug": "mechanical-engineer",
+        "letter": "M"
+      },
+      {
+        "title": "Medical Assistant",
+        "slug": "medical-assistant",
+        "letter": "M"
+      },
+      {
+        "title": "Medical Coder",
+        "slug": "medical-coder",
+        "letter": "M"
+      },
+      {
+        "title": "Mobile App Developer",
+        "slug": "mobile-app-developer",
+        "letter": "M"
+      },
+      {
+        "title": "Motion Designer",
+        "slug": "motion-designer",
+        "letter": "M"
+      }
+    ],
+    "N": [
+      {
+        "title": "Network Engineer",
+        "slug": "network-engineer",
+        "letter": "N"
+      },
+      {
+        "title": "Nonprofit Program Manager",
+        "slug": "program-manager-nonprofit",
+        "letter": "N"
+      },
+      {
+        "title": "Nurse Practitioner",
+        "slug": "nurse-practitioner",
+        "letter": "N"
+      }
+    ],
+    "O": [
+      {
+        "title": "Occupational Therapist",
+        "slug": "occupational-therapist",
+        "letter": "O"
+      },
+      {
+        "title": "Office Manager",
+        "slug": "office-manager",
+        "letter": "O"
+      },
+      {
+        "title": "Operations Analyst",
+        "slug": "operations-analyst",
+        "letter": "O"
+      },
+      {
+        "title": "Operations Manager",
+        "slug": "operations-manager",
+        "letter": "O"
+      }
+    ],
+    "P": [
+      {
+        "title": "Paralegal",
+        "slug": "paralegal",
+        "letter": "P"
+      },
+      {
+        "title": "Partnerships Manager",
+        "slug": "partnerships-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Penetration Tester",
+        "slug": "penetration-tester",
+        "letter": "P"
+      },
+      {
+        "title": "People Operations Manager",
+        "slug": "people-operations-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Performance Marketing Manager",
+        "slug": "performance-marketing-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Pharmacist",
+        "slug": "pharmacist",
+        "letter": "P"
+      },
+      {
+        "title": "Pharmacovigilance Associate",
+        "slug": "pharmacovigilance-associate",
+        "letter": "P"
+      },
+      {
+        "title": "Photographer",
+        "slug": "photographer",
+        "letter": "P"
+      },
+      {
+        "title": "PHP Developer",
+        "slug": "php-developer",
+        "letter": "P"
+      },
+      {
+        "title": "Physical Therapist",
+        "slug": "physical-therapist",
+        "letter": "P"
+      },
+      {
+        "title": "Physician Assistant",
+        "slug": "physician-assistant",
+        "letter": "P"
+      },
+      {
+        "title": "Portfolio Manager",
+        "slug": "portfolio-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Process Engineer",
+        "slug": "process-engineer",
+        "letter": "P"
+      },
+      {
+        "title": "Procurement Manager",
+        "slug": "procurement-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Product Manager",
+        "slug": "product-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Product Marketing Manager",
+        "slug": "product-marketing-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Product Owner",
+        "slug": "product-owner",
+        "letter": "P"
+      },
+      {
+        "title": "Project Manager",
+        "slug": "project-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Property Manager",
+        "slug": "property-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Public Relations Manager",
+        "slug": "public-relations-manager",
+        "letter": "P"
+      },
+      {
+        "title": "Python Developer",
+        "slug": "python-developer",
+        "letter": "P"
+      }
+    ],
+    "Q": [
+      {
+        "title": "QA Engineer",
+        "slug": "qa-engineer",
+        "letter": "Q"
+      },
+      {
+        "title": "Quality Assurance Manager",
+        "slug": "quality-assurance-manager",
+        "letter": "Q"
+      },
+      {
+        "title": "Quality Engineer",
+        "slug": "quality-engineer",
+        "letter": "Q"
+      }
+    ],
+    "R": [
+      {
+        "title": "Real Estate Agent",
+        "slug": "real-estate-agent",
+        "letter": "R"
+      },
+      {
+        "title": "Receptionist",
+        "slug": "receptionist",
+        "letter": "R"
+      },
+      {
+        "title": "Recruiter",
+        "slug": "recruiter",
+        "letter": "R"
+      },
+      {
+        "title": "Regional Sales Manager",
+        "slug": "regional-sales-manager",
+        "letter": "R"
+      },
+      {
+        "title": "Registered Nurse",
+        "slug": "registered-nurse",
+        "letter": "R"
+      },
+      {
+        "title": "Relationship Manager (Banking)",
+        "slug": "relationship-manager-banking",
+        "letter": "R"
+      },
+      {
+        "title": "Release Manager",
+        "slug": "release-manager",
+        "letter": "R"
+      },
+      {
+        "title": "Research Analyst",
+        "slug": "research-analyst",
+        "letter": "R"
+      },
+      {
+        "title": "Restaurant Manager",
+        "slug": "restaurant-manager",
+        "letter": "R"
+      },
+      {
+        "title": "Retail Store Manager",
+        "slug": "retail-store-manager",
+        "letter": "R"
+      },
+      {
+        "title": "Revenue Operations Manager",
+        "slug": "revenue-operations-manager",
+        "letter": "R"
+      },
+      {
+        "title": "Risk Analyst",
+        "slug": "risk-analyst",
+        "letter": "R"
+      },
+      {
+        "title": "Ruby on Rails Developer",
+        "slug": "ruby-on-rails-developer",
+        "letter": "R"
+      }
+    ],
+    "S": [
+      {
+        "title": "Sales Development Representative",
+        "slug": "sales-development-representative",
+        "letter": "S"
+      },
+      {
+        "title": "Sales Engineer",
+        "slug": "sales-engineer",
+        "letter": "S"
+      },
+      {
+        "title": "Sales Manager",
+        "slug": "sales-manager",
+        "letter": "S"
+      },
+      {
+        "title": "Sales Operations Analyst",
+        "slug": "sales-operations-analyst",
+        "letter": "S"
+      },
+      {
+        "title": "Salesforce Developer",
+        "slug": "salesforce-developer",
+        "letter": "S"
+      },
+      {
+        "title": "Scrum Master",
+        "slug": "scrum-master",
+        "letter": "S"
+      },
+      {
+        "title": "SDET",
+        "slug": "sdet",
+        "letter": "S"
+      },
+      {
+        "title": "Security Engineer",
+        "slug": "security-engineer",
+        "letter": "S"
+      },
+      {
+        "title": "SEO Specialist",
+        "slug": "seo-specialist",
+        "letter": "S"
+      },
+      {
+        "title": "Site Reliability Engineer",
+        "slug": "site-reliability-engineer",
+        "letter": "S"
+      },
+      {
+        "title": "Social Media Content Creator",
+        "slug": "social-media-content-creator",
+        "letter": "S"
+      },
+      {
+        "title": "Social Media Manager",
+        "slug": "social-media-manager",
+        "letter": "S"
+      },
+      {
+        "title": "Social Worker",
+        "slug": "social-worker",
+        "letter": "S"
+      },
+      {
+        "title": "Software Engineer",
+        "slug": "software-engineer",
+        "letter": "S"
+      },
+      {
+        "title": "Solutions Architect",
+        "slug": "solutions-architect",
+        "letter": "S"
+      },
+      {
+        "title": "Strategy Consultant",
+        "slug": "strategy-consultant",
+        "letter": "S"
+      },
+      {
+        "title": "Structural Engineer",
+        "slug": "structural-engineer",
+        "letter": "S"
+      },
+      {
+        "title": "Supply Chain Analyst",
+        "slug": "supply-chain-analyst",
+        "letter": "S"
+      },
+      {
+        "title": "Supply Chain Manager",
+        "slug": "supply-chain-manager",
+        "letter": "S"
+      },
+      {
+        "title": "Systems Administrator",
+        "slug": "systems-administrator",
+        "letter": "S"
+      }
+    ],
+    "T": [
+      {
+        "title": "Talent Acquisition Specialist",
+        "slug": "talent-acquisition-specialist",
+        "letter": "T"
+      },
+      {
+        "title": "Tax Analyst",
+        "slug": "tax-analyst",
+        "letter": "T"
+      },
+      {
+        "title": "Teacher",
+        "slug": "teacher",
+        "letter": "T"
+      },
+      {
+        "title": "Technical Product Manager",
+        "slug": "technical-product-manager",
+        "letter": "T"
+      },
+      {
+        "title": "Technical Program Manager",
+        "slug": "technical-program-manager",
+        "letter": "T"
+      },
+      {
+        "title": "Technical Support Engineer",
+        "slug": "technical-support-engineer",
+        "letter": "T"
+      },
+      {
+        "title": "Technical Writer",
+        "slug": "technical-writer",
+        "letter": "T"
+      },
+      {
+        "title": "Trader",
+        "slug": "trader",
+        "letter": "T"
+      },
+      {
+        "title": "Translator",
+        "slug": "translator",
+        "letter": "T"
+      },
+      {
+        "title": "Treasury Analyst",
+        "slug": "treasury-analyst",
+        "letter": "T"
+      }
+    ],
+    "U": [
+      {
+        "title": "UI/UX Designer",
+        "slug": "ui-ux-designer",
+        "letter": "U"
+      },
+      {
+        "title": "Urban Planner",
+        "slug": "urban-planner",
+        "letter": "U"
+      }
+    ],
+    "V": [
+      {
+        "title": "Veterinary Technician",
+        "slug": "veterinary-technician",
+        "letter": "V"
+      },
+      {
+        "title": "Video Editor",
+        "slug": "video-editor",
+        "letter": "V"
+      },
+      {
+        "title": "VP of Engineering",
+        "slug": "vp-of-engineering",
+        "letter": "V"
+      },
+      {
+        "title": "VP of Marketing",
+        "slug": "vp-of-marketing",
+        "letter": "V"
+      },
+      {
+        "title": "VP of Sales",
+        "slug": "vp-of-sales",
+        "letter": "V"
+      }
+    ],
+    "W": [
+      {
+        "title": "Warehouse Manager",
+        "slug": "warehouse-manager",
+        "letter": "W"
+      },
+      {
+        "title": "Wealth Manager",
+        "slug": "wealth-manager",
+        "letter": "W"
+      },
+      {
+        "title": "WordPress Developer",
+        "slug": "wordpress-developer",
+        "letter": "W"
+      }
+    ]
+  },
+  "roles": [
+    {
+      "title": ".NET Developer",
+      "slug": "dotnet-developer",
+      "letter": "."
+    },
+    {
+      "title": "Academic Advisor",
+      "slug": "academic-advisor",
+      "letter": "A"
+    },
+    {
+      "title": "Account Executive",
+      "slug": "account-executive",
+      "letter": "A"
+    },
+    {
+      "title": "Account Manager",
+      "slug": "account-manager",
+      "letter": "A"
+    },
+    {
+      "title": "Accountant",
+      "slug": "accountant",
+      "letter": "A"
+    },
+    {
+      "title": "Actuary",
+      "slug": "actuary",
+      "letter": "A"
+    },
+    {
+      "title": "Administrative Assistant",
+      "slug": "administrative-assistant",
+      "letter": "A"
+    },
+    {
+      "title": "Aerospace Engineer",
+      "slug": "aerospace-engineer",
+      "letter": "A"
+    },
+    {
+      "title": "Affiliate Marketing Manager",
+      "slug": "affiliate-marketing-manager",
+      "letter": "A"
+    },
+    {
+      "title": "Analytics Engineer",
+      "slug": "analytics-engineer",
+      "letter": "A"
+    },
+    {
+      "title": "Android Developer",
+      "slug": "android-developer",
+      "letter": "A"
+    },
+    {
+      "title": "Architect",
+      "slug": "architect",
+      "letter": "A"
+    },
+    {
+      "title": "Associate Product Manager",
+      "slug": "associate-product-manager",
+      "letter": "A"
+    },
+    {
+      "title": "Backend Developer",
+      "slug": "backend-developer",
+      "letter": "B"
+    },
+    {
+      "title": "Bank Teller",
+      "slug": "bank-teller",
+      "letter": "B"
+    },
+    {
+      "title": "BI Developer",
+      "slug": "bi-developer",
+      "letter": "B"
+    },
+    {
+      "title": "Biomedical Engineer",
+      "slug": "biomedical-engineer",
+      "letter": "B"
+    },
+    {
+      "title": "Blockchain Developer",
+      "slug": "blockchain-developer",
+      "letter": "B"
+    },
+    {
+      "title": "Bookkeeper",
+      "slug": "bookkeeper",
+      "letter": "B"
+    },
+    {
+      "title": "Brand Manager",
+      "slug": "brand-manager",
+      "letter": "B"
+    },
+    {
+      "title": "Business Analyst",
+      "slug": "business-analyst",
+      "letter": "B"
+    },
+    {
+      "title": "Business Development Manager",
+      "slug": "business-development-manager",
+      "letter": "B"
+    },
+    {
+      "title": "Call Center Manager",
+      "slug": "call-center-manager",
+      "letter": "C"
+    },
+    {
+      "title": "Category Manager",
+      "slug": "category-manager",
+      "letter": "C"
+    },
+    {
+      "title": "Chef",
+      "slug": "chef",
+      "letter": "C"
+    },
+    {
+      "title": "Chemical Engineer",
+      "slug": "chemical-engineer",
+      "letter": "C"
+    },
+    {
+      "title": "Chief of Staff",
+      "slug": "chief-of-staff",
+      "letter": "C"
+    },
+    {
+      "title": "Civil Engineer",
+      "slug": "civil-engineer",
+      "letter": "C"
+    },
+    {
+      "title": "Claims Adjuster",
+      "slug": "claims-adjuster",
+      "letter": "C"
+    },
+    {
+      "title": "Clinical Data Manager",
+      "slug": "clinical-data-manager",
+      "letter": "C"
+    },
+    {
+      "title": "Clinical Research Associate",
+      "slug": "clinical-research-associate",
+      "letter": "C"
+    },
+    {
+      "title": "Cloud Architect",
+      "slug": "cloud-architect",
+      "letter": "C"
+    },
+    {
+      "title": "Cloud Engineer",
+      "slug": "cloud-engineer",
+      "letter": "C"
+    },
+    {
+      "title": "Community Manager",
+      "slug": "community-manager",
+      "letter": "C"
+    },
+    {
+      "title": "Compensation & Benefits Analyst",
+      "slug": "compensation-benefits-analyst",
+      "letter": "C"
+    },
+    {
+      "title": "Compliance Officer",
+      "slug": "compliance-officer",
+      "letter": "C"
+    },
+    {
+      "title": "Content Marketing Manager",
+      "slug": "content-marketing-manager",
+      "letter": "C"
+    },
+    {
+      "title": "Content Writer",
+      "slug": "content-writer",
+      "letter": "C"
+    },
+    {
+      "title": "Contract Manager",
+      "slug": "contract-manager",
+      "letter": "C"
+    },
+    {
+      "title": "Copywriter",
+      "slug": "copywriter",
+      "letter": "C"
+    },
+    {
+      "title": "Credit Analyst",
+      "slug": "credit-analyst",
+      "letter": "C"
+    },
+    {
+      "title": "Curriculum Developer",
+      "slug": "curriculum-developer",
+      "letter": "C"
+    },
+    {
+      "title": "Customer Onboarding Specialist",
+      "slug": "customer-onboarding-specialist",
+      "letter": "C"
+    },
+    {
+      "title": "Customer Success Manager",
+      "slug": "customer-success-manager",
+      "letter": "C"
+    },
+    {
+      "title": "Customer Support Specialist",
+      "slug": "customer-support-specialist",
+      "letter": "C"
+    },
+    {
+      "title": "Cybersecurity Analyst",
+      "slug": "cybersecurity-analyst",
+      "letter": "C"
+    },
+    {
+      "title": "Data Analyst",
+      "slug": "data-analyst",
+      "letter": "D"
+    },
+    {
+      "title": "Data Engineer",
+      "slug": "data-engineer",
+      "letter": "D"
+    },
+    {
+      "title": "Data Quality Analyst",
+      "slug": "data-quality-analyst",
+      "letter": "D"
+    },
+    {
+      "title": "Data Scientist",
+      "slug": "data-scientist",
+      "letter": "D"
+    },
+    {
+      "title": "Database Administrator",
+      "slug": "database-administrator",
+      "letter": "D"
+    },
+    {
+      "title": "Dental Hygienist",
+      "slug": "dental-hygienist",
+      "letter": "D"
+    },
+    {
+      "title": "DevOps Engineer",
+      "slug": "devops-engineer",
+      "letter": "D"
+    },
+    {
+      "title": "Digital Marketing Manager",
+      "slug": "digital-marketing-manager",
+      "letter": "D"
+    },
+    {
+      "title": "Director of Operations",
+      "slug": "director-of-operations",
+      "letter": "D"
+    },
+    {
+      "title": "Director of Product",
+      "slug": "director-of-product",
+      "letter": "D"
+    },
+    {
+      "title": "E-commerce Manager",
+      "slug": "e-commerce-manager",
+      "letter": "E"
+    },
+    {
+      "title": "Electrical Engineer",
+      "slug": "electrical-engineer",
+      "letter": "E"
+    },
+    {
+      "title": "Email Marketing Specialist",
+      "slug": "email-marketing-specialist",
+      "letter": "E"
+    },
+    {
+      "title": "Embedded Systems Engineer",
+      "slug": "embedded-systems-engineer",
+      "letter": "E"
+    },
+    {
+      "title": "Engineering Manager",
+      "slug": "engineering-manager",
+      "letter": "E"
+    },
+    {
+      "title": "Environmental Engineer",
+      "slug": "environmental-engineer",
+      "letter": "E"
+    },
+    {
+      "title": "Event Coordinator",
+      "slug": "event-coordinator",
+      "letter": "E"
+    },
+    {
+      "title": "Executive Assistant",
+      "slug": "executive-assistant",
+      "letter": "E"
+    },
+    {
+      "title": "Fashion Designer",
+      "slug": "fashion-designer",
+      "letter": "F"
+    },
+    {
+      "title": "Field Service Engineer",
+      "slug": "field-service-engineer",
+      "letter": "F"
+    },
+    {
+      "title": "Finance Analyst",
+      "slug": "finance-analyst",
+      "letter": "F"
+    },
+    {
+      "title": "Financial Controller",
+      "slug": "financial-controller",
+      "letter": "F"
+    },
+    {
+      "title": "FP&A Analyst",
+      "slug": "fp-and-a-analyst",
+      "letter": "F"
+    },
+    {
+      "title": "Frontend Developer",
+      "slug": "frontend-developer",
+      "letter": "F"
+    },
+    {
+      "title": "Full Stack Developer",
+      "slug": "full-stack-developer",
+      "letter": "F"
+    },
+    {
+      "title": "Fundraising Manager",
+      "slug": "fundraising-manager",
+      "letter": "F"
+    },
+    {
+      "title": "Game Developer",
+      "slug": "game-developer",
+      "letter": "G"
+    },
+    {
+      "title": "Go Developer",
+      "slug": "golang-developer",
+      "letter": "G"
+    },
+    {
+      "title": "Grant Writer",
+      "slug": "grant-writer",
+      "letter": "G"
+    },
+    {
+      "title": "Graphic Designer",
+      "slug": "graphic-designer",
+      "letter": "G"
+    },
+    {
+      "title": "Growth Marketing Manager",
+      "slug": "growth-marketing-manager",
+      "letter": "G"
+    },
+    {
+      "title": "Growth Product Manager",
+      "slug": "growth-product-manager",
+      "letter": "G"
+    },
+    {
+      "title": "Healthcare Administrator",
+      "slug": "healthcare-administrator",
+      "letter": "H"
+    },
+    {
+      "title": "Help Desk Technician",
+      "slug": "help-desk-technician",
+      "letter": "H"
+    },
+    {
+      "title": "Hotel Manager",
+      "slug": "hotel-manager",
+      "letter": "H"
+    },
+    {
+      "title": "HR Business Partner",
+      "slug": "hr-business-partner",
+      "letter": "H"
+    },
+    {
+      "title": "HR Coordinator",
+      "slug": "hr-coordinator",
+      "letter": "H"
+    },
+    {
+      "title": "HR Generalist",
+      "slug": "hr-generalist",
+      "letter": "H"
+    },
+    {
+      "title": "HR Manager",
+      "slug": "hr-manager",
+      "letter": "H"
+    },
+    {
+      "title": "Implementation Consultant",
+      "slug": "implementation-consultant",
+      "letter": "I"
+    },
+    {
+      "title": "Industrial Designer",
+      "slug": "industrial-designer",
+      "letter": "I"
+    },
+    {
+      "title": "Industrial Engineer",
+      "slug": "industrial-engineer",
+      "letter": "I"
+    },
+    {
+      "title": "Inside Sales Representative",
+      "slug": "inside-sales-representative",
+      "letter": "I"
+    },
+    {
+      "title": "Instructional Designer",
+      "slug": "instructional-designer",
+      "letter": "I"
+    },
+    {
+      "title": "Insurance Underwriter",
+      "slug": "insurance-underwriter",
+      "letter": "I"
+    },
+    {
+      "title": "Interior Designer",
+      "slug": "interior-designer",
+      "letter": "I"
+    },
+    {
+      "title": "Internal Auditor",
+      "slug": "internal-auditor",
+      "letter": "I"
+    },
+    {
+      "title": "Inventory Manager",
+      "slug": "inventory-manager",
+      "letter": "I"
+    },
+    {
+      "title": "Investment Banking Analyst",
+      "slug": "investment-banking-analyst",
+      "letter": "I"
+    },
+    {
+      "title": "iOS Developer",
+      "slug": "ios-developer",
+      "letter": "I"
+    },
+    {
+      "title": "IT Consultant",
+      "slug": "it-consultant",
+      "letter": "I"
+    },
+    {
+      "title": "IT Project Manager",
+      "slug": "it-project-manager",
+      "letter": "I"
+    },
+    {
+      "title": "IT Support Specialist",
+      "slug": "it-support-specialist",
+      "letter": "I"
+    },
+    {
+      "title": "Java Developer",
+      "slug": "java-developer",
+      "letter": "J"
+    },
+    {
+      "title": "Journalist",
+      "slug": "journalist",
+      "letter": "J"
+    },
+    {
+      "title": "Learning & Development Manager",
+      "slug": "learning-development-manager",
+      "letter": "L"
+    },
+    {
+      "title": "Legal Assistant",
+      "slug": "legal-assistant",
+      "letter": "L"
+    },
+    {
+      "title": "Legal Counsel",
+      "slug": "legal-counsel",
+      "letter": "L"
+    },
+    {
+      "title": "Librarian",
+      "slug": "librarian",
+      "letter": "L"
+    },
+    {
+      "title": "Loan Officer",
+      "slug": "loan-officer",
+      "letter": "L"
+    },
+    {
+      "title": "Logistics Manager",
+      "slug": "logistics-manager",
+      "letter": "L"
+    },
+    {
+      "title": "Machine Learning Engineer",
+      "slug": "machine-learning-engineer",
+      "letter": "M"
+    },
+    {
+      "title": "Management Consultant",
+      "slug": "management-consultant",
+      "letter": "M"
+    },
+    {
+      "title": "Manufacturing Engineer",
+      "slug": "manufacturing-engineer",
+      "letter": "M"
+    },
+    {
+      "title": "Market Research Analyst",
+      "slug": "market-research-analyst",
+      "letter": "M"
+    },
+    {
+      "title": "Marketing Analyst",
+      "slug": "marketing-analyst",
+      "letter": "M"
+    },
+    {
+      "title": "Marketing Coordinator",
+      "slug": "marketing-coordinator",
+      "letter": "M"
+    },
+    {
+      "title": "Marketing Manager",
+      "slug": "marketing-manager",
+      "letter": "M"
+    },
+    {
+      "title": "Mechanical Engineer",
+      "slug": "mechanical-engineer",
+      "letter": "M"
+    },
+    {
+      "title": "Medical Assistant",
+      "slug": "medical-assistant",
+      "letter": "M"
+    },
+    {
+      "title": "Medical Coder",
+      "slug": "medical-coder",
+      "letter": "M"
+    },
+    {
+      "title": "Mobile App Developer",
+      "slug": "mobile-app-developer",
+      "letter": "M"
+    },
+    {
+      "title": "Motion Designer",
+      "slug": "motion-designer",
+      "letter": "M"
+    },
+    {
+      "title": "Network Engineer",
+      "slug": "network-engineer",
+      "letter": "N"
+    },
+    {
+      "title": "Nonprofit Program Manager",
+      "slug": "program-manager-nonprofit",
+      "letter": "N"
+    },
+    {
+      "title": "Nurse Practitioner",
+      "slug": "nurse-practitioner",
+      "letter": "N"
+    },
+    {
+      "title": "Occupational Therapist",
+      "slug": "occupational-therapist",
+      "letter": "O"
+    },
+    {
+      "title": "Office Manager",
+      "slug": "office-manager",
+      "letter": "O"
+    },
+    {
+      "title": "Operations Analyst",
+      "slug": "operations-analyst",
+      "letter": "O"
+    },
+    {
+      "title": "Operations Manager",
+      "slug": "operations-manager",
+      "letter": "O"
+    },
+    {
+      "title": "Paralegal",
+      "slug": "paralegal",
+      "letter": "P"
+    },
+    {
+      "title": "Partnerships Manager",
+      "slug": "partnerships-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Penetration Tester",
+      "slug": "penetration-tester",
+      "letter": "P"
+    },
+    {
+      "title": "People Operations Manager",
+      "slug": "people-operations-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Performance Marketing Manager",
+      "slug": "performance-marketing-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Pharmacist",
+      "slug": "pharmacist",
+      "letter": "P"
+    },
+    {
+      "title": "Pharmacovigilance Associate",
+      "slug": "pharmacovigilance-associate",
+      "letter": "P"
+    },
+    {
+      "title": "Photographer",
+      "slug": "photographer",
+      "letter": "P"
+    },
+    {
+      "title": "PHP Developer",
+      "slug": "php-developer",
+      "letter": "P"
+    },
+    {
+      "title": "Physical Therapist",
+      "slug": "physical-therapist",
+      "letter": "P"
+    },
+    {
+      "title": "Physician Assistant",
+      "slug": "physician-assistant",
+      "letter": "P"
+    },
+    {
+      "title": "Portfolio Manager",
+      "slug": "portfolio-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Process Engineer",
+      "slug": "process-engineer",
+      "letter": "P"
+    },
+    {
+      "title": "Procurement Manager",
+      "slug": "procurement-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Product Manager",
+      "slug": "product-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Product Marketing Manager",
+      "slug": "product-marketing-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Product Owner",
+      "slug": "product-owner",
+      "letter": "P"
+    },
+    {
+      "title": "Project Manager",
+      "slug": "project-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Property Manager",
+      "slug": "property-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Public Relations Manager",
+      "slug": "public-relations-manager",
+      "letter": "P"
+    },
+    {
+      "title": "Python Developer",
+      "slug": "python-developer",
+      "letter": "P"
+    },
+    {
+      "title": "QA Engineer",
+      "slug": "qa-engineer",
+      "letter": "Q"
+    },
+    {
+      "title": "Quality Assurance Manager",
+      "slug": "quality-assurance-manager",
+      "letter": "Q"
+    },
+    {
+      "title": "Quality Engineer",
+      "slug": "quality-engineer",
+      "letter": "Q"
+    },
+    {
+      "title": "Real Estate Agent",
+      "slug": "real-estate-agent",
+      "letter": "R"
+    },
+    {
+      "title": "Receptionist",
+      "slug": "receptionist",
+      "letter": "R"
+    },
+    {
+      "title": "Recruiter",
+      "slug": "recruiter",
+      "letter": "R"
+    },
+    {
+      "title": "Regional Sales Manager",
+      "slug": "regional-sales-manager",
+      "letter": "R"
+    },
+    {
+      "title": "Registered Nurse",
+      "slug": "registered-nurse",
+      "letter": "R"
+    },
+    {
+      "title": "Relationship Manager (Banking)",
+      "slug": "relationship-manager-banking",
+      "letter": "R"
+    },
+    {
+      "title": "Release Manager",
+      "slug": "release-manager",
+      "letter": "R"
+    },
+    {
+      "title": "Research Analyst",
+      "slug": "research-analyst",
+      "letter": "R"
+    },
+    {
+      "title": "Restaurant Manager",
+      "slug": "restaurant-manager",
+      "letter": "R"
+    },
+    {
+      "title": "Retail Store Manager",
+      "slug": "retail-store-manager",
+      "letter": "R"
+    },
+    {
+      "title": "Revenue Operations Manager",
+      "slug": "revenue-operations-manager",
+      "letter": "R"
+    },
+    {
+      "title": "Risk Analyst",
+      "slug": "risk-analyst",
+      "letter": "R"
+    },
+    {
+      "title": "Ruby on Rails Developer",
+      "slug": "ruby-on-rails-developer",
+      "letter": "R"
+    },
+    {
+      "title": "Sales Development Representative",
+      "slug": "sales-development-representative",
+      "letter": "S"
+    },
+    {
+      "title": "Sales Engineer",
+      "slug": "sales-engineer",
+      "letter": "S"
+    },
+    {
+      "title": "Sales Manager",
+      "slug": "sales-manager",
+      "letter": "S"
+    },
+    {
+      "title": "Sales Operations Analyst",
+      "slug": "sales-operations-analyst",
+      "letter": "S"
+    },
+    {
+      "title": "Salesforce Developer",
+      "slug": "salesforce-developer",
+      "letter": "S"
+    },
+    {
+      "title": "Scrum Master",
+      "slug": "scrum-master",
+      "letter": "S"
+    },
+    {
+      "title": "SDET",
+      "slug": "sdet",
+      "letter": "S"
+    },
+    {
+      "title": "Security Engineer",
+      "slug": "security-engineer",
+      "letter": "S"
+    },
+    {
+      "title": "SEO Specialist",
+      "slug": "seo-specialist",
+      "letter": "S"
+    },
+    {
+      "title": "Site Reliability Engineer",
+      "slug": "site-reliability-engineer",
+      "letter": "S"
+    },
+    {
+      "title": "Social Media Content Creator",
+      "slug": "social-media-content-creator",
+      "letter": "S"
+    },
+    {
+      "title": "Social Media Manager",
+      "slug": "social-media-manager",
+      "letter": "S"
+    },
+    {
+      "title": "Social Worker",
+      "slug": "social-worker",
+      "letter": "S"
+    },
+    {
+      "title": "Software Engineer",
+      "slug": "software-engineer",
+      "letter": "S"
+    },
+    {
+      "title": "Solutions Architect",
+      "slug": "solutions-architect",
+      "letter": "S"
+    },
+    {
+      "title": "Strategy Consultant",
+      "slug": "strategy-consultant",
+      "letter": "S"
+    },
+    {
+      "title": "Structural Engineer",
+      "slug": "structural-engineer",
+      "letter": "S"
+    },
+    {
+      "title": "Supply Chain Analyst",
+      "slug": "supply-chain-analyst",
+      "letter": "S"
+    },
+    {
+      "title": "Supply Chain Manager",
+      "slug": "supply-chain-manager",
+      "letter": "S"
+    },
+    {
+      "title": "Systems Administrator",
+      "slug": "systems-administrator",
+      "letter": "S"
+    },
+    {
+      "title": "Talent Acquisition Specialist",
+      "slug": "talent-acquisition-specialist",
+      "letter": "T"
+    },
+    {
+      "title": "Tax Analyst",
+      "slug": "tax-analyst",
+      "letter": "T"
+    },
+    {
+      "title": "Teacher",
+      "slug": "teacher",
+      "letter": "T"
+    },
+    {
+      "title": "Technical Product Manager",
+      "slug": "technical-product-manager",
+      "letter": "T"
+    },
+    {
+      "title": "Technical Program Manager",
+      "slug": "technical-program-manager",
+      "letter": "T"
+    },
+    {
+      "title": "Technical Support Engineer",
+      "slug": "technical-support-engineer",
+      "letter": "T"
+    },
+    {
+      "title": "Technical Writer",
+      "slug": "technical-writer",
+      "letter": "T"
+    },
+    {
+      "title": "Trader",
+      "slug": "trader",
+      "letter": "T"
+    },
+    {
+      "title": "Translator",
+      "slug": "translator",
+      "letter": "T"
+    },
+    {
+      "title": "Treasury Analyst",
+      "slug": "treasury-analyst",
+      "letter": "T"
+    },
+    {
+      "title": "UI/UX Designer",
+      "slug": "ui-ux-designer",
+      "letter": "U"
+    },
+    {
+      "title": "Urban Planner",
+      "slug": "urban-planner",
+      "letter": "U"
+    },
+    {
+      "title": "Veterinary Technician",
+      "slug": "veterinary-technician",
+      "letter": "V"
+    },
+    {
+      "title": "Video Editor",
+      "slug": "video-editor",
+      "letter": "V"
+    },
+    {
+      "title": "VP of Engineering",
+      "slug": "vp-of-engineering",
+      "letter": "V"
+    },
+    {
+      "title": "VP of Marketing",
+      "slug": "vp-of-marketing",
+      "letter": "V"
+    },
+    {
+      "title": "VP of Sales",
+      "slug": "vp-of-sales",
+      "letter": "V"
+    },
+    {
+      "title": "Warehouse Manager",
+      "slug": "warehouse-manager",
+      "letter": "W"
+    },
+    {
+      "title": "Wealth Manager",
+      "slug": "wealth-manager",
+      "letter": "W"
+    },
+    {
+      "title": "WordPress Developer",
+      "slug": "wordpress-developer",
+      "letter": "W"
+    }
+  ]
+}

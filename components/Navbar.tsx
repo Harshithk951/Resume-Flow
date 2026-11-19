@@ -3,33 +3,19 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
-
 
 export default function Navbar() {
   const { isSignedIn } = useAuth();
-  const [templatesOpen, setTemplatesOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-  }, []);
-
-  const templatesHref = mounted && isSignedIn ? "/templates" : "/sign-up";
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setTemplatesOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Close mobile menu on Escape
@@ -72,100 +58,36 @@ export default function Navbar() {
       <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
         <BrandLogo href="/" className="gap-3.5" />
 
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-7">
           <Link
             href="/#features"
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
           >
             Features
           </Link>
           <Link
-            href="/#how-it-works"
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+            href="/#templates"
+            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
           >
-            How it Works
+            Templates
           </Link>
           <Link
-            href="/#pricing"
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+            href="/ats-resume-checker"
+            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
           >
-            Pricing
-          </Link>
-
-          <div className="relative" ref={dropdownRef}>
-            <button
-              type="button"
-              onClick={() => setTemplatesOpen((open) => !open)}
-              className="inline-flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
-              style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
-            >
-              Templates
-              <ChevronDown
-                size={14}
-                className={`transition-transform duration-300 ${templatesOpen ? "rotate-180" : ""}`}
-                style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
-              />
-            </button>
-            {templatesOpen && (
-              <div className="absolute left-0 top-full mt-2 w-52 rounded-xl border border-slate-900/10 bg-white/95 backdrop-blur-lg py-1.5 shadow-lg">
-                <Link
-                  href={templatesHref}
-                  onClick={() => setTemplatesOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors"
-                >
-                  Browse Templates
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setTemplatesOpen(false);
-                    document.getElementById("templates")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                  className="block w-full px-4 py-2.5 text-left text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 bg-transparent border-none cursor-pointer transition-colors"
-                >
-                  View showcase
-                </button>
-              </div>
-            )}
-          </div>
-
-          <Link
-            href="/info/about"
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
-          >
-            About
+            ATS Checker
           </Link>
           <Link
             href="/resources/handbook"
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
           >
             Resources
           </Link>
           <Link
-            href="/info/blog"
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300"
+            href="/pricing"
+            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
           >
-            Blog
-          </Link>
-          <button
-            onClick={() => document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" })}
-            className="text-sm font-medium text-slate-600 hover:text-rose-600 transition-colors duration-300 cursor-pointer bg-transparent border-none"
-            style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
-          >
-            FAQ
-          </button>
-          <div className="h-4 w-px bg-slate-200" />
-          <Link
-            href="/legal/privacy"
-            className="text-xs font-medium text-slate-400 hover:text-rose-600 transition-colors duration-300"
-          >
-            Privacy
-          </Link>
-          <Link
-            href="/info/contact"
-            className="text-xs font-medium text-slate-400 hover:text-rose-600 transition-colors duration-300"
-          >
-            Contact
+            Pricing
           </Link>
         </div>
 
@@ -183,26 +105,24 @@ export default function Navbar() {
             <div className="h-9 w-32 bg-slate-100 rounded-full animate-pulse" />
           ) : isSignedIn ? (
             <Link
-              href="/dashboard"
-              className="inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-[0_8px_30px_rgba(225,29,72,0.25)] transition-all duration-300 px-6 py-2 text-sm active:scale-[0.97]"
-              style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+              href="/optimize"
+              className="inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-5 py-2 text-sm active:scale-[0.97]"
             >
-              Go to Dashboard
+              Open optimizer →
             </Link>
           ) : (
             <>
               <Link
                 href="/sign-in"
-                className="text-slate-600 hover:text-slate-900 text-sm font-semibold transition-colors duration-300 px-2"
+                className="text-slate-600 hover:text-slate-900 text-sm font-semibold transition-colors duration-200 px-2"
               >
                 Log in
               </Link>
               <Link
                 href="/sign-up"
-                className="inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-[0_8px_30px_rgba(225,29,72,0.25)] transition-all duration-300 px-6 py-2 text-sm active:scale-[0.97]"
-                style={{ transitionTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)' }}
+                className="inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-5 py-2 text-sm active:scale-[0.97]"
               >
-                Sign up
+                Get Started Free →
               </Link>
             </>
           )}
@@ -242,38 +162,19 @@ export default function Navbar() {
             <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
               {[
                 { id: "features", label: "Features", href: "/#features" },
-                { id: "how-it-works", label: "How it Works", href: "/#how-it-works" },
-                { id: "pricing", label: "Pricing", href: "/#pricing" },
-                { id: "templates", label: "Templates", href: null, isTemplates: true },
-                { id: "about", label: "About", href: "/info/about" },
+                { id: "templates", label: "Templates", href: "/#templates" },
+                { id: "ats-checker", label: "ATS Checker", href: "/ats-resume-checker" },
                 { id: "resources", label: "Resources", href: "/resources/handbook" },
-                { id: "blog", label: "Blog", href: "/info/blog" },
-                { id: "faq", label: "FAQ", href: "/#faq" },
+                { id: "pricing", label: "Pricing", href: "/pricing" },
               ].map((item) => (
-                item.href ? (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <button
-                    key={item.id}
-                    type="button"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      const href = mounted && isSignedIn ? "/templates" : "/sign-up";
-                      window.location.href = href;
-                    }}
-                    className="w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
-                  >
-                    {item.label}
-                    <span className="ml-1.5 text-xs text-slate-400">→</span>
-                  </button>
-                )
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-left px-4 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-rose-600 transition-colors border border-transparent hover:border-slate-200"
+                >
+                  {item.label}
+                </Link>
               ))}
               {/* Legal & Contact quick links */}
               <div className="mt-4 pt-4 border-t border-slate-100">
@@ -301,11 +202,11 @@ export default function Navbar() {
             <div className="px-4 py-6 border-t border-slate-200 space-y-3">
               {mounted && isSignedIn ? (
                 <Link
-                  href="/dashboard"
+                  href="/optimize"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-lg shadow-rose-500/25 transition-all duration-300 px-6 py-3 text-sm w-full"
                 >
-                  Go to Dashboard
+                  Go to Optimizer →
                 </Link>
               ) : (
                 <>

@@ -8,7 +8,19 @@ export default defineSchema({
     email: v.string(),
     name: v.string(),
     credits: v.number(),
-    plan: v.optional(v.union(v.literal("free"), v.literal("pro"), v.literal("campus"))),
+    plan: v.optional(
+      v.union(
+        v.literal("free"),
+        v.literal("pro_pass"),
+        v.literal("pro"),
+        v.literal("power"),
+        v.literal("team"),
+        v.literal("campus")
+      )
+    ),
+    freeOptimizationsUsed: v.optional(v.number()),
+    passExpiresAt: v.optional(v.number()),
+    teamWalletBalance: v.optional(v.number()),
     imageUrl: v.optional(v.string()),
     onboardingComplete: v.optional(v.boolean()),
   })
@@ -49,6 +61,45 @@ export default defineSchema({
     .index("by_userId", ["userId"])
     .index("by_tenantId_metrics", ["tenantId", "branch", "cgpa"]),
 
+  savedResumes: defineTable({
+    userId: v.id("users"),
+    title: v.string(),
+    sections: v.optional(v.any()),
+    rawText: v.optional(v.string()),
+    fileStorageId: v.optional(v.id("_storage")),
+    fileName: v.optional(v.string()),
+    fileType: v.optional(v.string()),
+    template: v.optional(v.string()),
+    isDefault: v.optional(v.boolean()),
+    targetRole: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  }).index("by_userId", ["userId"]),
+
+  optimizations: defineTable({
+    userId: v.id("users"),
+    jobId: v.optional(v.id("jobs")),
+    roleTitle: v.string(),
+    companyName: v.string(),
+    outputLength: v.optional(v.string()),
+    additionalContext: v.optional(v.string()),
+    score: v.optional(v.number()),
+    atsCompatibilityScore: v.optional(v.number()),
+    bulletDiffs: v.optional(v.any()),
+    matchedKeywords: v.optional(v.array(v.string())),
+    missingKeywords: v.optional(v.array(v.string())),
+    pdfStorageId: v.optional(v.id("_storage")),
+    docxStorageId: v.optional(v.id("_storage")),
+    status: v.union(
+      v.literal("queued"),
+      v.literal("processing"),
+      v.literal("completed"),
+      v.literal("failed")
+    ),
+    createdAt: v.number(),
+    expiresAt: v.number(),
+  }).index("by_userId", ["userId"]),
+
   jobs: defineTable({
     userId: v.id("users"),
     tenantId: v.optional(v.string()),
@@ -81,6 +132,10 @@ export default defineSchema({
         })
       )
     ),
+    autoLogged: v.optional(v.boolean()),
+    optimizationId: v.optional(v.id("optimizations")),
+    url: v.optional(v.string()),
+    matchScore: v.optional(v.number()),
   })
     .index("by_userId", ["userId"])
     .index("by_tenantId_crmStatus", ["tenantId", "crmStatus"]),

@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { ALL_ROLES_RAW } from '@/lib/roleGuides';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://resumeflow.harshithkumar.in';
@@ -11,7 +12,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/pricing`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/templates`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/free-resume-builder`, priority: 0.9, changeFrequency: 'weekly' as const },
+    { url: `${baseUrl}/resume-optimizer`, priority: 0.9, changeFrequency: 'weekly' as const },
   ] as const;
+
+  // 203 Role Resume Guides (Programmatic SEO & AdSense Content Engine)
+  const rolePages = ALL_ROLES_RAW.map((role) => ({
+    url: `${baseUrl}/resume-optimizer/${role.slug}`,
+    priority: 0.8,
+    changeFrequency: 'weekly' as const,
+  }));
 
   // Info pages — company info, blog, contact, etc.
   const infoSlugs = ['about', 'blog', 'contact', 'careers'];
@@ -45,6 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const allPages = [
     ...staticPages,
+    ...rolePages,
     ...infoPages,
     ...blogPosts,
     ...resourcePages,

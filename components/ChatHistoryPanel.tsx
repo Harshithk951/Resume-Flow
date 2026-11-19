@@ -9,6 +9,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useConvexAuth } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
 import { MessageSquare, Trash2, X, ExternalLink, History, ChevronRight, RefreshCw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -60,7 +61,7 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
     setDeletingKey(key);
     try {
       await deleteChatSession({
-        jobId: session.jobId as any,
+        jobId: session.jobId ? (session.jobId as Id<"jobs">) : undefined,
         sessionDate: session.sessionDate,
       });
     } finally {
@@ -92,11 +93,11 @@ export function ChatHistoryPanel({ isOpen, onClose }: ChatHistoryPanelProps) {
 
           {/* Panel */}
           <motion.div
-            initial={{ x: -320, opacity: 0 }}
+            initial={{ x: "100%", opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -320, opacity: 0 }}
+            exit={{ x: "100%", opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 32 }}
-className="fixed left-[72px] md:left-[72px] top-0 bottom-0 w-[420px] bg-[var(--color-canvas)] border-r border-[var(--color-hairline)]/60 shadow-2xl z-50 flex flex-col"
+            className="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-[var(--color-canvas)] border-l border-[var(--color-hairline)]/60 shadow-2xl flex flex-col"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-hairline-soft)]">
@@ -218,7 +219,7 @@ className="fixed left-[72px] md:left-[72px] top-0 bottom-0 w-[420px] bg-[var(--c
                                 className="overflow-hidden"
                               >
                                 <div className="px-3 pb-2.5 text-[10px] text-red-500 font-semibold">
-                                  Delete this session? This can't be undone.
+                                  Delete this session? This can&apos;t be undone.
                                 </div>
                               </motion.div>
                             )}

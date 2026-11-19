@@ -11,6 +11,7 @@
 import type * as ai_Skills_registry from "../ai/Skills/registry.js";
 import type * as ai_chatAssistant from "../ai/chatAssistant.js";
 import type * as ai_extractResume from "../ai/extractResume.js";
+import type * as ai_jobCheck from "../ai/jobCheck.js";
 import type * as ai_outreach from "../ai/outreach.js";
 import type * as ai_processJob from "../ai/processJob.js";
 import type * as ai_tailorResume from "../ai/tailorResume.js";
@@ -26,8 +27,10 @@ import type * as lib_piiMask from "../lib/piiMask.js";
 import type * as lib_rateLimit from "../lib/rateLimit.js";
 import type * as lib_uploadValidation from "../lib/uploadValidation.js";
 import type * as onboarding from "../onboarding.js";
+import type * as optimizations from "../optimizations.js";
 import type * as profiles from "../profiles.js";
 import type * as resumes from "../resumes.js";
+import type * as savedResumes from "../savedResumes.js";
 import type * as seeding from "../seeding.js";
 import type * as users from "../users.js";
 import type * as webhooks from "../webhooks.js";
@@ -42,6 +45,7 @@ declare const fullApi: ApiFromModules<{
   "ai/Skills/registry": typeof ai_Skills_registry;
   "ai/chatAssistant": typeof ai_chatAssistant;
   "ai/extractResume": typeof ai_extractResume;
+  "ai/jobCheck": typeof ai_jobCheck;
   "ai/outreach": typeof ai_outreach;
   "ai/processJob": typeof ai_processJob;
   "ai/tailorResume": typeof ai_tailorResume;
@@ -57,8 +61,10 @@ declare const fullApi: ApiFromModules<{
   "lib/rateLimit": typeof lib_rateLimit;
   "lib/uploadValidation": typeof lib_uploadValidation;
   onboarding: typeof onboarding;
+  optimizations: typeof optimizations;
   profiles: typeof profiles;
   resumes: typeof resumes;
+  savedResumes: typeof savedResumes;
   seeding: typeof seeding;
   users: typeof users;
   webhooks: typeof webhooks;

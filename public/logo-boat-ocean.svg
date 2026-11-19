@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="100%" height="100%">
+  <style>
+    @keyframes bobSail2 {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-1.5px) rotate(1.2deg); }
+    }
+    @keyframes rippleWave2 {
+      0%, 100% { transform: translateX(0px); opacity: 0.85; }
+      50% { transform: translateX(1.8px); opacity: 1; }
+    }
+    .boat-body-2 {
+      animation: bobSail2 3.2s ease-in-out infinite;
+      transform-origin: 24px 34px;
+    }
+    .water-line-2 {
+      animation: rippleWave2 3.2s ease-in-out infinite;
+    }
+  </style>
+  <g class="boat-body-2">
+    <!-- Left Sail: Electric Cyan -->
+    <path d="M 22 7 C 22.5 6.3 23 6.3 23.5 7 L 23.5 24 C 23.5 24.6 23 25 22.4 25 L 11 25 C 10 25 9.5 24.2 10 23.4 Z" fill="#00D2FF" />
+    <!-- Right Sail: Sunlit Amber -->
+    <path d="M 25 7 C 25.5 6.3 26 6.3 26.5 7 L 38 23.4 C 38.5 24.2 38 25 37 25 L 25.6 25 C 25 25 24.5 24.6 24.5 24 Z" fill="#FFB020" />
+    <!-- Boat Hull: Deep Ocean Azure -->
+    <path d="M 8 28.5 C 7 28.5 6.5 29.5 7 30.5 L 11.5 37 C 12 37.8 12.8 38.5 13.8 38.5 L 34.2 38.5 C 35.2 38.5 36 37.8 36.5 37 L 41 30.5 C 41.5 29.5 41 28.5 40 28.5 Z" fill="#0284C7" />
+  </g>
+  <!-- Animated Ocean Wave Ripples -->
+  <g class="water-line-2">
+    <path d="M 6 42.5 C 12 40.5 18 44.5 24 42.5 C 30 40.5 36 44.5 42 42.5" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" />
+    <path d="M 12 46 C 18 44.5 24 47.5 30 46 C 36 44.5 40 46.5 44 46" fill="none" stroke="#00D2FF" stroke-width="1.4" stroke-linecap="round" opacity="0.7" />
+  </g>
+</svg>

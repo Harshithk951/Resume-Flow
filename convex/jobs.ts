@@ -103,6 +103,10 @@ export const createJob = mutation({
     ),
     rawFileStorageId: v.optional(v.id("_storage")),
     idempotencyKey: v.optional(v.string()),
+    url: v.optional(v.string()),
+    optimizationId: v.optional(v.id("optimizations")),
+    autoLogged: v.optional(v.boolean()),
+    matchScore: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     // Idempotency check (best-effort via Redis)
@@ -127,6 +131,10 @@ export const createJob = mutation({
       status: "new",
       tenantId: user.tenantId,
       crmStatus: "Saved",
+      url: args.url,
+      optimizationId: args.optimizationId,
+      autoLogged: args.autoLogged,
+      matchScore: args.matchScore,
       statusHistory: [
         {
           oldStatus: "",
@@ -484,6 +492,95 @@ export const updateApplicationStatus = mutation({
         console.error("Failed to enqueue status_updated outbound webhook:", error);
       }
     }
+
+    return { success: true };
+  },
+});
+
+/**
+ * Manually tracks an application without running the full AI tailoring pipeline.
+ * Useful for applications added directly via the Job Tracker (+ Add application).
+ */
+export const createManualJob = mutation({
+  args: {
+    companyName: v.string(),
+    jobTitle: v.string(),
+    rawJdText: v.optional(v.string()),
+    url: v.optional(v.string()),
+    crmStatus: v.optional(
+      v.union(
+        v.literal("Saved"),
+        v.literal("Applied"),
+        v.literal("Interviewing"),
+        v.literal("Offered"),
+        v.literal("Rejected")
+      )
+    ),
+    matchScore: v.optional(v.number()),
+  },
+  handler: async (ctx, args) => {
+    const user = await requireAuth(ctx);
+    const now = Date.now();
+    const crmStatus = args.crmStatus || "Saved";
+
+    return await ctx.db.insert("jobs", {
+      userId: user._id,
+      tenantId: user.tenantId,
+      companyName: args.companyName.trim(),
+      jobTitle: args.jobTitle.trim(),
+      rawJdText: args.rawJdText?.trim() || `${args.jobTitle} at ${args.companyName}`,
+      inputType: "text",
+      pipelineState: "completed",
+      crmStatus,
+      url: args.url,
+      matchScore: args.matchScore,
+      autoLogged: false,
+      statusHistory: [
+        {
+          oldStatus: "",
+          newStatus: crmStatus,
+          updatedBy: "user",
+          timestamp: now,
+        },
+      ],
+    });
+  },
+});
+
+/**
+ * Updates CRM application tracking status directly.
+ */
+export const updateCrmStatus = mutation({
+  args: {
+    jobId: v.id("jobs"),
+    crmStatus: v.union(
+      v.literal("Saved"),
+      v.literal("Applied"),
+      v.literal("Interviewing"),
+      v.literal("Offered"),
+      v.literal("Rejected")
+    ),
+  },
+  handler: async (ctx, args) => {
+    const job = await ctx.db.get(args.jobId);
+    if (!job) throw new ConvexError("Job not found");
+    await requireOwnership(ctx, job);
+
+    const oldStatus = job.crmStatus || "Saved";
+    const history = [
+      ...(job.statusHistory || []),
+      {
+        oldStatus,
+        newStatus: args.crmStatus,
+        updatedBy: "user" as const,
+        timestamp: Date.now(),
+      },
+    ];
+
+    await ctx.db.patch(args.jobId, {
+      crmStatus: args.crmStatus,
+      statusHistory: history,
+    });
 
     return { success: true };
   },

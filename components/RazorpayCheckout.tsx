@@ -9,12 +9,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle, AlertCircle, Zap } from "lucide-react";
 import confetti from "canvas-confetti";
 
-type Plan = "pro" | "campus";
-type Interval = "monthly" | "yearly";
+export type Plan = "pro_pass" | "pro" | "power" | "team" | "campus";
+export type Interval = "once" | "monthly" | "yearly";
 
 const convexApi = api as any;
 
-interface RazorpayCheckoutProps {
+export interface RazorpayCheckoutProps {
   plan: Plan;
   interval?: Interval;
   label?: string;
@@ -36,7 +36,7 @@ export function RazorpayCheckout({
   className = "",
   variant = "button",
   disabled = false,
-  comingSoon = true,
+  comingSoon = false,
   onSuccess,
 }: RazorpayCheckoutProps) {
   const { userId, isLoaded, isSignedIn } = useAuth();
@@ -49,11 +49,22 @@ export function RazorpayCheckout({
   const rerun = useMutation(api.users.createOrGetUser);
   const verifyAndUpgrade = useMutation((convexApi as any).users.verifyRazorpayPaymentAndUpgrade);
 
+  const formatPlanName = (p: Plan) => {
+    switch (p) {
+      case "pro_pass": return "Pro 30-Day Pass";
+      case "power": return "Power Plan";
+      case "team": return "Team Plan";
+      case "campus": return "Campus Plan";
+      case "pro": return "Pro Plan";
+      default: return p;
+    }
+  };
+
   const displayLabel =
     label ||
     (comingSoon
-      ? `Pro - Coming Soon`
-      : `Upgrade to ${plan.charAt(0).toUpperCase() + plan.slice(1)}`);
+      ? `${formatPlanName(plan)} - Coming Soon`
+      : `Upgrade to ${formatPlanName(plan)}`);
 
   const fireConfetti = useCallback(() => {
     const duration = 2000;
@@ -84,8 +95,10 @@ export function RazorpayCheckout({
   }, []);
 
   const handlePayment = async () => {
-    if (!isLoaded || !isSignedIn || !userId) {
-      toast.error("Please sign in to upgrade");
+    if (!isLoaded) return;
+    if (!isSignedIn || !userId) {
+      toast.info("Please sign in to proceed with checkout");
+      window.location.href = `/sign-in?redirect_url=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname : "/pricing")}`;
       return;
     }
 
@@ -145,7 +158,13 @@ export function RazorpayCheckout({
         currency: order.currency,
         name: "ResumeFlow",
         description:
-          plan === "pro"
+          plan === "pro_pass"
+            ? "Pro 30-Day Pass (₹249 one-time)"
+            : plan === "power"
+            ? `Power Plan (${interval})`
+            : plan === "team"
+            ? "Team Plan Top-up"
+            : plan === "pro"
             ? `Pro Plan (${interval})`
             : `Campus Plan (${interval})`,
         order_id: order.id,
@@ -193,7 +212,7 @@ export function RazorpayCheckout({
           setStatus("success");
           fireConfetti();
           toast.success(
-            `Welcome to ${plan.charAt(0).toUpperCase() + plan.slice(1)}! 🎉`,
+            `Welcome to ${formatPlanName(plan)}! 🎉`,
             { duration: 5000 }
           );
 

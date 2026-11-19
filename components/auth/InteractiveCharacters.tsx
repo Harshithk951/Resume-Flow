@@ -11,6 +11,8 @@ export interface InteractiveCharactersProps {
   isPasswordFocused?: boolean;
   isPasswordVisible?: boolean;
   hasError?: boolean;
+  className?: string;
+  svgClassName?: string;
 }
 
 export function InteractiveCharacters({
@@ -19,6 +21,8 @@ export function InteractiveCharacters({
   isPasswordFocused = false,
   isPasswordVisible = false,
   hasError = false,
+  className,
+  svgClassName,
 }: InteractiveCharactersProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const latestMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -116,11 +120,15 @@ export function InteractiveCharacters({
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full min-h-[360px] md:min-h-[480px] bg-[#e5e5e5] flex items-end justify-center p-4 overflow-hidden select-none"
+      className={
+        className
+          ? `relative w-full flex items-end justify-center select-none ${className}`
+          : "relative w-full h-full min-h-[360px] md:min-h-[480px] bg-[#e5e5e5] flex items-end justify-center p-4 overflow-hidden select-none"
+      }
     >
       <svg
         viewBox="0 0 400 400"
-        className="w-full max-w-[420px] h-auto overflow-visible"
+        className={svgClassName || "w-full max-w-[420px] h-auto overflow-visible"}
         style={{ filter: "drop-shadow(0px 8px 24px rgba(0,0,0,0.04))" }}
       >
         {/* ─── 1. PURPLE CHARACTER (Index 0: Delay 0ms) ─── */}
