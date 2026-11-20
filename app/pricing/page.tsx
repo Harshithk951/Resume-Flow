@@ -390,9 +390,14 @@ export default function PricingPage() {
           <div className="rounded-3xl p-8 sm:p-10 bg-[#FEFCE8] border border-[#FEF08A] shadow-2xs text-slate-900">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 pb-6 border-b border-amber-200/50 mb-6">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-800 block mb-1">
-                  Team
-                </span>
+                <div className="flex items-center gap-2.5 mb-1">
+                  <span className="text-xs font-bold uppercase tracking-wider text-amber-800">
+                    Team
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-200/80 text-amber-900 font-semibold">
+                    Coming Soon
+                  </span>
+                </div>
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-3xl sm:text-4xl font-extrabold text-slate-900">₹500</span>
                   <span className="text-slate-600 text-xs sm:text-sm font-medium">min top-up</span>
@@ -405,9 +410,10 @@ export default function PricingPage() {
               <div className="shrink-0">
                 <RazorpayCheckout
                   plan="team"
+                  comingSoon={true}
                   interval="once"
-                  label="Create a Team →"
-                  className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-black text-white font-semibold text-sm transition-all shadow-md inline-flex items-center gap-2 cursor-pointer"
+                  label="Coming Soon"
+                  className="px-6 py-3.5 rounded-xl border border-amber-300 bg-amber-100/70 text-amber-900 font-semibold text-sm transition-all shadow-none inline-flex items-center gap-2 cursor-not-allowed opacity-90"
                 />
               </div>
             </div>
