@@ -964,14 +964,14 @@ export default function HomePage() {
 
               {/* Right Floating Stat Box */}
               <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:px-8 sm:py-7 text-center shrink-0 min-w-[210px]">
-                <div className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                  24,500+
+                <div className="text-3xl font-extrabold text-[#5B50E6] tracking-tight">
+                  94%
                 </div>
                 <div className="text-xs text-slate-500 font-medium mt-1">
-                  resumes optimized
+                  Average ATS match
                 </div>
                 <div className="text-xs font-semibold text-emerald-600 mt-2">
-                  40+ countries
+                  ~27s optimize time
                 </div>
               </div>
             </div>
