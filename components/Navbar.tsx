@@ -46,10 +46,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-colors duration-300 transform-gpu ${
+      className={`sticky top-0 z-50 transition-all duration-200 transform-gpu ${
         scrolled
-          ? "bg-white/95 backdrop-blur-xl shadow-sm border-b border-slate-900/10"
-          : "bg-white/80 backdrop-blur-md border-b border-slate-900/10"
+          ? "bg-white/95 backdrop-blur-md shadow-[0_2px_12px_rgba(0,0,0,0.03)] border-b border-slate-100"
+          : "bg-white border-b border-transparent"
       }`}
       style={{
         WebkitBackfaceVisibility: "hidden",
@@ -57,44 +57,59 @@ export default function Navbar() {
         transform: "translateZ(0)",
       }}
     >
-      <div className="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between">
-        <BrandLogo href="/" className="gap-3.5" />
+      <div className="max-w-[1280px] mx-auto px-6 lg:px-8 h-16 flex items-center justify-between">
+        {/* Left: Brand Logo + Nav Links together (matching HireRaft's clean left-aligned nav) */}
+        <div className="flex items-center gap-8 lg:gap-10">
+          <BrandLogo href="/" className="gap-3.5" />
 
-        <div className="hidden md:flex items-center gap-7">
-          <Link
-            href="/#features"
-            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
-          >
-            Features
-          </Link>
-          <Link
-            href="/resume-templates"
-            className={`text-sm transition-colors duration-200 ${
-              pathname === "/resume-templates"
-                ? "font-bold text-[#5B50E6]"
-                : "font-medium text-slate-600 hover:text-purple-600"
-            }`}
-          >
-            Templates
-          </Link>
-          <Link
-            href="/ats-resume-checker"
-            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
-          >
-            ATS Checker
-          </Link>
-          <Link
-            href="/blog"
-            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
-          >
-            Resources
-          </Link>
-          <Link
-            href="/pricing"
-            className="text-sm font-medium text-slate-600 hover:text-purple-600 transition-colors duration-200"
-          >
-            Pricing
-          </Link>
+          <div className="hidden md:flex items-center gap-7 lg:gap-8">
+            <Link
+              href="/#features"
+              className="text-[14px] font-medium text-slate-600 hover:text-slate-900 transition-colors duration-150"
+            >
+              Features
+            </Link>
+            <Link
+              href="/resume-templates"
+              className={`text-[14px] transition-colors duration-150 ${
+                pathname === "/resume-templates"
+                  ? "font-semibold text-[#5B50E6]"
+                  : "font-medium text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              Templates
+            </Link>
+            <Link
+              href="/ats-resume-checker"
+              className={`text-[14px] transition-colors duration-150 ${
+                pathname === "/ats-resume-checker"
+                  ? "font-semibold text-[#5B50E6]"
+                  : "font-medium text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              ATS Checker
+            </Link>
+            <Link
+              href="/blog"
+              className={`text-[14px] transition-colors duration-150 ${
+                pathname.startsWith("/blog") || pathname.startsWith("/resources")
+                  ? "font-semibold text-[#5B50E6]"
+                  : "font-medium text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              Resources
+            </Link>
+            <Link
+              href="/pricing"
+              className={`text-[14px] transition-colors duration-150 ${
+                pathname === "/pricing"
+                  ? "font-semibold text-[#5B50E6]"
+                  : "font-medium text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              Pricing
+            </Link>
+          </div>
         </div>
 
         {/* Mobile hamburger button */}
@@ -106,31 +121,24 @@ export default function Navbar() {
           <Menu className="w-5 h-5 text-slate-600" />
         </button>
 
-        <div className="flex items-center gap-2 min-w-[150px] justify-end">
+        {/* Right CTA Button (matching HireRaft single vibrant purple button with subtle glow) */}
+        <div className="hidden md:flex items-center justify-end">
           {!mounted ? (
-            <div className="h-9 w-32 bg-slate-100 rounded-full animate-pulse" />
+            <div className="h-10 w-36 bg-slate-100 rounded-xl animate-pulse" />
           ) : isSignedIn ? (
             <Link
               href="/optimize"
-              className="inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-5 py-2 text-sm active:scale-[0.97]"
+              className="inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-[0_4px_14px_rgba(91,80,230,0.35)] hover:shadow-[0_6px_20px_rgba(91,80,230,0.45)] transition-all duration-200 px-5 py-2.5 text-sm active:scale-[0.98]"
             >
               Open optimizer →
             </Link>
           ) : (
-            <>
-              <Link
-                href="/sign-in"
-                className="text-slate-600 hover:text-slate-900 text-sm font-semibold transition-colors duration-200 px-2"
-              >
-                Log in
-              </Link>
-              <Link
-                href="/sign-up"
-                className="inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-5 py-2 text-sm active:scale-[0.97]"
-              >
-                Get Started Free →
-              </Link>
-            </>
+            <Link
+              href="/sign-up"
+              className="inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-[0_4px_14px_rgba(91,80,230,0.35)] hover:shadow-[0_6px_20px_rgba(91,80,230,0.45)] transition-all duration-200 px-5 py-2.5 text-sm active:scale-[0.98]"
+            >
+              Get Started Free →
+            </Link>
           )}
         </div>
       </div>
@@ -214,7 +222,7 @@ export default function Navbar() {
                 <Link
                   href="/optimize"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-6 py-3 text-sm w-full"
+                  className="flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-[0_4px_14px_rgba(91,80,230,0.35)] transition-all duration-200 px-6 py-3 text-sm w-full"
                 >
                   Open optimizer →
                 </Link>
@@ -230,7 +238,7 @@ export default function Navbar() {
                   <Link
                     href="/sign-up"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center w-full bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-6 py-3 text-sm"
+                    className="flex items-center justify-center w-full bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-[0_4px_14px_rgba(91,80,230,0.35)] transition-all duration-200 px-6 py-3 text-sm"
                   >
                     Get Started Free →
                   </Link>
