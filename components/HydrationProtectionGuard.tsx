@@ -64,7 +64,7 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
   const activeJobId = jobPathMatch ? jobPathMatch[1] : undefined;
 
   // ──────────────────────────────────────────────────────────
-  // Routing: use onboardingComplete, NOT extractionStatus
+  // Routing: Direct new & existing authenticated users to /optimize
   // ──────────────────────────────────────────────────────────
   useEffect(() => {
     if (!isClerkLoaded) return;
@@ -74,24 +74,18 @@ export function HydrationProtectionGuard({ children }: { children: ReactNode }) 
       return;
     }
 
-    if (user === undefined || isPublicRoute) return;
+    if (isPublicRoute) return;
 
-    const onboardingComplete = user?.onboardingComplete ?? false;
+    // Never show obsolete /onboarding screen — redirect directly to /optimize
+    if (pathname === "/onboarding") {
+      router.replace("/optimize");
+      return;
+    }
 
-    if (!onboardingComplete) {
-      // User has NOT completed onboarding → send them there
-      if (pathname !== "/onboarding") {
-        router.replace("/onboarding");
-      }
-    } else {
-      // User HAS completed onboarding → never show /onboarding
-      if (pathname === "/onboarding") {
+    if (pathname === "/profile") {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get("mode") !== "edit") {
         router.replace("/optimize");
-      } else if (pathname === "/profile") {
-        const searchParams = new URLSearchParams(window.location.search);
-        if (searchParams.get("mode") !== "edit") {
-          router.replace("/optimize");
-        }
       }
     }
   }, [user, pathname, router, isClerkLoaded, isSignedIn, isPublicRoute]);

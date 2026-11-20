@@ -13,31 +13,22 @@ const isProtectedRoute = createRouteMatcher([
 const isAuthRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
-  const { userId, sessionClaims } = await auth();
+  const { userId } = await auth();
 
-  // If user is already authenticated and visits sign-in/sign-up, redirect immediately
+  // If user is already authenticated and visits sign-in/sign-up, redirect directly to /optimize
   if (isAuthRoute(req) && userId) {
-    const onboardingComplete =
-      ((sessionClaims?.metadata as { onboardingComplete?: boolean })
-        ?.onboardingComplete) ||
-      req.cookies.get(`onboarding_complete_${userId}`)?.value === "true";
+    return NextResponse.redirect(new URL("/optimize", req.url));
+  }
 
-    const destination = onboardingComplete ? "/optimize" : "/onboarding";
-    return NextResponse.redirect(new URL(destination, req.url));
+  // If route is /onboarding, redirect directly to /optimize
+  if (req.nextUrl.pathname === "/onboarding") {
+    return NextResponse.redirect(new URL("/optimize", req.url));
   }
 
   if (isProtectedRoute(req)) {
     await auth.protect();
-
-    const onboardingComplete =
-      ((sessionClaims?.metadata as { onboardingComplete?: boolean })
-        ?.onboardingComplete) ||
-      (userId ? req.cookies.get(`onboarding_complete_${userId}`)?.value === "true" : false);
-
-    if (!onboardingComplete) {
-      return NextResponse.redirect(new URL("/onboarding", req.url));
-    }
   }
+
   return NextResponse.next();
 });
 
