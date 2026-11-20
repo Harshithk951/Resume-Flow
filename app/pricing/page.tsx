@@ -222,7 +222,12 @@ export default function PricingPage() {
             {/* 2. PRO TIER */}
             <div className="bg-white border border-slate-200/90 rounded-3xl p-8 flex flex-col justify-between shadow-2xs hover:shadow-sm transition-all relative">
               <div>
-                <span className="text-sm font-bold text-purple-700 block mb-2">Pro</span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-bold text-purple-700">Pro</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                    Coming Soon
+                  </span>
+                </div>
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-extrabold text-slate-900">
@@ -282,16 +287,22 @@ export default function PricingPage() {
 
               <RazorpayCheckout
                 plan="pro"
+                comingSoon={true}
                 interval={isYearly ? "yearly" : "monthly"}
-                label={isYearly ? "Subscribe — Yearly" : "Subscribe — Monthly"}
-                className="w-full py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 font-semibold text-sm text-center block transition-all shadow-2xs cursor-pointer"
+                label="Coming Soon"
+                className="w-full py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-semibold text-sm text-center block transition-all shadow-2xs cursor-not-allowed"
               />
             </div>
 
             {/* 3. POWER TIER */}
             <div className="bg-white border border-slate-200/90 rounded-3xl p-8 flex flex-col justify-between shadow-2xs hover:shadow-sm transition-all">
               <div>
-                <span className="text-sm font-bold text-purple-700 block mb-2">Power</span>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm font-bold text-purple-700">Power</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                    Coming Soon
+                  </span>
+                </div>
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-extrabold text-slate-900">
@@ -359,9 +370,10 @@ export default function PricingPage() {
 
               <RazorpayCheckout
                 plan="power"
+                comingSoon={true}
                 interval={isYearly ? "yearly" : "monthly"}
-                label={isYearly ? "Subscribe — Yearly" : "Subscribe — Monthly"}
-                className="w-full py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 font-semibold text-sm text-center block transition-all shadow-2xs cursor-pointer"
+                label="Coming Soon"
+                className="w-full py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-semibold text-sm text-center block transition-all shadow-2xs cursor-not-allowed"
               />
             </div>
           </div>

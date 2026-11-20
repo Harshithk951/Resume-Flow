@@ -106,7 +106,7 @@ export function RazorpayCheckout({
 
     if (comingSoon) {
       toast.info(
-        "Pro Plan upgrades are coming soon for new subscribers! Existing Pro accounts remain fully active.",
+        `${formatPlanName(plan)} upgrades are coming soon for new subscribers! Existing accounts remain fully active.`,
         { duration: 5000 }
       );
       return;

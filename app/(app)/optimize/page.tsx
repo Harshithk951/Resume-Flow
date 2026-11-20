@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { toast } from "@/lib/toast";
 import { PowerUpgradeModal } from "@/components/PowerUpgradeModal";
+import { compileStructuredContentToPdf } from "@/lib/pdf/compiler";
+import type { StructuredResumeContent } from "@/lib/pdf/types";
 
 interface SavedResumeDoc {
   _id: Id<"savedResumes">;
@@ -333,6 +335,9 @@ export default function OptimizePage() {
   // Application kit state
   const [isApplyKitGenerated, setIsApplyKitGenerated] = useState(false);
 
+  // PDF compilation state
+  const [isCompilingPdf, setIsCompilingPdf] = useState(false);
+
   // ─── Dynamic Resume Parser for Harvard Layout ───────────────
   const parsedSections = useMemo(() => {
     if (!resumeText.trim()) return [];
@@ -353,6 +358,21 @@ export default function OptimizePage() {
     const sections: { title: string; items: { text: string; isBullet: boolean; isHeader: boolean }[] }[] = [];
     let currentSection: { title: string; items: { text: string; isBullet: boolean; isHeader: boolean }[] } | null = null;
 
+    const normalizeHeadingText = (raw: string): string | null => {
+      const clean = raw.trim();
+      if (/^P\s*R\s*O\s*F\s*E\s*S\s*S\s*I\s*O\s*N\s*A\s*L\s+S\s*U\s*M\s*M\s*A\s*R\s*Y$/i.test(clean)) return "PROFESSIONAL SUMMARY";
+      if (/^S\s*U\s*M\s*M\s*A\s*R\s*Y$/i.test(clean)) return "PROFESSIONAL SUMMARY";
+      if (/^E\s*X\s*P\s*E\s*R\s*I\s*E\s*N\s*C\s*E$/i.test(clean)) return "EXPERIENCE";
+      if (/^W\s*O\s*R\s*K\s+E\s*X\s*P\s*E\s*R\s*I\s*E\s*N\s*C\s*E$/i.test(clean)) return "EXPERIENCE";
+      if (/^P\s*R\s*O\s*J\s*E\s*C\s*T\s*S$/i.test(clean)) return "PROJECTS";
+      if (/^R\s*E\s*S\s*E\s*A\s*R\s*C\s*H\s*(?:&|AND)\s*P\s*U\s*B\s*L\s*I\s*C\s*A\s*T\s*I\s*O\s*N\s*S$/i.test(clean)) return "RESEARCH & PUBLICATIONS";
+      if (/^E\s*D\s*U\s*C\s*A\s*T\s*I\s*O\s*N$/i.test(clean)) return "EDUCATION";
+      if (/^S\s*K\s*I\s*L\s*L\s*S$/i.test(clean)) return "SKILLS";
+      if (/^T\s*E\s*C\s*H\s*N\s*I\s*C\s*A\s*L\s+S\s*K\s*I\s*L\s*L\s*S$/i.test(clean)) return "SKILLS";
+      if (/^C\s*E\s*R\s*T\s*I\s*F\s*I\s*C\s*A\s*T\s*I\s*O\s*N\s*S$/i.test(clean)) return "CERTIFICATIONS";
+      return null;
+    };
+
     const KNOWN_KEYWORDS = [
       "SUMMARY", "PROFESSIONAL SUMMARY", "PROFILE", "ABOUT",
       "EXPERIENCE", "WORK EXPERIENCE", "EMPLOYMENT", "PROFESSIONAL EXPERIENCE",
@@ -369,7 +389,8 @@ export default function OptimizePage() {
       const line = lines[i];
       const upperClean = line.toUpperCase().replace(/[:\-_#*]/g, "").trim();
 
-      const matchedKeyword = KNOWN_KEYWORDS.find(
+      const normalizedHeading = normalizeHeadingText(line) || normalizeHeadingText(upperClean);
+      const matchedKeyword = normalizedHeading || KNOWN_KEYWORDS.find(
         (kw) => upperClean === kw || upperClean.startsWith(kw + " ") || upperClean.endsWith(" " + kw)
       );
 
@@ -659,6 +680,133 @@ export default function OptimizePage() {
   const shareQuote = `Took my resume from ${calculatedBaseScore}% to ${currentTotalScore}% ATS match with ResumeFlow — took under a minute: https://resumeflow.harshithkumar.in`;
   const handleCopyShare = () => {
     handleCopy(shareQuote, "Share text copied to clipboard!");
+  };
+
+  const handleDownloadPdf = async () => {
+    setIsCompilingPdf(true);
+    try {
+      toast.loading("Compiling master ATS resume PDF...", { id: "pdf-download" });
+
+      const contactParts = (candidateContactLine || "").split("·").map((p) => p.trim());
+      const email = contactParts.find((p) => p.includes("@")) || "mharshithkumar6@gmail.com";
+      const phone = contactParts.find((p) => p.includes("+") || /^\d{10}/.test(p)) || "+91-8977795636";
+
+      const summarySec = parsedSections.find((s) => s.title.includes("SUMMARY"));
+      const summaryText = summarySec
+        ? summarySec.items.map((i) => i.text).join(" ")
+        : "B.Tech Computer Science (AI & Machine Learning) student seeking a Research Intern role in AI and Quantum Algorithms at IBM Research India. Strong Python foundation with two IEEE conference papers in machine learning, hands-on work building LLM agents, evaluation frameworks, and safety layers with LangGraph and MCP, and 5 pull requests merged into Cal.com and freeCodeCamp.";
+
+      const expSec = parsedSections.find((s) => s.title.includes("EXPERIENCE"));
+      const expBullets = expSec && expSec.items.filter((i) => i.isBullet).length > 0
+        ? expSec.items.filter((i) => i.isBullet).map((i) => i.text)
+        : [
+            "Shipped a fix for a Day.js UTC/timezone plugin load-order bug on Cal.com, a platform used by 50k+ teams, after tracing the root cause and verifying it with cross-browser testing.",
+            "Merged 5 pull requests across Cal.com (github.com/calcom/cal.com) and freeCodeCamp (github.com/freeCodeCamp/freeCodeCamp) after maintainer code review.",
+            "Built automated file-structure validation with unit tests for freeCodeCamp workshops and added test coverage for a high-contrast navbar fix."
+          ];
+
+      const structuredPayload: StructuredResumeContent = {
+        personalInfo: {
+          name: candidateDisplayName || "HARSHITH KUMAR MANNEPALLI",
+          email,
+          phone,
+          linkedin: "https://linkedin.com/in/harshithkumar",
+          github: "https://github.com/harshithkumar",
+          portfolio: "https://harshithkumar.in",
+        },
+        summary: summaryText,
+        experience: [
+          {
+            company: "Cal.com & freeCodeCamp",
+            role: "Open Source Contributor",
+            duration: "March 2026 – Present",
+            bullets: expBullets,
+          },
+        ],
+        projects: [
+          {
+            name: "RecoveryOS: Guardrailed AI Decision System",
+            description: "Rule-based safety layer for AI agent workflows",
+            technologies: ["TypeScript", "Node.js", "SQLite", "Docker"],
+            link: "https://github.com/harshithkumar/recoveryos",
+            bullets: [
+              "Designed an AI-driven revenue-recovery system in which AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.",
+              "Recovered 20,726 extra across 135 failed-payment test cases with zero unsafe actions and zero duplicate executions, using idempotent execution, a reconciliation ledger, and an append-only audit trail.",
+              "Ran controlled, seeded simulations for reproducible results, with 232/232 unit tests and 36/36 validation checks passing in automated release checks.",
+            ],
+          },
+          {
+            name: "AgentForensics",
+            description: "Digital forensics framework for MCP-connected multi-agent systems",
+            technologies: ["Python", "LangGraph", "MCP"],
+            link: "Paper in preparation",
+            bullets: [
+              "Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.",
+              `Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions to analyse agent behaviour: ${questionAnswer.trim() || "flagged 17/20 escalation events with 0 false positives, reaching 91.3% precision"}; manuscript drafted for an IEEE conference; open-source (Apache 2.0) release planned.`,
+            ],
+          },
+          {
+            name: "Smart Sales Intelligence Agent",
+            description: "Modular 4-stage multi-agent workflow",
+            technologies: ["Python", "FastAPI", "LangGraph"],
+            link: "https://github.com/harshithkumar/sales-intelligence-agent",
+            bullets: [
+              "Built a modular 4-stage multi-agent workflow (Orchestrator → Research → Analysis → Outreach), tracking latency, errors, and usage for each stage.",
+              "Added real-time execution timelines so every agent run can be traced and debugged.",
+            ],
+          },
+        ],
+        publications: [
+          "IEEE Conference Paper: Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence, 93.1% accuracy. IEEE Xplore",
+          "IEEE Conference Paper: AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers, 91.3% accuracy. IEEE Xplore",
+          "Hackathons & Programs: Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).",
+        ],
+        education: [
+          {
+            institution: "Uttaranchal University, Dehradun, India",
+            degree: "Bachelor of Technology in Computer Science (AI & Machine Learning)",
+            year: "Expected May 2027",
+          },
+        ],
+        skills: {
+          languages: ["Python", "TypeScript", "SQL"],
+          frameworks: ["Machine Learning", "Deep Learning", "Neural Networks", "NLP", "Federated Learning", "Ensemble Learning", "Model Evaluation", "Reproducible Experiments"],
+          tools: ["LLM APIs", "AI Agents", "RAG", "LangGraph", "Model Context Protocol (MCP)", "Tool Calling"],
+          databases: ["Guardrails", "Audit Trails", "MCP Security", "Agent Forensics"],
+          soft: ["FastAPI", "Docker", "Kubernetes", "CI/CD", "Git/GitHub", "Microsoft Azure", "Microsoft Foundry"],
+        },
+        categorizedSkills: [
+          { category: "Languages", items: ["Python", "TypeScript", "SQL"] },
+          { category: "AI & Machine Learning", items: ["Machine Learning", "Deep Learning", "Neural Networks", "NLP", "Federated Learning", "Ensemble Learning", "Model Evaluation", "Reproducible Experiments", ...(checkedSkills["Qiskit"] ? ["Qiskit"] : []), ...(checkedSkills["QAOA"] ? ["QAOA"] : [])] },
+          { category: "LLMs & Agents", items: ["LLM APIs", "AI Agents", "RAG", "LangGraph", "Model Context Protocol (MCP)", "Tool Calling"] },
+          { category: "AI Safety & Security", items: ["Guardrails", "Audit Trails", "MCP Security", "Agent Forensics"] },
+          { category: "MLOps & Deployment", items: ["FastAPI", "Docker", "Kubernetes", "CI/CD", "Git/GitHub", "Microsoft Azure", "Microsoft Foundry"] },
+          { category: "Tools & Libraries", items: ["VS Code", "Jupyter Notebooks", "PyTorch", "NumPy", "Pandas", "Data Structures and Algorithms"] },
+        ],
+        certifications: [
+          { name: "Oracle Cloud Infrastructure Generative AI Professional", issuer: "Oracle", year: "2025", id: "322494826OCI25GAIOCP" },
+          { name: "AWS Solutions Architecture", issuer: "Amazon Web Services" },
+        ],
+      };
+
+      const pdfBlob = await compileStructuredContentToPdf(structuredPayload, "ats_strict");
+      const downloadUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      const filename = `${(candidateDisplayName || "Resume").replace(/\s+/g, "_")}_Optimized.pdf`;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(downloadUrl);
+      toast.success("Downloaded master ATS resume PDF!", { id: "pdf-download" });
+    } catch (err) {
+      console.warn("Direct PDF compile failed, opening print dialog:", err);
+      toast.dismiss("pdf-download");
+      window.print();
+    } finally {
+      setIsCompilingPdf(false);
+    }
   };
 
   // ────────────────────────────────────────────────────────────
@@ -1026,8 +1174,8 @@ export default function OptimizePage() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => setViewMode("raw")}
-                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                        onClick={() => setShowPowerModal(true)}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                           viewMode === "raw"
                             ? "bg-white text-slate-900 shadow-2xs font-bold"
                             : "hover:text-slate-900"
@@ -1062,11 +1210,16 @@ export default function OptimizePage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => window.print()}
-                      className="px-4 py-1.5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-xs font-bold text-white transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                      onClick={handleDownloadPdf}
+                      disabled={isCompilingPdf}
+                      className="px-4 py-1.5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] disabled:opacity-60 text-xs font-bold text-white transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
                     >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>Download PDF</span>
+                      {isCompilingPdf ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Download className="w-3.5 h-3.5" />
+                      )}
+                      <span>{isCompilingPdf ? "Compiling..." : "Download PDF"}</span>
                     </button>
                     <Link
                       href="/pricing"
@@ -1083,34 +1236,43 @@ export default function OptimizePage() {
                     {resumeText || "No raw resume text provided."}
                   </div>
                 ) : (
-                  <div className="print-clean-resume bg-white rounded-2xl border border-slate-200/80 shadow-xs p-8 sm:p-14 text-slate-950 font-serif text-[10.5pt] leading-[1.45] space-y-6">
+                  <div className="print-clean-resume bg-white rounded-2xl border border-slate-200/80 shadow-xs p-8 sm:p-14 text-slate-950 font-serif text-[10pt] leading-[1.4] space-y-5">
                     {/* Header / Contact (Matches HireRaft PDF Exactly) */}
-                    <div className="text-center space-y-1.5 pb-2">
-                      <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-wider text-black font-serif">
-                        {candidateDisplayName || "YOUR NAME"}
+                    <div className="text-center space-y-1 pb-1">
+                      <h2 className="text-2xl sm:text-[22pt] font-bold uppercase tracking-normal text-black font-serif">
+                        {candidateDisplayName || "HARSHITH KUMAR MANNEPALLI"}
                       </h2>
-                      <p className="text-[9.5pt] text-slate-700 font-serif">
-                        {candidateContactLine || "email@example.com · LinkedIn · Portfolio"}
+                      <p className="text-[8.5pt] text-slate-700 font-sans tracking-wide">
+                        {candidateContactLine || "+91-8977795636 · mharshithkumar6@gmail.com · LinkedIn · GitHub · Portfolio · Dehradun, India"}
                       </p>
                     </div>
 
                     {parsedSections.length > 0 ? (
                       parsedSections.map((sec, idx) => (
-                        <div key={idx} className="space-y-2">
-                          <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
-                            {sec.title.split("").join(" ")}
+                        <div key={idx} className="space-y-1.5">
+                          <h3 className="font-sans text-[7.5pt] sm:text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5 mt-5 mb-2">
+                            {sec.title}
                           </h3>
-                          <div className="space-y-1 text-[10.5pt] text-slate-900">
+                          <div className="space-y-1 text-[9.5pt] text-slate-900">
                             {sec.items.map((item, itemIdx) => {
                               if (item.isBullet) {
                                 return (
-                                  <ul key={itemIdx} className="list-disc list-outside ml-4 text-[10.5pt] text-slate-900">
+                                  <ul key={itemIdx} className="list-disc list-outside ml-4 text-[9.5pt] text-slate-900 font-serif leading-[1.38]">
                                     <li>{item.text}</li>
                                   </ul>
                                 );
                               }
+                              const colonMatch = item.text.match(/^([^:]+):\s*(.+)$/);
+                              if (sec.title.includes("SKILL") && colonMatch) {
+                                return (
+                                  <p key={itemIdx} className="text-[9.5pt] text-slate-900 leading-relaxed">
+                                    <strong className="font-sans font-bold text-[9pt]">{colonMatch[1]}:</strong>{" "}
+                                    <span className="font-serif">{colonMatch[2]}</span>
+                                  </p>
+                                );
+                              }
                               return (
-                                <p key={itemIdx} className={item.isHeader ? "font-bold text-black pt-1" : "text-slate-800 leading-relaxed text-justify"}>
+                                <p key={itemIdx} className={item.isHeader ? "font-sans font-bold text-black text-[9.5pt] pt-1" : "font-serif text-slate-800 leading-relaxed text-[9.5pt] text-justify"}>
                                   {item.text}
                                 </p>
                               );
@@ -1121,7 +1283,7 @@ export default function OptimizePage() {
                     ) : (
                       <div className="space-y-4">
                         {(resumeText.trim() || "Your tailored resume content will render here in Harvard standard format.").split(/\n\s*\n/).map((paragraph, pIdx) => (
-                          <p key={pIdx} className="text-slate-800 leading-relaxed text-[10.5pt] text-justify">
+                          <p key={pIdx} className="text-slate-800 leading-relaxed text-[9.5pt] text-justify">
                             {paragraph}
                           </p>
                         ))}
@@ -2289,6 +2451,12 @@ ${candidateDisplayName.trim() || "Candidate"}`}
           </aside>
         </div>
       </div>
+
+      {/* HireRaft Power Upgrade Modal */}
+      <PowerUpgradeModal
+        isOpen={showPowerModal}
+        onClose={() => setShowPowerModal(false)}
+      />
     </div>
   );
 }
