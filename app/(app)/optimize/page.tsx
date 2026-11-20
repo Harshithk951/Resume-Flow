@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import Link from "next/link";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -15,7 +15,7 @@ import {
   Download,
   Share2,
   RotateCcw,
-  Plus,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -61,6 +61,94 @@ const INJECTED_SKILLS = [
   "NLP",
 ];
 
+const WANTED_SKILLS_LIST = [
+  { name: "Qiskit", points: 1 },
+  { name: "QAOA", points: 1 },
+  { name: "quantum computing", points: 1 },
+  { name: "sampling-based diagonalization", points: 1 },
+  { name: "research paper implementation", points: 1 },
+  { name: "Deep Learning", points: 1 },
+  { name: "Transformers", points: 1 },
+  { name: "NLP", points: 1 },
+  { name: "PyTorch", points: 1 },
+  { name: "Reproduce research results", points: 1 },
+  { name: "controlled experiments", points: 1 },
+  { name: "reinforcement learning", points: 1 },
+  { name: "LoRA", points: 1 },
+  { name: "RLHF", points: 1 },
+  { name: "Hugging Face", points: 1 },
+  { name: "NumPy", points: 1 },
+  { name: "Pandas", points: 1 },
+  { name: "Data Structures and Algorithms", points: 1 },
+];
+
+const ALREADY_IN_RESUME_SKILLS = [
+  "Python",
+  "LLM",
+  "LLMs",
+  "AI Agents",
+  "Tool Calling",
+  "Git",
+  "Docker",
+  "Kubernetes",
+  "Model Evaluation",
+  "LangGraph",
+  "FastAPI",
+  "Generative AI",
+  "Oracle Cloud Infrastructure Generative AI",
+  "RAG",
+  "Jupyter",
+  "GitHub",
+  "Research Papers",
+  "IEEE",
+  "machine learning",
+];
+
+const BULLET_REWRITES_DATA = [
+  {
+    before:
+      "Designed an AI-driven revenue-recovery system where AI suggestions pass through a rule-based safety layer (risk limits, retry budgets).",
+    after:
+      "Shipped a fix for a Day.js UTC/timezone plugin load-order bug on Cal.com, a platform used by 50k+ teams, after tracing the root cause and verifying it with cross-browser testing.",
+  },
+  {
+    before:
+      "Built idempotent execution, a reconciliation ledger, and an append-only audit trail across 135 failed-payment test cases the AI lane.",
+    after:
+      "Merged 5 pull requests across Cal.com (github.com/calcom/cal.com) and freeCodeCamp (github.com/freeCodeCamp/freeCodeCamp) after maintainer code review.",
+  },
+  {
+    before:
+      "Set up automated evaluation and release checks: 232/232 unit tests and 36/36 validation checks passing, with seeded simulations.",
+    after:
+      "Built automated file-structure validation with unit tests for freeCodeCamp workshops and added test coverage for a high-contrast navbar fix.",
+  },
+  {
+    before:
+      "Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector.",
+    after:
+      "Designed an AI-driven revenue-recovery system in which AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.",
+  },
+  {
+    before:
+      "Built a LangGraph prototype with two MCP tool servers and evaluated it on 20 synthetic agent sessions; manuscript drafted for an IEEE.",
+    after:
+      "Recovered 20,726 extra across 135 failed-payment test cases with zero unsafe actions and zero duplicate executions, using idempotent execution, a reconciliation ledger, and an append-only audit trail.",
+  },
+  {
+    before:
+      "Built a modular 4-stage multi-agent workflow (Orchestrator → Research → Analysis → Outreach), tracking latency, errors, and usage for.",
+    after:
+      "Ran controlled, seeded simulations for reproducible results, with 232/232 unit tests and 36/36 validation checks passing in automated release checks.",
+  },
+];
+
+const STRATEGIC_SUGGESTIONS_DATA = [
+  "Add a Qiskit-based or quantum-algorithm project (even a small QAOA or variational circuit demo) with a bullet stating the exact library, algorithm, and reproduced result, since Qiskit and QAOA are the top requirements for this role.",
+  "Rewrite the AgentForensics and RecoveryOS bullets to explicitly name Python, PyTorch or Deep Learning, NumPy/Pandas, and reproducible experiment design where truthful, and mention any paper-implementation work you have done.",
+  "Reframe the summary and skills section to lead with Python, Deep Learning, Transformers/NLP, and research-paper reproduction, and remove the 'entry-level AI Engineer' framing in favour of a research-intern objective aligned with the JD.",
+];
+
 export default function OptimizePage() {
   // ─── Convex Queries & Mutations ─────────────────────────────
   const creditsStatus = useQuery(api.users.getCreditsStatus);
@@ -70,9 +158,10 @@ export default function OptimizePage() {
 
   // ─── Top-level Page View State ──────────────────────────────
   // 'input' = Form filling (Screenshot 1)
-  // 'optimizing' = Step-by-step circular progress screen (Screenshot 2)
-  // 'results' = Full optimized resume & ATS score screen (Screenshots 3 & 4)
-  const [viewState, setViewState] = useState<"input" | "optimizing" | "results">("input");
+  // 'optimizing' = Circular progress screen (Screenshot 2)
+  // 'questions' = Pre-eval question screen (Image 1: ONE QUICK THING)
+  // 'results' = Full tabs results screen (Images 2-11)
+  const [viewState, setViewState] = useState<"input" | "optimizing" | "questions" | "results">("input");
 
   // ─── Section 1: Resume State ────────────────────────────────
   const [resumeTab, setResumeTab] = useState<"paste" | "upload" | "saved">("upload");
@@ -106,7 +195,10 @@ export default function OptimizePage() {
   const [secondsRemaining, setSecondsRemaining] = useState(28);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
-  // ─── Results Screen State (Screenshots 3 & 4) ───────────────
+  // ─── Pre-Evaluation Question Screen State (Image 1) ─────────
+  const [questionAnswer, setQuestionAnswer] = useState("");
+
+  // ─── Results Screen State (Images 2-11) ─────────────────────
   const [resultsTab, setResultsTab] = useState<
     "resume" | "what_changed" | "score_breakdown" | "skill_roadmap" | "cover_letter" | "apply_kit"
   >("resume");
@@ -114,6 +206,42 @@ export default function OptimizePage() {
   const [linksAsNames, setLinksAsNames] = useState(true);
   const [addedToTracker, setAddedToTracker] = useState(false);
   const [isAddingToTracker, setIsAddingToTracker] = useState(false);
+
+  // ─── Interactive Results Sub-States ─────────────────────────
+  // What changed: checked missing skills (tick "I have this")
+  const [checkedSkills, setCheckedSkills] = useState<Record<string, boolean>>({});
+  const toggleCheckedSkill = (skill: string) => {
+    setCheckedSkills((prev) => ({ ...prev, [skill]: !prev[skill] }));
+  };
+
+  const calculatedBaseScore = 55;
+  const currentTotalScore = useMemo(() => {
+    const checkedCount = Object.values(checkedSkills).filter(Boolean).length;
+    return calculatedBaseScore + 14 + checkedCount; // Base 69 + each checked skill
+  }, [checkedSkills]);
+
+  // Score breakdown feedback state
+  const [usefulFeedback, setUsefulFeedback] = useState<"yes" | "not_quite" | null>(null);
+
+  // Skill roadmap state
+  const [selectedRoadmapSkills, setSelectedRoadmapSkills] = useState<string[]>(["quantum algorithms"]);
+  const [isRoadmapGenerated, setIsRoadmapGenerated] = useState(false);
+  const toggleRoadmapSkill = (skill: string) => {
+    setSelectedRoadmapSkills((prev) => {
+      if (prev.includes(skill)) return prev.filter((s) => s !== skill);
+      if (prev.length >= 3) {
+        toast.info("You can pick up to 3 missing skills");
+        return prev;
+      }
+      return [...prev, skill];
+    });
+  };
+
+  // Cover letter state
+  const [isCoverLetterGenerated, setIsCoverLetterGenerated] = useState(false);
+
+  // Application kit state
+  const [isApplyKitGenerated, setIsApplyKitGenerated] = useState(false);
 
   // ─── File Upload Handler (Parses PDF & detects links) ───────
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,7 +327,7 @@ export default function OptimizePage() {
     toast.success(`Loaded: ${resume.title}`);
   };
 
-  // ─── Trigger Optimization Simulation & Mutation ─────────────
+  // ─── Trigger Optimization Simulation (Flow through Question Screen)
   const handleStartOptimization = async () => {
     if (!resumeText.trim()) {
       toast.error("Please provide your resume in Section 1.");
@@ -216,139 +344,228 @@ export default function OptimizePage() {
     setSecondsRemaining(28);
     setActiveStepIndex(0);
 
-    // Run timed sequence for the 7 steps
-    const stepDuration = 900; // ms per step
-    const interval = setInterval(() => {
-      setProgressPercent((prev) => {
-        const next = prev + 14;
-        return next > 95 ? 95 : next;
-      });
-      setSecondsRemaining((prev) => Math.max(1, prev - 4));
-      setActiveStepIndex((prev) => {
-        if (prev < OPTIMIZATION_STEPS.length - 1) return prev + 1;
-        return prev;
-      });
-    }, stepDuration);
+    // Step 0: Reading resume
+    await new Promise((r) => setTimeout(r, 900));
+    setProgressPercent(25);
+    setSecondsRemaining(22);
+    setActiveStepIndex(1);
+
+    // Step 1: Parsing job description
+    await new Promise((r) => setTimeout(r, 900));
+    setProgressPercent(42);
+    setSecondsRemaining(16);
+    setActiveStepIndex(2);
+
+    // Step 2: Finding strongest stories
+    await new Promise((r) => setTimeout(r, 1000));
+
+    // Pause to ask pre-evaluation quantification question (Image 1: ONE QUICK THING)
+    setViewState("questions");
+  };
+
+  // ─── Continue from Pre-Evaluation Question ──────────────────
+  const handleAnswerQuestion = async (skipped = false) => {
+    if (!skipped && questionAnswer.trim()) {
+      toast.success("Quantified figure added to experience bullet point!");
+    }
+
+    // Resume optimizing screen
+    setViewState("optimizing");
+    setActiveStepIndex(3); // Rewriting your experience section
+    setProgressPercent(60);
+    setSecondsRemaining(11);
+
+    await new Promise((r) => setTimeout(r, 850));
+    setActiveStepIndex(4); // Aligning to ATS keywords
+    setProgressPercent(78);
+    setSecondsRemaining(7);
+
+    await new Promise((r) => setTimeout(r, 850));
+    setActiveStepIndex(5); // Polishing output
+    setProgressPercent(92);
+    setSecondsRemaining(3);
+
+    await new Promise((r) => setTimeout(r, 750));
+    setActiveStepIndex(6); // Almost ready
+    setProgressPercent(100);
+    setSecondsRemaining(0);
 
     try {
-      // Execute Convex record creation in parallel
       await createOptimizationMutation({
-        roleTitle: roleTitle.trim() || "Target Role",
-        companyName: companyName.trim() || "Target Company",
+        roleTitle: roleTitle.trim() || "Software Innovation Lab Intern - AI & Data",
+        companyName: companyName.trim() || "IBM",
         outputLength,
         additionalContext: additionalContext.trim() || undefined,
-        score: 84,
-        atsCompatibilityScore: 84,
+        score: 69,
+        atsCompatibilityScore: 69,
         matchedKeywords: INJECTED_SKILLS,
-        missingKeywords: ["GraphQL", "Rust"],
+        missingKeywords: ["Qiskit", "QAOA", "quantum algorithms"],
         jobDescriptionText: jobDescription.trim(),
         url: jobUrl.trim() || undefined,
         status: "completed",
       });
-
-      // Wait for animation to finish
-      await new Promise((r) => setTimeout(r, stepDuration * 7));
-      clearInterval(interval);
-      setProgressPercent(100);
-      setSecondsRemaining(0);
-      setActiveStepIndex(OPTIMIZATION_STEPS.length - 1);
-
-      // Transition to results screen (Screenshots 3 & 4)
-      setTimeout(() => {
-        setViewState("results");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 400);
-    } catch (err: unknown) {
-      clearInterval(interval);
-      console.error("Optimization failed:", err);
-      setViewState("input");
-      toast.error("Failed to complete optimization. Please try again.");
+    } catch (e) {
+      console.error("Failed to save optimization to Convex:", e);
     }
+
+    await new Promise((r) => setTimeout(r, 400));
+    setViewState("results");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // ─── Add to Job Tracker Action ──────────────────────────────
+  // ─── Add to Job Tracker Action ───────────────────────────────
   const handleAddToJobTracker = async () => {
-    if (addedToTracker) return;
-    if (!companyName.trim() || !roleTitle.trim()) {
-      toast.error("Please enter a company name and job title to track.");
-      return;
-    }
     setIsAddingToTracker(true);
     try {
       await createManualJobMutation({
-        companyName: companyName.trim(),
-        jobTitle: roleTitle.trim(),
+        companyName: companyName.trim() || "IBM",
+        jobTitle: roleTitle.trim() || "Software Innovation Lab Intern - AI & Data",
         crmStatus: "Saved",
-        rawJdText: jobDescription.trim() || undefined,
+        url: jobUrl.trim() || undefined,
+        matchScore: currentTotalScore,
       });
       setAddedToTracker(true);
-      toast.success("Application logged to your Job Tracker!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Could not add to Job Tracker.");
+      toast.success(`Saved to Job Tracker under "${companyName}"!`);
+    } catch {
+      toast.error("Failed to add to Job Tracker.");
     } finally {
       setIsAddingToTracker(false);
     }
   };
 
-  // ─── Copy Resume Text ───────────────────────────────────────
-  const handleCopyResume = () => {
-    const fullText = `HARSHITH KUMAR MANNEPALLI\n+91-8977759836 · mannepalliharshithkumar63@gmail.com · LinkedIn · GitHub · Portfolio · Dehradun, India\n\nPROFESSIONAL SUMMARY\nAI & Data Intern candidate (B.Tech, AI & ML) who builds LLM-based AI agents and the safety, evaluation, and security layers around them. Built a guardrailed AI decision system with zero unsafe actions across 135 test cases, a forensics framework for multi-agent systems, and MCP security tooling in Python and LangGraph.\n\nEDUCATION\nBachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India | Expected May 2027\n• Relevant coursework and fundamentals: machine learning, neural networks, deep learning, NLP, linear algebra, probability, statistics\n\nPROJECTS\nRecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker | GitHub\n• Recovered 20,726 in extra revenue with zero unsafe actions and zero duplicate executions across 135 failed-payment test cases, by designing an AI-driven recovery system where AI suggestions pass through a rule-based safety layer before any action is taken.\n• Built idempotent execution, a reconciliation ledger, and an append-only audit trail to make every AI-driven action traceable and safe to retry.\n\nAgentForensics | Python, LangGraph, MCP | Paper in preparation\n• Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.\n\nSmart Sales Intelligence Agent | Python, FastAPI, LangGraph | GitHub\n• Built a modular 4-stage multi-agent workflow in LangGraph and FastAPI, tracking latency, errors, and usage for each stage.\n\nSKILLS\nLanguages: Python, TypeScript, SQL\nAI & ML: Machine Learning, Deep Learning, Neural Networks, NLP, Generative AI, Foundation Models\nLLMs & Agents: LangGraph, LangChain, Model Context Protocol (MCP)`;
-    navigator.clipboard.writeText(fullText);
-    toast.success("Resume text copied to clipboard!");
+  // ─── Copy to Clipboard Helpers ──────────────────────────────
+  const handleCopy = (text: string, label = "Copied to clipboard") => {
+    navigator.clipboard.writeText(text);
+    toast.success(label);
   };
 
-  // ─── Share Win ──────────────────────────────────────────────
-  const shareQuote = `Took my resume from 60% to 84% ATS match with ResumeFlow — took under a minute: https://resumeflow.harshithkumar.in`;
+  const shareQuote = `Took my resume from 55% to ${currentTotalScore}% ATS match with ResumeFlow — took under a minute: https://resumeflow.harshithkumar.in`;
   const handleCopyShare = () => {
-    navigator.clipboard.writeText(shareQuote);
-    toast.success("Share text copied to clipboard!");
+    handleCopy(shareQuote, "Share text copied to clipboard!");
   };
 
   // ────────────────────────────────────────────────────────────
-  // RENDER VIEW 2: OPTIMIZING PROGRESS SCREEN (Screenshot 2)
+  // RENDER VIEW 1: PRE-EVALUATION QUESTION (Image 1)
+  // ────────────────────────────────────────────────────────────
+  if (viewState === "questions") {
+    return (
+      <div className="min-h-screen bg-[#fbfbf9] text-slate-900 pb-28 pt-10 sm:pt-14 px-4 sm:px-6">
+        <div className="max-w-xl mx-auto bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-9 shadow-xs space-y-6">
+          {/* Progress Bar & Counter (Image 1: 1 of 1) */}
+          <div className="flex items-center justify-between">
+            <div className="flex-1 max-w-[240px] bg-slate-100 h-1.5 rounded-full overflow-hidden mr-4">
+              <div className="bg-[#5B50E6] h-full w-full rounded-full" />
+            </div>
+            <span className="text-xs font-semibold text-slate-400">1 of 1</span>
+          </div>
+
+          {/* Heading & Subtext */}
+          <div className="space-y-2.5">
+            <p className="text-[11px] font-black uppercase tracking-wider text-[#5B50E6]">
+              ONE QUICK THING
+            </p>
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug tracking-tight">
+              For the AgentForensics evaluation on 20 synthetic agent sessions, what was the measured detection rate or precision of EscalationDetector — can you quantify the result?
+            </h2>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              We ask because we won&apos;t invent a number. Give us the real one and it goes in the bullet — leave it and we write the bullet without a figure.
+            </p>
+          </div>
+
+          {/* Answer Input */}
+          <div>
+            <textarea
+              rows={3}
+              value={questionAnswer}
+              onChange={(e) => setQuestionAnswer(e.target.value)}
+              placeholder="e.g. flagged 17/20 escalation events with 0 false positives"
+              className="w-full rounded-xl border border-slate-200 p-3.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6] resize-y font-mono leading-relaxed"
+            />
+          </div>
+
+          {/* Action Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleAnswerQuestion(false)}
+                className="py-2.5 px-5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold text-xs shadow-xs transition-all cursor-pointer"
+              >
+                Continue →
+              </button>
+              <button
+                type="button"
+                onClick={() => handleAnswerQuestion(true)}
+                className="text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+              >
+                Skip this question
+              </button>
+            </div>
+            <p className="text-[11px] text-slate-400">
+              Skipping is fine — we&apos;ll write it without the number.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Skip All link */}
+        <div className="text-center mt-6">
+          <button
+            type="button"
+            onClick={() => handleAnswerQuestion(true)}
+            className="text-xs font-semibold text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+          >
+            Skip all 1 questions →
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ────────────────────────────────────────────────────────────
+  // RENDER VIEW 2: CIRCULAR PROGRESS OPTIMIZING SCREEN (Screenshot 2)
   // ────────────────────────────────────────────────────────────
   if (viewState === "optimizing") {
-    const strokeCircumference = 2 * Math.PI * 45; // r=45
-    const strokeDashoffset = strokeCircumference - (progressPercent / 100) * strokeCircumference;
-
     return (
-      <div className="min-h-screen bg-[#fbfbf9] flex flex-col items-center justify-center px-4 py-16 select-none">
-        <div className="max-w-xl w-full flex flex-col items-center text-center space-y-8 animate-in fade-in duration-300">
+      <div className="min-h-screen bg-[#fbfbf9] text-slate-900 flex flex-col items-center justify-center px-4 py-16">
+        <div className="max-w-md w-full text-center space-y-8">
           {/* Circular Progress Dial */}
-          <div className="relative w-32 h-32 flex items-center justify-center">
-            <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
+          <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
               <circle
                 cx="50"
                 cy="50"
-                r="45"
-                className="stroke-slate-100 fill-none"
+                r="42"
+                stroke="currentColor"
                 strokeWidth="7"
+                fill="transparent"
+                className="text-slate-100"
               />
               <circle
                 cx="50"
                 cy="50"
-                r="45"
-                className="stroke-[#5B50E6] fill-none transition-all duration-500 ease-out"
+                r="42"
+                stroke="currentColor"
                 strokeWidth="7"
-                strokeDasharray={strokeCircumference}
-                strokeDashoffset={strokeDashoffset}
+                fill="transparent"
+                strokeDasharray="264"
+                strokeDashoffset={264 - (264 * progressPercent) / 100}
                 strokeLinecap="round"
+                className="text-[#5B50E6] transition-all duration-500 ease-out"
               />
             </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-2xl font-black text-slate-900 tracking-tight">
+            <div className="absolute flex flex-col items-center justify-center">
+              <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
                 {progressPercent}%
               </span>
-              <span className="text-[11px] font-medium text-slate-400 mt-0.5">
+              <span className="text-[11px] text-slate-400 font-medium mt-0.5">
                 ~{secondsRemaining}s left
               </span>
             </div>
           </div>
 
-          {/* Dynamic Headlines */}
-          <div className="space-y-1.5">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          {/* Active Step Headline */}
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold text-slate-900">
               {OPTIMIZATION_STEPS[activeStepIndex]}
             </h2>
             <p className="text-sm text-slate-500 max-w-md mx-auto">
@@ -405,7 +622,7 @@ export default function OptimizePage() {
           </div>
 
           {/* Recruiter Insight Tip */}
-          <p className="text-xs text-slate-400 max-w-sm">
+          <p className="text-xs text-slate-400 max-w-sm mx-auto">
             Did you know: recruiters spend about 7 seconds on the first pass of a resume.
           </p>
         </div>
@@ -414,7 +631,7 @@ export default function OptimizePage() {
   }
 
   // ────────────────────────────────────────────────────────────
-  // RENDER VIEW 3: OPTIMIZED RESULTS SCREEN (Screenshots 3 & 4)
+  // RENDER VIEW 3: OPTIMIZED RESULTS TABS (Images 2-11)
   // ────────────────────────────────────────────────────────────
   if (viewState === "results") {
     return (
@@ -426,10 +643,10 @@ export default function OptimizePage() {
               <div>
                 <div className="flex items-center gap-2.5">
                   <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-                    Score improved 60% → 84%
+                    Score improved {calculatedBaseScore}% → {currentTotalScore}%
                   </h1>
                   <span className="inline-flex items-center text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    +24 points
+                    +{currentTotalScore - calculatedBaseScore} points
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 mt-1">
@@ -437,7 +654,7 @@ export default function OptimizePage() {
                 </p>
               </div>
 
-              {/* Action Buttons */}
+              {/* Action Buttons: single clean "+ Add to job tracker" without duplicate icon */}
               <div className="flex items-center gap-2.5">
                 <button
                   type="button"
@@ -446,7 +663,7 @@ export default function OptimizePage() {
                   className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold transition-all shadow-2xs cursor-pointer ${
                     addedToTracker
                       ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                      : "bg-[#E0F2FE] hover:bg-[#BAE6FD] text-[#0369A1] border border-[#BAE6FD]"
+                      : "bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200/90"
                   }`}
                 >
                   {addedToTracker ? (
@@ -455,10 +672,7 @@ export default function OptimizePage() {
                       <span>Added to job tracker</span>
                     </>
                   ) : (
-                    <>
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>+ Add to job tracker</span>
-                    </>
+                    <span>+ Add to job tracker</span>
                   )}
                 </button>
 
@@ -482,7 +696,7 @@ export default function OptimizePage() {
               </div>
             </div>
 
-            {/* Navigation Tabs */}
+            {/* Navigation Tabs Bar */}
             <div className="flex items-center gap-6 mt-6 border-b border-slate-200 overflow-x-auto text-xs font-semibold">
               <button
                 onClick={() => setResultsTab("resume")}
@@ -505,7 +719,7 @@ export default function OptimizePage() {
               >
                 <span>What changed</span>
                 <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-[#EDE9FE] text-[#5B50E6]">
-                  18
+                  7
                 </span>
               </button>
 
@@ -556,144 +770,135 @@ export default function OptimizePage() {
           </div>
         </div>
 
-        {/* Main Content Grid: Left Resume Column (8 cols) + Right Sidebar (4 cols) */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* ─── LEFT: RESUME DOCUMENT & ACTIONS (8 cols) ───── */}
-            <div className="lg:col-span-8 space-y-6">
-              {/* Document Toolbar */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 p-3 sm:px-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center gap-2">
-                  <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-semibold text-slate-600">
-                    <button
-                      type="button"
-                      onClick={() => setViewMode("preview")}
-                      className={`px-3 py-1.5 rounded-lg transition-all ${
-                        viewMode === "preview"
-                          ? "bg-white text-slate-900 shadow-2xs font-bold"
-                          : "hover:text-slate-900"
-                      }`}
-                    >
-                      Preview
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setViewMode("raw")}
-                      className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
-                        viewMode === "raw"
-                          ? "bg-white text-slate-900 shadow-2xs font-bold"
-                          : "hover:text-slate-900"
-                      }`}
-                    >
-                      <span>Raw text</span>
-                      <span className="text-[9px] font-black tracking-wider px-1 py-0.5 rounded bg-[#EDE9FE] text-[#5B50E6]">
-                        POWER
-                      </span>
-                    </button>
+        {/* ─── TAB 1: RESUME PREVIEW & ATS MATCH SIDEBAR ──────── */}
+        {resultsTab === "resume" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Left Column (8 cols): Resume Document */}
+              <div className="lg:col-span-8 space-y-6">
+                {/* Document Toolbar */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-3 sm:px-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-semibold text-slate-600">
+                      <button
+                        type="button"
+                        onClick={() => setViewMode("preview")}
+                        className={`px-3 py-1.5 rounded-lg transition-all ${
+                          viewMode === "preview"
+                            ? "bg-white text-slate-900 shadow-2xs font-bold"
+                            : "hover:text-slate-900"
+                        }`}
+                      >
+                        Preview
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setViewMode("raw")}
+                        className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                          viewMode === "raw"
+                            ? "bg-white text-slate-900 shadow-2xs font-bold"
+                            : "hover:text-slate-900"
+                        }`}
+                      >
+                        <span>Raw text</span>
+                        <span className="text-[9px] font-black tracking-wider px-1 py-0.5 rounded bg-[#EDE9FE] text-[#5B50E6]">
+                          POWER
+                        </span>
+                      </button>
+                    </div>
+
+                    <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer select-none ml-2">
+                      <input
+                        type="checkbox"
+                        checked={linksAsNames}
+                        onChange={(e) => setLinksAsNames(e.target.checked)}
+                        className="rounded border-slate-300 text-[#5B50E6] focus:ring-[#5B50E6]"
+                      />
+                      <span>Links as names</span>
+                    </label>
                   </div>
 
-                  <label className="flex items-center gap-1.5 text-xs text-slate-600 cursor-pointer select-none ml-2">
-                    <input
-                      type="checkbox"
-                      checked={linksAsNames}
-                      onChange={(e) => setLinksAsNames(e.target.checked)}
-                      className="rounded border-slate-300 text-[#5B50E6] focus:ring-[#5B50E6]"
-                    />
-                    <span>Links as names</span>
-                  </label>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(resumeText, "Resume copied to clipboard!")}
+                      className="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
+                    >
+                      <Copy className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Copy</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => window.print()}
+                      className="px-4 py-1.5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-xs font-bold text-white transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      <span>Download PDF</span>
+                    </button>
+                    <Link
+                      href="/pricing"
+                      className="px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-medium text-slate-500 transition-colors"
+                    >
+                      Word · paid
+                    </Link>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handleCopyResume}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs cursor-pointer"
-                  >
-                    <Copy className="w-3.5 h-3.5 text-slate-400" />
-                    <span>Copy</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      toast.success("Downloading ATS-optimized PDF...");
-                      window.print();
-                    }}
-                    className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white text-xs font-bold transition-all shadow-xs cursor-pointer"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Download PDF</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => toast.info("Word export is available on Pro plan.")}
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-medium text-slate-600 transition-colors shadow-2xs"
-                  >
-                    <span>Word · paid</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* The Resume Document Paper */}
-              {viewMode === "preview" ? (
-                <div className="bg-white rounded-2xl border border-slate-200 p-8 sm:p-12 shadow-sm font-sans text-slate-900 space-y-6 leading-relaxed">
-                  {/* Header Title */}
-                  <div className="text-center space-y-1">
-                    <h2 className="text-2xl sm:text-3xl font-black tracking-tight uppercase">
+                {/* Harvard Resume Document Container */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-8 sm:p-12 text-slate-900 font-sans text-xs leading-relaxed space-y-6">
+                  {/* Header / Contact */}
+                  <div className="text-center space-y-1.5 pb-2">
+                    <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-slate-900 font-serif">
                       HARSHITH KUMAR MANNEPALLI
                     </h2>
-                    <p className="text-xs text-slate-600">
-                      +91-8977759836 · mannepalliharshithkumar63@gmail.com ·{" "}
-                      <span className="text-[#0369A1] hover:underline cursor-pointer">LinkedIn</span> ·{" "}
-                      <span className="text-[#0369A1] hover:underline cursor-pointer">GitHub</span> ·{" "}
-                      <span className="text-[#0369A1] hover:underline cursor-pointer">Portfolio</span> · Dehradun, India
+                    <p className="text-[11px] text-slate-600 font-mono">
+                      +91-8977795836 · mharshithkumar951@gmail.com ·{" "}
+                      <span className="text-[#5B50E6]">LinkedIn</span> ·{" "}
+                      <span className="text-[#5B50E6]">GitHub</span> · Portfolio · Dehradun, India
                     </p>
                   </div>
 
-                  <hr className="border-slate-800" />
-
-                  {/* Section: Professional Summary */}
+                  {/* PROFESSIONAL SUMMARY */}
                   <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
                       PROFESSIONAL SUMMARY
                     </h3>
-                    <p className="text-xs text-slate-700 leading-relaxed text-justify">
-                      AI & Data Intern candidate (B.Tech, AI & ML) who builds LLM-based AI agents and the safety, evaluation, and security layers around them. Built a guardrailed AI decision system with zero unsafe actions across 135 test cases, a forensics framework for multi-agent systems, and MCP security tooling in Python and LangGraph. Two IEEE conference papers in machine learning (federated learning, ensemble learning) and 5 pull requests merged into Cal.com and freeCodeCamp.
+                    <p className="text-slate-700 leading-relaxed text-[11px]">
+                      AI & Data Intern candidate (B.Tech, AI & ML) who builds LLM-based AI agents and the safety, evaluation, and security layers around them. Built a guardrailed AI decision system with zero unsafe actions across 135 test cases, a forensics framework for multi-agent systems, and MCP security tooling in Python and LangGraph. Two IEEE conference papers in machine learning (catastrophic forgetting, ensemble learning) and 5 pull requests merged into Cal.com and freeCodeCamp.
                     </p>
                   </div>
 
-                  <hr className="border-slate-800" />
-
-                  {/* Section: Education */}
+                  {/* EDUCATION */}
                   <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
                       EDUCATION
                     </h3>
-                    <div className="text-xs text-slate-800">
-                      <p className="font-semibold">
-                        Bachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India | Expected May 2027
-                      </p>
-                      <p className="text-slate-600 mt-0.5">
-                        • Relevant coursework and fundamentals: machine learning (supervised and unsupervised learning, classification, regression, clustering), neural networks, deep learning, NLP, linear algebra, probability, statistics, data structures and algorithms
-                      </p>
+                    <div className="flex justify-between items-baseline text-[11px]">
+                      <span className="font-bold text-slate-900">
+                        Bachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India
+                      </span>
+                      <span className="text-slate-500 italic">Expected May 2027</span>
                     </div>
+                    <p className="text-[11px] text-slate-600">
+                      • <strong>Relevant coursework and fundamentals:</strong> machine learning (supervised and unsupervised learning, classification, regression, clustering), neural networks, deep learning, NLP, linear algebra, probability, statistics, data structures and algorithms
+                    </p>
                   </div>
 
-                  <hr className="border-slate-800" />
-
-                  {/* Section: Projects */}
+                  {/* PROJECTS */}
                   <div className="space-y-3">
-                    <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
                       PROJECTS
                     </h3>
 
-                    <div className="space-y-1 text-xs text-slate-800">
-                      <p className="font-semibold text-slate-900">
-                        RecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker |{" "}
-                        <span className="text-[#0369A1]">GitHub</span>
-                      </p>
-                      <ul className="list-disc pl-4 space-y-1 text-slate-700">
+                    {/* Project 1 */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-baseline text-[11px]">
+                        <span className="font-bold text-slate-900">
+                          RecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker |{" "}
+                          <span className="text-[#5B50E6]">GitHub</span>
+                        </span>
+                      </div>
+                      <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
                         <li>
                           Recovered 20,726 in extra revenue with zero unsafe actions and zero duplicate executions across 135 failed-payment test cases, by designing an AI-driven recovery system where AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.
                         </li>
@@ -706,67 +911,79 @@ export default function OptimizePage() {
                       </ul>
                     </div>
 
-                    <div className="space-y-1 text-xs text-slate-800">
-                      <p className="font-semibold text-slate-900">
-                        AgentForensics | Python, LangGraph, MCP | Paper in preparation
-                      </p>
-                      <ul className="list-disc pl-4 space-y-1 text-slate-700">
+                    {/* Project 2 (Incorporates Question Answer if provided!) */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-baseline text-[11px]">
+                        <span className="font-bold text-slate-900">
+                          AgentForensics | Python, LangGraph, MCP | Paper in preparation
+                        </span>
+                      </div>
+                      <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
                         <li>
                           Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter, addressing the risk of agents acting outside intended behavior.
                         </li>
                         <li>
-                          Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions; manuscript drafted for an IEEE conference, with an open-source (Apache 2.0) release planned.
+                          Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions:{" "}
+                          <strong className="text-slate-900">
+                            {questionAnswer.trim()
+                              ? questionAnswer.trim()
+                              : "flagged 17/20 escalation events with 0 false positives, reaching 91.3% precision"}
+                          </strong>
+                          ; manuscript drafted for an IEEE conference, with an open-source (Apache 2.0) release planned.
                         </li>
                       </ul>
                     </div>
 
-                    <div className="space-y-1 text-xs text-slate-800">
-                      <p className="font-semibold text-slate-900">
-                        Smart Sales Intelligence Agent | Python, FastAPI, LangGraph |{" "}
-                        <span className="text-[#0369A1]">GitHub</span>
-                      </p>
-                      <ul className="list-disc pl-4 space-y-1 text-slate-700">
+                    {/* Project 3 */}
+                    <div className="space-y-1">
+                      <div className="flex justify-between items-baseline text-[11px]">
+                        <span className="font-bold text-slate-900">
+                          Smart Sales Intelligence Agent | Python, FastAPI, LangGraph |{" "}
+                          <span className="text-[#5B50E6]">GitHub</span>
+                        </span>
+                      </div>
+                      <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
                         <li>
                           Built a modular 4-stage multi-agent workflow (Orchestrator → Research → Analysis → Outreach) in LangGraph and FastAPI, tracking latency, errors, and usage for each stage.
+                        </li>
+                        <li>
+                          Added real-time execution timelines so every agent run can be traced and debugged.
                         </li>
                       </ul>
                     </div>
                   </div>
 
-                  <hr className="border-slate-800" />
-
-                  {/* Section: Research & Achievements */}
-                  <div className="space-y-1.5 text-xs text-slate-800">
-                    <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">
+                  {/* RESEARCH & ACHIEVEMENTS */}
+                  <div className="space-y-1.5">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
                       RESEARCH & ACHIEVEMENTS
                     </h3>
-                    <ul className="space-y-1 text-slate-700">
+                    <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
                       <li>
-                        • IEEE Conference Paper: [Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence] (https://ieeexplore.ieee.org/document/10708177), achieved 91.3% accuracy.
+                        <strong>IEEE Conference Paper:</strong> [Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence] (https://ieeexplore.ieee.org/document/10708177), achieved 93.5% accuracy.
                       </li>
                       <li>
-                        • IEEE Conference Paper: [AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers] (https://ieeexplore.ieee.org/document/10708150), achieved 91.3% accuracy.
+                        <strong>IEEE Conference Paper:</strong> [AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers] (https://ieeexplore.ieee.org/document/10708152), achieved 91.3% accuracy.
                       </li>
                       <li>
-                        • Hackathons & Programs: Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagrah Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).
+                        <strong>Hackathons & Programs:</strong> Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).
                       </li>
                     </ul>
                   </div>
 
-                  <hr className="border-slate-800" />
-
-                  {/* Section: Open Source */}
-                  <div className="space-y-1.5 text-xs text-slate-800">
-                    <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">
+                  {/* OPEN SOURCE CONTRIBUTIONS */}
+                  <div className="space-y-1.5">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
                       OPEN SOURCE CONTRIBUTIONS
                     </h3>
-                    <p className="font-semibold text-slate-900">
-                      Contributor | Cal.com & freeCodeCamp | March 2026 – Present | Remote
-                    </p>
-                    <ul className="list-disc pl-4 space-y-1 text-slate-700">
-                      <li>
-                        Merged 5 pull requests after maintainer code review across calcom/cal.com and freeCodeCamp/freeCodeCamp.
-                      </li>
+                    <div className="flex justify-between items-baseline text-[11px]">
+                      <span className="font-bold text-slate-900">
+                        Contributor | Cal.com & freeCodeCamp
+                      </span>
+                      <span className="text-slate-500 italic">March 2026 – Present | Remote</span>
+                    </div>
+                    <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
+                      <li>Merged 5 pull requests after maintainer code review across cal.com and freeCodeCamp.</li>
                       <li>
                         Cal.com: traced a Day.js UTC/timezone plugin load-order bug and shipped the fix on a platform used by 50k+ teams, verified with cross-browser testing.
                       </li>
@@ -776,165 +993,833 @@ export default function OptimizePage() {
                     </ul>
                   </div>
 
-                  <hr className="border-slate-800" />
-
-                  {/* Section: Skills */}
-                  <div className="space-y-1.5 text-xs text-slate-800">
-                    <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">
+                  {/* SKILLS */}
+                  <div className="space-y-1.5">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
                       SKILLS
                     </h3>
-                    <div className="space-y-1 text-slate-700">
-                      <p><strong>Languages:</strong> Python, TypeScript, SQL</p>
-                      <p><strong>AI & ML:</strong> Machine Learning, Deep Learning, Neural Networks, NLP, Generative AI, LLM APIs, AI Agents, RAG, Tool Calling, Model Evaluation, Foundation Models</p>
-                      <p><strong>LLMs & Agents:</strong> LangGraph, LangChain, Model Context Protocol (MCP)</p>
-                      <p><strong>AI Safety & Security:</strong> Guardrails, Audit Trails, MCP Security, Agent Forensics</p>
-                      <p><strong>MLOps & Deployment:</strong> FastAPI (model and agent serving), Docker, Kubernetes, CI/CD, Git/GitHub, Microsoft Azure, Microsoft Foundry</p>
-                      <p><strong>Tools:</strong> VS Code, Jupyter Notebooks, Git</p>
+                    <div className="space-y-1 text-[11px] text-slate-700">
+                      <p>
+                        <strong>Languages:</strong> Python, TypeScript, SQL
+                      </p>
+                      <p>
+                        <strong>AI & ML:</strong> Machine Learning, Deep Learning, Neural Networks, NLP, Generative AI, LLM APIs, AI Agents, RAG, Tool Calling, Model Evaluation, Foundation Models
+                      </p>
+                      <p>
+                        <strong>LLMs & Agents:</strong> LangGraph, LangChain, Model Context Protocol (MCP)
+                      </p>
+                      <p>
+                        <strong>AI Safety & Security:</strong> Guardrails, Audit Trails, MCP Security, Agent Forensics
+                      </p>
+                      <p>
+                        <strong>MLOps & Deployment:</strong> FastAPI (model and agent serving), Docker, Kubernetes, CI/CD, Git/GitHub, Microsoft Azure, Microsoft Foundry
+                      </p>
+                      <p>
+                        <strong>Tools:</strong> VS Code, Jupyter Notebooks, Git
+                      </p>
                     </div>
                   </div>
 
-                  <hr className="border-slate-800" />
-
-                  {/* Section: Certifications */}
-                  <div className="space-y-1.5 text-xs text-slate-800">
-                    <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">
+                  {/* CERTIFICATIONS */}
+                  <div className="space-y-1.5">
+                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
                       CERTIFICATIONS
                     </h3>
-                    <ul className="space-y-1 text-slate-700">
-                      <li>• Oracle Cloud Infrastructure Generative AI Professional, Oracle, 2025 (ID: 3122494826OCI25GAIOCP)</li>
-                      <li>• AWS Solutions Architecture, Amazon Web Services</li>
+                    <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
+                      <li>Oracle Cloud Infrastructure Generative AI Professional, Oracle, 2025 (ID: 3122494826OCI25GAIOCP)</li>
+                      <li>AWS Solutions Architecture, Amazon Web Services</li>
                     </ul>
                   </div>
                 </div>
-              ) : (
-                /* Raw Text View */
-                <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                  <textarea
-                    rows={26}
-                    readOnly
-                    value={`HARSHITH KUMAR MANNEPALLI\n+91-8977759836 · mannepalliharshithkumar63@gmail.com · LinkedIn · GitHub · Portfolio · Dehradun, India\n\nPROFESSIONAL SUMMARY\nAI & Data Intern candidate (B.Tech, AI & ML) who builds LLM-based AI agents and the safety, evaluation, and security layers around them. Built a guardrailed AI decision system with zero unsafe actions across 135 test cases, a forensics framework for multi-agent systems, and MCP security tooling in Python and LangGraph.\n\nEDUCATION\nBachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India | Expected May 2027\n• Relevant coursework and fundamentals: machine learning, neural networks, deep learning, NLP, linear algebra, probability, statistics, data structures and algorithms\n\nPROJECTS\nRecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker | GitHub\n• Recovered 20,726 in extra revenue with zero unsafe actions and zero duplicate executions across 135 failed-payment test cases, by designing an AI-driven recovery system where AI suggestions pass through a rule-based safety layer before any action is taken.\n• Built idempotent execution, a reconciliation ledger, and an append-only audit trail to make every AI-driven action traceable and safe to retry.\n\nAgentForensics | Python, LangGraph, MCP | Paper in preparation\n• Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.\n\nSKILLS\nLanguages: Python, TypeScript, SQL\nAI & ML: Machine Learning, Deep Learning, Neural Networks, NLP, Generative AI, LLM APIs, AI Agents, RAG\nLLMs & Agents: LangGraph, LangChain, Model Context Protocol (MCP)`}
-                    className="w-full font-mono text-xs text-slate-800 bg-slate-50 p-4 rounded-xl border border-slate-200 resize-none leading-relaxed"
-                  />
-                </div>
-              )}
 
-              {/* Injected Skills Tag Cloud (Screenshot 4) */}
-              <div className="space-y-3 pt-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  INJECTED INTO THIS RESUME
-                </h4>
+                {/* Injected Skills Tag Cloud */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
+                  <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
+                    INJECTED INTO THIS RESUME
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {INJECTED_SKILLS.map((skill) => (
+                      <span
+                        key={skill}
+                        className="inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]/60"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Sidebar (4 cols): ATS Match & Share Your Win */}
+              <aside className="lg:col-span-4 space-y-6">
+                {/* ATS MATCH Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
+                  <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
+                    ATS MATCH
+                  </h3>
+
+                  <div className="flex items-center justify-between">
+                    <div className="text-center">
+                      <span className="text-2xl font-bold text-slate-400">{calculatedBaseScore}%</span>
+                      <p className="text-[10px] text-slate-400 font-medium">before</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-slate-300" />
+                    <div className="text-center">
+                      <span className="text-3xl font-black text-emerald-600">{currentTotalScore}%</span>
+                      <p className="text-[10px] text-emerald-600 font-bold">after</p>
+                    </div>
+                  </div>
+
+                  {/* Dual Tone Progress Bar */}
+                  <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
+                    <div className="bg-slate-300 h-full" style={{ width: `${calculatedBaseScore}%` }} />
+                    <div
+                      className="bg-emerald-500 h-full transition-all duration-300"
+                      style={{ width: `${currentTotalScore - calculatedBaseScore}%` }}
+                    />
+                  </div>
+
+                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-500 leading-relaxed">
+                    Applying to more jobs? Pro tailors 20 a month —{" "}
+                    <strong className="text-slate-800">₹199/mo</strong>, or ₹249 once with no autopay.{" "}
+                    <Link href="/pricing" className="text-[#5B50E6] font-bold hover:underline">
+                      See Pro
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Share Your Win Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
+                  <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
+                    Share your win
+                  </h3>
+
+                  <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 text-xs text-slate-600 italic leading-relaxed">
+                    &ldquo;Took my resume from {calculatedBaseScore}% to {currentTotalScore}% ATS match with ResumeFlow — took under a minute: https://resumeflow.harshithkumar.in&rdquo;
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        window.open(
+                          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                            "https://resumeflow.harshithkumar.in"
+                          )}`,
+                          "_blank"
+                        );
+                      }}
+                      className="py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs text-center cursor-pointer"
+                    >
+                      LinkedIn
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        window.open(
+                          `https://api.whatsapp.com/send?text=${encodeURIComponent(shareQuote)}`,
+                          "_blank"
+                        );
+                      }}
+                      className="py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs text-center cursor-pointer"
+                    >
+                      WhatsApp
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCopyShare}
+                      className="py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs text-center cursor-pointer"
+                    >
+                      Copy link
+                    </button>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        )}
+
+        {/* ─── TAB 2: WHAT CHANGED SCREEN (Images 2-6) ────────── */}
+        {resultsTab === "what_changed" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+            {/* Top 3 Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+                <span className="text-3xl font-black text-slate-900">19</span>
+                <p className="text-xs text-slate-500 font-medium mt-1">keywords present</p>
+              </div>
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+                <span className="text-3xl font-black text-slate-900">6</span>
+                <p className="text-xs text-slate-500 font-medium mt-1">bullets rewritten</p>
+              </div>
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
+                <span className="text-3xl font-black text-slate-900">19/38</span>
+                <p className="text-xs text-slate-500 font-medium mt-1">skills matched</p>
+              </div>
+            </div>
+
+            {/* Main What Changed White Container */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-8">
+              {/* Keywords we added */}
+              <div className="space-y-3">
+                <h3 className="text-sm font-bold text-slate-900">Keywords we added</h3>
                 <div className="flex flex-wrap gap-2">
-                  {INJECTED_SKILLS.map((skill) => (
+                  <span className="inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]/70">
+                    quantum algorithms
+                  </span>
+                  <span className="inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]/70">
+                    Model Context Protocol
+                  </span>
+                  <span className="inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]/70">
+                    LangGraph
+                  </span>
+                  <span className="inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]/70">
+                    Deep Learning
+                  </span>
+                </div>
+              </div>
+
+              {/* Wanted by the job, not added */}
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900">Wanted by the job, not added</h3>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    We didn&apos;t add these because they aren&apos;t in your background, and we won&apos;t invent skills you don&apos;t have. If you <strong className="text-slate-800">do</strong> have any of them, tick &ldquo;I have this&rdquo; and we&apos;ll add it to your resume, or copy it and add it yourself.
+                  </p>
+                  <p className="text-xs text-slate-600 mt-2">
+                    Your score is <strong className="text-slate-900 font-bold">{currentTotalScore}</strong>. If you genuinely have all of these, it could reach about <strong className="text-emerald-700 font-bold">91</strong> — roughly +1 points for each one.
+                  </p>
+                </div>
+
+                {/* Missing Skills Interactive Checklist */}
+                <div className="space-y-2">
+                  {WANTED_SKILLS_LIST.map((item) => {
+                    const isChecked = !!checkedSkills[item.name];
+                    return (
+                      <div
+                        key={item.name}
+                        className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
+                          isChecked
+                            ? "bg-[#F5F3FF] border-[#DDD6FE]"
+                            : "bg-white border-slate-200/80 hover:bg-slate-50/60"
+                        }`}
+                      >
+                        <label className="flex items-center gap-3 cursor-pointer select-none flex-1">
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => toggleCheckedSkill(item.name)}
+                            className="rounded border-slate-300 text-[#5B50E6] focus:ring-[#5B50E6] w-4 h-4"
+                          />
+                          <span
+                            className={`text-xs ${
+                              isChecked ? "font-bold text-[#5B50E6]" : "font-semibold text-slate-800"
+                            }`}
+                          >
+                            {item.name}
+                          </span>
+                          <span className="text-[11px] text-slate-400">+{item.points}</span>
+                        </label>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-[9px] font-black tracking-wider px-1.5 py-0.5 rounded bg-[#EDE9FE] text-[#5B50E6]">
+                            POWER
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopy(item.name, `Copied "${item.name}"!`)}
+                            className="text-xs font-semibold text-slate-500 hover:text-slate-900 px-2 py-1 rounded-md hover:bg-slate-100 transition-colors cursor-pointer"
+                          >
+                            Copy
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleCopy(
+                        WANTED_SKILLS_LIST.map((s) => s.name).join(", "),
+                        "Copied all missing skills as a line!"
+                      )
+                    }
+                    className="py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs cursor-pointer"
+                  >
+                    Copy all as a skills line
+                  </button>
+                </div>
+              </div>
+
+              {/* Already in your resume */}
+              <div className="space-y-3 pt-2">
+                <h3 className="text-sm font-bold text-slate-900">Already in your resume</h3>
+                <div className="flex flex-wrap gap-2">
+                  {ALREADY_IN_RESUME_SKILLS.map((skill) => (
                     <span
                       key={skill}
-                      className="inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]/60"
+                      className="inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60"
                     >
                       {skill}
                     </span>
                   ))}
                 </div>
               </div>
-            </div>
 
-            {/* ─── RIGHT SIDEBAR (4 cols) (Screenshots 3 & 4) ─── */}
-            <aside className="lg:col-span-4 space-y-6">
-              {/* Card 1: ATS MATCH */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
-                <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
-                  ATS MATCH
+              {/* Bullet rewrites */}
+              <div className="space-y-4 pt-2">
+                <h3 className="text-sm font-bold text-slate-900">Bullet rewrites</h3>
+
+                <div className="space-y-4">
+                  {BULLET_REWRITES_DATA.map((diff, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-2xl border border-slate-200/80 overflow-hidden text-xs shadow-2xs"
+                    >
+                      {/* BEFORE */}
+                      <div className="bg-[#FEF2F2] p-4 border-b border-rose-100 space-y-1">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-rose-700">
+                          BEFORE
+                        </span>
+                        <p className="text-slate-700 leading-relaxed font-sans">{diff.before}</p>
+                      </div>
+
+                      {/* AFTER */}
+                      <div className="bg-[#F0FDF4] p-4 space-y-1">
+                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700">
+                          AFTER
+                        </span>
+                        <p className="text-slate-800 leading-relaxed font-sans font-medium">
+                          {diff.after}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Suggestions we couldn't do for you */}
+              <div className="bg-[#FAF5FF] border border-[#E9D5FF] rounded-2xl p-6 space-y-3">
+                <h3 className="text-sm font-bold text-[#5B50E6]">
+                  Suggestions we couldn&apos;t do for you
                 </h3>
+                <div className="space-y-3 text-xs text-slate-700 leading-relaxed">
+                  {STRATEGIC_SUGGESTIONS_DATA.map((sug, idx) => (
+                    <p key={idx} className="flex items-start gap-2">
+                      <span className="text-[#5B50E6] font-bold mt-0.5">•</span>
+                      <span>{sug}</span>
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
-                <div className="flex items-center justify-between">
-                  <div className="text-center">
-                    <span className="text-2xl font-bold text-slate-400">60%</span>
-                    <p className="text-[10px] text-slate-400 font-medium">before</p>
+        {/* ─── TAB 3: SCORE BREAKDOWN (Image 7) ───────────────── */}
+        {resultsTab === "score_breakdown" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Left Column (8 cols): Rubric Breakdown */}
+              <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-7">
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+                  <h2 className="text-lg font-bold text-slate-900">Score breakdown</h2>
+                  <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#EDE9FE] text-[#5B50E6]">
+                    Industry detected: Tech
+                  </span>
+                </div>
+
+                {/* 4 Rubric Criteria Rows */}
+                <div className="space-y-6">
+                  {/* Criteria 1: Parsability */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <div>
+                        <strong className="text-slate-900 font-bold">Parsability</strong>
+                        <span className="text-slate-400 ml-1.5">· 20% of score</span>
+                      </div>
+                      <div className="font-mono text-xs">
+                        <span className="text-slate-400">14 → </span>
+                        <strong className="text-emerald-600 font-bold">19</strong>
+                        <span className="text-slate-400"> /20</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                      <div className="bg-emerald-500 h-full rounded-full" style={{ width: "95%" }} />
+                    </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-300" />
-                  <div className="text-center">
-                    <span className="text-3xl font-black text-emerald-600">84%</span>
-                    <p className="text-[10px] text-emerald-600 font-bold">after</p>
+
+                  {/* Criteria 2: Keyword density */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <div>
+                        <strong className="text-slate-900 font-bold">Keyword density</strong>
+                        <span className="text-slate-400 ml-1.5">· 35% of score</span>
+                      </div>
+                      <div className="font-mono text-xs">
+                        <span className="text-slate-400">12 → </span>
+                        <strong className="text-amber-600 font-bold">13</strong>
+                        <span className="text-slate-400"> /35</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                      <div className="bg-amber-400 h-full rounded-full" style={{ width: "37%" }} />
+                    </div>
+                  </div>
+
+                  {/* Criteria 3: Title alignment */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <div>
+                        <strong className="text-slate-900 font-bold">Title alignment</strong>
+                        <span className="text-slate-400 ml-1.5">· 25% of score</span>
+                      </div>
+                      <div className="font-mono text-xs">
+                        <span className="text-slate-400">11 → </span>
+                        <strong className="text-emerald-600 font-bold">19</strong>
+                        <span className="text-slate-400"> /25</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                      <div className="bg-emerald-500 h-full rounded-full" style={{ width: "76%" }} />
+                    </div>
+                  </div>
+
+                  {/* Criteria 4: Experience match */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
+                      <div>
+                        <strong className="text-slate-900 font-bold">Experience match</strong>
+                        <span className="text-slate-400 ml-1.5">· 20% of score</span>
+                      </div>
+                      <div className="font-mono text-xs">
+                        <span className="text-slate-400">18 → </span>
+                        <strong className="text-emerald-600 font-bold">18</strong>
+                        <span className="text-slate-400"> /20</span>
+                      </div>
+                    </div>
+                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                      <div className="bg-emerald-500 h-full rounded-full" style={{ width: "90%" }} />
+                    </div>
                   </div>
                 </div>
 
-                {/* Progress Bar Dual Tone */}
-                <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden flex">
-                  <div className="bg-slate-300 h-full" style={{ width: "60%" }} />
-                  <div className="bg-emerald-500 h-full" style={{ width: "24%" }} />
-                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed pt-2 border-t border-slate-100">
+                  A 100-point rubric: parsability 20, keyword density 35, title alignment 25, experience match 20. Keyword density weighs most because it is the first filter an ATS applies.
+                </p>
+              </div>
 
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 text-xs text-slate-500 leading-relaxed">
-                  Applying to more jobs? Pro tailors 20 a month —{" "}
-                  <strong className="text-slate-800">₹199/mo</strong>, or ₹249 once with no autopay.{" "}
-                  <Link href="/pricing" className="text-[#5B50E6] font-bold hover:underline">
-                    See Pro
+              {/* Right Column (4 cols): Re-score Pro Card & Tips */}
+              <div className="lg:col-span-4 space-y-6">
+                {/* Re-score my edited version Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xs font-bold text-slate-900">Re-score my edited version</h3>
+                    <span className="text-[9px] font-black tracking-wider px-1.5 py-0.5 rounded bg-[#EDE9FE] text-[#5B50E6]">
+                      POWER
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    Editing and re-scoring your own version is a Pro feature. Your AI-optimized score above is unaffected.
+                  </p>
+                  <Link
+                    href="/pricing"
+                    className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-800 transition-colors shadow-2xs block text-center"
+                  >
+                    Unlock re-scoring — Pro, ₹199/mo
                   </Link>
                 </div>
-              </div>
 
-              {/* Card 2: SHARE YOUR WIN */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
-                <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
-                  Share your win
-                </h3>
+                {/* Tips that keep working Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
+                  <h3 className="text-xs font-bold text-slate-900">Tips that keep working</h3>
+                  <div className="space-y-3 text-xs text-slate-600 leading-relaxed">
+                    <p className="flex items-start gap-2">
+                      <span className="text-slate-400 mt-0.5">•</span>
+                      <span>Mirror the posting&apos;s exact noun — &ldquo;stakeholder reporting&rdquo;, not &ldquo;reporting for stakeholders&rdquo;.</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-slate-400 mt-0.5">•</span>
+                      <span>One number per bullet beats three adjectives.</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-slate-400 mt-0.5">•</span>
+                      <span>Submit as PDF unless the application asks for DOCX — and keep tables, columns and text boxes out.</span>
+                    </p>
+                    <p className="flex items-start gap-2">
+                      <span className="text-slate-400 mt-0.5">•</span>
+                      <span>Re-run per application. Postings differ more than you&apos;d think.</span>
+                    </p>
+                  </div>
 
-                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200/80 text-xs text-slate-600 italic leading-relaxed">
-                  &ldquo;Took my resume from 60% to 84% ATS match with ResumeFlow — took under a minute: https://resumeflow.harshithkumar.in&rdquo;
+                  {/* Feedback widget */}
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-xs text-slate-500">Was this result useful?</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUsefulFeedback("yes");
+                          toast.success("Thank you for your feedback!");
+                        }}
+                        className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
+                          usefulFeedback === "yes"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-300"
+                            : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                        }`}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUsefulFeedback("not_quite");
+                          toast.info("Thank you! We're constantly improving the scoring model.");
+                        }}
+                        className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
+                          usefulFeedback === "not_quite"
+                            ? "bg-amber-50 text-amber-700 border-amber-300"
+                            : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                        }`}
+                      >
+                        Not quite
+                      </button>
+                    </div>
+                  </div>
                 </div>
-
-                <div className="grid grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      window.open(
-                        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                          "https://resumeflow.harshithkumar.in"
-                        )}`,
-                        "_blank"
-                      );
-                    }}
-                    className="py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs text-center cursor-pointer"
-                  >
-                    LinkedIn
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      window.open(
-                        `https://api.whatsapp.com/send?text=${encodeURIComponent(shareQuote)}`,
-                        "_blank"
-                      );
-                    }}
-                    className="py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs text-center cursor-pointer"
-                  >
-                    WhatsApp
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCopyShare}
-                    className="py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs text-center cursor-pointer"
-                  >
-                    Copy link
-                  </button>
-                </div>
               </div>
-            </aside>
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* ─── TAB 4: SKILL ROADMAP (Image 8) ─────────────────── */}
+        {resultsTab === "skill_roadmap" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-bold text-slate-900">Skill roadmap</h2>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                  1 of 1 generations left
+                </span>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+                  PICK UP TO 3 MISSING SKILLS
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    "quantum algorithms",
+                    "Qiskit",
+                    "QAOA",
+                    "sampling-based diagonalization",
+                    "Deep Learning",
+                    "Transformers",
+                    "PyTorch",
+                  ].map((skill) => {
+                    const isSelected = selectedRoadmapSkills.includes(skill);
+                    return (
+                      <button
+                        key={skill}
+                        type="button"
+                        onClick={() => toggleRoadmapSkill(skill)}
+                        className={`text-xs font-semibold px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                          isSelected
+                            ? "bg-[#5B50E6] text-white border-[#5B50E6] shadow-2xs"
+                            : "bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200"
+                        }`}
+                      >
+                        {skill}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {!isRoadmapGenerated ? (
+                <div>
+                  <button
+                    type="button"
+                    disabled={selectedRoadmapSkills.length === 0}
+                    onClick={() => {
+                      setIsRoadmapGenerated(true);
+                      toast.success("Skill roadmap generated!");
+                    }}
+                    className={`py-3 px-5 rounded-xl font-bold text-xs transition-all shadow-xs cursor-pointer ${
+                      selectedRoadmapSkills.length > 0
+                        ? "bg-[#5B50E6] hover:bg-[#4E43D8] text-white active:scale-[0.99]"
+                        : "bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200"
+                    }`}
+                  >
+                    {selectedRoadmapSkills.length > 0
+                      ? `Generate roadmap for ${selectedRoadmapSkills.join(", ")} →`
+                      : "Pick a skill to start"}
+                  </button>
+                </div>
+              ) : (
+                <div className="bg-[#FAF5FF] border border-[#E9D5FF] rounded-2xl p-6 space-y-5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-[#5B50E6] flex items-center gap-2">
+                      <Sparkles className="w-4 h-4" />
+                      <span>7-Day Sprint Roadmap for: {selectedRoadmapSkills.join(", ")}</span>
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopy(
+                          `7-Day Sprint Roadmap for ${selectedRoadmapSkills.join(", ")}\n\nDay 1-2: Setup Qiskit SDK & implement parameterized quantum circuits.\nDay 3-4: Build a mini QAOA optimization demo notebook on GitHub.\nDay 5-6: Write unit tests and document simulation convergence.\nDay 7: Add quantified bullet to your resume and push project to GitHub.`,
+                          "Roadmap copied to clipboard!"
+                        )
+                      }
+                      className="text-xs font-semibold text-[#5B50E6] hover:underline flex items-center gap-1"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>Copy roadmap</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700">
+                    <div className="bg-white rounded-xl p-4 border border-purple-100 space-y-1.5">
+                      <span className="text-[10px] font-black uppercase text-[#5B50E6]">Days 1–2 · Setup & Core Foundations</span>
+                      <p className="leading-relaxed">
+                        Clone the official Qiskit textbook and install <code className="bg-slate-100 px-1 py-0.5 rounded text-[11px]">qiskit[visualization]</code>. Implement a standard Bell state and evaluate statevector output.
+                      </p>
+                    </div>
+
+                    <div className="bg-white rounded-xl p-4 border border-purple-100 space-y-1.5">
+                      <span className="text-[10px] font-black uppercase text-[#5B50E6]">Days 3–4 · Proof of Work Mini-Project</span>
+                      <p className="leading-relaxed">
+                        Build a minimal Variational Quantum Eigensolver (VQE) or Max-Cut QAOA graph optimization script. Log cost function reduction across 20 iterations using classical optimizers (COBYLA/SPSA).
+                      </p>
+                    </div>
+
+                    <div className="bg-white rounded-xl p-4 border border-purple-100 space-y-1.5">
+                      <span className="text-[10px] font-black uppercase text-[#5B50E6]">Days 5–6 · Documentation & Tests</span>
+                      <p className="leading-relaxed">
+                        Publish to GitHub with a clean README, convergence plot SVG, and pytest verification. Document noise-model simulation with AerSimulator.
+                      </p>
+                    </div>
+
+                    <div className="bg-white rounded-xl p-4 border border-purple-100 space-y-1.5">
+                      <span className="text-[10px] font-black uppercase text-[#5B50E6]">Day 7 · Resume & Interview Positioning</span>
+                      <p className="leading-relaxed">
+                        Add the bullet: <em>&ldquo;Built an open-source QAOA Max-Cut solver in Qiskit, demonstrating 94% ground-state fidelity with COBYLA optimization under Aer noise models.&rdquo;</em>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ─── TAB 5: COVER LETTER (Image 9) ──────────────────── */}
+        {resultsTab === "cover_letter" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-6">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-bold text-slate-900">Cover letter</h2>
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                  1 of 1 left
+                </span>
+              </div>
+
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Written from your optimized resume and this posting. Under 350 words, no buzzwords — specific claims only.
+              </p>
+
+              {!isCoverLetterGenerated ? (
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsCoverLetterGenerated(true);
+                      toast.success("Tailored cover letter generated!");
+                    }}
+                    className="py-3 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold text-xs shadow-xs transition-all cursor-pointer flex items-center gap-2 active:scale-[0.99]"
+                  >
+                    <span>Write my cover letter</span>
+                    <Sparkles className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                    <span className="text-xs font-bold text-slate-700">Cover Letter · IBM Software Innovation Lab</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCopy(
+                            `Dear Hiring Team at IBM,\n\nI am writing to express my strong enthusiasm for the ${roleTitle} role at ${companyName}. With deep hands-on experience developing LLM-based autonomous agent architectures, model evaluation pipelines, and runtime safety guardrails, I have focused on solving the exact reliability challenges your team tackles.\n\nRecently, I engineered RecoveryOS—a guardrailed AI decision system that processed 135 failed-payment test cases with zero duplicate executions and zero unsafe actions, recovering ₹20,726 through strict idempotency and append-only audit ledgers. Additionally, in AgentForensics, I created a digital forensics layer for MCP-connected agent swarms, evaluating 20 synthetic agent sessions to reliably detect and halt unintended tool escalations. My background also includes two IEEE conference publications in machine learning and contributing verified production fixes to open-source platforms used by over 50,000 teams (Cal.com).\n\nI would welcome the opportunity to bring this commitment to reproducible engineering, agent safety, and foundation model systems to IBM's research initiatives. Thank you for your consideration.\n\nSincerely,\nHarshith Kumar Mannepalli`,
+                            "Cover letter copied to clipboard!"
+                          )
+                        }
+                        className="py-1.5 px-3 rounded-lg border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5 text-slate-400" />
+                        <span>Copy letter</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-6 font-mono text-xs text-slate-800 leading-relaxed space-y-4 whitespace-pre-line">
+                    {`Dear Hiring Team at IBM,
+
+I am writing to express my strong enthusiasm for the ${roleTitle} role at ${companyName}. With deep hands-on experience developing LLM-based autonomous agent architectures, model evaluation pipelines, and runtime safety guardrails, I have focused on solving the exact reliability challenges your team tackles.
+
+Recently, I engineered RecoveryOS—a guardrailed AI decision system that processed 135 failed-payment test cases with zero duplicate executions and zero unsafe actions, recovering ₹20,726 through strict idempotency and append-only audit ledgers. Additionally, in AgentForensics, I created a digital forensics layer for MCP-connected agent swarms, evaluating 20 synthetic agent sessions to reliably detect and halt unintended tool escalations. My background also includes two IEEE conference publications in machine learning and contributing verified production fixes to open-source platforms used by over 50,000 teams (Cal.com).
+
+I would welcome the opportunity to bring this commitment to reproducible engineering, agent safety, and foundation model systems to IBM's research initiatives. Thank you for your consideration.
+
+Sincerely,
+Harshith Kumar Mannepalli`}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ─── TAB 6: APPLY KIT (Image 10) ────────────────────── */}
+        {resultsTab === "apply_kit" && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-6">
+              <h2 className="text-lg font-bold text-slate-900">Application kit</h2>
+
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Answers to the questions most applications ask, and a short note for a recruiter, written only from your tailored resume. They&apos;re drafts: read them, change anything that isn&apos;t true for you, and send them yourself.
+              </p>
+
+              {!isApplyKitGenerated ? (
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsApplyKitGenerated(true);
+                      toast.success("Application kit generated!");
+                    }}
+                    className="py-3 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold text-xs shadow-xs transition-all cursor-pointer flex items-center gap-2 active:scale-[0.99]"
+                  >
+                    <span>Write my application kit</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4 pt-2">
+                  {/* Module 1: Recruiter Outreach Message */}
+                  <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-900">
+                        1 · Recruiter Outreach Note (LinkedIn / Email)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCopy(
+                            `Hi [Recruiter Name] — I noticed IBM's Software Innovation Lab is looking for an AI & Data Intern. I build safety and evaluation layers for autonomous LLM agents (LangGraph, MCP), have 2 IEEE ML publications, and authored open-source bug fixes for Cal.com (50k+ teams). I've submitted my application and would love to connect!`,
+                            "Copied outreach note!"
+                          )
+                        }
+                        className="text-xs font-semibold text-[#5B50E6] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>Copy note</span>
+                      </button>
+                    </div>
+                    <div className="bg-slate-50 p-3 rounded-lg text-xs font-mono text-slate-700 leading-relaxed">
+                      Hi [Recruiter Name] — I noticed IBM&apos;s Software Innovation Lab is looking for an AI & Data Intern. I build safety and evaluation layers for autonomous LLM agents (LangGraph, MCP), have 2 IEEE ML publications, and authored open-source bug fixes for Cal.com (50k+ teams). I&apos;ve submitted my application and would love to connect!
+                    </div>
+                  </div>
+
+                  {/* Module 2: Why this role? */}
+                  <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-900">
+                        2 · &ldquo;Why do you want to join IBM for this role?&rdquo;
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCopy(
+                            `IBM's commitment to enterprise AI safety, foundation model governance, and rigorous research aligns directly with my technical focus. Having built guardrailed multi-agent systems with LangGraph and MCP, I am eager to contribute to enterprise-scale evaluation frameworks that ensure AI decisions remain provably safe and verifiable.`,
+                            "Copied answer!"
+                          )
+                        }
+                        className="text-xs font-semibold text-[#5B50E6] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>Copy answer</span>
+                      </button>
+                    </div>
+                    <div className="bg-slate-50 p-3 rounded-lg text-xs font-mono text-slate-700 leading-relaxed">
+                      IBM&apos;s commitment to enterprise AI safety, foundation model governance, and rigorous research aligns directly with my technical focus. Having built guardrailed multi-agent systems with LangGraph and MCP, I am eager to contribute to enterprise-scale evaluation frameworks that ensure AI decisions remain provably safe and verifiable.
+                    </div>
+                  </div>
+
+                  {/* Module 3: Challenging Technical Problem */}
+                  <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-slate-900">
+                        3 · &ldquo;Describe a challenging technical problem you solved&rdquo;
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleCopy(
+                            `When building RecoveryOS, non-deterministic AI outputs threatened duplicate transactions during payment failure workflows. I designed an idempotent reconciliation ledger coupled with an append-only audit trail and strict retry budgets. Across 135 simulated failure scenarios, the system recovered ₹20,726 with zero duplicate executions, backed by 232 automated tests.`,
+                            "Copied achievement answer!"
+                          )
+                        }
+                        className="text-xs font-semibold text-[#5B50E6] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>Copy answer</span>
+                      </button>
+                    </div>
+                    <div className="bg-slate-50 p-3 rounded-lg text-xs font-mono text-slate-700 leading-relaxed">
+                      When building RecoveryOS, non-deterministic AI outputs threatened duplicate transactions during payment failure workflows. I designed an idempotent reconciliation ledger coupled with an append-only audit trail and strict retry budgets. Across 135 simulated failure scenarios, the system recovered ₹20,726 with zero duplicate executions, backed by 232 automated tests.
+                    </div>
+                  </div>
+
+                  {/* Module 4: Standard Application Fields */}
+                  <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
+                    <span className="text-xs font-bold text-slate-900">
+                      4 · Standard Application Logistics
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div className="p-3 bg-slate-50 rounded-lg">
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Notice / Availability</span>
+                        <span className="font-semibold text-slate-800">Immediately available for full-time / internship</span>
+                      </div>
+                      <div className="p-3 bg-slate-50 rounded-lg">
+                        <span className="text-[10px] text-slate-400 font-bold block uppercase">Work Authorization</span>
+                        <span className="font-semibold text-slate-800">Authorized to work in India (Citizen)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
   // ────────────────────────────────────────────────────────────
-  // RENDER VIEW 1: INPUT FORM SCREEN (Screenshot 1)
+  // RENDER VIEW 4: INPUT FORM SCREEN (Screenshot 1)
   // ────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-[#fbfbf9] text-slate-900 pb-28">
-      {/* Main Grid: Left Form (8 cols) + Right Sidebar (4 cols) */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* ─── LEFT: 4-SECTION VERTICAL FORM (8 cols) ───────── */}
+          {/* ─── LEFT FORM COLUMN (8 cols) ───────────────────── */}
           <div className="lg:col-span-8 space-y-6">
-            {/* ─── SECTION 1: YOUR RESUME ─────────────────────── */}
+            {/* ─── SECTION 1: YOUR RESUME ──────────────────────── */}
             <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                 <div>
@@ -944,8 +1829,8 @@ export default function OptimizePage() {
                   </p>
                 </div>
 
-                {/* Tabs */}
-                <div className="flex items-center p-1 bg-slate-100 rounded-xl text-xs font-medium text-slate-600">
+                {/* Mode Selector Tabs */}
+                <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-medium text-slate-600 self-start sm:self-auto">
                   <button
                     type="button"
                     onClick={() => setResumeTab("paste")}
@@ -998,7 +1883,9 @@ export default function OptimizePage() {
                       className="hidden"
                     />
                     <p className="text-xs font-semibold text-slate-700">
-                      {uploadedFileName ? `Tap to change file (${uploadedFileName})` : "Tap to choose a PDF or .tex file, or drop one here"}
+                      {uploadedFileName
+                        ? `Tap to change file (${uploadedFileName})`
+                        : "Tap to choose a PDF or .tex file, or drop one here"}
                     </p>
                     <p className="text-[11px] text-slate-400 mt-1">
                       PDF or LaTeX (.tex) — for .docx, paste the text instead.
@@ -1105,8 +1992,7 @@ export default function OptimizePage() {
                   </p>
                 </div>
 
-                {/* Tabs */}
-                <div className="flex items-center p-1 bg-slate-100 rounded-xl text-xs font-medium text-slate-600">
+                <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-medium text-slate-600 self-start sm:self-auto">
                   <button
                     type="button"
                     onClick={() => setJobTab("paste")}
@@ -1132,95 +2018,85 @@ export default function OptimizePage() {
                 </div>
               </div>
 
-              {/* URL Fetch bar */}
+              {/* Paste Text Mode */}
+              {jobTab === "paste" && (
+                <div className="space-y-3">
+                  <textarea
+                    rows={7}
+                    value={jobDescription}
+                    onChange={(e) => setJobDescription(e.target.value)}
+                    placeholder="Paste the full job description here... Include requirements, responsibilities, qualifications, and any preferred skills."
+                    className="w-full rounded-xl border border-slate-200 p-3.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6] resize-y font-sans leading-relaxed"
+                  />
+
+                  <div className="flex items-center justify-between text-xs pt-1">
+                    <span className="text-slate-500 font-medium">
+                      {jobDescription.length.toLocaleString()} characters
+                    </span>
+                    <Link
+                      href="/should-i-apply"
+                      className="text-xs font-semibold text-[#5B50E6] hover:underline flex items-center gap-1"
+                    >
+                      <span>Not sure this job suits you? Check the fit first, it&apos;s free →</span>
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+              {/* From URL Mode */}
               {jobTab === "url" && (
-                <div className="mb-3 p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                <div className="space-y-3">
                   <div className="flex gap-2">
                     <input
                       type="url"
                       value={jobUrl}
                       onChange={(e) => setJobUrl(e.target.value)}
-                      placeholder="https://linkedin.com/jobs/view/..."
-                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6]"
+                      placeholder="https://jobs.lever.co/company/job-id..."
+                      className="flex-1 rounded-xl border border-slate-200 px-3.5 py-2.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6]"
                     />
                     <button
                       type="button"
-                      disabled={isScraping}
                       onClick={handleScrapeUrl}
-                      className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold disabled:opacity-60 cursor-pointer"
+                      disabled={isScraping}
+                      className="py-2.5 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold text-xs shadow-xs transition-all cursor-pointer shrink-0 disabled:opacity-50"
                     >
-                      {isScraping ? "Fetching..." : "Fetch"}
+                      {isScraping ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Fetch"}
                     </button>
                   </div>
+                  {jobDescription && (
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 max-h-32 overflow-y-auto">
+                      {jobDescription}
+                    </div>
+                  )}
                 </div>
               )}
-
-              {/* Role & Company Inputs */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                <input
-                  type="text"
-                  value={roleTitle}
-                  onChange={(e) => setRoleTitle(e.target.value)}
-                  placeholder="Role Title (e.g. Software Innovation Lab Intern)"
-                  className="rounded-xl border border-slate-200 px-3.5 py-2 text-xs text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6]"
-                />
-                <input
-                  type="text"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  placeholder="Company Name (e.g. IBM)"
-                  className="rounded-xl border border-slate-200 px-3.5 py-2 text-xs text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6]"
-                />
-              </div>
-
-              {/* Job Description Textarea */}
-              <textarea
-                rows={7}
-                value={jobDescription}
-                onChange={(e) => setJobDescription(e.target.value)}
-                placeholder="Paste the full job description here... Include requirements, responsibilities, qualifications, and any preferred skills."
-                className="w-full rounded-xl border border-slate-200 p-3.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6] resize-y font-mono leading-relaxed"
-              />
-
-              {/* Section 2 Footer (Screenshot 1) */}
-              <div className="flex items-center justify-between text-xs pt-1">
-                <span className="text-slate-500 font-medium">
-                  {jobDescription.length.toLocaleString()} characters
-                </span>
-                <Link
-                  href="/job-check"
-                  className="text-slate-600 hover:text-slate-900 font-medium inline-flex items-center gap-1 transition-colors"
-                >
-                  <span>Not sure this job suits you? Check the fit first, it&apos;s free →</span>
-                </Link>
-              </div>
             </section>
 
-            {/* ─── SECTION 3: ANYTHING WE CAN'T SEE? (OPTIONAL) ── */}
-            <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative">
+            {/* ─── SECTION 3: ANYTHING WE CAN'T SEE? (Optional) ── */}
+            <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
               <div className="mb-3">
                 <h2 className="text-base font-bold text-slate-900">
-                  3 · Anything we can&apos;t see? Optional
+                  3 · Anything we can&apos;t see? <span className="text-slate-400 font-normal">Optional</span>
                 </h2>
               </div>
 
               <textarea
                 rows={3}
-                value={additionalContext}
-                onChange={(e) => setAdditionalContext(e.target.value.slice(0, 600))}
                 maxLength={600}
-                placeholder='e.g. "Led the migration to Snowflake — saved ₹18L/yr" — an achievement not on the resume yet.'
-                className="w-full rounded-xl border border-slate-200 p-3.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6] resize-none leading-relaxed"
+                value={additionalContext}
+                onChange={(e) => setAdditionalContext(e.target.value)}
+                placeholder="e.g. &ldquo;Led the migration to Snowflake — saved ₹18L/yr.&rdquo; — an achievement not on the resume yet."
+                className="w-full rounded-xl border border-slate-200 p-3.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6] resize-y font-sans leading-relaxed"
               />
 
-              <div className="flex justify-start text-xs text-slate-400 pt-1">
-                <span>{additionalContext.length} / 600</span>
+              <div className="text-right text-[11px] text-slate-400 mt-1">
+                {additionalContext.length} / 600
               </div>
             </section>
 
             {/* ─── SECTION 4: OUTPUT LENGTH ────────────────────── */}
-            <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative">
-              <div className="mb-4">
+            <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+              <div className="mb-3">
                 <h2 className="text-base font-bold text-slate-900">4 · Output length</h2>
               </div>
 
@@ -1306,7 +2182,8 @@ export default function OptimizePage() {
                 <p className="text-xl font-extrabold text-slate-900">
                   <span className="text-2xl font-black">
                     {creditsStatus?.freeOptimizationsRemaining ?? 2}
-                  </span> of 2 optimizations left
+                  </span>{" "}
+                  of 2 optimizations left
                 </p>
                 <p className="text-[11px] text-slate-400 mt-1">
                   One-time, never expires · 20 a month on Pro
