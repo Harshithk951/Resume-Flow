@@ -107,7 +107,7 @@ export default function SignUpPage() {
     <div className="relative min-h-screen w-full bg-white text-slate-900 flex flex-col lg:flex-row overflow-x-hidden selection:bg-purple-100 selection:text-purple-900">
       {/* Target CSS Styling to precisely match the reference auth card */}
       <style>{`
-        .cl-card, .cl-main, .cl-signUp-start, .cl-signIn-start, .cl-cardBox, .cl-formFieldRow, .cl-formField, .cl-rootBox, .cl-pageScrollBox {
+        .cl-card, .cl-main, .cl-signUp-start, .cl-signIn-start, .cl-cardBox, .cl-formFieldRow, .cl-formField, .cl-rootBox, .cl-pageScrollBox, .cl-cardContent {
           background-color: transparent !important;
           background: transparent !important;
           box-shadow: none !important;
@@ -115,14 +115,19 @@ export default function SignUpPage() {
           padding: 0 !important;
           margin: 0 !important;
           width: 100% !important;
+          gap: 0 !important;
         }
 
         /* Hide Clerk internal header */
-        .cl-header, .cl-formHeader {
+        .cl-header, .cl-formHeader, .cl-headerTitle, .cl-headerSubtitle {
           display: none !important;
+          height: 0 !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          overflow: hidden !important;
         }
 
-        /* Social Button (Continue with Google) */
+        /* Social Button (Continue with Google / GitHub) */
         .cl-socialButtonsRoot,
         .cl-socialButtons,
         .cl-socialButtonsBlockButtonRow {
@@ -130,15 +135,18 @@ export default function SignUpPage() {
           margin-bottom: 0px !important;
           padding: 0px !important;
           width: 100% !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 8px !important;
         }
         .cl-socialButtonsBlockButton {
           background-color: #ffffff !important;
           border: 1px solid #e2e8f0 !important;
           color: #1e293b !important;
           border-radius: 12px !important;
-          height: 46px !important;
+          height: 42px !important;
           font-weight: 600 !important;
-          font-size: 14px !important;
+          font-size: 13.5px !important;
           box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
           transition: all 0.2s ease !important;
           width: 100% !important;
@@ -146,7 +154,8 @@ export default function SignUpPage() {
           display: flex !important;
           align-items: center !important;
           justify-content: center !important;
-          gap: 10px !important;
+          gap: 8px !important;
+          margin: 0 !important;
         }
         .cl-socialButtonsBlockButton:hover {
           background-color: #f8fafc !important;
@@ -155,13 +164,14 @@ export default function SignUpPage() {
         .cl-socialButtonsBlockButtonText {
           color: #1e293b !important;
           font-weight: 600 !important;
-          font-size: 14px !important;
+          font-size: 13.5px !important;
         }
 
         /* Divider "or" */
         .cl-dividerRow {
-          margin-top: 20px !important;
-          margin-bottom: 20px !important;
+          margin-top: 14px !important;
+          margin-bottom: 14px !important;
+          padding: 0 !important;
         }
         .cl-dividerLine {
           background-color: #f1f5f9 !important;
@@ -177,11 +187,15 @@ export default function SignUpPage() {
         }
 
         /* Form Labels & Inputs */
+        .cl-formField {
+          margin-bottom: 12px !important;
+          padding: 0 !important;
+        }
         .cl-formFieldLabel {
           color: #1e293b !important;
           font-weight: 600 !important;
           font-size: 13px !important;
-          margin-bottom: 6px !important;
+          margin-bottom: 5px !important;
           display: block !important;
           text-align: left !important;
         }
@@ -194,7 +208,7 @@ export default function SignUpPage() {
           color: #0f172a !important;
           border: 1px solid #e2e8f0 !important;
           border-radius: 12px !important;
-          height: 44px !important;
+          height: 42px !important;
           padding-left: 14px !important;
           padding-right: 36px !important;
           font-size: 14px !important;
@@ -216,10 +230,10 @@ export default function SignUpPage() {
           background-color: #e4ddf6 !important;
           color: #5b21b6 !important;
           border-radius: 12px !important;
-          height: 46px !important;
+          height: 42px !important;
           font-weight: 600 !important;
           font-size: 14px !important;
-          margin-top: 16px !important;
+          margin-top: 12px !important;
           border: 1px solid transparent !important;
           box-shadow: none !important;
           width: 100% !important;
@@ -249,7 +263,7 @@ export default function SignUpPage() {
         .cl-footer, .cl-footerAction {
           background: transparent !important;
           border: none !important;
-          margin-top: 14px !important;
+          margin-top: 12px !important;
           padding: 0px !important;
           display: flex !important;
           justify-content: center !important;
@@ -271,13 +285,38 @@ export default function SignUpPage() {
           text-decoration: underline !important;
         }
 
-        /* Hide Clerk Dev Mode Notice Badge */
-        [data-clerk-dev-mode-notice],
-        div[class*="dev-mode-notice"],
+        /* Completely hide "Secured by clerk", dev notices, and badges */
+        a[href*="clerk.com"],
+        a[aria-label*="Clerk"],
+        [data-localization-key*="securedBy"],
+        [data-localization-key*="badge__securedBy"],
+        [data-localization-key*="developmentMode"],
+        .cl-badge,
+        .cl-logoBox,
+        .cl-footerPages,
+        .cl-footerPagesLink,
+        .cl-footerTextContainer,
+        .cl-internal-b3fm6y,
+        .cl-internal-1dauvpw,
+        .cl-internal-11w5gq5,
         .cl-devModeNotice,
+        [data-clerk-dev-mode-notice],
         [data-clerk-notice],
-        .cl-footerTextContainer {
+        .cl-socialButtonsBlockButtonBadge,
+        .cl-socialButtonsBlockButtonBadge__lastUsed,
+        .cl-footer > :not(.cl-footerAction),
+        div:has(> a[href*="clerk.com"]),
+        p:has(> a[href*="clerk.com"]),
+        span:has(> a[href*="clerk.com"]) {
           display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          height: 0 !important;
+          width: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden !important;
         }
 
         /* Form error styling */
@@ -358,19 +397,19 @@ export default function SignUpPage() {
       </div>
 
       {/* ─── RIGHT COLUMN: Welcome Back Header, Auth Card, Badges & Links ─── */}
-      <div className="relative z-10 w-full lg:w-1/2 bg-white flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12 py-12 lg:py-16 min-h-screen">
+      <div className="relative z-10 w-full lg:w-1/2 bg-white flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12 py-8 lg:py-10 min-h-screen">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className="w-full max-w-[420px] flex flex-col items-center"
+          className="w-full max-w-[390px] flex flex-col items-center"
         >
           {/* Create your account Header */}
-          <div className="text-center mb-6">
-            <h2 className="text-3xl sm:text-[34px] font-bold text-slate-900 tracking-tight">
+          <div className="text-center mb-4 sm:mb-5">
+            <h2 className="text-2xl sm:text-[30px] font-bold text-slate-900 tracking-tight">
               Create your account
             </h2>
-            <p className="text-sm text-slate-500 mt-2">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1.5">
               Sign up to start improving your resume in seconds.
             </p>
           </div>
@@ -378,7 +417,7 @@ export default function SignUpPage() {
           {/* White Floating Auth Card */}
           <div
             ref={formRef}
-            className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_25px_rgba(0,0,0,0.04)] p-6 sm:p-8"
+            className="w-full bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-5 sm:p-6"
           >
             <SignUp
               routing="path"
@@ -391,19 +430,26 @@ export default function SignUpPage() {
                   socialButtonsPlacement: "top",
                   socialButtonsVariant: "blockButton",
                   showOptionalFields: false,
+                  logoPlacement: "none",
+                },
+                elements: {
+                  footerPages: "hidden",
+                  footerPagesLink: "hidden",
+                  badge: "hidden",
+                  logoBox: "hidden",
                 },
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
               } as any}
             />
 
             {/* Subtext inside the card below the action button */}
-            <p className="text-center text-xs text-slate-400 mt-4 font-normal">
+            <p className="text-center text-[11px] sm:text-xs text-slate-400 mt-2.5 font-normal">
               free · no card needed
             </p>
           </div>
 
           {/* Trust points below card */}
-          <div className="mt-6 space-y-2 text-xs text-slate-600 font-medium w-full px-1">
+          <div className="mt-4 space-y-1.5 text-xs text-slate-600 font-medium w-full px-1">
             <div className="flex items-center gap-2">
               <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 stroke-[2.5]" />
               <span>We never sell your data or post anything</span>
@@ -415,7 +461,7 @@ export default function SignUpPage() {
           </div>
 
           {/* Terms & Privacy Note */}
-          <p className="mt-4 text-[11px] text-slate-400 leading-relaxed text-left w-full px-1">
+          <p className="mt-3 text-[11px] text-slate-400 leading-relaxed text-left w-full px-1">
             By signing up you agree to our{" "}
             <Link href="/legal/terms" className="underline hover:text-slate-600 transition-colors">
               Terms
@@ -428,7 +474,7 @@ export default function SignUpPage() {
           </p>
 
           {/* Back to Home Link */}
-          <div className="mt-6 text-center w-full">
+          <div className="mt-4 text-center w-full">
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-slate-600 transition-colors"
