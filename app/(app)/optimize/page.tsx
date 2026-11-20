@@ -506,18 +506,77 @@ export default function OptimizePage() {
           setCandidateContactLine(contactParts.join(" · "));
         }
         toast.success(`Successfully parsed ${file.name}`);
+      } else {
+        throw new Error(data.error || "No readable text found in file");
       }
     } catch (err: unknown) {
       console.warn("API parse failed, extracting locally:", err);
-      try {
-        const text = await file.text();
-        if (text && text.length > 50) {
-          setResumeText(text);
-          const links = (text.match(/https?:\/\/[^\s)\]]+/g) || []).length;
-          setFoundLinksCount(links);
+      let localExtracted = "";
+
+      // Browser-side fallback for PDF files
+      if (file.name.toLowerCase().endsWith(".pdf")) {
+        try {
+          const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+          const arrayBuffer = await file.arrayBuffer();
+          const doc = await pdfjs.getDocument({
+            data: new Uint8Array(arrayBuffer),
+            useSystemFonts: true,
+            disableFontFace: true,
+          }).promise;
+
+          const pages: string[] = [];
+          for (let i = 1; i <= doc.numPages; i++) {
+            const page = await doc.getPage(i);
+            const content = await page.getTextContent();
+            let lastY: number | undefined;
+            let pageText = "";
+
+            for (const item of content.items) {
+              if ("str" in item) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const transY = (item as any).transform?.[5];
+                if (lastY !== undefined && transY !== undefined && Math.abs(transY - lastY) > 2) {
+                  pageText += "\n";
+                } else if (pageText && !pageText.endsWith(" ") && !pageText.endsWith("\n")) {
+                  pageText += " ";
+                }
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                pageText += (item as any).str;
+                lastY = transY;
+              }
+            }
+            if (pageText.trim()) pages.push(pageText.trim());
+          }
+          localExtracted = pages.join("\n\n").trim();
+        } catch (clientPdfErr) {
+          console.warn("Client pdfjs extraction failed:", clientPdfErr);
         }
-      } catch {
-        toast.error("Could not parse file. You can paste the text instead.");
+      } else {
+        try {
+          const text = await file.text();
+          if (text && text.trim().length > 20) {
+            localExtracted = text.trim();
+          }
+        } catch (readErr) {
+          console.warn("File text read failed:", readErr);
+        }
+      }
+
+      if (localExtracted && localExtracted.length > 20) {
+        setResumeText(localExtracted);
+        const links = (localExtracted.match(/https?:\/\/[^\s)\]]+/g) || []).length;
+        setFoundLinksCount(links);
+        const firstLine = localExtracted.split("\n")[0]?.trim();
+        if (firstLine && firstLine.length < 50) {
+          setCandidateDisplayName(firstLine.toUpperCase());
+        }
+        toast.success(`Successfully parsed ${file.name}`);
+      } else {
+        const errorMsg =
+          err instanceof Error
+            ? err.message
+            : "Could not extract text from this file. You can paste the text directly.";
+        toast.error(errorMsg);
       }
     } finally {
       setIsUploading(false);

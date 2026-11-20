@@ -37,14 +37,78 @@ export async function POST(req: NextRequest) {
     if (fileName.endsWith(".txt") || fileName.endsWith(".md") || fileName.endsWith(".tex")) {
       extractedText = buffer.toString("utf-8");
     } else {
-      // PDF Parsing using @cedrugs/pdf-parse
+      const uint8 = new Uint8Array(buffer);
+
+      // Strategy 1: pdfjs-dist (Standard high-fidelity PDF parser)
       try {
-        const pdfParseModule = await import("@cedrugs/pdf-parse");
-        const pdfParse = pdfParseModule.default || pdfParseModule;
-        const data = await pdfParse(buffer);
-        extractedText = data.text || "";
+        const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+        const doc = await pdfjs.getDocument({
+          data: uint8,
+          useSystemFonts: true,
+          disableFontFace: true,
+          isEvalSupported: false,
+        }).promise;
+
+        const pages: string[] = [];
+        for (let i = 1; i <= doc.numPages; i++) {
+          const page = await doc.getPage(i);
+          const textContent = await page.getTextContent();
+          let lastY: number | undefined;
+          let pageText = "";
+
+          for (const item of textContent.items) {
+            if ("str" in item) {
+              if (lastY !== undefined && Math.abs(item.transform[5] - lastY) > 2) {
+                pageText += "\n";
+              } else if (pageText && !pageText.endsWith(" ") && !pageText.endsWith("\n")) {
+                pageText += " ";
+              }
+              pageText += item.str;
+              lastY = item.transform[5];
+            }
+          }
+          if (pageText.trim()) {
+            pages.push(pageText.trim());
+          }
+        }
+        const full = pages.join("\n\n").trim();
+        if (full.length > 20) {
+          extractedText = full;
+        }
       } catch (err) {
-        console.warn("Direct pdf-parse error, falling back to stream extraction:", err);
+        console.warn("Strategy 1 (pdfjs-dist) failed, attempting fallback:", err);
+      }
+
+      // Strategy 2: pdf-parse v2 fallback
+      if (!extractedText) {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const pdfParsePkg = (await import("pdf-parse")) as any;
+          const PDFParse = pdfParsePkg.PDFParse || pdfParsePkg.default?.PDFParse;
+          if (PDFParse) {
+            const parser = new PDFParse(uint8);
+            const res = await parser.getText();
+            if (res && res.text && res.text.trim().length > 20) {
+              extractedText = res.text.trim();
+            }
+          }
+        } catch (err) {
+          console.warn("Strategy 2 (pdf-parse v2) failed, attempting fallback:", err);
+        }
+      }
+
+      // Strategy 3: @cedrugs/pdf-parse fallback
+      if (!extractedText) {
+        try {
+          const pdfParseModule = await import("@cedrugs/pdf-parse");
+          const pdfParse = pdfParseModule.default || pdfParseModule;
+          const data = await pdfParse(buffer);
+          if (data && data.text && data.text.trim().length > 20) {
+            extractedText = data.text.trim();
+          }
+        } catch (err) {
+          console.warn("Strategy 3 (@cedrugs/pdf-parse) failed:", err);
+        }
       }
 
       // Also scan raw PDF buffer for /URI (http...) link annotations
@@ -102,6 +166,16 @@ export async function POST(req: NextRequest) {
       if (lowerText.includes(lowerSkill) || regex.test(cleanText)) {
         detectedSkills.push(skill);
       }
+    }
+
+    if (!cleanText) {
+      return NextResponse.json(
+        {
+          error:
+            "Could not extract readable text from this PDF. It may be a scanned image or protected. Please paste your resume text.",
+        },
+        { status: 422 }
+      );
     }
 
     return NextResponse.json({
