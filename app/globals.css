@@ -1031,4 +1031,39 @@ button:hover .icon-island-light {
   padding-top: env(safe-area-inset-top, 0px);
 }
 
+/* ── Clerk Branding & Badge Clean-up ───────────────────────── */
+/* Completely remove "Secured by Clerk", development notices, and badges across the entire app */
+a[href*="clerk.com"],
+a[aria-label*="Clerk"],
+[data-localization-key*="securedBy"],
+[data-localization-key*="badge__securedBy"],
+[data-localization-key*="developmentMode"],
+.cl-badge,
+.cl-logoBox,
+.cl-footerPages,
+.cl-footerPagesLink,
+.cl-footerTextContainer,
+.cl-internal-b3fm6y,
+.cl-internal-1dauvpw,
+.cl-internal-11w5gq5,
+.cl-devModeNotice,
+[data-clerk-dev-mode-notice],
+[data-clerk-notice],
+.cl-socialButtonsBlockButtonBadge,
+.cl-socialButtonsBlockButtonBadge__lastUsed,
+.cl-footer > :not(.cl-footerAction),
+div:has(> a[href*="clerk.com"]),
+p:has(> a[href*="clerk.com"]),
+span:has(> a[href*="clerk.com"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  height: 0 !important;
+  width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
 
