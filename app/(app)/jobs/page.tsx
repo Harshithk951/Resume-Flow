@@ -12,7 +12,7 @@ import {
   X,
   Loader2,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 type CrmStatus = "Saved" | "Applied" | "Interviewing" | "Offered" | "Rejected";
 
@@ -234,8 +234,7 @@ export default function JobTrackerPage() {
       toast.success(`Updated status to ${nextStatus}`);
     } catch (err: unknown) {
       console.error("Failed to update status:", err);
-      const msg = err instanceof Error ? err.message : "Failed to update application status.";
-      toast.error(msg);
+      toast.error(err);
     }
   };
 
@@ -247,8 +246,7 @@ export default function JobTrackerPage() {
       setDeleteConfirmId(null);
     } catch (err: unknown) {
       console.error("Failed to delete job:", err);
-      const msg = err instanceof Error ? err.message : "Failed to delete application.";
-      toast.error(msg);
+      toast.error(err);
     }
   };
 
@@ -287,8 +285,7 @@ export default function JobTrackerPage() {
       setModalStatus("Saved");
     } catch (err: unknown) {
       console.error("Failed to create application:", err);
-      const msg = err instanceof Error ? err.message : "Failed to create application.";
-      toast.error(msg);
+      toast.error(err);
     } finally {
       setIsSubmitting(false);
     }

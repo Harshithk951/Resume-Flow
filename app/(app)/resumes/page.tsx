@@ -17,7 +17,7 @@ import {
   Loader2,
   X,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 interface SavedResumeDoc {
   _id: Id<"savedResumes">;
@@ -170,12 +170,7 @@ export default function SavedResumesPage() {
       setIsModalOpen(false);
     } catch (err: unknown) {
       console.error("Save resume error:", err);
-      const msg = err instanceof Error ? err.message : "Failed to save resume.";
-      if (msg.includes("SLOT_LIMIT_REACHED")) {
-        toast.error("Slot limit reached for your plan. Please upgrade to Pro for 20 slots.");
-      } else {
-        toast.error(msg);
-      }
+      toast.error(err);
     } finally {
       setIsSubmitting(false);
     }
@@ -189,8 +184,7 @@ export default function SavedResumesPage() {
       setDeleteConfirmId(null);
     } catch (err: unknown) {
       console.error("Delete resume error:", err);
-      const msg = err instanceof Error ? err.message : "Failed to delete resume.";
-      toast.error(msg);
+      toast.error(err);
     }
   };
 
@@ -201,7 +195,7 @@ export default function SavedResumesPage() {
       toast.success("Set as default resume.");
     } catch (err: unknown) {
       console.error("Set default error:", err);
-      toast.error("Failed to update default status.");
+      toast.error(err);
     }
   };
 

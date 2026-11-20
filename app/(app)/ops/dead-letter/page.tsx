@@ -15,7 +15,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 export default function SettingsPage() {
   const { user: clerkUser, isLoaded: clerkLoaded } = useUser();

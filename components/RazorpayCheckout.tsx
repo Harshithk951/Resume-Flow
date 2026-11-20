@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, CheckCircle, AlertCircle, Zap } from "lucide-react";
 import confetti from "canvas-confetti";

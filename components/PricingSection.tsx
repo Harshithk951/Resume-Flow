@@ -7,7 +7,7 @@ import { Check } from "lucide-react";
 import { useRef } from "react";
 import { useAuth } from "@clerk/nextjs";
 
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 type BillingCycle = "monthly" | "yearly";
 

@@ -18,7 +18,7 @@ import {
   FolderOpen,
   Plus,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 interface OptimizationItem {
   _id: Id<"optimizations">;
@@ -60,8 +60,7 @@ export default function OptimizationHistoryPage() {
       setDeleteConfirmId(null);
     } catch (err: unknown) {
       console.error("Failed to delete optimization:", err);
-      const msg = err instanceof Error ? err.message : "Failed to delete optimization record.";
-      toast.error(msg);
+      toast.error(err);
     }
   };
 

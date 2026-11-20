@@ -133,7 +133,7 @@ export const deleteSavedResume = mutation({
   handler: async (ctx, args) => {
     const resume = await ctx.db.get(args.id);
     if (!resume) {
-      throw new ConvexError("Saved resume not found");
+      return { success: true, alreadyDeleted: true };
     }
     await requireOwnership(ctx, resume);
 
@@ -169,7 +169,7 @@ export const updateSavedResume = mutation({
   handler: async (ctx, args) => {
     const resume = await ctx.db.get(args.id);
     if (!resume) {
-      throw new ConvexError("Saved resume not found");
+      return { success: true, alreadyDeleted: true };
     }
     const user = await requireOwnership(ctx, resume);
 

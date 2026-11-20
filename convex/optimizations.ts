@@ -197,7 +197,8 @@ export const deleteOptimization = mutation({
   handler: async (ctx, args) => {
     const opt = await ctx.db.get(args.id);
     if (!opt) {
-      throw new ConvexError("Optimization not found");
+      // Idempotent: record already removed, return gracefully without error
+      return { success: true, alreadyDeleted: true };
     }
     await requireOwnership(ctx, opt);
 

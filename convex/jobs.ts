@@ -190,7 +190,7 @@ export const deleteJobAndResume = mutation({
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx);
     const job = await ctx.db.get(args.jobId);
-    if (!job) throw new Error("Job not found");
+    if (!job) return { success: true, alreadyDeleted: true };
     await requireOwnership(ctx, job);
 
     // Delete any tailored resumes for this job
@@ -681,7 +681,7 @@ export const internalUpdateJobState = internalMutation({
   },
   handler: async (ctx, args) => {
     const job = await ctx.db.get(args.jobId);
-    if (!job) throw new Error("Job not found");
+    if (!job) return { success: true, alreadyDeleted: true };
 
     if (job.pipelineState !== args.expectedState) {
       console.warn(
@@ -708,7 +708,7 @@ export const internalSetExtractedRequirements = internalMutation({
   },
   handler: async (ctx, args) => {
     const job = await ctx.db.get(args.jobId);
-    if (!job) throw new Error("Job not found");
+    if (!job) return { success: true, alreadyDeleted: true };
 
     // Deduct 500 credits for free users before AI tailoring
     const user = await ctx.db.get(job.userId);
@@ -781,7 +781,7 @@ export const internalSetTailoredResume = internalMutation({
   },
   handler: async (ctx, args) => {
     const job = await ctx.db.get(args.jobId);
-    if (!job) throw new Error("Job not found");
+    if (!job) return { success: true, alreadyDeleted: true };
 
     const existing = await ctx.db
       .query("tailoredResumes")
@@ -930,7 +930,7 @@ export const retryJobAdmin = mutation({
   args: { jobId: v.id("jobs") },
   handler: async (ctx, args) => {
     const job = await ctx.db.get(args.jobId);
-    if (!job) throw new Error("Job not found");
+    if (!job) return { success: true, alreadyDeleted: true };
 
     await ctx.db.patch(args.jobId, {
       pipelineState: "uploaded",

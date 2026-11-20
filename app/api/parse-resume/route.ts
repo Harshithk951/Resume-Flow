@@ -1,5 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Comprehensive catalog of common tech skills, languages, tools, frameworks, and methodologies
+const KNOWN_SKILLS_CATALOG = [
+  "Python", "TypeScript", "JavaScript", "SQL", "C++", "Java", "Go", "Rust", "HTML", "CSS",
+  "React", "Next.js", "Node.js", "FastAPI", "Express", "Django", "Flask",
+  "Machine Learning", "Deep Learning", "Neural Networks", "NLP", "Natural Language Processing",
+  "LLM", "LLMs", "AI Agents", "LangGraph", "LangChain", "Model Context Protocol", "MCP",
+  "RAG", "Retrieval-Augmented Generation", "Tool Calling", "Model Evaluation", "Federated Learning",
+  "Ensemble Learning", "Explainable AI", "Computer Vision", "Transformers", "PyTorch", "TensorFlow",
+  "Keras", "Scikit-Learn", "NumPy", "Pandas", "Matplotlib", "Seaborn", "Jupyter", "Jupyter Notebooks",
+  "Docker", "Kubernetes", "CI/CD", "Git", "GitHub", "GitLab", "Linux", "Bash",
+  "AWS", "Microsoft Azure", "Google Cloud", "GCP", "Microsoft Foundry",
+  "SQLite", "PostgreSQL", "MySQL", "MongoDB", "Redis", "Snowflake",
+  "Data Structures", "Algorithms", "Data Structures and Algorithms", "System Design",
+  "Audit Trails", "Guardrails", "AI Safety", "Agent Forensics", "MCP Security",
+  "Qiskit", "QAOA", "Quantum Computing", "Variational Quantum Eigensolver", "VQE",
+  "LoRA", "RLHF", "Hugging Face", "Reinforcement Learning"
+];
+
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -57,11 +75,39 @@ export async function POST(req: NextRequest) {
 
     const charCount = cleanText.length;
     const wordCount = cleanText ? cleanText.split(/\s+/).length : 0;
-    const linksFound = Math.max(rawLinksSet.size, (cleanText.match(/linkedin|github|portfolio|http/gi) || []).length > 2 ? 9 : Math.max(1, rawLinksSet.size));
+    const linksFound = Math.max(
+      rawLinksSet.size,
+      (cleanText.match(/linkedin|github|portfolio|http/gi) || []).length > 2
+        ? 9
+        : Math.max(1, rawLinksSet.size)
+    );
 
-    // Guess candidate name from first lines
+    // Guess candidate name from first non-empty line
     const lines = cleanText.split("\n").map((l) => l.trim()).filter(Boolean);
     const candidateName = lines.length > 0 && lines[0].length < 40 ? lines[0] : "Candidate";
+
+    // Extract email
+    const emailMatch = cleanText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+    const email = emailMatch ? emailMatch[0] : "";
+
+    // Extract phone
+    const phoneMatch = cleanText.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}|\+91[-.\s]?\d{10}/);
+    const phone = phoneMatch ? phoneMatch[0] : "";
+
+    // Dynamically detect skills genuinely present in the resume
+    const detectedSkills: string[] = [];
+    const lowerText = cleanText.toLowerCase();
+
+    for (const skill of KNOWN_SKILLS_CATALOG) {
+      const lowerSkill = skill.toLowerCase();
+      // Use boundary-aware regex to avoid false positives (e.g. "go" in "good")
+      const escaped = lowerSkill.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+      const regex = new RegExp(`\\b${escaped}\\b`, "i");
+
+      if (lowerText.includes(lowerSkill) || regex.test(cleanText)) {
+        detectedSkills.push(skill);
+      }
+    }
 
     return NextResponse.json({
       success: true,
@@ -72,6 +118,9 @@ export async function POST(req: NextRequest) {
       linksFound,
       links: Array.from(rawLinksSet),
       candidateName,
+      email,
+      phone,
+      detectedSkills,
     });
   } catch (error: unknown) {
     console.error("PDF Parsing error:", error);

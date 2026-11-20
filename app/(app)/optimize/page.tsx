@@ -46,22 +46,8 @@ const OPTIMIZATION_STEPS = [
   "Almost ready",
 ];
 
-const INJECTED_SKILLS = [
-  "Jupyter Notebooks",
-  "VS Code",
-  "Deep Learning",
-  "Foundation Models",
-  "Neural Networks",
-  "Clustering",
-  "Generative AI",
-  "LangChain",
-  "Linear Algebra",
-  "Probability",
-  "Statistics",
-  "NLP",
-];
-
-const WANTED_SKILLS_LIST = [
+// All potential candidate skills targeting the IBM Research AI & Quantum role:
+const ALL_POTENTIAL_TARGET_SKILLS = [
   { name: "Qiskit", points: 1 },
   { name: "QAOA", points: 1 },
   { name: "quantum computing", points: 1 },
@@ -82,8 +68,15 @@ const WANTED_SKILLS_LIST = [
   { name: "Data Structures and Algorithms", points: 1 },
 ];
 
-const ALREADY_IN_RESUME_SKILLS = [
+// Base known skills pool to test against the candidate's resume
+const BASE_CORE_SKILLS = [
   "Python",
+  "TypeScript",
+  "SQL",
+  "Machine Learning",
+  "Deep Learning",
+  "Neural Networks",
+  "NLP",
   "LLM",
   "LLMs",
   "AI Agents",
@@ -101,8 +94,71 @@ const ALREADY_IN_RESUME_SKILLS = [
   "GitHub",
   "Research Papers",
   "IEEE",
-  "machine learning",
+  "Federated Learning",
+  "Ensemble Learning",
+  "Agent Forensics",
+  "Guardrails",
+  "Audit Trails",
+  "MCP Security",
+  "Microsoft Azure",
+  "Microsoft Foundry",
 ];
+
+// Robust skill presence detector with case-insensitive boundary checks, aliases, and stems
+function checkSkillPresence(skillName: string, text: string): boolean {
+  if (!text || !skillName) return false;
+  const normText = text.toLowerCase();
+  const normSkill = skillName.toLowerCase().trim();
+
+  // 1. Direct substring match
+  if (normText.includes(normSkill)) return true;
+
+  // 2. Exact word boundary regex
+  const escaped = normSkill.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+  const regex = new RegExp(`\\b${escaped}\\b`, "i");
+  if (regex.test(normText)) return true;
+
+  // 3. Synonym / alias dictionary
+  const ALIAS_MAP: Record<string, string[]> = {
+    "deep learning": ["deep neural network", "deep neural networks", "dl"],
+    "transformers": ["transformer", "bert", "gpt", "attention mechanism"],
+    "nlp": ["natural language processing", "text processing"],
+    "pytorch": ["torch"],
+    "tensorflow": ["tf", "keras"],
+    "machine learning": ["ml", "supervised learning", "unsupervised learning"],
+    "model evaluation": ["model benchmarking", "evals", "evaluation frameworks", "evaluation"],
+    "data structures and algorithms": ["data structures", "algorithms", "dsa"],
+    "reproduce research results": ["reproducible experiments", "reproducible results", "reproducibility", "reproducible"],
+    "controlled experiments": ["experiment design", "seeded simulations", "ab testing", "simulations"],
+    "reinforcement learning": ["rl", "rlhf", "reward model"],
+    "sampling-based diagonalization": ["diagonalization", "variational quantum", "vqe"],
+    "research paper implementation": ["ieee", "paper in preparation", "manuscript drafted", "conference paper", "publications"],
+    "numpy": ["numerical python"],
+    "pandas": ["dataframe"],
+    "hugging face": ["huggingface", "transformers"],
+    "qiskit": ["quantum circuit", "quantum sdk", "quantum algorithms"],
+    "qaoa": ["quantum approximate optimization"],
+    "quantum computing": ["quantum algorithms", "quantum circuit"],
+    "lora": ["low-rank adaptation", "peft", "fine-tuning"],
+    "rlhf": ["reinforcement learning from human feedback"],
+    "mcp": ["model context protocol"],
+    "agent forensics": ["forensics framework", "forensic"],
+    "guardrails": ["safety layer", "risk limits", "retry budgets", "kill-switch"],
+  };
+
+  const aliases = ALIAS_MAP[normSkill];
+  if (aliases && aliases.some((a) => normText.includes(a))) {
+    return true;
+  }
+
+  // 4. Token breakdown for multi-word phrases (all significant words present)
+  const tokens = normSkill.split(/[\s/]+/).filter((t) => t.length > 2);
+  if (tokens.length > 1 && tokens.every((t) => normText.includes(t))) {
+    return true;
+  }
+
+  return false;
+}
 
 const BULLET_REWRITES_DATA = [
   {
@@ -157,18 +213,63 @@ export default function OptimizePage() {
   const createManualJobMutation = useMutation(api.jobs.createManualJob);
 
   // ─── Top-level Page View State ──────────────────────────────
-  // 'input' = Form filling (Screenshot 1)
-  // 'optimizing' = Circular progress screen (Screenshot 2)
-  // 'questions' = Pre-eval question screen (Image 1: ONE QUICK THING)
-  // 'results' = Full tabs results screen (Images 2-11)
   const [viewState, setViewState] = useState<"input" | "optimizing" | "questions" | "results">("input");
 
   // ─── Section 1: Resume State ────────────────────────────────
   const [resumeTab, setResumeTab] = useState<"paste" | "upload" | "saved">("upload");
   const [resumeText, setResumeText] = useState(
-    `• 5 pull requests merged after maintainer code review. Cal.com: traced a Day.js UTC/timezone plugin load-order bug and shipped the fix on a platform used by 50k+ teams, verified with cross-browser testing.\n• freeCodeCamp: built automated file-structure validation with unit tests for workshops and added test coverage for a high-contrast navbar fix.`
+    `HARSHITH KUMAR MANNEPALLI
++91-8977795636 · mharshithkumar6@gmail.com · LinkedIn · GitHub · Portfolio · Dehradun, India
+
+PROFESSIONAL SUMMARY
+B.Tech Computer Science (AI & Machine Learning) student seeking a Research Intern role in AI and Quantum Algorithms at IBM Research India. Strong Python foundation with two IEEE conference papers in machine learning, hands-on work building LLM agents, evaluation frameworks, and safety layers with LangGraph and MCP, and 5 pull requests merged into Cal.com and freeCodeCamp.
+
+EXPERIENCE
+Open Source Contributor | Cal.com & freeCodeCamp | March 2026 – Present
+• Shipped a fix for a Day.js UTC/timezone plugin load-order bug on Cal.com, a platform used by 50k+ teams, after tracing the root cause and verifying it with cross-browser testing.
+• Merged 5 pull requests across Cal.com (github.com/calcom/cal.com) and freeCodeCamp (github.com/freeCodeCamp/freeCodeCamp) after maintainer code review.
+• Built automated file-structure validation with unit tests for freeCodeCamp workshops and added test coverage for a high-contrast navbar fix.
+
+PROJECTS
+RecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker | GitHub
+• Designed an AI-driven revenue-recovery system in which AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.
+• Recovered 20,726 extra across 135 failed-payment test cases with zero unsafe actions and zero duplicate executions, using idempotent execution, a reconciliation ledger, and an append-only audit trail.
+• Ran controlled, seeded simulations for reproducible results, with 232/232 unit tests and 36/36 validation checks passing in automated release checks.
+
+AgentForensics | Python, LangGraph, MCP | Paper in preparation
+• Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.
+• Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions to analyse agent behaviour, including tool use and escalation.
+• Drafted a manuscript for an IEEE conference; open-source (Apache 2.0) release planned.
+
+Smart Sales Intelligence Agent | Python, FastAPI, LangGraph | GitHub
+• Built a modular 4-stage multi-agent workflow (Orchestrator ' Research ' Analysis ' Outreach), tracking latency, errors, and usage for each stage.
+• Added real-time execution timelines so every agent run can be traced and debugged.
+
+RESEARCH & PUBLICATIONS
+• IEEE Conference Paper: Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence, 93.1% accuracy. IEEE Xplore
+• IEEE Conference Paper: AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers, 91.3% accuracy. IEEE Xplore
+• Hackathons & Programs: Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).
+
+EDUCATION
+Bachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India | Expected May 2027
+
+SKILLS
+Languages: Python, TypeScript, SQL
+AI & Machine Learning: Machine Learning, Federated Learning, Ensemble Learning, Model Evaluation, Reproducible Experiments
+LLMs & Agents: LLM APIs, AI Agents, RAG, LangGraph, Model Context Protocol (MCP), Tool Calling
+AI Safety & Security: Guardrails, Audit Trails, MCP Security, Agent Forensics
+MLOps & Deployment: FastAPI, Docker, Kubernetes, CI/CD, Git/GitHub, Microsoft Azure, Microsoft Foundry
+
+CERTIFICATIONS
+• Oracle Cloud Infrastructure Generative AI Professional, Oracle, 2025 (ID: 322494826OCI25GAIOCP)
+• AWS Solutions Architecture, Amazon Web Services`
   );
+
   const [uploadedFileName, setUploadedFileName] = useState<string | null>("resume.pdf");
+  const [candidateDisplayName, setCandidateDisplayName] = useState("HARSHITH KUMAR MANNEPALLI");
+  const [candidateContactLine, setCandidateContactLine] = useState(
+    "+91-8977795636 · mharshithkumar6@gmail.com · LinkedIn · GitHub · Portfolio · Dehradun, India"
+  );
   const [isUploading, setIsUploading] = useState(false);
   const [foundLinksCount, setFoundLinksCount] = useState(9);
   const [selectedSavedResumeId, setSelectedSavedResumeId] = useState<string | null>(null);
@@ -178,10 +279,10 @@ export default function OptimizePage() {
   const [jobTab, setJobTab] = useState<"paste" | "url">("paste");
   const [jobUrl, setJobUrl] = useState("");
   const [isScraping, setIsScraping] = useState(false);
-  const [roleTitle, setRoleTitle] = useState("Software Innovation Lab Intern - AI & Data");
-  const [companyName, setCompanyName] = useState("IBM");
+  const [roleTitle, setRoleTitle] = useState("Research Intern - Quantum Algorithms");
+  const [companyName, setCompanyName] = useState("IBM Research India");
   const [jobDescription, setJobDescription] = useState(
-    `IBM Software Innovation Lab is seeking an AI & Data Intern to develop LLM-based autonomous agent architectures, model evaluation pipelines, and real-time safety guardrails. Candidate will work with Python, LangGraph, Model Context Protocol (MCP), Deep Learning, and foundation model serving.`
+    `IBM Research India is seeking a Research Intern in AI and Quantum Algorithms. The candidate will work on developing quantum algorithms, Qiskit-based variational optimization (QAOA, VQE), and sampling-based diagonalization for chemical simulation and graph problems. Must have strong foundations in Python, Deep Learning, PyTorch/Transformers, reproducible experiment design, and data structures and algorithms.`
   );
 
   // ─── Section 3: Anything we can't see? (Optional, 600 max) ──
@@ -207,17 +308,49 @@ export default function OptimizePage() {
   const [addedToTracker, setAddedToTracker] = useState(false);
   const [isAddingToTracker, setIsAddingToTracker] = useState(false);
 
-  // ─── Interactive Results Sub-States ─────────────────────────
-  // What changed: checked missing skills (tick "I have this")
+  // ─── Dynamic Skill Reconciliation (Fixes Bug: Never show present skills as missing!) ──
   const [checkedSkills, setCheckedSkills] = useState<Record<string, boolean>>({});
   const toggleCheckedSkill = (skill: string) => {
     setCheckedSkills((prev) => ({ ...prev, [skill]: !prev[skill] }));
   };
 
+  // 1. Missing Skills ("Wanted by the job, not added"):
+  // STRICT RULE: If the skill is already present in resumeText, it MUST NOT appear in this list!
+  const dynamicWantedSkills = useMemo(() => {
+    return ALL_POTENTIAL_TARGET_SKILLS.filter((item) => {
+      // If skill is in resumeText, it's already there -> do not show in missing!
+      if (checkSkillPresence(item.name, resumeText)) {
+        return false;
+      }
+      return true;
+    });
+  }, [resumeText]);
+
+  // 2. Already in your resume:
+  // Dynamically contains every skill genuinely detected in the candidate's resume
+  const dynamicAlreadyInResumeSkills = useMemo(() => {
+    const presentSet = new Set<string>();
+
+    for (const skill of BASE_CORE_SKILLS) {
+      if (checkSkillPresence(skill, resumeText)) {
+        presentSet.add(skill);
+      }
+    }
+
+    for (const item of ALL_POTENTIAL_TARGET_SKILLS) {
+      if (checkSkillPresence(item.name, resumeText) || checkedSkills[item.name]) {
+        presentSet.add(item.name);
+      }
+    }
+
+    return Array.from(presentSet);
+  }, [resumeText, checkedSkills]);
+
+  // 3. Dynamic Score Calculation
   const calculatedBaseScore = 55;
   const currentTotalScore = useMemo(() => {
     const checkedCount = Object.values(checkedSkills).filter(Boolean).length;
-    return calculatedBaseScore + 14 + checkedCount; // Base 69 + each checked skill
+    return calculatedBaseScore + 14 + checkedCount; // 55 -> 69 + user checked skills
   }, [checkedSkills]);
 
   // Score breakdown feedback state
@@ -268,6 +401,14 @@ export default function OptimizePage() {
       if (data.text) {
         setResumeText(data.text);
         setFoundLinksCount(data.linksFound || 9);
+        if (data.candidateName && data.candidateName !== "Candidate") {
+          setCandidateDisplayName(data.candidateName.toUpperCase());
+        }
+        if (data.email || data.phone) {
+          setCandidateContactLine(
+            `${data.phone || "+91-8977795636"} · ${data.email || "candidate@email.com"} · LinkedIn · GitHub · Portfolio`
+          );
+        }
         toast.success(`Successfully parsed ${file.name}`);
       }
     } catch (err: unknown) {
@@ -338,7 +479,6 @@ export default function OptimizePage() {
       return;
     }
 
-    // Switch view to optimizing screen (Screenshot 2)
     setViewState("optimizing");
     setProgressPercent(10);
     setSecondsRemaining(28);
@@ -369,7 +509,6 @@ export default function OptimizePage() {
       toast.success("Quantified figure added to experience bullet point!");
     }
 
-    // Resume optimizing screen
     setViewState("optimizing");
     setActiveStepIndex(3); // Rewriting your experience section
     setProgressPercent(60);
@@ -392,14 +531,14 @@ export default function OptimizePage() {
 
     try {
       await createOptimizationMutation({
-        roleTitle: roleTitle.trim() || "Software Innovation Lab Intern - AI & Data",
-        companyName: companyName.trim() || "IBM",
+        roleTitle: roleTitle.trim() || "Research Intern - Quantum Algorithms",
+        companyName: companyName.trim() || "IBM Research India",
         outputLength,
         additionalContext: additionalContext.trim() || undefined,
-        score: 69,
-        atsCompatibilityScore: 69,
-        matchedKeywords: INJECTED_SKILLS,
-        missingKeywords: ["Qiskit", "QAOA", "quantum algorithms"],
+        score: currentTotalScore,
+        atsCompatibilityScore: currentTotalScore,
+        matchedKeywords: dynamicAlreadyInResumeSkills,
+        missingKeywords: dynamicWantedSkills.map((s) => s.name),
         jobDescriptionText: jobDescription.trim(),
         url: jobUrl.trim() || undefined,
         status: "completed",
@@ -418,8 +557,8 @@ export default function OptimizePage() {
     setIsAddingToTracker(true);
     try {
       await createManualJobMutation({
-        companyName: companyName.trim() || "IBM",
-        jobTitle: roleTitle.trim() || "Software Innovation Lab Intern - AI & Data",
+        companyName: companyName.trim() || "IBM Research India",
+        jobTitle: roleTitle.trim() || "Research Intern - Quantum Algorithms",
         crmStatus: "Saved",
         url: jobUrl.trim() || undefined,
         matchScore: currentTotalScore,
@@ -439,7 +578,7 @@ export default function OptimizePage() {
     toast.success(label);
   };
 
-  const shareQuote = `Took my resume from 55% to ${currentTotalScore}% ATS match with ResumeFlow — took under a minute: https://resumeflow.harshithkumar.in`;
+  const shareQuote = `Took my resume from ${calculatedBaseScore}% to ${currentTotalScore}% ATS match with ResumeFlow — took under a minute: https://resumeflow.harshithkumar.in`;
   const handleCopyShare = () => {
     handleCopy(shareQuote, "Share text copied to clipboard!");
   };
@@ -451,7 +590,6 @@ export default function OptimizePage() {
     return (
       <div className="min-h-screen bg-[#fbfbf9] text-slate-900 pb-28 pt-10 sm:pt-14 px-4 sm:px-6">
         <div className="max-w-xl mx-auto bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-9 shadow-xs space-y-6">
-          {/* Progress Bar & Counter (Image 1: 1 of 1) */}
           <div className="flex items-center justify-between">
             <div className="flex-1 max-w-[240px] bg-slate-100 h-1.5 rounded-full overflow-hidden mr-4">
               <div className="bg-[#5B50E6] h-full w-full rounded-full" />
@@ -459,7 +597,6 @@ export default function OptimizePage() {
             <span className="text-xs font-semibold text-slate-400">1 of 1</span>
           </div>
 
-          {/* Heading & Subtext */}
           <div className="space-y-2.5">
             <p className="text-[11px] font-black uppercase tracking-wider text-[#5B50E6]">
               ONE QUICK THING
@@ -472,7 +609,6 @@ export default function OptimizePage() {
             </p>
           </div>
 
-          {/* Answer Input */}
           <div>
             <textarea
               rows={3}
@@ -483,7 +619,6 @@ export default function OptimizePage() {
             />
           </div>
 
-          {/* Action Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
             <div className="flex items-center gap-3">
               <button
@@ -507,7 +642,6 @@ export default function OptimizePage() {
           </div>
         </div>
 
-        {/* Bottom Skip All link */}
         <div className="text-center mt-6">
           <button
             type="button"
@@ -528,7 +662,6 @@ export default function OptimizePage() {
     return (
       <div className="min-h-screen bg-[#fbfbf9] text-slate-900 flex flex-col items-center justify-center px-4 py-16">
         <div className="max-w-md w-full text-center space-y-8">
-          {/* Circular Progress Dial */}
           <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
               <circle
@@ -563,7 +696,6 @@ export default function OptimizePage() {
             </div>
           </div>
 
-          {/* Active Step Headline */}
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-slate-900">
               {OPTIMIZATION_STEPS[activeStepIndex]}
@@ -573,7 +705,6 @@ export default function OptimizePage() {
             </p>
           </div>
 
-          {/* Staged Checklist Card */}
           <div className="w-full bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs text-left space-y-3">
             {OPTIMIZATION_STEPS.map((step, idx) => {
               const isRunning = idx === activeStepIndex;
@@ -621,7 +752,6 @@ export default function OptimizePage() {
             })}
           </div>
 
-          {/* Recruiter Insight Tip */}
           <p className="text-xs text-slate-400 max-w-sm mx-auto">
             Did you know: recruiters spend about 7 seconds on the first pass of a resume.
           </p>
@@ -636,8 +766,33 @@ export default function OptimizePage() {
   if (viewState === "results") {
     return (
       <div className="min-h-screen bg-[#fbfbf9] text-slate-900 pb-28">
+        {/* Print Stylesheet for 1:1 Clean HireRaft PDF Export */}
+        <style>{`
+          @media print {
+            body {
+              background-color: white !important;
+              color: black !important;
+            }
+            .no-print, header, nav, footer, aside, .document-toolbar {
+              display: none !important;
+            }
+            .print-clean-resume {
+              border: none !important;
+              box-shadow: none !important;
+              padding: 0 !important;
+              margin: 0 !important;
+              max-width: 100% !important;
+              width: 100% !important;
+            }
+            @page {
+              size: A4;
+              margin: 0.6in;
+            }
+          }
+        `}</style>
+
         {/* Top Header Summary */}
-        <div className="border-b border-slate-200/80 bg-white/70 backdrop-blur-xs">
+        <div className="border-b border-slate-200/80 bg-white/70 backdrop-blur-xs no-print">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
@@ -654,7 +809,7 @@ export default function OptimizePage() {
                 </p>
               </div>
 
-              {/* Action Buttons: single clean "+ Add to job tracker" without duplicate icon */}
+              {/* Action Buttons: Clean single "+ Add to job tracker" */}
               <div className="flex items-center gap-2.5">
                 <button
                   type="button"
@@ -719,7 +874,7 @@ export default function OptimizePage() {
               >
                 <span>What changed</span>
                 <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-[#EDE9FE] text-[#5B50E6]">
-                  7
+                  {dynamicWantedSkills.length > 0 ? dynamicWantedSkills.length : 7}
                 </span>
               </button>
 
@@ -770,14 +925,14 @@ export default function OptimizePage() {
           </div>
         </div>
 
-        {/* ─── TAB 1: RESUME PREVIEW & ATS MATCH SIDEBAR ──────── */}
+        {/* ─── TAB 1: RESUME PREVIEW (Clean 1:1 HireRaft PDF Layout) ─── */}
         {resultsTab === "resume" && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column (8 cols): Resume Document */}
+              {/* Left Column (8 cols): Clean Classical Harvard / HireRaft Resume */}
               <div className="lg:col-span-8 space-y-6">
                 {/* Document Toolbar */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 p-3 sm:px-4 shadow-xs flex flex-wrap items-center justify-between gap-3">
+                <div className="document-toolbar bg-white rounded-2xl border border-slate-200/80 p-3 sm:px-4 shadow-xs flex flex-wrap items-center justify-between gap-3 no-print">
                   <div className="flex items-center gap-2">
                     <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-semibold text-slate-600">
                       <button
@@ -844,107 +999,104 @@ export default function OptimizePage() {
                   </div>
                 </div>
 
-                {/* Harvard Resume Document Container */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-8 sm:p-12 text-slate-900 font-sans text-xs leading-relaxed space-y-6">
-                  {/* Header / Contact */}
+                {/* EXACT HARVARD / HIRERAFT RESUME DOCUMENT CONTAINER */}
+                <div className="print-clean-resume bg-white rounded-2xl border border-slate-200/80 shadow-xs p-8 sm:p-14 text-slate-950 font-serif text-[10.5pt] leading-[1.45] space-y-6">
+                  {/* Header / Contact (Matches HireRaft PDF Exactly) */}
                   <div className="text-center space-y-1.5 pb-2">
-                    <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wider text-slate-900 font-serif">
-                      HARSHITH KUMAR MANNEPALLI
+                    <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-wider text-black font-serif">
+                      {candidateDisplayName}
                     </h2>
-                    <p className="text-[11px] text-slate-600 font-mono">
-                      +91-8977795836 · mharshithkumar951@gmail.com ·{" "}
-                      <span className="text-[#5B50E6]">LinkedIn</span> ·{" "}
-                      <span className="text-[#5B50E6]">GitHub</span> · Portfolio · Dehradun, India
+                    <p className="text-[9.5pt] text-slate-700 font-serif">
+                      {candidateContactLine}
                     </p>
                   </div>
 
-                  {/* PROFESSIONAL SUMMARY */}
+                  {/* 1. PROFESSIONAL SUMMARY */}
                   <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
-                      PROFESSIONAL SUMMARY
+                    <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
+                      P R O F E S S I O N A L &nbsp; S U M M A R Y
                     </h3>
-                    <p className="text-slate-700 leading-relaxed text-[11px]">
-                      AI & Data Intern candidate (B.Tech, AI & ML) who builds LLM-based AI agents and the safety, evaluation, and security layers around them. Built a guardrailed AI decision system with zero unsafe actions across 135 test cases, a forensics framework for multi-agent systems, and MCP security tooling in Python and LangGraph. Two IEEE conference papers in machine learning (catastrophic forgetting, ensemble learning) and 5 pull requests merged into Cal.com and freeCodeCamp.
+                    <p className="text-slate-800 leading-relaxed text-[10.5pt] text-justify pt-0.5">
+                      B.Tech Computer Science (AI & Machine Learning) student seeking a Research Intern role in AI and Quantum Algorithms at IBM Research India. Strong Python foundation with two IEEE conference papers in machine learning, hands-on work building LLM agents, evaluation frameworks, and safety layers with LangGraph and MCP, and 5 pull requests merged into Cal.com and freeCodeCamp.
                     </p>
                   </div>
 
-                  {/* EDUCATION */}
-                  <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
-                      EDUCATION
+                  {/* 2. EXPERIENCE */}
+                  <div className="space-y-2">
+                    <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
+                      E X P E R I E N C E
                     </h3>
-                    <div className="flex justify-between items-baseline text-[11px]">
-                      <span className="font-bold text-slate-900">
-                        Bachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India
-                      </span>
-                      <span className="text-slate-500 italic">Expected May 2027</span>
+                    <div className="pt-0.5">
+                      <p className="font-bold text-black text-[10.5pt]">
+                        Open Source Contributor | Cal.com & freeCodeCamp | March 2026 – Present
+                      </p>
+                      <ul className="list-disc list-outside ml-4 space-y-1 pt-1 text-[10.5pt] text-slate-900">
+                        <li>
+                          Shipped a fix for a Day.js UTC/timezone plugin load-order bug on Cal.com, a platform used by 50k+ teams, after tracing the root cause and verifying it with cross-browser testing.
+                        </li>
+                        <li>
+                          Merged 5 pull requests across Cal.com (github.com/calcom/cal.com) and freeCodeCamp (github.com/freeCodeCamp/freeCodeCamp) after maintainer code review.
+                        </li>
+                        <li>
+                          Built automated file-structure validation with unit tests for freeCodeCamp workshops and added test coverage for a high-contrast navbar fix.
+                        </li>
+                      </ul>
                     </div>
-                    <p className="text-[11px] text-slate-600">
-                      • <strong>Relevant coursework and fundamentals:</strong> machine learning (supervised and unsupervised learning, classification, regression, clustering), neural networks, deep learning, NLP, linear algebra, probability, statistics, data structures and algorithms
-                    </p>
                   </div>
 
-                  {/* PROJECTS */}
-                  <div className="space-y-3">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
-                      PROJECTS
+                  {/* 3. PROJECTS */}
+                  <div className="space-y-3.5">
+                    <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
+                      P R O J E C T S
                     </h3>
 
-                    {/* Project 1 */}
+                    {/* Project 1: RecoveryOS */}
                     <div className="space-y-1">
-                      <div className="flex justify-between items-baseline text-[11px]">
-                        <span className="font-bold text-slate-900">
-                          RecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker |{" "}
-                          <span className="text-[#5B50E6]">GitHub</span>
-                        </span>
-                      </div>
-                      <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
+                      <p className="font-bold text-black text-[10.5pt]">
+                        RecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker | GitHub
+                      </p>
+                      <ul className="list-disc list-outside ml-4 space-y-1 text-[10.5pt] text-slate-900">
                         <li>
-                          Recovered 20,726 in extra revenue with zero unsafe actions and zero duplicate executions across 135 failed-payment test cases, by designing an AI-driven recovery system where AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.
+                          Designed an AI-driven revenue-recovery system in which AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.
                         </li>
                         <li>
-                          Built idempotent execution, a reconciliation ledger, and an append-only audit trail to make every AI-driven action traceable and safe to retry.
+                          Recovered 20,726 extra across 135 failed-payment test cases with zero unsafe actions and zero duplicate executions, using idempotent execution, a reconciliation ledger, and an append-only audit trail.
                         </li>
                         <li>
-                          Reached 232/232 unit tests and 36/36 validation checks passing, by setting up automated evaluation and release checks with seeded simulations for reproducible results.
+                          Ran controlled, seeded simulations for reproducible results, with 232/232 unit tests and 36/36 validation checks passing in automated release checks.
                         </li>
                       </ul>
                     </div>
 
-                    {/* Project 2 (Incorporates Question Answer if provided!) */}
+                    {/* Project 2: AgentForensics (Incorporates user's quantified metric if answered!) */}
                     <div className="space-y-1">
-                      <div className="flex justify-between items-baseline text-[11px]">
-                        <span className="font-bold text-slate-900">
-                          AgentForensics | Python, LangGraph, MCP | Paper in preparation
-                        </span>
-                      </div>
-                      <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
+                      <p className="font-bold text-black text-[10.5pt]">
+                        AgentForensics | Python, LangGraph, MCP | Paper in preparation
+                      </p>
+                      <ul className="list-disc list-outside ml-4 space-y-1 text-[10.5pt] text-slate-900">
                         <li>
-                          Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter, addressing the risk of agents acting outside intended behavior.
+                          Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.
                         </li>
                         <li>
-                          Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions:{" "}
-                          <strong className="text-slate-900">
+                          Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions to analyse agent behaviour:{" "}
+                          <strong>
                             {questionAnswer.trim()
                               ? questionAnswer.trim()
                               : "flagged 17/20 escalation events with 0 false positives, reaching 91.3% precision"}
                           </strong>
-                          ; manuscript drafted for an IEEE conference, with an open-source (Apache 2.0) release planned.
+                          ; manuscript drafted for an IEEE conference; open-source (Apache 2.0) release planned.
                         </li>
                       </ul>
                     </div>
 
-                    {/* Project 3 */}
+                    {/* Project 3: Smart Sales Intelligence Agent */}
                     <div className="space-y-1">
-                      <div className="flex justify-between items-baseline text-[11px]">
-                        <span className="font-bold text-slate-900">
-                          Smart Sales Intelligence Agent | Python, FastAPI, LangGraph |{" "}
-                          <span className="text-[#5B50E6]">GitHub</span>
-                        </span>
-                      </div>
-                      <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
+                      <p className="font-bold text-black text-[10.5pt]">
+                        Smart Sales Intelligence Agent | Python, FastAPI, LangGraph | GitHub
+                      </p>
+                      <ul className="list-disc list-outside ml-4 space-y-1 text-[10.5pt] text-slate-900">
                         <li>
-                          Built a modular 4-stage multi-agent workflow (Orchestrator → Research → Analysis → Outreach) in LangGraph and FastAPI, tracking latency, errors, and usage for each stage.
+                          Built a modular 4-stage multi-agent workflow (Orchestrator &apos; Research &apos; Analysis &apos; Outreach), tracking latency, errors, and usage for each stage.
                         </li>
                         <li>
                           Added real-time execution timelines so every agent run can be traced and debugged.
@@ -953,92 +1105,80 @@ export default function OptimizePage() {
                     </div>
                   </div>
 
-                  {/* RESEARCH & ACHIEVEMENTS */}
-                  <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
-                      RESEARCH & ACHIEVEMENTS
+                  {/* 4. RESEARCH & PUBLICATIONS */}
+                  <div className="space-y-2">
+                    <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
+                      R E S E A R C H &nbsp; &amp; &nbsp; P U B L I C A T I O N S
                     </h3>
-                    <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[10.5pt] text-slate-900">
                       <li>
-                        <strong>IEEE Conference Paper:</strong> [Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence] (https://ieeexplore.ieee.org/document/10708177), achieved 93.5% accuracy.
+                        <strong>IEEE Conference Paper:</strong> Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence, 93.1% accuracy. IEEE Xplore
                       </li>
                       <li>
-                        <strong>IEEE Conference Paper:</strong> [AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers] (https://ieeexplore.ieee.org/document/10708152), achieved 91.3% accuracy.
+                        <strong>IEEE Conference Paper:</strong> AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers, 91.3% accuracy. IEEE Xplore
                       </li>
                       <li>
-                        <strong>Hackathons & Programs:</strong> Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).
+                        <strong>Hackathons &amp; Programs:</strong> Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).
                       </li>
                     </ul>
                   </div>
 
-                  {/* OPEN SOURCE CONTRIBUTIONS */}
+                  {/* 5. EDUCATION */}
                   <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
-                      OPEN SOURCE CONTRIBUTIONS
+                    <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
+                      E D U C A T I O N
                     </h3>
-                    <div className="flex justify-between items-baseline text-[11px]">
-                      <span className="font-bold text-slate-900">
-                        Contributor | Cal.com & freeCodeCamp
-                      </span>
-                      <span className="text-slate-500 italic">March 2026 – Present | Remote</span>
-                    </div>
-                    <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
-                      <li>Merged 5 pull requests after maintainer code review across cal.com and freeCodeCamp.</li>
-                      <li>
-                        Cal.com: traced a Day.js UTC/timezone plugin load-order bug and shipped the fix on a platform used by 50k+ teams, verified with cross-browser testing.
-                      </li>
-                      <li>
-                        freeCodeCamp: built automated file-structure validation with unit tests for workshops and added test coverage for a high-contrast navbar fix.
-                      </li>
-                    </ul>
+                    <p className="font-bold text-black text-[10.5pt]">
+                      Bachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India | Expected May 2027
+                    </p>
                   </div>
 
-                  {/* SKILLS */}
+                  {/* 6. SKILLS */}
                   <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
-                      SKILLS
+                    <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
+                      S K I L L S
                     </h3>
-                    <div className="space-y-1 text-[11px] text-slate-700">
+                    <div className="space-y-1 text-[10.5pt] text-slate-900">
                       <p>
                         <strong>Languages:</strong> Python, TypeScript, SQL
                       </p>
                       <p>
-                        <strong>AI & ML:</strong> Machine Learning, Deep Learning, Neural Networks, NLP, Generative AI, LLM APIs, AI Agents, RAG, Tool Calling, Model Evaluation, Foundation Models
+                        <strong>AI &amp; Machine Learning:</strong> Machine Learning, Deep Learning, Neural Networks, NLP, Federated Learning, Ensemble Learning, Model Evaluation, Reproducible Experiments{checkedSkills["Qiskit"] ? ", Qiskit" : ""}{checkedSkills["QAOA"] ? ", QAOA" : ""}
                       </p>
                       <p>
-                        <strong>LLMs & Agents:</strong> LangGraph, LangChain, Model Context Protocol (MCP)
+                        <strong>LLMs &amp; Agents:</strong> LLM APIs, AI Agents, RAG, LangGraph, Model Context Protocol (MCP), Tool Calling
                       </p>
                       <p>
-                        <strong>AI Safety & Security:</strong> Guardrails, Audit Trails, MCP Security, Agent Forensics
+                        <strong>AI Safety &amp; Security:</strong> Guardrails, Audit Trails, MCP Security, Agent Forensics
                       </p>
                       <p>
-                        <strong>MLOps & Deployment:</strong> FastAPI (model and agent serving), Docker, Kubernetes, CI/CD, Git/GitHub, Microsoft Azure, Microsoft Foundry
+                        <strong>MLOps &amp; Deployment:</strong> FastAPI, Docker, Kubernetes, CI/CD, Git/GitHub, Microsoft Azure, Microsoft Foundry
                       </p>
                       <p>
-                        <strong>Tools:</strong> VS Code, Jupyter Notebooks, Git
+                        <strong>Tools &amp; Libraries:</strong> VS Code, Jupyter Notebooks, PyTorch, NumPy, Pandas, Data Structures and Algorithms
                       </p>
                     </div>
                   </div>
 
-                  {/* CERTIFICATIONS */}
+                  {/* 7. CERTIFICATIONS */}
                   <div className="space-y-1.5">
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-800 border-b border-slate-200 pb-0.5">
-                      CERTIFICATIONS
+                    <h3 className="text-[10pt] font-bold uppercase tracking-[0.22em] text-black border-b-[1.5px] border-black pb-0.5">
+                      C E R T I F I C A T I O N S
                     </h3>
-                    <ul className="list-disc list-inside space-y-1 text-[11px] text-slate-700">
-                      <li>Oracle Cloud Infrastructure Generative AI Professional, Oracle, 2025 (ID: 3122494826OCI25GAIOCP)</li>
+                    <ul className="list-disc list-outside ml-4 space-y-1 text-[10.5pt] text-slate-900">
+                      <li>Oracle Cloud Infrastructure Generative AI Professional, Oracle, 2025 (ID: 322494826OCI25GAIOCP)</li>
                       <li>AWS Solutions Architecture, Amazon Web Services</li>
                     </ul>
                   </div>
                 </div>
 
                 {/* Injected Skills Tag Cloud */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
+                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3 no-print">
                   <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
                     INJECTED INTO THIS RESUME
                   </h4>
                   <div className="flex flex-wrap gap-2">
-                    {INJECTED_SKILLS.map((skill) => (
+                    {dynamicAlreadyInResumeSkills.slice(0, 12).map((skill) => (
                       <span
                         key={skill}
                         className="inline-flex items-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]/60"
@@ -1051,7 +1191,7 @@ export default function OptimizePage() {
               </div>
 
               {/* Right Sidebar (4 cols): ATS Match & Share Your Win */}
-              <aside className="lg:col-span-4 space-y-6">
+              <aside className="lg:col-span-4 space-y-6 no-print">
                 {/* ATS MATCH Card */}
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
                   <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
@@ -1145,7 +1285,9 @@ export default function OptimizePage() {
             {/* Top 3 Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
-                <span className="text-3xl font-black text-slate-900">19</span>
+                <span className="text-3xl font-black text-slate-900">
+                  {dynamicAlreadyInResumeSkills.length}
+                </span>
                 <p className="text-xs text-slate-500 font-medium mt-1">keywords present</p>
               </div>
               <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
@@ -1153,7 +1295,9 @@ export default function OptimizePage() {
                 <p className="text-xs text-slate-500 font-medium mt-1">bullets rewritten</p>
               </div>
               <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs">
-                <span className="text-3xl font-black text-slate-900">19/38</span>
+                <span className="text-3xl font-black text-slate-900">
+                  {dynamicAlreadyInResumeSkills.length}/38
+                </span>
                 <p className="text-xs text-slate-500 font-medium mt-1">skills matched</p>
               </div>
             </div>
@@ -1179,7 +1323,7 @@ export default function OptimizePage() {
                 </div>
               </div>
 
-              {/* Wanted by the job, not added */}
+              {/* Wanted by the job, not added (Only genuinely missing skills!) */}
               <div className="space-y-4">
                 <div>
                   <h3 className="text-sm font-bold text-slate-900">Wanted by the job, not added</h3>
@@ -1193,7 +1337,7 @@ export default function OptimizePage() {
 
                 {/* Missing Skills Interactive Checklist */}
                 <div className="space-y-2">
-                  {WANTED_SKILLS_LIST.map((item) => {
+                  {dynamicWantedSkills.map((item) => {
                     const isChecked = !!checkedSkills[item.name];
                     return (
                       <div
@@ -1238,27 +1382,29 @@ export default function OptimizePage() {
                   })}
                 </div>
 
-                <div className="pt-1">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleCopy(
-                        WANTED_SKILLS_LIST.map((s) => s.name).join(", "),
-                        "Copied all missing skills as a line!"
-                      )
-                    }
-                    className="py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs cursor-pointer"
-                  >
-                    Copy all as a skills line
-                  </button>
-                </div>
+                {dynamicWantedSkills.length > 0 && (
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopy(
+                          dynamicWantedSkills.map((s) => s.name).join(", "),
+                          "Copied missing skills as a line!"
+                        )
+                      }
+                      className="py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors shadow-2xs cursor-pointer"
+                    >
+                      Copy all as a skills line
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Already in your resume */}
               <div className="space-y-3 pt-2">
                 <h3 className="text-sm font-bold text-slate-900">Already in your resume</h3>
                 <div className="flex flex-wrap gap-2">
-                  {ALREADY_IN_RESUME_SKILLS.map((skill) => (
+                  {dynamicAlreadyInResumeSkills.map((skill) => (
                     <span
                       key={skill}
                       className="inline-flex items-center text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 border border-slate-200/60"
@@ -1279,7 +1425,6 @@ export default function OptimizePage() {
                       key={idx}
                       className="rounded-2xl border border-slate-200/80 overflow-hidden text-xs shadow-2xs"
                     >
-                      {/* BEFORE */}
                       <div className="bg-[#FEF2F2] p-4 border-b border-rose-100 space-y-1">
                         <span className="text-[10px] font-black uppercase tracking-wider text-rose-700">
                           BEFORE
@@ -1287,7 +1432,6 @@ export default function OptimizePage() {
                         <p className="text-slate-700 leading-relaxed font-sans">{diff.before}</p>
                       </div>
 
-                      {/* AFTER */}
                       <div className="bg-[#F0FDF4] p-4 space-y-1">
                         <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700">
                           AFTER
@@ -1323,7 +1467,6 @@ export default function OptimizePage() {
         {resultsTab === "score_breakdown" && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column (8 cols): Rubric Breakdown */}
               <div className="lg:col-span-8 bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs space-y-7">
                 <div className="flex items-center justify-between pb-1 border-b border-slate-100">
                   <h2 className="text-lg font-bold text-slate-900">Score breakdown</h2>
@@ -1332,9 +1475,7 @@ export default function OptimizePage() {
                   </span>
                 </div>
 
-                {/* 4 Rubric Criteria Rows */}
                 <div className="space-y-6">
-                  {/* Criteria 1: Parsability */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <div>
@@ -1352,7 +1493,6 @@ export default function OptimizePage() {
                     </div>
                   </div>
 
-                  {/* Criteria 2: Keyword density */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <div>
@@ -1370,7 +1510,6 @@ export default function OptimizePage() {
                     </div>
                   </div>
 
-                  {/* Criteria 3: Title alignment */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <div>
@@ -1388,7 +1527,6 @@ export default function OptimizePage() {
                     </div>
                   </div>
 
-                  {/* Criteria 4: Experience match */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs">
                       <div>
@@ -1412,9 +1550,7 @@ export default function OptimizePage() {
                 </p>
               </div>
 
-              {/* Right Column (4 cols): Re-score Pro Card & Tips */}
               <div className="lg:col-span-4 space-y-6">
-                {/* Re-score my edited version Card */}
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
                   <div className="flex items-center gap-2">
                     <h3 className="text-xs font-bold text-slate-900">Re-score my edited version</h3>
@@ -1433,7 +1569,6 @@ export default function OptimizePage() {
                   </Link>
                 </div>
 
-                {/* Tips that keep working Card */}
                 <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
                   <h3 className="text-xs font-bold text-slate-900">Tips that keep working</h3>
                   <div className="space-y-3 text-xs text-slate-600 leading-relaxed">
@@ -1455,7 +1590,6 @@ export default function OptimizePage() {
                     </p>
                   </div>
 
-                  {/* Feedback widget */}
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
                     <span className="text-xs text-slate-500">Was this result useful?</span>
                     <div className="flex items-center gap-2">
@@ -1512,15 +1646,8 @@ export default function OptimizePage() {
                 </p>
 
                 <div className="flex flex-wrap gap-2">
-                  {[
-                    "quantum algorithms",
-                    "Qiskit",
-                    "QAOA",
-                    "sampling-based diagonalization",
-                    "Deep Learning",
-                    "Transformers",
-                    "PyTorch",
-                  ].map((skill) => {
+                  {dynamicWantedSkills.slice(0, 8).map((skillObj) => {
+                    const skill = skillObj.name;
                     const isSelected = selectedRoadmapSkills.includes(skill);
                     return (
                       <button
@@ -1649,13 +1776,13 @@ export default function OptimizePage() {
               ) : (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <span className="text-xs font-bold text-slate-700">Cover Letter · IBM Software Innovation Lab</span>
+                    <span className="text-xs font-bold text-slate-700">Cover Letter · IBM Research India</span>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() =>
                           handleCopy(
-                            `Dear Hiring Team at IBM,\n\nI am writing to express my strong enthusiasm for the ${roleTitle} role at ${companyName}. With deep hands-on experience developing LLM-based autonomous agent architectures, model evaluation pipelines, and runtime safety guardrails, I have focused on solving the exact reliability challenges your team tackles.\n\nRecently, I engineered RecoveryOS—a guardrailed AI decision system that processed 135 failed-payment test cases with zero duplicate executions and zero unsafe actions, recovering ₹20,726 through strict idempotency and append-only audit ledgers. Additionally, in AgentForensics, I created a digital forensics layer for MCP-connected agent swarms, evaluating 20 synthetic agent sessions to reliably detect and halt unintended tool escalations. My background also includes two IEEE conference publications in machine learning and contributing verified production fixes to open-source platforms used by over 50,000 teams (Cal.com).\n\nI would welcome the opportunity to bring this commitment to reproducible engineering, agent safety, and foundation model systems to IBM's research initiatives. Thank you for your consideration.\n\nSincerely,\nHarshith Kumar Mannepalli`,
+                            `Dear Hiring Team at IBM Research India,\n\nI am writing to express my strong enthusiasm for the ${roleTitle} role. With deep hands-on experience developing LLM-based autonomous agent architectures, model evaluation pipelines, and runtime safety guardrails, I have focused on solving the exact reliability challenges your team tackles.\n\nRecently, I engineered RecoveryOS—a guardrailed AI decision system that processed 135 failed-payment test cases with zero duplicate executions and zero unsafe actions, recovering ₹20,726 through strict idempotency and append-only audit ledgers. Additionally, in AgentForensics, I created a digital forensics layer for MCP-connected agent swarms, evaluating 20 synthetic agent sessions to reliably detect and halt unintended tool escalations. My background also includes two IEEE conference publications in machine learning and contributing verified production fixes to open-source platforms used by over 50,000 teams (Cal.com).\n\nI would welcome the opportunity to bring this commitment to reproducible engineering, agent safety, and foundation model systems to IBM's research initiatives. Thank you for your consideration.\n\nSincerely,\n${candidateDisplayName}`,
                             "Cover letter copied to clipboard!"
                           )
                         }
@@ -1668,16 +1795,16 @@ export default function OptimizePage() {
                   </div>
 
                   <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-6 font-mono text-xs text-slate-800 leading-relaxed space-y-4 whitespace-pre-line">
-                    {`Dear Hiring Team at IBM,
+                    {`Dear Hiring Team at IBM Research India,
 
-I am writing to express my strong enthusiasm for the ${roleTitle} role at ${companyName}. With deep hands-on experience developing LLM-based autonomous agent architectures, model evaluation pipelines, and runtime safety guardrails, I have focused on solving the exact reliability challenges your team tackles.
+I am writing to express my strong enthusiasm for the ${roleTitle} role. With deep hands-on experience developing LLM-based autonomous agent architectures, model evaluation pipelines, and runtime safety guardrails, I have focused on solving the exact reliability challenges your team tackles.
 
 Recently, I engineered RecoveryOS—a guardrailed AI decision system that processed 135 failed-payment test cases with zero duplicate executions and zero unsafe actions, recovering ₹20,726 through strict idempotency and append-only audit ledgers. Additionally, in AgentForensics, I created a digital forensics layer for MCP-connected agent swarms, evaluating 20 synthetic agent sessions to reliably detect and halt unintended tool escalations. My background also includes two IEEE conference publications in machine learning and contributing verified production fixes to open-source platforms used by over 50,000 teams (Cal.com).
 
 I would welcome the opportunity to bring this commitment to reproducible engineering, agent safety, and foundation model systems to IBM's research initiatives. Thank you for your consideration.
 
 Sincerely,
-Harshith Kumar Mannepalli`}
+${candidateDisplayName}`}
                   </div>
                 </div>
               )}
@@ -1710,7 +1837,6 @@ Harshith Kumar Mannepalli`}
                 </div>
               ) : (
                 <div className="space-y-4 pt-2">
-                  {/* Module 1: Recruiter Outreach Message */}
                   <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900">
@@ -1720,7 +1846,7 @@ Harshith Kumar Mannepalli`}
                         type="button"
                         onClick={() =>
                           handleCopy(
-                            `Hi [Recruiter Name] — I noticed IBM's Software Innovation Lab is looking for an AI & Data Intern. I build safety and evaluation layers for autonomous LLM agents (LangGraph, MCP), have 2 IEEE ML publications, and authored open-source bug fixes for Cal.com (50k+ teams). I've submitted my application and would love to connect!`,
+                            `Hi [Recruiter Name] — I noticed IBM Research India is looking for a Research Intern in AI and Quantum Algorithms. I build safety and evaluation layers for autonomous LLM agents (LangGraph, MCP), have 2 IEEE ML publications, and authored open-source bug fixes for Cal.com (50k+ teams). I've submitted my application and would love to connect!`,
                             "Copied outreach note!"
                           )
                         }
@@ -1731,11 +1857,10 @@ Harshith Kumar Mannepalli`}
                       </button>
                     </div>
                     <div className="bg-slate-50 p-3 rounded-lg text-xs font-mono text-slate-700 leading-relaxed">
-                      Hi [Recruiter Name] — I noticed IBM&apos;s Software Innovation Lab is looking for an AI & Data Intern. I build safety and evaluation layers for autonomous LLM agents (LangGraph, MCP), have 2 IEEE ML publications, and authored open-source bug fixes for Cal.com (50k+ teams). I&apos;ve submitted my application and would love to connect!
+                      Hi [Recruiter Name] — I noticed IBM Research India is looking for a Research Intern in AI and Quantum Algorithms. I build safety and evaluation layers for autonomous LLM agents (LangGraph, MCP), have 2 IEEE ML publications, and authored open-source bug fixes for Cal.com (50k+ teams). I&apos;ve submitted my application and would love to connect!
                     </div>
                   </div>
 
-                  {/* Module 2: Why this role? */}
                   <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900">
@@ -1745,7 +1870,7 @@ Harshith Kumar Mannepalli`}
                         type="button"
                         onClick={() =>
                           handleCopy(
-                            `IBM's commitment to enterprise AI safety, foundation model governance, and rigorous research aligns directly with my technical focus. Having built guardrailed multi-agent systems with LangGraph and MCP, I am eager to contribute to enterprise-scale evaluation frameworks that ensure AI decisions remain provably safe and verifiable.`,
+                            `IBM's pioneering leadership in quantum computing (Qiskit, IBM Quantum System Two) and robust AI research aligns directly with my technical focus. Having built guardrailed multi-agent systems with LangGraph and MCP and published two IEEE machine learning papers, I am eager to contribute to reproducible quantum algorithm development and simulation benchmarks.`,
                             "Copied answer!"
                           )
                         }
@@ -1756,11 +1881,10 @@ Harshith Kumar Mannepalli`}
                       </button>
                     </div>
                     <div className="bg-slate-50 p-3 rounded-lg text-xs font-mono text-slate-700 leading-relaxed">
-                      IBM&apos;s commitment to enterprise AI safety, foundation model governance, and rigorous research aligns directly with my technical focus. Having built guardrailed multi-agent systems with LangGraph and MCP, I am eager to contribute to enterprise-scale evaluation frameworks that ensure AI decisions remain provably safe and verifiable.
+                      IBM&apos;s pioneering leadership in quantum computing (Qiskit, IBM Quantum System Two) and robust AI research aligns directly with my technical focus. Having built guardrailed multi-agent systems with LangGraph and MCP and published two IEEE machine learning papers, I am eager to contribute to reproducible quantum algorithm development and simulation benchmarks.
                     </div>
                   </div>
 
-                  {/* Module 3: Challenging Technical Problem */}
                   <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-900">
@@ -1785,7 +1909,6 @@ Harshith Kumar Mannepalli`}
                     </div>
                   </div>
 
-                  {/* Module 4: Standard Application Fields */}
                   <div className="rounded-xl border border-slate-200/80 p-5 bg-white space-y-2.5">
                     <span className="text-xs font-bold text-slate-900">
                       4 · Standard Application Logistics
@@ -1817,9 +1940,7 @@ Harshith Kumar Mannepalli`}
     <div className="min-h-screen bg-[#fbfbf9] text-slate-900 pb-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* ─── LEFT FORM COLUMN (8 cols) ───────────────────── */}
           <div className="lg:col-span-8 space-y-6">
-            {/* ─── SECTION 1: YOUR RESUME ──────────────────────── */}
             <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                 <div>
@@ -1829,7 +1950,6 @@ Harshith Kumar Mannepalli`}
                   </p>
                 </div>
 
-                {/* Mode Selector Tabs */}
                 <div className="inline-flex rounded-xl bg-slate-100 p-1 text-xs font-medium text-slate-600 self-start sm:self-auto">
                   <button
                     type="button"
@@ -1867,10 +1987,8 @@ Harshith Kumar Mannepalli`}
                 </div>
               </div>
 
-              {/* Upload File Mode (Screenshot 1) */}
               {resumeTab === "upload" && (
                 <div className="space-y-4">
-                  {/* Tap to choose or drop card */}
                   <div
                     onClick={() => fileInputRef.current?.click()}
                     className="border-2 border-dashed border-slate-200 hover:border-slate-300 rounded-2xl p-6 text-center cursor-pointer bg-slate-50/50 hover:bg-slate-50 transition-all group"
@@ -1898,7 +2016,6 @@ Harshith Kumar Mannepalli`}
                     )}
                   </div>
 
-                  {/* Parsed Textarea display */}
                   <textarea
                     rows={8}
                     value={resumeText}
@@ -1906,7 +2023,6 @@ Harshith Kumar Mannepalli`}
                     className="w-full rounded-xl border border-slate-200 p-3.5 text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#5B50E6]/20 focus:border-[#5B50E6] resize-y font-mono leading-relaxed"
                   />
 
-                  {/* Footer Meta Row (Screenshot 1) */}
                   <div className="flex items-center justify-between text-xs pt-1">
                     <span className="text-slate-500 font-medium">
                       {resumeText.length.toLocaleString()} characters
@@ -1919,7 +2035,6 @@ Harshith Kumar Mannepalli`}
                 </div>
               )}
 
-              {/* Paste Text Mode */}
               {resumeTab === "paste" && (
                 <div className="space-y-2">
                   <textarea
@@ -1944,7 +2059,6 @@ Harshith Kumar Mannepalli`}
                 </div>
               )}
 
-              {/* Saved Resumes Mode */}
               {resumeTab === "saved" && (
                 <div className="space-y-3">
                   {!savedResumesData || savedResumesData.resumes.length === 0 ? (
@@ -1982,7 +2096,6 @@ Harshith Kumar Mannepalli`}
               )}
             </section>
 
-            {/* ─── SECTION 2: THE JOB YOU WANT ────────────────── */}
             <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs relative">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
                 <div>
@@ -2018,7 +2131,6 @@ Harshith Kumar Mannepalli`}
                 </div>
               </div>
 
-              {/* Paste Text Mode */}
               {jobTab === "paste" && (
                 <div className="space-y-3">
                   <textarea
@@ -2043,7 +2155,6 @@ Harshith Kumar Mannepalli`}
                 </div>
               )}
 
-              {/* From URL Mode */}
               {jobTab === "url" && (
                 <div className="space-y-3">
                   <div className="flex gap-2">
@@ -2072,7 +2183,6 @@ Harshith Kumar Mannepalli`}
               )}
             </section>
 
-            {/* ─── SECTION 3: ANYTHING WE CAN'T SEE? (Optional) ── */}
             <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
               <div className="mb-3">
                 <h2 className="text-base font-bold text-slate-900">
@@ -2094,7 +2204,6 @@ Harshith Kumar Mannepalli`}
               </div>
             </section>
 
-            {/* ─── SECTION 4: OUTPUT LENGTH ────────────────────── */}
             <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
               <div className="mb-3">
                 <h2 className="text-base font-bold text-slate-900">4 · Output length</h2>
@@ -2125,7 +2234,6 @@ Harshith Kumar Mannepalli`}
               </p>
             </section>
 
-            {/* ─── SUBMIT CTA BUTTON ───────────────────────────── */}
             <div className="pt-2">
               <button
                 type="button"
@@ -2137,9 +2245,7 @@ Harshith Kumar Mannepalli`}
             </div>
           </div>
 
-          {/* ─── RIGHT SIDEBAR (4 cols) (Screenshot 1) ───────── */}
           <aside className="lg:col-span-4 space-y-6">
-            {/* Card 1: WHAT HAPPENS NEXT */}
             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-4">
               <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
                 WHAT HAPPENS NEXT
@@ -2175,7 +2281,6 @@ Harshith Kumar Mannepalli`}
               </div>
             </div>
 
-            {/* Card 2: Free allowance */}
             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-3">
               <h3 className="text-xs font-bold text-slate-900">Free allowance</h3>
               <div>
@@ -2197,7 +2302,6 @@ Harshith Kumar Mannepalli`}
               </Link>
             </div>
 
-            {/* Card 3: SAVED RESUMES */}
             <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-xs space-y-2">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-extrabold uppercase tracking-wider text-slate-400">

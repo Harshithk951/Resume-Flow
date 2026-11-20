@@ -19,7 +19,7 @@ import {
   Loader2,
   TrendingUp,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 import type { JobCheckResult } from "@/convex/ai/jobCheck";
 
 interface SavedResumeDoc {
@@ -128,8 +128,7 @@ export default function JobCheckPage() {
       setJobTab("paste");
     } catch (err: unknown) {
       console.error("Scrape error:", err);
-      const msg = err instanceof Error ? err.message : "Failed to scrape job URL.";
-      toast.error(msg);
+      toast.error(err);
     } finally {
       setIsScraping(false);
     }
@@ -193,8 +192,7 @@ export default function JobCheckPage() {
       }, 100);
     } catch (err: unknown) {
       console.error("Fit check failed:", err);
-      const msg = err instanceof Error ? err.message : "Failed to analyze job fit. Please try again.";
-      toast.error(msg);
+      toast.error(err);
     } finally {
       setIsAnalyzing(false);
       setAnalysisStep(0);

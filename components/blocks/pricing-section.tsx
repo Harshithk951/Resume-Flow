@@ -5,7 +5,7 @@ import { motion, useSpring, useMotionValue, useTransform } from "framer-motion";
 import { Check, X } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
+import { toast } from "@/lib/toast";
 
 export interface Tier {
   id: string;
