@@ -11,7 +11,7 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
     <footer className={`bg-white border-t border-slate-100 text-slate-600 ${className}`}>
       {/* ─── 1. COMPANY LOGOS STRIP ─────────────────────────────────── */}
       {showCompanyLogos && (
-        <section className="pt-12 pb-10 border-b border-slate-100">
+        <section className="pt-8 pb-8 border-b border-slate-100">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-xs text-slate-400 font-medium mb-6">
               Our users optimize resumes for roles at
@@ -47,7 +47,7 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
       )}
 
       {/* ─── 2. MAIN 5-COLUMN FOOTER ───────────────────────────────── */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-10">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12 mb-12">
           {/* Col 1: Brand */}
           <div className="col-span-2 md:col-span-1">

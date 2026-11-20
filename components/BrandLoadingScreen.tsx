@@ -19,16 +19,13 @@ export interface BrandLoadingScreenProps {
 }
 
 /**
- * BrandLoadingScreen — Minimalist, agency-grade loading experience.
+ * BrandLoadingScreen
  *
- * Requirements:
- * - No text, no brand name wordmark ("ResumeFlow").
- * - No spinner icon.
- * - The loader is solely the animated brand emblem.
- * - Continuous kinetic cycle between:
- *     1. "Without Joint" (pieces separated and hovering in space)
- *     2. "Joint" (magnetically converging and locking seamlessly into the unified mark with radiant energy flare)
- *     3. Parting back into "Without Joint".
+ * - Background: Strictly #fbfbf9 (never turns black).
+ * - Card: Clean white squircle card with subtle shadow and border (same as before).
+ * - Logo: Solid black mark with ZERO blue touch, zero colored auras.
+ * - Animation: Pure natural head bouncing (bounces up without joint, lands back onto joint).
+ * - Zero extra text, no spinners, no brand name.
  */
 export function BrandLoadingScreen({}: BrandLoadingScreenProps = {}) {
   return (
@@ -36,250 +33,68 @@ export function BrandLoadingScreen({}: BrandLoadingScreenProps = {}) {
       role="status"
       aria-live="polite"
       aria-label="Loading"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#fbfbf9] dark:bg-[#0A0D14] px-4 select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#fbfbf9] px-4 select-none"
     >
-      {/* Inline Scoped Styles for 60fps GPU-Accelerated Kinetic Mechanics */}
       <style>{`
-        /* 1. Head piece kinetic trajectory: Disjointed -> Converging -> Joint Snap -> Joined Rest -> Parting */
-        @keyframes rfKineticHead {
-          0% {
-            transform: translateY(-16px) scale(0.93);
-            opacity: 0.82;
-          }
-          14% {
-            /* Breathing float in disjointed state */
-            transform: translateY(-18px) scale(0.92);
-            opacity: 0.85;
-          }
-          38% {
-            /* Magnetic snap into joint */
-            transform: translateY(0px) scale(1);
-            opacity: 1;
-          }
-          45% {
-            /* Elastic impact cushion */
-            transform: translateY(1.2px) scale(1.02);
-            opacity: 1;
-          }
-          52% {
-            /* Perfect alignment in joined emblem */
-            transform: translateY(0px) scale(1);
-            opacity: 1;
-          }
-          70% {
-            /* Holding unified mark proudly */
-            transform: translateY(0px) scale(1);
-            opacity: 1;
-          }
-          88% {
-            /* Parting back into without joint */
-            transform: translateY(-16px) scale(0.93);
-            opacity: 0.82;
-          }
-          100% {
-            transform: translateY(-16px) scale(0.93);
-            opacity: 0.82;
-          }
-        }
-
-        /* 2. Lower ribbon body kinetic trajectory: Disjointed -> Converging -> Joint Snap -> Joined Rest -> Parting */
-        @keyframes rfKineticBody {
-          0% {
-            transform: translateY(13px) scale(0.95);
-            opacity: 0.82;
-          }
-          14% {
-            /* Breathing float in disjointed state */
-            transform: translateY(15px) scale(0.94);
-            opacity: 0.85;
-          }
-          38% {
-            /* Magnetic snap into joint */
-            transform: translateY(0px) scale(1);
-            opacity: 1;
-          }
-          45% {
-            /* Elastic impact cushion */
-            transform: translateY(-0.8px) scale(1.02);
-            opacity: 1;
-          }
-          52% {
-            /* Perfect alignment in joined emblem */
-            transform: translateY(0px) scale(1);
-            opacity: 1;
-          }
-          70% {
-            /* Holding unified mark proudly */
-            transform: translateY(0px) scale(1);
-            opacity: 1;
-          }
-          88% {
-            /* Parting back into without joint */
-            transform: translateY(13px) scale(0.95);
-            opacity: 0.82;
-          }
-          100% {
-            transform: translateY(13px) scale(0.95);
-            opacity: 0.82;
-          }
-        }
-
-        /* 3. Joint point radiant energy flare at the exact millisecond pieces meet (x=50, y=50.5) */
-        @keyframes rfJointEnergyFlare {
-          0%, 34% {
-            opacity: 0;
-            transform: scale(0.1);
-          }
-          39% {
-            /* Flash upon jointing */
-            opacity: 1;
-            transform: scale(1.25);
-          }
-          48% {
-            opacity: 0.65;
-            transform: scale(1.75);
-          }
-          62% {
-            opacity: 0;
-            transform: scale(2.4);
-          }
-          100% {
-            opacity: 0;
-            transform: scale(0.1);
-          }
-        }
-
-        /* 4. Ambient Aura blooming synchronously with jointing */
-        @keyframes rfLoadingAuraBloom {
-          0%, 20% {
-            opacity: 0.25;
-            transform: scale(0.85);
-          }
-          40% {
-            /* Radiant bloom when joined */
-            opacity: 0.85;
-            transform: scale(1.3);
-          }
-          65% {
-            opacity: 0.6;
-            transform: scale(1.15);
-          }
-          85%, 100% {
-            opacity: 0.25;
-            transform: scale(0.85);
-          }
-        }
-
-        /* 5. Subtle overall levitation */
-        @keyframes rfStageLevitation {
+        /* Head bouncing animation: rises up (without joint) and lands back down onto the joint */
+        @keyframes rfHeadBounce {
           0%, 100% {
+            /* Landed at resting joint */
+            transform: translateY(0px);
+            animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+          }
+          32% {
+            /* Apex of bounce: separated / without joint */
+            transform: translateY(-13px);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.4);
+          }
+          54% {
+            /* Impact down on joint with slight compression */
+            transform: translateY(0.8px) scale(1.02, 0.98);
+            animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+          }
+          68% {
+            /* Gentle secondary rebound */
+            transform: translateY(-3.5px);
+            animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.4);
+          }
+          80% {
+            /* Settling back onto joint */
             transform: translateY(0px);
           }
-          50% {
-            transform: translateY(-2px);
-          }
         }
 
-        .rf-loading-stage {
-          animation: rfStageLevitation 4s ease-in-out infinite;
-        }
-
-        .rf-kinetic-head {
-          transform-origin: 50px 30px;
-          animation: rfKineticHead 2.7s cubic-bezier(0.34, 1.35, 0.64, 1) infinite;
-          will-change: transform, opacity;
-        }
-
-        .rf-kinetic-body {
-          transform-origin: 50px 70px;
-          animation: rfKineticBody 2.7s cubic-bezier(0.34, 1.35, 0.64, 1) infinite;
-          will-change: transform, opacity;
-        }
-
-        .rf-joint-flare {
-          transform-origin: 50px 50.5px;
-          animation: rfJointEnergyFlare 2.7s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-          will-change: transform, opacity;
-        }
-
-        .rf-aura-layer {
-          animation: rfLoadingAuraBloom 2.7s ease-in-out infinite;
-          will-change: transform, opacity;
+        .rf-head-bounce {
+          transform-origin: 50px 50px;
+          animation: rfHeadBounce 1.8s infinite;
+          will-change: transform;
         }
       `}</style>
 
-      {/* Kinetic Emblem Container */}
-      <div className="relative flex items-center justify-center rf-loading-stage">
-        {/* Soft Ambient Radial Aura */}
-        <div
-          className="absolute -inset-10 rounded-full pointer-events-none rf-aura-layer"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(99, 102, 241, 0.32) 0%, rgba(0, 210, 255, 0.2) 42%, transparent 72%)",
-            filter: "blur(22px)",
-          }}
-        />
-
-        {/* Hero Vector Emblem — Zero Text, Pure Animated Emblem */}
-        <div className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
-          <svg
-            viewBox="-15 -20 130 140"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-full overflow-visible drop-shadow-[0_4px_14px_rgba(0,0,0,0.16)] dark:drop-shadow-[0_4px_18px_rgba(0,210,255,0.22)]"
-          >
-            <defs>
-              {/* Electric Cyan to Indigo Brand Gradient */}
-              <linearGradient id="rf-loader-brand-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#00D2FF" />
-                <stop offset="42%" stopColor="#38BDF8" />
-                <stop offset="100%" stopColor="#6366F1" />
-              </linearGradient>
-
-              {/* Radiant Joint Flare Radial Gradient */}
-              <radialGradient id="rf-loader-joint-flare-grad" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stopColor="#00F0FF" stopOpacity="1" />
-                <stop offset="35%" stopColor="#38BDF8" stopOpacity="0.85" />
-                <stop offset="65%" stopColor="#6366F1" stopOpacity="0.45" />
-                <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
-              </radialGradient>
-            </defs>
-
-            {/* 1. TOP PIECE: Diamond Zen Head Loop (Animates: Separated above <-> Joint) */}
-            <g className="rf-kinetic-head">
-              <path
-                d={PATH_HEAD_COMPOUND}
-                className="fill-slate-900 dark:fill-white transition-colors duration-300"
-                fillRule="evenodd"
-              />
-            </g>
-
-            {/* 2. BOTTOM PIECE: Interlocking Infinity Ribbon Body (Animates: Separated below <-> Joint) */}
-            <g className="rf-kinetic-body">
-              <path
-                d={PATH_BODY_MAIN}
-                className="fill-slate-900 dark:fill-white transition-colors duration-300"
-              />
-              <path
-                d={PATH_BODY_LEFT}
-                className="fill-slate-900 dark:fill-white transition-colors duration-300"
-              />
-              <path
-                d={PATH_BODY_RIGHT}
-                className="fill-slate-900 dark:fill-white transition-colors duration-300"
-              />
-            </g>
-
-            {/* 3. JOINT POINT ENERGY BURST: Fires at the exact contact apex (50, 50.5) when the two parts joint */}
-            <circle
-              cx="50"
-              cy="50.5"
-              r="12"
-              fill="url(#rf-loader-joint-flare-grad)"
-              className="rf-joint-flare pointer-events-none"
+      {/* Brand Emblem inside the clean white squircle card (same as before) */}
+      <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-200/70 flex items-center justify-center relative">
+        <svg
+          viewBox="-10 -15 120 125"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-9 h-9 overflow-visible"
+        >
+          {/* Head Diamond: Bounces up (without joint) and lands (joint) */}
+          <g className="rf-head-bounce">
+            <path
+              d={PATH_HEAD_COMPOUND}
+              fill="#000000"
+              fillRule="evenodd"
             />
-          </svg>
-        </div>
+          </g>
+
+          {/* Lower Infinity Body: Solid base grounded in position */}
+          <g>
+            <path d={PATH_BODY_MAIN} fill="#000000" />
+            <path d={PATH_BODY_LEFT} fill="#000000" />
+            <path d={PATH_BODY_RIGHT} fill="#000000" />
+          </g>
+        </svg>
       </div>
     </div>
   );

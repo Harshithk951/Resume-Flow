@@ -68,7 +68,7 @@ export default function PricingPage() {
       {/* ─── PUBLIC NAVBAR ────────────────────────────────────────── */}
       <Navbar />
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-24">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-6">
         {/* ─── HERO HEADER ─────────────────────────────────────────── */}
         <section className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 relative">
           {/* Subtle ambient lavender glow */}
@@ -453,7 +453,7 @@ export default function PricingPage() {
         </section>
 
         {/* ─── 8-ITEM FAQ ACCORDION ("Common questions") ───────────── */}
-        <section className="max-w-3xl mx-auto mb-20" id="faq">
+        <section className="max-w-3xl mx-auto mb-6" id="faq">
           <div className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2">
               Common questions
@@ -494,7 +494,7 @@ export default function PricingPage() {
         </section>
 
         {/* ─── SUB-FOOTER RAZORPAY & LEGAL LINKS (HireRaft Style) ─── */}
-        <div className="text-center pt-8 pb-16 text-xs text-slate-400 space-y-2">
+        <div className="text-center text-xs text-slate-400 space-y-1.5 pt-2 pb-6">
           <p>Powered by Razorpay · Secure payments · Cancel anytime</p>
           <div className="flex flex-wrap items-center justify-center gap-6 text-slate-400">
             <Link href="/legal/privacy" className="hover:text-slate-600 transition-colors">
