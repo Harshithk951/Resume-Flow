@@ -19,12 +19,6 @@ export function ConvexClerkProvider({ children }: { children: ReactNode }) {
       signUpFallbackRedirectUrl={
         process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL ?? "/optimize"
       }
-      appearance={{
-        layout: {
-          unsafe_disableDevelopmentModeWarnings: true,
-          logoPlacement: "none",
-        },
-      }}
     >
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         {children}
