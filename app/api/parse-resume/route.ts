@@ -75,12 +75,7 @@ export async function POST(req: NextRequest) {
 
     const charCount = cleanText.length;
     const wordCount = cleanText ? cleanText.split(/\s+/).length : 0;
-    const linksFound = Math.max(
-      rawLinksSet.size,
-      (cleanText.match(/linkedin|github|portfolio|http/gi) || []).length > 2
-        ? 9
-        : Math.max(1, rawLinksSet.size)
-    );
+    const linksFound = rawLinksSet.size;
 
     // Guess candidate name from first non-empty line
     const lines = cleanText.split("\n").map((l) => l.trim()).filter(Boolean);

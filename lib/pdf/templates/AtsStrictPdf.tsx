@@ -13,114 +13,105 @@ function stripUrl(url: string): string {
   return url.replace(/https?:\/\/(www\.)?/, "");
 }
 
-function getStyles(templateId: string) {
-  const isSerif = templateId === "ats_strict" || templateId === "modern_executive";
-  const fontRegular = isSerif ? "Times-Roman" : "Helvetica";
-  const fontBold = isSerif ? "Times-Bold" : "Helvetica-Bold";
-  const fontItalic = isSerif ? "Times-Italic" : "Helvetica-Oblique";
-
-  let accentColor = "#000000";
-  if (templateId === "modern_professional") {
-    accentColor = "#E11D48"; // Rose-600 (Startup Accent)
-  } else if (templateId === "modern_executive") {
-    accentColor = "#1E3A8A"; // Blue-900 (Finance Classic)
-  } else if (templateId === "tech_innovator") {
-    accentColor = "#4F46E5"; // Indigo-600 (Tech Modern)
-  }
-
-  const isLeftAlign = templateId === "modern_professional" || templateId === "tech_innovator";
-
-  return StyleSheet.create({
-    page: {
-      padding: 30,
-      fontFamily: fontRegular,
-      fontSize: 10,
-      color: "#000000",
-      lineHeight: 1.2,
-    },
-    headerName: {
-      fontSize: 20,
-      fontFamily: fontBold,
-      textAlign: isLeftAlign ? "left" : "center",
-      textTransform: "uppercase",
-      color: accentColor !== "#000000" ? accentColor : "#000000",
-      marginBottom: 14,
-    },
-    headerContact: {
-      fontSize: 9,
-      textAlign: isLeftAlign ? "left" : "center",
-      marginBottom: 12,
-      color: "#475569",
-    },
-    sectionTitle: {
-      fontSize: 11,
-      fontFamily: fontBold,
-      textTransform: "uppercase",
-      marginTop: 10,
-      marginBottom: 3,
-      borderBottomWidth: 0.5,
-      borderBottomColor: accentColor,
-      borderBottomStyle: "solid",
-      color: accentColor,
-    },
-    summaryText: {
-      fontSize: 9.5,
-      marginBottom: 6,
-      textAlign: "justify",
-    },
-    subheadingRow: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginTop: 4,
-      marginBottom: 2,
-    },
-    boldText: {
-      fontFamily: fontBold,
-      fontSize: 10,
-    },
-    italicText: {
-      fontFamily: fontItalic,
-      fontSize: 9,
-    },
-    bulletList: {
-      marginLeft: 12,
-      marginTop: 2,
-      marginBottom: 4,
-    },
-    bulletItem: {
-      flexDirection: "row",
-      marginBottom: 2,
-    },
-    bulletPoint: {
-      width: 10,
-      fontSize: 9,
-      color: accentColor !== "#000000" ? accentColor : "#000000",
-    },
-    bulletText: {
-      flex: 1,
-      fontSize: 9,
-      textAlign: "justify",
-    },
-    skillsRow: {
-      flexDirection: "row",
-      marginBottom: 2,
-      fontSize: 9.5,
-    },
-    skillsLabel: {
-      fontFamily: fontBold,
-      color: accentColor !== "#000000" ? accentColor : "#000000",
-    },
-  });
-}
+const styles = StyleSheet.create({
+  page: {
+    paddingHorizontal: 52,
+    paddingVertical: 44,
+    fontFamily: "Times-Roman",
+    fontSize: 9.0,
+    color: "#000000",
+    lineHeight: 1.35,
+  },
+  headerName: {
+    fontSize: 20,
+    fontFamily: "Times-Bold",
+    textAlign: "center",
+    textTransform: "uppercase",
+    marginBottom: 4,
+    color: "#000000",
+  },
+  headerContact: {
+    fontSize: 8.5,
+    fontFamily: "Helvetica",
+    textAlign: "center",
+    marginBottom: 10,
+    color: "#1e293b",
+  },
+  sectionTitle: {
+    fontSize: 7.5,
+    fontFamily: "Helvetica-Bold",
+    textTransform: "uppercase",
+    letterSpacing: 1.8,
+    borderBottomWidth: 0.75,
+    borderBottomColor: "#000000",
+    borderBottomStyle: "solid",
+    paddingBottom: 2,
+    marginTop: 8,
+    marginBottom: 4,
+    color: "#000000",
+  },
+  summaryText: {
+    fontFamily: "Times-Roman",
+    fontSize: 9.0,
+    lineHeight: 1.35,
+    textAlign: "justify",
+    marginBottom: 4,
+    color: "#111827",
+  },
+  entryTitle: {
+    fontFamily: "Helvetica-Bold",
+    fontSize: 9.5,
+    marginTop: 3,
+    marginBottom: 2,
+    color: "#000000",
+  },
+  bulletList: {
+    marginLeft: 0,
+    marginTop: 1,
+    marginBottom: 3,
+  },
+  bulletItem: {
+    flexDirection: "row",
+    marginBottom: 2,
+  },
+  bulletSymbol: {
+    width: 10,
+    fontSize: 9.0,
+    fontFamily: "Times-Roman",
+    color: "#000000",
+  },
+  bulletText: {
+    flex: 1,
+    fontSize: 9.0,
+    fontFamily: "Times-Roman",
+    textAlign: "justify",
+    lineHeight: 1.32,
+    color: "#111827",
+  },
+  skillsRow: {
+    flexDirection: "row",
+    marginBottom: 2,
+    fontSize: 9.0,
+    flexWrap: "wrap",
+  },
+  skillsLabel: {
+    fontFamily: "Helvetica-Bold",
+    fontSize: 9.0,
+    color: "#000000",
+  },
+  skillsValue: {
+    fontFamily: "Times-Roman",
+    fontSize: 9.0,
+    color: "#111827",
+  },
+});
 
 export function AtsStrictPdf({
   data,
-  templateId = "ats_strict",
 }: {
   data: StructuredResumeContent;
   templateId?: string;
 }) {
-  const styles = getStyles(templateId);
   const contactParts = [
     data.personalInfo.phone?.trim(),
     data.personalInfo.email?.trim(),
@@ -133,124 +124,187 @@ export function AtsStrictPdf({
       : null,
   ].filter((part): part is string => !!part && part.trim().length > 0);
 
+  // Grouped skills for the master layout
+  const skillCategories = data.categorizedSkills || [
+    data.skills.languages?.length
+      ? { category: "Languages", items: data.skills.languages }
+      : null,
+    data.skills.frameworks?.length
+      ? { category: "AI & Machine Learning", items: data.skills.frameworks }
+      : null,
+    data.skills.tools?.length
+      ? { category: "LLMs & Agents", items: data.skills.tools }
+      : null,
+    data.skills.databases?.length
+      ? { category: "AI Safety & Security", items: data.skills.databases }
+      : null,
+    data.skills.soft?.length
+      ? { category: "MLOps & Deployment", items: data.skills.soft }
+      : null,
+  ].filter((c): c is { category: string; items: string[] } => !!c && c.items.length > 0);
+
   return (
     <Document>
-      <Page size="LETTER" style={styles.page}>
+      <Page size="A4" style={styles.page}>
+        {/* ─── Header: Name & Contact ────────────────────────── */}
         <Text style={styles.headerName}>{data.personalInfo.name}</Text>
-        <Text style={styles.headerContact}>{contactParts.join(" | ")}</Text>
+        <Text style={styles.headerContact}>{contactParts.join("  ·  ")}</Text>
 
+        {/* ─── 1. Professional Summary ───────────────────────── */}
         {data.summary ? (
-          <View>
-            <Text style={styles.sectionTitle}>Professional Summary</Text>
+          <View wrap={false}>
+            <Text style={styles.sectionTitle}>P R O F E S S I O N A L  S U M M A R Y</Text>
             <Text style={styles.summaryText}>{data.summary}</Text>
           </View>
         ) : null}
 
-        {data.education.length > 0 ? (
+        {/* ─── 2. Experience ─────────────────────────────────── */}
+        {data.experience && data.experience.length > 0 ? (
           <View>
-            <Text style={styles.sectionTitle}>Education</Text>
-            {data.education.map((edu, index) => (
-              <View key={`edu-${index}`} style={{ marginBottom: 4 }}>
-                <View style={styles.subheadingRow}>
-                  <Text style={styles.boldText}>{edu.institution}</Text>
-                  <Text style={styles.boldText}>{edu.year}</Text>
+            <Text style={styles.sectionTitle}>E X P E R I E N C E</Text>
+            {data.experience.map((exp, index) => {
+              const titleLine = [
+                exp.role,
+                exp.company,
+                exp.duration,
+                exp.location,
+              ]
+                .filter(Boolean)
+                .join(" | ");
+
+              return (
+                <View key={`exp-${index}`} style={{ marginBottom: 4 }} wrap={false}>
+                  <Text style={styles.entryTitle}>{titleLine}</Text>
+                  <View style={styles.bulletList}>
+                    {exp.bullets.map((bullet, bIdx) => (
+                      <View key={`exp-b-${index}-${bIdx}`} style={styles.bulletItem}>
+                        <Text style={styles.bulletSymbol}>•</Text>
+                        <Text style={styles.bulletText}>{bullet}</Text>
+                      </View>
+                    ))}
+                  </View>
                 </View>
-                <View style={styles.subheadingRow}>
-                  <Text style={styles.italicText}>
-                    {edu.degree}
-                    {edu.gpa ? ` | CGPA: ${edu.gpa}` : ""}
-                  </Text>
-                </View>
-              </View>
-            ))}
+              );
+            })}
           </View>
         ) : null}
 
-        {data.skills ? (
+        {/* ─── 3. Projects ───────────────────────────────────── */}
+        {data.projects && data.projects.length > 0 ? (
           <View>
-            <Text style={styles.sectionTitle}>Technical Skills</Text>
-            {data.skills.languages.length > 0 ? (
-              <View style={styles.skillsRow}>
-                <Text style={styles.skillsLabel}>Languages: </Text>
-                <Text>{data.skills.languages.join(", ")}</Text>
-              </View>
-            ) : null}
-            <View style={styles.skillsRow}>
-              <Text style={styles.skillsLabel}>CS Fundamentals: </Text>
-              <Text>
-                {data.skills.soft?.join(", ") ||
-                  "Data Structures, OOP, DBMS"}
-              </Text>
+            <Text style={styles.sectionTitle}>P R O J E C T S</Text>
+            {data.projects.map((proj, index) => {
+              const techString = proj.technologies?.join(", ") || "";
+              const titleLine = [
+                proj.name,
+                techString,
+                proj.link ? "GitHub" : null,
+              ]
+                .filter(Boolean)
+                .join(" | ");
+
+              return (
+                <View key={`proj-${index}`} style={{ marginBottom: 4 }} wrap={false}>
+                  <Text style={styles.entryTitle}>{titleLine}</Text>
+                  <View style={styles.bulletList}>
+                    {proj.bullets.map((bullet, bIdx) => (
+                      <View key={`proj-b-${index}-${bIdx}`} style={styles.bulletItem}>
+                        <Text style={styles.bulletSymbol}>•</Text>
+                        <Text style={styles.bulletText}>{bullet}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+        ) : null}
+
+        {/* ─── 4. Research & Publications / Achievements ──────── */}
+        {data.publications && data.publications.length > 0 ? (
+          <View wrap={false}>
+            <Text style={styles.sectionTitle}>R E S E A R C H  &  P U B L I C A T I O N S</Text>
+            <View style={styles.bulletList}>
+              {data.publications.map((pub, index) => {
+                const pubText =
+                  typeof pub === "string"
+                    ? pub
+                    : `${pub.title}${pub.venue ? `: ${pub.venue}` : ""}${pub.description ? `. ${pub.description}` : ""}`;
+
+                return (
+                  <View key={`pub-${index}`} style={styles.bulletItem}>
+                    <Text style={styles.bulletSymbol}>•</Text>
+                    <Text style={styles.bulletText}>{pubText}</Text>
+                  </View>
+                );
+              })}
             </View>
-            {data.skills.frameworks.length > 0 ? (
-              <View style={styles.skillsRow}>
-                <Text style={styles.skillsLabel}>Tech Stack: </Text>
-                <Text>{data.skills.frameworks.join(", ")}</Text>
-              </View>
-            ) : null}
-            {data.skills.tools.length > 0 ? (
-              <View style={styles.skillsRow}>
-                <Text style={styles.skillsLabel}>Cloud & DevOps: </Text>
-                <Text>{data.skills.tools.join(", ")}</Text>
-              </View>
-            ) : null}
+          </View>
+        ) : data.achievements && data.achievements.length > 0 ? (
+          <View wrap={false}>
+            <Text style={styles.sectionTitle}>R E S E A R C H  &  A C H I E V E M E N T S</Text>
+            <View style={styles.bulletList}>
+              {data.achievements.map((ach, index) => (
+                <View key={`ach-${index}`} style={styles.bulletItem}>
+                  <Text style={styles.bulletSymbol}>•</Text>
+                  <Text style={styles.bulletText}>{ach.description}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         ) : null}
 
-        {data.experience.length > 0 ? (
-          <View>
-            <Text style={styles.sectionTitle}>Experience</Text>
-            {data.experience.map((exp, index) => (
-              <View key={`exp-${index}`} style={{ marginBottom: 6 }}>
-                <View style={styles.subheadingRow}>
-                  <Text style={styles.boldText}>{exp.company}</Text>
-                  <Text style={styles.boldText}>{exp.duration}</Text>
+        {/* ─── 5. Education ──────────────────────────────────── */}
+        {data.education && data.education.length > 0 ? (
+          <View wrap={false}>
+            <Text style={styles.sectionTitle}>E D U C A T I O N</Text>
+            {data.education.map((edu, index) => {
+              const eduLine = [
+                edu.degree,
+                edu.institution,
+                edu.year,
+                edu.gpa ? `CGPA: ${edu.gpa}` : null,
+              ]
+                .filter(Boolean)
+                .join(" | ");
+
+              return (
+                <View key={`edu-${index}`} style={{ marginBottom: 3 }}>
+                  <Text style={styles.entryTitle}>{eduLine}</Text>
                 </View>
-                <View style={styles.subheadingRow}>
-                  <Text style={styles.italicText}>{exp.role}</Text>
-                  <Text style={styles.italicText}>
-                    {exp.location || "Remote"}
-                  </Text>
-                </View>
-                <View style={styles.bulletList}>
-                  {exp.bullets.slice(0, 3).map((bullet, bIdx) => (
-                    <View key={`exp-b-${index}-${bIdx}`} style={styles.bulletItem}>
-                      <Text style={styles.bulletPoint}>•</Text>
-                      <Text style={styles.bulletText}>{bullet}</Text>
-                    </View>
-                  ))}
-                </View>
+              );
+            })}
+          </View>
+        ) : null}
+
+        {/* ─── 6. Skills ─────────────────────────────────────── */}
+        {skillCategories.length > 0 ? (
+          <View wrap={false}>
+            <Text style={styles.sectionTitle}>S K I L L S</Text>
+            {skillCategories.map((cat, index) => (
+              <View key={`cat-${index}`} style={styles.skillsRow}>
+                <Text style={styles.skillsLabel}>{cat.category}: </Text>
+                <Text style={styles.skillsValue}>{cat.items.join(", ")}</Text>
               </View>
             ))}
           </View>
         ) : null}
 
-        {data.projects.length > 0 ? (
-          <View>
-            <Text style={styles.sectionTitle}>Projects</Text>
-            {data.projects.map((proj, index) => (
-              <View key={`proj-${index}`} style={{ marginBottom: 6 }}>
-                <View style={styles.subheadingRow}>
-                  <Text style={styles.boldText}>
-                    {proj.name} |{" "}
-                    <Text style={styles.italicText}>
-                      {proj.technologies.join(", ")}
-                    </Text>
-                  </Text>
-                  {proj.link ? (
-                    <Text style={styles.boldText}>GitHub</Text>
-                  ) : null}
-                </View>
-                <View style={styles.bulletList}>
-                  {proj.bullets.slice(0, 3).map((bullet, bIdx) => (
-                    <View key={`proj-b-${index}-${bIdx}`} style={styles.bulletItem}>
-                      <Text style={styles.bulletPoint}>•</Text>
-                      <Text style={styles.bulletText}>{bullet}</Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            ))}
+        {/* ─── 7. Certifications ─────────────────────────────── */}
+        {data.certifications && data.certifications.length > 0 ? (
+          <View wrap={false}>
+            <Text style={styles.sectionTitle}>C E R T I F I C A T I O N S</Text>
+            <View style={styles.bulletList}>
+              {data.certifications.map((cert, index) => {
+                const certText = `${cert.name}${cert.issuer ? `, ${cert.issuer}` : ""}${cert.year ? `, ${cert.year}` : ""}${cert.id ? ` (ID: ${cert.id})` : ""}`;
+                return (
+                  <View key={`cert-${index}`} style={styles.bulletItem}>
+                    <Text style={styles.bulletSymbol}>•</Text>
+                    <Text style={styles.bulletText}>{certText}</Text>
+                  </View>
+                );
+              })}
+            </View>
           </View>
         ) : null}
       </Page>

@@ -4,581 +4,384 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { X, Download, ArrowRight, Eye, CheckCircle2 } from "lucide-react";
-
-interface TemplateItem {
-  id: string;
-  name: string;
-  description: string;
-  slug: string;
-  accentColor: string;
-  pdfUrl: string;
-  previewImage: string;
-}
-
-const TEMPLATES: TemplateItem[] = [
-  {
-    id: "classic-professional",
-    name: "Classic Professional",
-    description:
-      "The Harvard/McKinsey-style format trusted by recruiters at banks, consulting firms, and Fortune 500 companies.",
-    slug: "classic-professional",
-    accentColor: "#0f172a",
-    pdfUrl: "/templates/classic-professional-resume-template.pdf",
-    previewImage: "/images/templates/classic-professional.png",
-  },
-  {
-    id: "modern",
-    name: "Modern",
-    description:
-      "A bold color header and clean sans-serif layout that stands out without sacrificing ATS compatibility.",
-    slug: "modern",
-    accentColor: "#2563eb",
-    pdfUrl: "/templates/modern-resume-template.pdf",
-    previewImage: "/images/templates/modern.png",
-  },
-  {
-    id: "minimal",
-    name: "Minimal",
-    description:
-      "Maximum whitespace, zero decoration — built for when the content needs to do all the talking.",
-    slug: "minimal",
-    accentColor: "#475569",
-    pdfUrl: "/templates/minimal-resume-template.pdf",
-    previewImage: "/images/templates/minimal.png",
-  },
-  {
-    id: "two-column",
-    name: "Two-Column",
-    description:
-      "A dark sidebar for skills and education, a main column for experience — fits more on one page without feeling cramped.",
-    slug: "two-column",
-    accentColor: "#0f172a",
-    pdfUrl: "/templates/two-column-resume-template.pdf",
-    previewImage: "/images/templates/two-column.png",
-  },
-];
-
-/* ─── FULL PREVIEW COMPONENT FOR MODAL ───────────────────────────────── */
-
-function FullTemplatePreview({ template }: { template: TemplateItem }) {
-  const [activeTab, setActiveTab] = useState<"visual" | "html">("visual");
-
-  return (
-    <div className="flex flex-col items-center max-w-3xl mx-auto">
-      {/* View Switcher */}
-      <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl mb-4 text-xs font-medium text-slate-600">
-        <button
-          type="button"
-          onClick={() => setActiveTab("visual")}
-          className={`px-3 py-1.5 rounded-lg transition-all ${
-            activeTab === "visual"
-              ? "bg-white text-slate-900 shadow-xs font-semibold"
-              : "hover:text-slate-900"
-          }`}
-        >
-          4K Document View
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("html")}
-          className={`px-3 py-1.5 rounded-lg transition-all ${
-            activeTab === "html"
-              ? "bg-white text-slate-900 shadow-xs font-semibold"
-              : "hover:text-slate-900"
-          }`}
-        >
-          Selectable Text View
-        </button>
-      </div>
-
-      {activeTab === "visual" ? (
-        <div className="bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden w-full max-w-2xl">
-          <img
-            src={template.previewImage}
-            alt={`${template.name} preview`}
-            className="w-full h-auto block"
-          />
-        </div>
-      ) : (
-        <div className="w-full">
-          {template.id === "two-column" && (
-            <div className="bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden flex flex-col sm:flex-row text-xs max-w-2xl mx-auto">
-              {/* Dark Left Sidebar */}
-              <div className="w-full sm:w-[36%] bg-[#0B1528] text-white p-6 space-y-5">
-                <div>
-                  <h2 className="text-xl font-bold tracking-tight text-white">Jordan Alvarez</h2>
-                  <div className="mt-2 space-y-1 text-slate-300 text-[11px]">
-                    <div>jordan.alvarez@email.com</div>
-                    <div>(555) 123-4567</div>
-                    <div>San Francisco, CA</div>
-                    <div>linkedin.com/in/jordanalvarez</div>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#93c5fd]">
-                    EDUCATION
-                  </h3>
-                  <div className="mt-1.5 text-[11px]">
-                    <p className="font-semibold text-slate-100">B.S. Computer Science — University of Washington</p>
-                    <p className="text-slate-400 mt-0.5">2015 – 2019</p>
-                  </div>
-                </div>
-
-                <div className="pt-2">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#93c5fd]">
-                    SKILLS
-                  </h3>
-                  <ul className="mt-1.5 space-y-1 text-slate-300 text-[11px]">
-                    <li>• Languages: JavaScript, TypeScript, Python, SQL</li>
-                    <li>• Frameworks: React, Next.js, Node.js, Express</li>
-                    <li>• Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Right Main Column */}
-              <div className="w-full sm:w-[64%] p-6 space-y-5 text-slate-800">
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
-                    SUMMARY
-                  </h3>
-                  <p className="mt-2 text-slate-700 leading-relaxed text-xs">
-                    Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-1">
-                    EXPERIENCE
-                  </h3>
-                  <div className="mt-3 space-y-4">
-                    <div>
-                      <div className="font-bold text-xs text-slate-900">
-                        Senior Software Engineer — Northwind Digital
-                      </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">Jan 2022 – Present</div>
-                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px] list-disc pl-4">
-                        <li>Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</li>
-                        <li>Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</li>
-                        <li>Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div className="font-bold text-xs text-slate-900">
-                        Software Engineer — Brightline Labs
-                      </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">Jun 2019 – Dec 2021</div>
-                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px] list-disc pl-4">
-                        <li>Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</li>
-                        <li>Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</li>
-                        <li>Collaborated with design and product to launch 3 major features on a 6-week release cadence</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {template.id === "minimal" && (
-            <div className="bg-white rounded-lg shadow-xl border border-slate-200 p-8 sm:p-10 text-slate-800 max-w-2xl mx-auto space-y-5 text-xs font-sans">
-              <div>
-                <h2 className="text-2xl font-bold tracking-tight text-slate-950">Jordan Alvarez</h2>
-                <p className="text-[11px] text-slate-500 mt-1 flex flex-wrap gap-x-4">
-                  <span>jordan.alvarez@email.com</span>
-                  <span>(555) 123-4567</span>
-                  <span>San Francisco, CA</span>
-                  <span>linkedin.com/in/jordanalvarez</span>
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                  SUMMARY
-                </h3>
-                <p className="text-slate-700 leading-relaxed text-xs">
-                  Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                  EXPERIENCE
-                </h3>
-                <div className="space-y-4">
-                  <div>
-                    <div className="font-bold text-xs text-slate-900">
-                      Senior Software Engineer — Northwind Digital
-                    </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">Jan 2022 – Present</div>
-                    <div className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
-                      <div>— Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</div>
-                      <div>— Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</div>
-                      <div>— Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="font-bold text-xs text-slate-900">
-                      Software Engineer — Brightline Labs
-                    </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">Jun 2019 – Dec 2021</div>
-                    <div className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
-                      <div>— Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</div>
-                      <div>— Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</div>
-                      <div>— Collaborated with design and product to launch 3 major features on a 6-week release cadence</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                  EDUCATION
-                </h3>
-                <div className="font-bold text-xs text-slate-900">
-                  B.S. Computer Science — University of Washington
-                </div>
-                <div className="text-[11px] text-slate-500 mt-0.5">2015 – 2019</div>
-              </div>
-
-              <div>
-                <h3 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                  SKILLS
-                </h3>
-                <div className="space-y-1 text-slate-700 text-[11px]">
-                  <div>— Languages: JavaScript, TypeScript, Python, SQL</div>
-                  <div>— Frameworks: React, Next.js, Node.js, Express</div>
-                  <div>— Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {template.id === "classic-professional" && (
-            <div className="bg-white rounded-lg shadow-xl border border-slate-200 p-8 sm:p-10 text-slate-900 max-w-2xl mx-auto space-y-4 font-serif">
-              <div className="text-center pb-2">
-                <h2 className="text-2xl font-bold text-slate-950 font-serif">Jordan Alvarez</h2>
-                <p className="text-[11px] text-slate-600 mt-1 font-sans">
-                  jordan.alvarez@email.com &nbsp;·&nbsp; (555) 123-4567 &nbsp;·&nbsp; San Francisco, CA &nbsp;·&nbsp; linkedin.com/in/jordanalvarez
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
-                  S U M M A R Y
-                </h3>
-                <p className="text-xs text-slate-800 leading-relaxed font-serif">
-                  Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
-                  E X P E R I E N C E
-                </h3>
-                <div className="space-y-3 font-sans">
-                  <div>
-                    <div className="font-bold text-xs text-slate-950">
-                      Senior Software Engineer — Northwind Digital
-                    </div>
-                    <div className="text-[11px] text-slate-600">Jan 2022 – Present</div>
-                    <ul className="mt-1 space-y-1 text-[11px] text-slate-800 list-disc pl-4 font-serif">
-                      <li>Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</li>
-                      <li>Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</li>
-                      <li>Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <div className="font-bold text-xs text-slate-950">
-                      Software Engineer — Brightline Labs
-                    </div>
-                    <div className="text-[11px] text-slate-600">Jun 2019 – Dec 2021</div>
-                    <ul className="mt-1 space-y-1 text-[11px] text-slate-800 list-disc pl-4 font-serif">
-                      <li>Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</li>
-                      <li>Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</li>
-                      <li>Collaborated with design and product to launch 3 major features on a 6-week release cadence</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
-                  E D U C A T I O N
-                </h3>
-                <div className="font-sans">
-                  <div className="font-bold text-xs text-slate-950">
-                    B.S. Computer Science — University of Washington
-                  </div>
-                  <div className="text-[11px] text-slate-600">2015 – 2019</div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-950 border-b border-slate-900 pb-0.5 mb-2 font-sans">
-                  S K I L L S
-                </h3>
-                <ul className="space-y-1 text-[11px] text-slate-800 list-disc pl-4 font-serif">
-                  <li>Languages: JavaScript, TypeScript, Python, SQL</li>
-                  <li>Frameworks: React, Next.js, Node.js, Express</li>
-                  <li>Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</li>
-                </ul>
-              </div>
-            </div>
-          )}
-
-          {template.id === "modern" && (
-            <div className="bg-white rounded-lg shadow-xl border border-slate-200 overflow-hidden text-slate-800 max-w-2xl mx-auto">
-              {/* Bold Blue Top Banner */}
-              <div className="bg-[#2563EB] text-white p-6 sm:p-7">
-                <h2 className="text-2xl font-bold tracking-tight text-white">Jordan Alvarez</h2>
-                <p className="text-[11px] text-blue-100 mt-2 flex flex-wrap gap-x-3">
-                  <span>jordan.alvarez@email.com</span>
-                  <span>·</span>
-                  <span>(555) 123-4567</span>
-                  <span>·</span>
-                  <span>San Francisco, CA</span>
-                  <span>·</span>
-                  <span>linkedin.com/in/jordanalvarez</span>
-                </p>
-              </div>
-
-              <div className="p-6 sm:p-8 space-y-5 text-xs">
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
-                    <span>SUMMARY</span>
-                  </h3>
-                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
-                  <p className="text-slate-700 leading-relaxed text-xs">
-                    Product-focused Software Engineer with 5+ years building and scaling web applications used by millions of users. Specializes in React, Node.js, and cloud infrastructure.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
-                    <span>EXPERIENCE</span>
-                  </h3>
-                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="font-bold text-xs text-slate-900">
-                        Senior Software Engineer — Northwind Digital
-                      </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">Jan 2022 – Present</div>
-                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#2563EB] font-bold">•</span>
-                          <span>Led migration of monolith checkout service to microservices, reducing p99 latency from 800ms to 210ms</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#2563EB] font-bold">•</span>
-                          <span>Built real-time inventory sync system handling 2M+ events/day across 40 regional warehouses</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#2563EB] font-bold">•</span>
-                          <span>Mentored 4 junior engineers; introduced code review standards that cut production incidents by 35%</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <div className="font-bold text-xs text-slate-900">
-                        Software Engineer — Brightline Labs
-                      </div>
-                      <div className="text-[11px] text-slate-500 mt-0.5">Jun 2019 – Dec 2021</div>
-                      <ul className="mt-1.5 space-y-1 text-slate-700 text-[11px]">
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#2563EB] font-bold">•</span>
-                          <span>Shipped customer-facing dashboard used by 15,000+ monthly active users, improving retention by 18%</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#2563EB] font-bold">•</span>
-                          <span>Reduced CI pipeline runtime from 22 minutes to 6 minutes through test parallelization and caching</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#2563EB] font-bold">•</span>
-                          <span>Collaborated with design and product to launch 3 major features on a 6-week release cadence</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
-                    <span>EDUCATION</span>
-                  </h3>
-                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
-                  <div className="font-bold text-xs text-slate-900">
-                    B.S. Computer Science — University of Washington
-                  </div>
-                  <div className="text-[11px] text-slate-500 mt-0.5">2015 – 2019</div>
-                </div>
-
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#2563EB] flex items-center gap-2">
-                    <span>SKILLS</span>
-                  </h3>
-                  <div className="w-8 h-0.5 bg-[#2563EB] mt-1 mb-2"></div>
-                  <ul className="space-y-1 text-slate-700 text-[11px]">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#2563EB] font-bold">•</span>
-                      <span>Languages: JavaScript, TypeScript, Python, SQL</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#2563EB] font-bold">•</span>
-                      <span>Frameworks: React, Next.js, Node.js, Express</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#2563EB] font-bold">•</span>
-                      <span>Cloud &amp; Tools: AWS, Docker, PostgreSQL, GitHub Actions</span>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ─── MAIN RESUME TEMPLATES PAGE ─────────────────────────────────────── */
+import { Download, ArrowRight, CheckCircle2, ShieldCheck, Sparkles, Copy, Check } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ResumeTemplatesPage() {
-  const [selectedPreview, setSelectedPreview] = useState<TemplateItem | null>(null);
+  const [activePage, setActivePage] = useState<1 | 2>(1);
+  const [copied, setCopied] = useState(false);
 
-  const handleDownload = (template: TemplateItem) => {
-    // Downloads the genuine, crisp ATS-compliant PDF directly
+  const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = template.pdfUrl;
-    link.download = `${template.slug}-resume-template.pdf`;
+    link.href = "/templates/master-ats-resume-template.pdf";
+    link.download = "master-ats-resume-template.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    toast.success("Downloaded master ATS resume template PDF");
+  };
+
+  const handleCopyText = () => {
+    const text = `HARSHITH KUMAR MANNEPALLI
++91-8977795636 · mharshithkumar6@gmail.com · LinkedIn · GitHub · Portfolio · Dehradun, India
+
+PROFESSIONAL SUMMARY
+B.Tech Computer Science (AI & Machine Learning) student seeking a Research Intern role in AI and Quantum Algorithms at IBM Research India. Strong Python foundation with two IEEE conference papers in machine learning, hands-on work building LLM agents, evaluation frameworks, and safety layers with LangGraph and MCP, and 5 pull requests merged into Cal.com and freeCodeCamp.
+
+EXPERIENCE
+Open Source Contributor | Cal.com & freeCodeCamp | March 2026 – Present
+• Shipped a fix for a Day.js UTC/timezone plugin load-order bug on Cal.com, a platform used by 50k+ teams, after tracing the root cause and verifying it with cross-browser testing.
+• Merged 5 pull requests across Cal.com (github.com/calcom/cal.com) and freeCodeCamp (github.com/freeCodeCamp/freeCodeCamp) after maintainer code review.
+• Built automated file-structure validation with unit tests for freeCodeCamp workshops and added test coverage for a high-contrast navbar fix.
+
+PROJECTS
+RecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker | GitHub
+• Designed an AI-driven revenue-recovery system in which AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.
+• Recovered 20,726 extra across 135 failed-payment test cases with zero unsafe actions and zero duplicate executions, using idempotent execution, a reconciliation ledger, and an append-only audit trail.
+• Ran controlled, seeded simulations for reproducible results, with 232/232 unit tests and 36/36 validation checks passing in automated release checks.
+
+AgentForensics | Python, LangGraph, MCP | Paper in preparation
+• Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.
+• Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions to analyse agent behaviour: flagged 17/20 escalation events with 0 false positives, reaching 91.3% precision; manuscript drafted for an IEEE conference; open-source (Apache 2.0) release planned.
+
+Smart Sales Intelligence Agent | Python, FastAPI, LangGraph | GitHub
+• Built a modular 4-stage multi-agent workflow (Orchestrator → Research → Analysis → Outreach), tracking latency, errors, and usage for each stage.
+• Added real-time execution timelines so every agent run can be traced and debugged.
+
+RESEARCH & PUBLICATIONS
+• IEEE Conference Paper: Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence, 93.1% accuracy. IEEE Xplore
+• IEEE Conference Paper: AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers, 91.3% accuracy. IEEE Xplore
+• Hackathons & Programs: Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).
+
+EDUCATION
+Bachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India | Expected May 2027
+
+SKILLS
+Languages: Python, TypeScript, SQL
+AI & Machine Learning: Machine Learning, Deep Learning, Neural Networks, NLP, Federated Learning, Ensemble Learning, Model Evaluation, Reproducible Experiments
+LLMs & Agents: LLM APIs, AI Agents, RAG, LangGraph, Model Context Protocol (MCP), Tool Calling
+AI Safety & Security: Guardrails, Audit Trails, MCP Security, Agent Forensics
+MLOps & Deployment: FastAPI, Docker, Kubernetes, CI/CD, Git/GitHub, Microsoft Azure, Microsoft Foundry
+Tools & Libraries: VS Code, Jupyter Notebooks, PyTorch, NumPy, Pandas, Data Structures and Algorithms
+
+CERTIFICATIONS
+• Oracle Cloud Infrastructure Generative AI Professional, Oracle, 2025 (ID: 322494826OCI25GAIOCP)
+• AWS Solutions Architecture, Amazon Web Services`;
+
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    toast.success("Master template text copied to clipboard!");
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <div className="min-h-screen bg-white text-slate-900 flex flex-col selection:bg-[#5B50E6]/10 selection:text-[#5B50E6]">
-      {/* ─── GLOBAL TOP NAVIGATION ────────────────────────────── */}
       <Navbar />
 
-      {/* ─── HERO SECTION ─────────────────────────────────────── */}
       <main className="flex-1">
-        <div className="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-20">
-          {/* Subtle Right Ambient Blob */}
+        {/* ─── HERO HEADER ────────────────────────────────────────── */}
+        <div className="relative overflow-hidden pt-12 pb-10 sm:pt-16 sm:pb-14 border-b border-slate-100">
           <div
             className="absolute top-0 right-0 w-[420px] h-[340px] bg-[#F4F1FD] rounded-full blur-3xl opacity-75 pointer-events-none -mr-20 -mt-10"
             aria-hidden="true"
           />
 
           <div className="max-w-[1280px] mx-auto px-6 relative z-10">
-            {/* Tagline */}
-            <p className="text-xs font-bold tracking-wider uppercase text-[#5B50E6] mb-3">
-              FREE TEMPLATES
-            </p>
-
-            {/* Main Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-slate-900 leading-[1.15]">
-              Free resume templates <br className="hidden sm:inline" />
-              <span className="text-[#5B50E6]">— ATS-safe, no sign-up</span>
-            </h1>
-
-            {/* Subtitle */}
-            <p className="mt-4 text-xs sm:text-sm text-slate-600 max-w-2xl leading-relaxed">
-              Four layouts, each built to parse cleanly. Download one blank as a PDF — no account, no email — or paste your own content and let ResumeFlow optimize it into one of these styles in about 27 seconds.
-            </p>
-
-            {/* ─── TEMPLATES 4-CARD ROW ───────────────────────── */}
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {TEMPLATES.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-3.5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
-                >
-                  {/* Miniature 4K Template Preview */}
-                  <div
-                    onClick={() => setSelectedPreview(item)}
-                    className="bg-slate-50/80 rounded-xl p-2 border border-slate-100 aspect-[1/1.38] flex items-center justify-center overflow-hidden relative cursor-pointer group-hover:border-purple-200 transition-colors"
-                  >
-                    <div className="relative w-full h-full rounded shadow-xs overflow-hidden border border-slate-200/70 bg-white">
-                      <img
-                        src={item.previewImage}
-                        alt={`${item.name} Resume Template`}
-                        className="w-full h-full object-cover object-top select-none pointer-events-none group-hover:scale-[1.03] transition-transform duration-300"
-                        loading="eager"
-                      />
-                    </div>
-
-                    {/* Hover Overlay with Preview Icon */}
-                    <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                      <span className="bg-white/95 text-slate-900 text-[11px] font-semibold px-3 py-1.5 rounded-full shadow-md flex items-center gap-1.5 backdrop-blur-xs">
-                        <Eye className="w-3.5 h-3.5 text-[#5B50E6]" />
-                        <span>Preview</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Information */}
-                  <div className="pt-4 pb-2 px-1 flex-1 flex flex-col">
-                    <h3 className="font-bold text-slate-900 text-sm sm:text-base tracking-tight">
-                      {item.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed flex-1">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  {/* Actions matching exact design */}
-                  <div className="flex flex-col gap-2 pt-2 px-1">
-                    <button
-                      type="button"
-                      onClick={() => handleDownload(item)}
-                      className="w-full py-2.5 px-3 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs transition-all shadow-xs cursor-pointer active:scale-[0.99] text-center flex items-center justify-center gap-1.5"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>Download Free Template</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedPreview(item)}
-                      className="w-full py-2.5 px-3 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-700 font-medium text-xs transition-all shadow-2xs cursor-pointer text-center active:scale-[0.99] flex items-center justify-center gap-1.5"
-                    >
-                      <Eye className="w-3.5 h-3.5 text-slate-500" />
-                      <span>Preview</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#5B50E6]/10 text-[#5B50E6] text-xs font-bold uppercase tracking-wider mb-3">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>THE SINGLE ATS MASTER STANDARD</span>
             </div>
 
-            {/* ─── CALLOUT BANNER: STEP ONE OF TWO ────────────── */}
-            <div className="mt-16 bg-[#f7f5ff] rounded-2xl border border-purple-100/90 p-6 sm:p-8 md:p-10 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div className="max-w-xl">
-                <div className="flex items-center gap-2 text-[#5B50E6] font-bold text-xs uppercase tracking-wider mb-1">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>ATS Optimization Ready</span>
-                </div>
-                <h2 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
-                  A blank template is step one of two
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
-                  A good layout gets you read. The right keywords get you past the filter. Paste your content and a real posting — ResumeFlow names what is missing before you send it. Free to start, no card.
-                </p>
+            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+              The Only Resume Template You Need <br className="hidden sm:inline" />
+              <span className="text-[#5B50E6]">— 100% ATS-Safe, Proven by 50k+ Hires</span>
+            </h1>
+
+            <p className="mt-4 text-xs sm:text-sm text-slate-600 max-w-3xl leading-relaxed">
+              We deliberately do not offer 2-column or graphic-heavy templates. Over 75% of enterprise Applicant Tracking Systems (Workday, Taleo, Greenhouse, Lever) scramble multi-column layouts or drop candidate skills entirely. ResumeFlow unifies on this single Harvard/HireRaft ATS Master Template — and dynamically tailors your details into it when compiling.
+            </p>
+
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link
+                href="/optimize"
+                className="py-2.5 px-5 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-semibold text-xs transition-all shadow-xs flex items-center gap-2 cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>Optimize My Resume With This Template</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <button
+                type="button"
+                onClick={handleDownload}
+                className="py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer shadow-2xs"
+              >
+                <Download className="w-4 h-4 text-slate-500" />
+                <span>Download Master PDF</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleCopyText}
+                className="py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs transition-all flex items-center gap-2 cursor-pointer shadow-2xs"
+              >
+                {copied ? (
+                  <Check className="w-4 h-4 text-emerald-600" />
+                ) : (
+                  <Copy className="w-4 h-4 text-slate-500" />
+                )}
+                <span>{copied ? "Copied!" : "Copy Text"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ─── LIVE 2-PAGE MASTER TEMPLATE PREVIEW ─────────────────── */}
+        <div className="max-w-[1280px] mx-auto px-6 py-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left 7 Cols: The Interactive Document */}
+            <div className="lg:col-span-8 flex flex-col items-center">
+              {/* Page Selector Tabs */}
+              <div className="flex items-center gap-2 p-1 bg-slate-100 rounded-xl mb-4 text-xs font-semibold text-slate-600">
+                <button
+                  type="button"
+                  onClick={() => setActivePage(1)}
+                  className={`px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    activePage === 1
+                      ? "bg-white text-slate-900 shadow-xs font-bold"
+                      : "hover:text-slate-900"
+                  }`}
+                >
+                  Page 1: Summary, Experience & Projects
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActivePage(2)}
+                  className={`px-4 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    activePage === 2
+                      ? "bg-white text-slate-900 shadow-xs font-bold"
+                      : "hover:text-slate-900"
+                  }`}
+                >
+                  Page 2: Research, Education & Skills
+                </button>
               </div>
-              <div className="shrink-0">
+
+              {/* Master Document Paper (A4 aspect) */}
+              <div className="w-full max-w-[760px] bg-white rounded-2xl border border-slate-200/90 shadow-lg p-8 sm:p-14 text-slate-950 font-serif text-[10pt] leading-[1.4] space-y-5">
+                {activePage === 1 ? (
+                  <>
+                    {/* Header */}
+                    <div className="text-center space-y-1 pb-1">
+                      <h2 className="text-2xl sm:text-[22pt] font-bold uppercase tracking-normal text-black font-serif">
+                        HARSHITH KUMAR MANNEPALLI
+                      </h2>
+                      <p className="text-[8.5pt] text-slate-700 font-sans tracking-wide">
+                        +91-8977795636 &nbsp;·&nbsp; mharshithkumar6@gmail.com &nbsp;·&nbsp; LinkedIn &nbsp;·&nbsp; GitHub &nbsp;·&nbsp; Portfolio &nbsp;·&nbsp; Dehradun, India
+                      </p>
+                    </div>
+
+                    {/* 1. PROFESSIONAL SUMMARY */}
+                    <div className="space-y-1">
+                      <h3 className="font-sans text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5">
+                        PROFESSIONAL SUMMARY
+                      </h3>
+                      <p className="text-slate-900 text-[9.5pt] leading-relaxed text-justify pt-0.5">
+                        B.Tech Computer Science (AI & Machine Learning) student seeking a Research Intern role in AI and Quantum Algorithms at IBM Research India. Strong Python foundation with two IEEE conference papers in machine learning, hands-on work building LLM agents, evaluation frameworks, and safety layers with LangGraph and MCP, and 5 pull requests merged into Cal.com and freeCodeCamp.
+                      </p>
+                    </div>
+
+                    {/* 2. EXPERIENCE */}
+                    <div className="space-y-2">
+                      <h3 className="font-sans text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5">
+                        EXPERIENCE
+                      </h3>
+                      <div className="pt-0.5">
+                        <p className="font-sans font-bold text-black text-[9.5pt]">
+                          Open Source Contributor | Cal.com & freeCodeCamp | March 2026 – Present
+                        </p>
+                        <ul className="list-disc list-outside ml-4 space-y-1 pt-1 text-[9.5pt] text-slate-900 font-serif">
+                          <li>
+                            Shipped a fix for a Day.js UTC/timezone plugin load-order bug on Cal.com, a platform used by 50k+ teams, after tracing the root cause and verifying it with cross-browser testing.
+                          </li>
+                          <li>
+                            Merged 5 pull requests across Cal.com (github.com/calcom/cal.com) and freeCodeCamp (github.com/freeCodeCamp/freeCodeCamp) after maintainer code review.
+                          </li>
+                          <li>
+                            Built automated file-structure validation with unit tests for freeCodeCamp workshops and added test coverage for a high-contrast navbar fix.
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* 3. PROJECTS */}
+                    <div className="space-y-3">
+                      <h3 className="font-sans text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5">
+                        PROJECTS
+                      </h3>
+
+                      <div className="space-y-0.5">
+                        <p className="font-sans font-bold text-black text-[9.5pt]">
+                          RecoveryOS: Guardrailed AI Decision System | TypeScript, Node.js, SQLite, Docker | GitHub
+                        </p>
+                        <ul className="list-disc list-outside ml-4 space-y-1 text-[9.5pt] text-slate-900 font-serif">
+                          <li>
+                            Designed an AI-driven revenue-recovery system in which AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.
+                          </li>
+                          <li>
+                            Recovered 20,726 extra across 135 failed-payment test cases with zero unsafe actions and zero duplicate executions, using idempotent execution, a reconciliation ledger, and an append-only audit trail.
+                          </li>
+                          <li>
+                            Ran controlled, seeded simulations for reproducible results, with 232/232 unit tests and 36/36 validation checks passing in automated release checks.
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <p className="font-sans font-bold text-black text-[9.5pt]">
+                          AgentForensics | Python, LangGraph, MCP | Paper in preparation
+                        </p>
+                        <ul className="list-disc list-outside ml-4 space-y-1 text-[9.5pt] text-slate-900 font-serif">
+                          <li>
+                            Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.
+                          </li>
+                          <li>
+                            Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions to analyse agent behaviour: flagged 17/20 escalation events with 0 false positives, reaching 91.3% precision; manuscript drafted for an IEEE conference; open-source (Apache 2.0) release planned.
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <p className="font-sans font-bold text-black text-[9.5pt]">
+                          Smart Sales Intelligence Agent | Python, FastAPI, LangGraph | GitHub
+                        </p>
+                        <ul className="list-disc list-outside ml-4 space-y-1 text-[9.5pt] text-slate-900 font-serif">
+                          <li>
+                            Built a modular 4-stage multi-agent workflow (Orchestrator → Research → Analysis → Outreach), tracking latency, errors, and usage for each stage.
+                          </li>
+                          <li>
+                            Added real-time execution timelines so every agent run can be traced and debugged.
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* 4. RESEARCH & PUBLICATIONS */}
+                    <div className="space-y-2">
+                      <h3 className="font-sans text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5">
+                        RESEARCH &amp; PUBLICATIONS
+                      </h3>
+                      <ul className="list-disc list-outside ml-4 space-y-1.5 text-[9.5pt] text-slate-900 font-serif">
+                        <li>
+                          <strong>IEEE Conference Paper:</strong> Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence, 93.1% accuracy. IEEE Xplore
+                        </li>
+                        <li>
+                          <strong>IEEE Conference Paper:</strong> AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers, 91.3% accuracy. IEEE Xplore
+                        </li>
+                        <li>
+                          <strong>Hackathons &amp; Programs:</strong> Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC).
+                        </li>
+                      </ul>
+                    </div>
+
+                    {/* 5. EDUCATION */}
+                    <div className="space-y-1.5">
+                      <h3 className="font-sans text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5">
+                        EDUCATION
+                      </h3>
+                      <p className="font-sans font-bold text-black text-[9.5pt]">
+                        Bachelor of Technology in Computer Science (AI & Machine Learning) | Uttaranchal University, Dehradun, India | Expected May 2027
+                      </p>
+                    </div>
+
+                    {/* 6. SKILLS */}
+                    <div className="space-y-2">
+                      <h3 className="font-sans text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5">
+                        SKILLS
+                      </h3>
+                      <div className="space-y-1.5 text-[9.5pt] text-slate-900">
+                        <p>
+                          <strong className="font-sans font-bold text-[9pt]">Languages:</strong> Python, TypeScript, SQL
+                        </p>
+                        <p>
+                          <strong className="font-sans font-bold text-[9pt]">AI &amp; Machine Learning:</strong> Machine Learning, Deep Learning, Neural Networks, NLP, Federated Learning, Ensemble Learning, Model Evaluation, Reproducible Experiments
+                        </p>
+                        <p>
+                          <strong className="font-sans font-bold text-[9pt]">LLMs &amp; Agents:</strong> LLM APIs, AI Agents, RAG, LangGraph, Model Context Protocol (MCP), Tool Calling
+                        </p>
+                        <p>
+                          <strong className="font-sans font-bold text-[9pt]">AI Safety &amp; Security:</strong> Guardrails, Audit Trails, MCP Security, Agent Forensics
+                        </p>
+                        <p>
+                          <strong className="font-sans font-bold text-[9pt]">MLOps &amp; Deployment:</strong> FastAPI, Docker, Kubernetes, CI/CD, Git/GitHub, Microsoft Azure, Microsoft Foundry
+                        </p>
+                        <p>
+                          <strong className="font-sans font-bold text-[9pt]">Tools &amp; Libraries:</strong> VS Code, Jupyter Notebooks, PyTorch, NumPy, Pandas, Data Structures and Algorithms
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 7. CERTIFICATIONS */}
+                    <div className="space-y-1.5">
+                      <h3 className="font-sans text-[8pt] font-bold uppercase tracking-[0.18em] text-black border-b border-black pb-0.5">
+                        CERTIFICATIONS
+                      </h3>
+                      <ul className="list-disc list-outside ml-4 space-y-1 text-[9.5pt] text-slate-900 font-serif">
+                        <li>Oracle Cloud Infrastructure Generative AI Professional, Oracle, 2025 (ID: 322494826OCI25GAIOCP)</li>
+                        <li>AWS Solutions Architecture, Amazon Web Services</li>
+                      </ul>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Right 4 Cols: Why ATS Strict Standard Works */}
+            <div className="lg:col-span-4 space-y-6">
+              <div className="bg-[#FAF9F5] rounded-2xl border border-amber-200/60 p-6 space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#5B50E6]" />
+                  <span>The Single Master Template Rule</span>
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Most resume builders tempt users with colorful 2-column or sidebar layouts. But when you apply on Workday, Lever, or Greenhouse, their backend parsers strip all columns into a single string.
+                </p>
+                <div className="space-y-3 pt-2 text-xs">
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span className="text-slate-700">
+                      <strong>Single-column flow:</strong> Scanned top-to-bottom without line-jumping or scrambled dates.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span className="text-slate-700">
+                      <strong>Standard typography:</strong> Clean serif body + sans-serif subheads guaranteed to have correct Unicode mapping in PDF parsers.
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span className="text-slate-700">
+                      <strong>Dynamic compiling:</strong> When you use ResumeFlow, our AI compiler swaps your exact details, metrics, and targeted job skills directly into this master skeleton.
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Card */}
+              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs space-y-4">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Ready to optimize?
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Upload your existing PDF or paste your resume. We extract every requirement from the job description and recompile your bullets with real numbers and verified keywords into this exact master template.
+                </p>
                 <Link
                   href="/optimize"
-                  className="inline-flex items-center justify-center py-2.5 px-6 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs sm:text-sm transition-all shadow-md active:scale-[0.99] whitespace-nowrap cursor-pointer gap-1.5"
+                  className="w-full py-3 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-bold text-xs transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Fill it against a job</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <Sparkles className="w-4 h-4" />
+                  <span>Open Free AI Resume Optimizer</span>
                 </Link>
               </div>
             </div>
@@ -586,59 +389,6 @@ export default function ResumeTemplatesPage() {
         </div>
       </main>
 
-      {/* ─── PREVIEW MODAL ────────────────────────────────────── */}
-      {selectedPreview && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-              <div>
-                <h3 className="text-base font-bold text-slate-900">{selectedPreview.name}</h3>
-                <p className="text-xs text-slate-500">{selectedPreview.description}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedPreview(null)}
-                className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Close modal"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Modal Body: Scrollable Preview */}
-            <div className="flex-1 overflow-y-auto p-6 bg-slate-50/70">
-              <FullTemplatePreview template={selectedPreview} />
-            </div>
-
-            {/* Modal Footer */}
-            <div className="px-6 py-4 border-t border-slate-100 bg-white flex flex-col sm:flex-row items-center justify-between gap-3">
-              <div className="text-xs text-slate-500">
-                100% ATS-Compliant · Tested with Greenhouse, Lever, Workday &amp; Taleo
-              </div>
-              <div className="flex items-center gap-2.5 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={() => handleDownload(selectedPreview)}
-                  className="flex-1 sm:flex-initial py-2 px-4 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-medium text-xs transition-all shadow-2xs cursor-pointer flex items-center justify-center gap-1.5"
-                >
-                  <Download className="w-3.5 h-3.5 text-slate-500" />
-                  <span>Download Free PDF</span>
-                </button>
-                <Link
-                  href="/optimize"
-                  className="flex-1 sm:flex-initial py-2 px-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E43D8] text-white font-medium text-xs transition-all shadow-xs text-center flex items-center justify-center gap-1.5"
-                >
-                  <span>Fill it against a job</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ─── GLOBAL FOOTER ────────────────────────────────────── */}
       <Footer />
     </div>
   );

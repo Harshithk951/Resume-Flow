@@ -41,8 +41,9 @@ export interface Skills {
 
 export interface Certification {
   name: string;
-  issuer: string;
-  year: string;
+  issuer?: string;
+  year?: string;
+  id?: string;
 }
 
 export interface Achievement {
@@ -50,15 +51,30 @@ export interface Achievement {
   year?: string;
 }
 
+export interface Publication {
+  title: string;
+  venue?: string;
+  date?: string;
+  link?: string;
+  description?: string;
+}
+
+export interface SkillCategory {
+  category: string;
+  items: string[];
+}
+
 export interface StructuredResumeContent {
   personalInfo: PersonalInfo;
   summary: string;
   education: Education[];
   skills: Skills;
+  categorizedSkills?: SkillCategory[];
   experience: Experience[];
   projects: Project[];
   certifications?: Certification[];
   achievements?: Achievement[];
+  publications?: Array<Publication | string>;
 }
 
 /**
@@ -136,5 +152,13 @@ export function normalizeStructuredContent(
       : [],
     certifications: Array.isArray(data.certifications) ? data.certifications : undefined,
     achievements: Array.isArray(data.achievements) ? data.achievements : undefined,
+    publications: Array.isArray(data.publications)
+      ? data.publications
+      : Array.isArray(data.researchAndPublications)
+      ? data.researchAndPublications
+      : undefined,
+    categorizedSkills: Array.isArray(data.categorizedSkills)
+      ? data.categorizedSkills
+      : undefined,
   };
 }

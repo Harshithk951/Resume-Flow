@@ -2,6 +2,7 @@
 //
 // Pure Deterministic Multi-Preamble JSON-to-LaTeX Compiler
 // Single unified body generation engine with lookup-based styling preambles.
+// Standardized on the ATS Master Template (HireRaft Standard).
 
 import { escapeLatex } from "./escapeLatex";
 
@@ -21,18 +22,18 @@ function cleanUrlDisplay(url: string | undefined): string {
   return url.trim().replace(/^https?:\/\/(www\.)?/i, "").replace(/\/$/, "");
 }
 
-
-
 /**
  * Preamble lookup dictionary for styling & typography options
  */
 export const PREAMBLES: Record<string, string> = {
-  ats_strict: `\\documentclass[11pt,letterpaper]{article}
+  ats_strict: `\\documentclass[10pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage{mathptmx}
+\\usepackage[scaled=0.92]{helvet}
 \\usepackage[expansion=false]{microtype}
 \\DisableLigatures{encoding = *, family = *}
-\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
+\\usepackage[left=0.72in,right=0.72in,top=0.6in,bottom=0.6in]{geometry}
 \\usepackage{enumitem}
 \\usepackage[hidelinks]{hyperref}
 
@@ -40,13 +41,17 @@ export const PREAMBLES: Record<string, string> = {
 \\pagestyle{empty}
 
 % ---------- Macros ----------
-\\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries #1\\par}}
-\\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
+\\newcommand{\\rname}[1]{{\\centering\\fontsize{20}{24}\\selectfont\\bfseries #1\\par}}
+\\newcommand{\\rcontact}[1]{{\\centering\\fontsize{8.5}{11}\\selectfont\\sffamily #1\\par}}
 
 \\newcommand{\\ressection}[1]{%
-  \\vspace{9pt}
-  {\\bfseries\\large #1}\\[-7pt]
-  \\noindent\\rule{\\linewidth}{0.6pt}\\vspace{3pt}
+  \\vspace{7pt}
+  {\\fontsize{7.5}{9.5}\\selectfont\\sffamily\\bfseries\\MakeUppercase{#1}}\\[-5pt]
+  \\noindent\\rule{\\linewidth}{0.75pt}\\vspace{3pt}
+}
+
+\\newcommand{\\resentry}[1]{%
+  \\noindent{\\fontsize{9.5}{11.5}\\selectfont\\sffamily\\bfseries #1}\\[2pt]
 }
 
 \\newcommand{\\resheading}[4]{%
@@ -55,16 +60,16 @@ export const PREAMBLES: Record<string, string> = {
 }
 
 \\newenvironment{resitems}{%
-  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+  \\begin{itemize}[leftmargin=12pt,itemsep=1.5pt,topsep=1.5pt,parsep=0pt,label=\\textbullet]
 }{%
   \\end{itemize}
 }
-\\newcommand{\\resitem}[1]{\\item #1}
+\\newcommand{\\resitem}[1]{\\item {\\fontsize{9}{12}\\selectfont #1}}
 
-\\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
+\\newcommand{\\skillrow}[2]{{\\fontsize{9}{11.5}\\selectfont\\textsf{\\textbf{#1:}}~#2}\\[2pt]}
 `,
 
-  startup: `\\documentclass[11pt,letterpaper]{article}
+  startup: `\\documentclass[10pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
 \\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
@@ -84,9 +89,13 @@ export const PREAMBLES: Record<string, string> = {
 \\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
 
 \\newcommand{\\ressection}[1]{%
-  \\vspace{9pt}
+  \\vspace{8pt}
   {\\bfseries\\large\\color{accent}\\MakeUppercase{#1}}\\[-6pt]
   \\noindent{\\color{accent}\\rule{\\linewidth}{1pt}}\\vspace{3pt}
+}
+
+\\newcommand{\\resentry}[1]{%
+  \\noindent{\\bfseries #1}\\[2pt]
 }
 
 \\newcommand{\\resheading}[4]{%
@@ -95,7 +104,7 @@ export const PREAMBLES: Record<string, string> = {
 }
 
 \\newenvironment{resitems}{%
-  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+  \\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
 }{%
   \\end{itemize}
 }
@@ -104,10 +113,10 @@ export const PREAMBLES: Record<string, string> = {
 \\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
 `,
 
-  finance_tech: `\\documentclass[11pt,letterpaper]{article}
+  finance_tech: `\\documentclass[10pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
-\\usepackage[left=0.75in,right=0.75in,top=0.6in,bottom=0.6in]{geometry}
+\\usepackage[left=0.72in,right=0.72in,top=0.6in,bottom=0.6in]{geometry}
 \\usepackage{enumitem}
 \\usepackage[hidelinks]{hyperref}
 \\usepackage{mathpazo}
@@ -119,13 +128,17 @@ export const PREAMBLES: Record<string, string> = {
 \\pagestyle{empty}
 
 % ---------- Macros ----------
-\\newcommand{\\rname}[1]{{\\centering\\Huge\\bfseries #1\\par}}
+\\newcommand{\\rname}[1]{{\\centering\\huge\\scshape #1\\par}}
 \\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
 
 \\newcommand{\\ressection}[1]{%
-  \\vspace{9pt}
-  {\\bfseries\\normalsize\\textsc{#1}}\\[-6pt]
-  \\noindent\\rule{\\linewidth}{0.5pt}\\vspace{3pt}
+  \\vspace{8pt}
+  {\\scshape\\large\\bfseries #1}\\[-6pt]
+  \\noindent\\rule{\\linewidth}{0.8pt}\\vspace{3pt}
+}
+
+\\newcommand{\\resentry}[1]{%
+  \\noindent{\\bfseries #1}\\[2pt]
 }
 
 \\newcommand{\\resheading}[4]{%
@@ -134,7 +147,7 @@ export const PREAMBLES: Record<string, string> = {
 }
 
 \\newenvironment{resitems}{%
-  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+  \\begin{itemize}[leftmargin=14pt,itemsep=1.5pt,topsep=1.5pt,parsep=0pt,label=\\textbullet]
 }{%
   \\end{itemize}
 }
@@ -143,17 +156,19 @@ export const PREAMBLES: Record<string, string> = {
 \\newcommand{\\skillrow}[2]{\\textbf{#1:}~#2\\[2pt]}
 `,
 
-  tech_modern: `\\documentclass[11pt,letterpaper]{article}
+  tech_modern: `\\documentclass[10pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
-\\usepackage[left=0.65in,right=0.65in,top=0.55in,bottom=0.55in]{geometry}
+\\usepackage{charter}
+\\usepackage[scaled=0.92]{helvet}
+\\usepackage[expansion=false]{microtype}
+\\DisableLigatures{encoding = *, family = *}
+\\usepackage[left=0.7in,right=0.7in,top=0.55in,bottom=0.55in]{geometry}
 \\usepackage{enumitem}
 \\usepackage[hidelinks]{hyperref}
 \\usepackage{xcolor}
-\\usepackage[scaled=0.95]{helvet}
-\\renewcommand{\\familydefault}{\\sfdefault}
 
-\\definecolor{accent}{HTML}{0EA5E9}
+\\definecolor{accent}{HTML}{2563EB}
 
 \\setlength{\\parindent}{0pt}
 \\pagestyle{empty}
@@ -163,9 +178,13 @@ export const PREAMBLES: Record<string, string> = {
 \\newcommand{\\rcontact}[1]{{\\centering\\small #1\\par}}
 
 \\newcommand{\\ressection}[1]{%
-  \\vspace{10pt}
+  \\vspace{8pt}
   {\\bfseries\\large #1}\\[1pt]
   \\noindent{\\color{accent}\\rule{0.16\\linewidth}{1.4pt}}\\[4pt]
+}
+
+\\newcommand{\\resentry}[1]{%
+  \\noindent{\\bfseries #1}\\[2pt]
 }
 
 \\newcommand{\\resheading}[4]{%
@@ -174,7 +193,7 @@ export const PREAMBLES: Record<string, string> = {
 }
 
 \\newenvironment{resitems}{%
-  \\begin{itemize}[leftmargin=16pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
+  \\begin{itemize}[leftmargin=14pt,itemsep=1pt,topsep=2pt,parsep=0pt,label=\\textbullet]
 }{%
   \\end{itemize}
 }
@@ -198,6 +217,13 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
   const projects = Array.isArray(resumeJSON.projects) ? resumeJSON.projects : [];
   const skills = resumeJSON.skills ?? {};
   const certifications = Array.isArray(resumeJSON.certifications) ? resumeJSON.certifications : [];
+  const publications = Array.isArray(resumeJSON.publications)
+    ? resumeJSON.publications
+    : Array.isArray(resumeJSON.researchAndPublications)
+    ? resumeJSON.researchAndPublications
+    : Array.isArray(resumeJSON.achievements)
+    ? resumeJSON.achievements
+    : [];
 
   const parts: string[] = [preamble, "\n\\begin{document}\n"];
 
@@ -206,12 +232,12 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
   parts.push(`\\rname{${fullName}}\n`);
 
   const contactItems: string[] = [];
+  if (personalInfo.phone) {
+    contactItems.push(escapeLatex(personalInfo.phone));
+  }
   if (personalInfo.email) {
     const emailEsc = escapeLatex(personalInfo.email);
     contactItems.push(`\\href{mailto:${personalInfo.email}}{${emailEsc}}`);
-  }
-  if (personalInfo.phone) {
-    contactItems.push(escapeLatex(personalInfo.phone));
   }
   if (personalInfo.linkedin) {
     const url = ensureUrl(personalInfo.linkedin);
@@ -228,74 +254,21 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
     const disp = escapeLatex(cleanUrlDisplay(personalInfo.portfolio));
     contactItems.push(`\\href{${url}}{${disp}}`);
   }
+  if (personalInfo.location) {
+    contactItems.push(escapeLatex(personalInfo.location));
+  }
 
   if (contactItems.length > 0) {
-    parts.push(`\\rcontact{${contactItems.join(" $\\vert$ ")}}\n`);
+    parts.push(`\\rcontact{${contactItems.join(" $\\cdot$ ")}}\n`);
   }
 
-  // ── 2. Education Section ──
-  if (education.length > 0) {
-    parts.push("\\ressection{Education}\n");
-    for (const edu of education) {
-      const inst = escapeLatex(edu.institution || "");
-      const gradDate = escapeLatex(edu.year || edu.gradDate || "");
-      let degreeGpa = escapeLatex(edu.degree || "");
-      if (edu.gpa) {
-        degreeGpa += ` --- CGPA: ${escapeLatex(String(edu.gpa))}`;
-      }
-      const loc = escapeLatex(edu.location || "");
-
-      parts.push(`\\resheading{${inst}}{${gradDate}}{${degreeGpa}}{${loc}}\n`);
-    }
+  // ── 2. Professional Summary Section ──
+  if (resumeJSON.summary && String(resumeJSON.summary).trim()) {
+    parts.push("\\ressection{Professional Summary}\n");
+    parts.push(`{\\fontsize{9}{12.5}\\selectfont ${escapeLatex(String(resumeJSON.summary).trim())}\\par}\n`);
   }
 
-  // ── 3. Technical Skills Section ──
-  const formatSkillList = (val: any): string => {
-    if (Array.isArray(val)) {
-      return val.map((s) => escapeLatex(String(s))).filter(Boolean).join(", ");
-    }
-    if (typeof val === "string" && val.trim()) {
-      return escapeLatex(val);
-    }
-    return "";
-  };
-
-  const languagesStr = formatSkillList(skills.languages);
-
-  const frameworksStr = formatSkillList(
-    skills.frameworksAndTools ??
-    (skills.frameworks || skills.tools
-      ? [...(Array.isArray(skills.frameworks) ? skills.frameworks : []), ...(Array.isArray(skills.tools) ? skills.tools : [])]
-      : "")
-  );
-
-  const cloudDevOpsStr = formatSkillList(
-    skills.cloudAndDevOps ?? skills.databases
-  );
-
-  const csFundamentalsStr = formatSkillList(
-    skills.csFundamentals ?? skills.soft
-  );
-
-  const hasSkills = Boolean(languagesStr || frameworksStr || cloudDevOpsStr || csFundamentalsStr);
-
-  if (hasSkills) {
-    parts.push("\\ressection{Technical Skills}\n");
-    if (languagesStr) {
-      parts.push(`\\skillrow{Languages}{${languagesStr}}\n`);
-    }
-    if (frameworksStr) {
-      parts.push(`\\skillrow{Frameworks \\& Tools}{${frameworksStr}}\n`);
-    }
-    if (cloudDevOpsStr) {
-      parts.push(`\\skillrow{Cloud \\& DevOps}{${cloudDevOpsStr}}\n`);
-    }
-    if (csFundamentalsStr) {
-      parts.push(`\\skillrow{CS Fundamentals}{${csFundamentalsStr}}\n`);
-    }
-  }
-
-  // ── 4. Experience Section ──
+  // ── 3. Experience Section ──
   if (experience.length > 0) {
     parts.push("\\ressection{Experience}\n");
     for (const exp of experience) {
@@ -304,7 +277,8 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
       const company = escapeLatex(exp.company || "");
       const loc = escapeLatex(exp.location || "");
 
-      parts.push(`\\resheading{${role}}{${dates}}{${company}}{${loc}}\n`);
+      const titleParts = [role, company, dates, loc].filter(Boolean);
+      parts.push(`\\resentry{${titleParts.join(" $\\vert$ ")}}\n`);
 
       const bullets = Array.isArray(exp.bullets) ? exp.bullets : [];
       if (bullets.length > 0) {
@@ -319,16 +293,20 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
     }
   }
 
-  // ── 5. Projects Section ──
+  // ── 4. Projects Section ──
   if (projects.length > 0) {
     parts.push("\\ressection{Projects}\n");
     for (const proj of projects) {
       const name = escapeLatex(proj.name || "");
-      const date = escapeLatex(proj.date || "");
-      const techStack = formatSkillList(proj.technologies || proj.techStack);
-      const locOrLink = proj.link ? escapeLatex(cleanUrlDisplay(proj.link)) : "";
+      const techStack = Array.isArray(proj.technologies)
+        ? proj.technologies.map((t: any) => escapeLatex(String(t))).join(", ")
+        : Array.isArray(proj.techStack)
+        ? proj.techStack.map((t: any) => escapeLatex(String(t))).join(", ")
+        : "";
+      const locOrLink = proj.link ? "GitHub" : "";
 
-      parts.push(`\\resheading{${name}}{${date}}{${techStack}}{${locOrLink}}\n`);
+      const titleParts = [name, techStack, locOrLink].filter(Boolean);
+      parts.push(`\\resentry{${titleParts.join(" $\\vert$ ")}}\n`);
 
       const bullets = Array.isArray(proj.bullets) ? proj.bullets : [];
       if (bullets.length > 0) {
@@ -343,7 +321,82 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
     }
   }
 
-  // ── 6. Certifications Section (Omitted if empty) ──
+  // ── 5. Research & Publications / Achievements Section ──
+  if (publications.length > 0) {
+    parts.push("\\ressection{Research \\& Publications}\n");
+    parts.push("\\begin{resitems}\n");
+    for (const pub of publications) {
+      if (typeof pub === "string") {
+        parts.push(`\\resitem{${escapeLatex(pub)}}\n`);
+      } else if (pub && typeof pub === "object") {
+        const title = escapeLatex(pub.title || pub.description || "");
+        const venue = pub.venue ? `: ${escapeLatex(pub.venue)}` : "";
+        const desc = pub.description && pub.title ? `. ${escapeLatex(pub.description)}` : "";
+        parts.push(`\\resitem{${title}${venue}${desc}}\n`);
+      }
+    }
+    parts.push("\\end{resitems}\n");
+  }
+
+  // ── 6. Education Section ──
+  if (education.length > 0) {
+    parts.push("\\ressection{Education}\n");
+    for (const edu of education) {
+      const degree = escapeLatex(edu.degree || "");
+      const inst = escapeLatex(edu.institution || "");
+      const loc = escapeLatex(edu.location || "");
+      const gradDate = escapeLatex(edu.year || edu.gradDate || "");
+      const gpa = edu.gpa ? `CGPA: ${escapeLatex(String(edu.gpa))}` : "";
+
+      const titleParts = [degree, inst, loc, gradDate, gpa].filter(Boolean);
+      parts.push(`\\resentry{${titleParts.join(" $\\vert$ ")}}\n`);
+    }
+  }
+
+  // ── 7. Technical Skills Section ──
+  const formatSkillList = (val: any): string => {
+    if (Array.isArray(val)) {
+      return val.map((s) => escapeLatex(String(s))).filter(Boolean).join(", ");
+    }
+    if (typeof val === "string" && val.trim()) {
+      return escapeLatex(val);
+    }
+    return "";
+  };
+
+  const languagesStr = formatSkillList(skills.languages);
+  const frameworksStr = formatSkillList(
+    skills.frameworksAndTools ??
+    (skills.frameworks || skills.tools
+      ? [...(Array.isArray(skills.frameworks) ? skills.frameworks : []), ...(Array.isArray(skills.tools) ? skills.tools : [])]
+      : "")
+  );
+  const cloudDevOpsStr = formatSkillList(
+    skills.cloudAndDevOps ?? skills.databases
+  );
+  const csFundamentalsStr = formatSkillList(
+    skills.csFundamentals ?? skills.soft
+  );
+
+  const hasSkills = Boolean(languagesStr || frameworksStr || cloudDevOpsStr || csFundamentalsStr);
+
+  if (hasSkills) {
+    parts.push("\\ressection{Skills}\n");
+    if (languagesStr) {
+      parts.push(`\\skillrow{Languages}{${languagesStr}}\n`);
+    }
+    if (frameworksStr) {
+      parts.push(`\\skillrow{AI \\& Machine Learning}{${frameworksStr}}\n`);
+    }
+    if (cloudDevOpsStr) {
+      parts.push(`\\skillrow{Tools \\& Deployment}{${cloudDevOpsStr}}\n`);
+    }
+    if (csFundamentalsStr) {
+      parts.push(`\\skillrow{CS Fundamentals}{${csFundamentalsStr}}\n`);
+    }
+  }
+
+  // ── 8. Certifications Section (Omitted if empty) ──
   if (certifications.length > 0) {
     parts.push("\\ressection{Certifications}\n");
     parts.push("\\begin{resitems}\n");
@@ -352,9 +405,10 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
         parts.push(`\\resitem{${escapeLatex(cert)}}\n`);
       } else if (cert && typeof cert === "object") {
         const certName = escapeLatex(cert.name || "");
-        const issuer = cert.issuer ? ` --- ${escapeLatex(cert.issuer)}` : "";
-        const year = cert.year ? ` (${escapeLatex(cert.year)})` : "";
-        parts.push(`\\resitem{${certName}${issuer}${year}}\n`);
+        const issuer = cert.issuer ? `, ${escapeLatex(cert.issuer)}` : "";
+        const year = cert.year ? `, ${escapeLatex(cert.year)}` : "";
+        const id = cert.id ? ` (ID: ${escapeLatex(cert.id)})` : "";
+        parts.push(`\\resitem{${certName}${issuer}${year}${id}}\n`);
       }
     }
     parts.push("\\end{resitems}\n");

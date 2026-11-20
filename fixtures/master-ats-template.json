@@ -1,0 +1,114 @@
+{
+  "personalInfo": {
+    "name": "HARSHITH KUMAR MANNEPALLI",
+    "phone": "+91-8977795636",
+    "email": "mharshithkumar6@gmail.com",
+    "linkedin": "https://linkedin.com/in/harshithkumar",
+    "github": "https://github.com/harshithkumar",
+    "portfolio": "https://harshithkumar.in",
+    "location": "Dehradun, India"
+  },
+  "summary": "B.Tech Computer Science (AI & Machine Learning) student seeking a Research Intern role in AI and Quantum Algorithms at IBM Research India. Strong Python foundation with two IEEE conference papers in machine learning, hands-on work building LLM agents, evaluation frameworks, and safety layers with LangGraph and MCP, and 5 pull requests merged into Cal.com and freeCodeCamp.",
+  "experience": [
+    {
+      "company": "Cal.com & freeCodeCamp",
+      "role": "Open Source Contributor",
+      "duration": "March 2026 – Present",
+      "bullets": [
+        "Shipped a fix for a Day.js UTC/timezone plugin load-order bug on Cal.com, a platform used by 50k+ teams, after tracing the root cause and verifying it with cross-browser testing.",
+        "Merged 5 pull requests across Cal.com (github.com/calcom/cal.com) and freeCodeCamp (github.com/freeCodeCamp/freeCode-Camp) after maintainer code review.",
+        "Built automated file-structure validation with unit tests for freeCodeCamp workshops and added test coverage for a high-contrast navbar fix."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "RecoveryOS: Guardrailed AI Decision System",
+      "description": "Rule-based safety layer for AI agent workflows",
+      "technologies": ["TypeScript", "Node.js", "SQLite", "Docker"],
+      "link": "https://github.com/harshithkumar/recoveryos",
+      "bullets": [
+        "Designed an AI-driven revenue-recovery system in which AI suggestions pass through a rule-based safety layer (risk limits, retry budgets, cooldowns, kill-switch) before any action is taken.",
+        "Recovered 20,726 extra across 135 failed-payment test cases with zero unsafe actions and zero duplicate executions, using idempotent execution, a reconciliation ledger, and an append-only audit trail.",
+        "Ran controlled, seeded simulations for reproducible results, with 232/232 unit tests and 36/36 validation checks passing in automated release checks."
+      ]
+    },
+    {
+      "name": "AgentForensics",
+      "description": "Digital forensics framework for MCP-connected multi-agent systems",
+      "technologies": ["Python", "LangGraph", "MCP"],
+      "link": "Paper in preparation",
+      "bullets": [
+        "Designed a digital forensics framework for MCP-connected multi-agent systems with four components: EvidenceCollector, ProvenanceGraphBuilder, EscalationDetector, and ForensicReporter.",
+        "Evaluated a LangGraph prototype with two MCP tool servers on 20 synthetic agent sessions to analyse agent behaviour: flagged 17/20 escalation events with 0 false positives, reaching 91.3% precision; manuscript drafted for an IEEE conference; open-source (Apache 2.0) release planned."
+      ]
+    },
+    {
+      "name": "Smart Sales Intelligence Agent",
+      "description": "Modular 4-stage multi-agent workflow",
+      "technologies": ["Python", "FastAPI", "LangGraph"],
+      "link": "https://github.com/harshithkumar/sales-intelligence-agent",
+      "bullets": [
+        "Built a modular 4-stage multi-agent workflow (Orchestrator → Research → Analysis → Outreach), tracking latency, errors, and usage for each stage.",
+        "Added real-time execution timelines so every agent run can be traced and debugged."
+      ]
+    }
+  ],
+  "publications": [
+    "IEEE Conference Paper: Catastrophic Forgetting Prevention in Federated Learning Using EWC for Edge Intelligence, 93.1% accuracy. IEEE Xplore",
+    "IEEE Conference Paper: AgriCogNet: Explainable Ensemble Learning for Cognitive Fatigue Detection in Indian Agricultural Workers, 91.3% accuracy. IEEE Xplore",
+    "Hackathons & Programs: Smart India Hackathon internal round; built and deployed two applications in 24 hours at the Lakshyagriha Global Hackathon, Dev Bhoomi University; completed GirlScript Summer of Code (GSSoC)."
+  ],
+  "education": [
+    {
+      "institution": "Uttaranchal University, Dehradun, India",
+      "degree": "Bachelor of Technology in Computer Science (AI & Machine Learning)",
+      "year": "Expected May 2027"
+    }
+  ],
+  "skills": {
+    "languages": ["Python", "TypeScript", "SQL"],
+    "frameworks": ["Machine Learning", "Deep Learning", "Neural Networks", "NLP", "Federated Learning", "Ensemble Learning", "Model Evaluation", "Reproducible Experiments"],
+    "tools": ["LLM APIs", "AI Agents", "RAG", "LangGraph", "Model Context Protocol (MCP)", "Tool Calling"],
+    "databases": ["Guardrails", "Audit Trails", "MCP Security", "Agent Forensics"],
+    "soft": ["FastAPI", "Docker", "Kubernetes", "CI/CD", "Git/GitHub", "Microsoft Azure", "Microsoft Foundry"]
+  },
+  "categorizedSkills": [
+    {
+      "category": "Languages",
+      "items": ["Python", "TypeScript", "SQL"]
+    },
+    {
+      "category": "AI & Machine Learning",
+      "items": ["Machine Learning", "Deep Learning", "Neural Networks", "NLP", "Federated Learning", "Ensemble Learning", "Model Evaluation", "Reproducible Experiments"]
+    },
+    {
+      "category": "LLMs & Agents",
+      "items": ["LLM APIs", "AI Agents", "RAG", "LangGraph", "Model Context Protocol (MCP)", "Tool Calling"]
+    },
+    {
+      "category": "AI Safety & Security",
+      "items": ["Guardrails", "Audit Trails", "MCP Security", "Agent Forensics"]
+    },
+    {
+      "category": "MLOps & Deployment",
+      "items": ["FastAPI", "Docker", "Kubernetes", "CI/CD", "Git/GitHub", "Microsoft Azure", "Microsoft Foundry"]
+    },
+    {
+      "category": "Tools & Libraries",
+      "items": ["VS Code", "Jupyter Notebooks", "PyTorch", "NumPy", "Pandas", "Data Structures and Algorithms"]
+    }
+  ],
+  "certifications": [
+    {
+      "name": "Oracle Cloud Infrastructure Generative AI Professional",
+      "issuer": "Oracle",
+      "year": "2025",
+      "id": "322494826OCI25GAIOCP"
+    },
+    {
+      "name": "AWS Solutions Architecture",
+      "issuer": "Amazon Web Services"
+    }
+  ]
+}

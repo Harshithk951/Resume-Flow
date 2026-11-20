@@ -30,10 +30,7 @@ interface SavedResumeDoc {
 }
 
 const TEMPLATE_OPTIONS = [
-  { id: "modern_clean", name: "Modern Clean", desc: "Minimalist sans-serif, high ATS scanability" },
-  { id: "executive_serif", name: "Executive Serif", desc: "Classic corporate typography, high-impact structure" },
-  { id: "minimal_tech", name: "Minimal Tech", desc: "Designed for software, systems, and product roles" },
-  { id: "creative_studio", name: "Creative Studio", desc: "Contemporary aesthetic for design & marketing" },
+  { id: "ats_master", name: "ATS Master Standard", desc: "Single-column Harvard/HireRaft layout — 100% ATS score" },
 ];
 
 export default function SavedResumesPage() {
@@ -53,7 +50,7 @@ export default function SavedResumesPage() {
   // Form Fields
   const [modalTitle, setModalTitle] = useState("");
   const [modalRole, setModalRole] = useState("");
-  const [modalTemplate, setModalTemplate] = useState("modern_clean");
+  const [modalTemplate, setModalTemplate] = useState("ats_master");
   const [modalRawText, setModalRawText] = useState("");
   const [modalIsDefault, setModalIsDefault] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,7 +86,7 @@ export default function SavedResumesPage() {
     setEditingResumeId(resume._id);
     setModalTitle(resume.title);
     setModalRole(resume.targetRole || "");
-    setModalTemplate(resume.template || "modern_clean");
+    setModalTemplate(resume.template || "ats_master");
     setModalRawText(resume.rawText || "");
     setModalIsDefault(resume.isDefault ?? false);
     setIsModalOpen(true);
