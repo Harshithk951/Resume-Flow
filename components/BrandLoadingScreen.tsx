@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 // Exact SVG Vector Paths for the Official ResumeFlow Emblem
 const PATH_HEAD_COMPOUND =
   "M 48.05 8.0 L 47.83 8.23 L 46.22 8.46 L 43.25 10.06 L 40.73 12.81 L 40.04 14.41 L 39.59 14.87 L 39.36 15.78 L 38.9 16.24 L 38.21 17.61 L 38.21 18.07 L 37.53 18.99 L 37.53 19.44 L 37.07 19.9 L 36.38 21.28 L 36.38 21.73 L 35.69 22.65 L 35.69 23.11 L 35.24 23.56 L 34.55 24.94 L 34.55 25.4 L 33.86 26.31 L 33.86 26.77 L 33.18 27.68 L 33.18 28.14 L 32.49 29.06 L 32.49 29.51 L 32.03 30.43 L 32.03 31.12 L 31.8 31.35 L 31.8 35.24 L 32.03 35.47 L 32.03 36.15 L 32.26 36.38 L 32.49 37.53 L 33.86 39.81 L 44.39 50.34 L 46.22 51.49 L 46.68 51.49 L 48.28 52.17 L 51.72 52.17 L 51.95 51.95 L 53.78 51.49 L 54.69 50.8 L 55.38 50.57 L 66.14 39.81 L 67.51 37.53 L 67.51 37.07 L 67.97 36.15 L 67.97 35.47 L 68.2 35.24 L 68.2 31.35 L 67.97 31.12 L 67.97 30.43 L 67.28 29.06 L 67.28 28.6 L 59.73 13.49 L 58.81 12.12 L 56.75 10.06 L 53.78 8.46 L 52.17 8.23 L 51.95 8.0 Z M 49.43 16.24 L 50.57 16.24 L 51.49 16.7 L 52.63 18.07 L 59.96 32.95 L 59.96 33.86 L 59.5 34.55 L 50.11 43.93 L 49.89 43.93 L 40.5 34.55 L 40.04 33.86 L 40.27 32.26 L 47.37 18.07 L 48.51 16.7 Z";
@@ -21,13 +23,22 @@ export interface BrandLoadingScreenProps {
 /**
  * BrandLoadingScreen
  *
- * - Background: Strictly #fbfbf9 (never turns black).
- * - Card: Clean white squircle card with subtle shadow and border (same as before).
- * - Logo: Solid black mark with ZERO blue touch, zero colored auras.
- * - Animation: Pure natural head bouncing (bounces up without joint, lands back onto joint).
+ * - Background: Clean, locked #fbfbf9 (never turns black).
+ * - No bounding box: Logo floats freely and proudly on screen.
+ * - Size: Prominently sized (w-24 to w-32) for effortless visual focus.
+ * - Interactive: Tactile hover scaling, active press, and click/tap interactive pop-bounce.
+ * - Logo: Solid black mark (#000000), strictly zero blue touches.
+ * - Animation: Natural fluid head bounce (bouncing up without joint, landing back jointed).
  * - Zero extra text, no spinners, no brand name.
  */
 export function BrandLoadingScreen({}: BrandLoadingScreenProps = {}) {
+  const [bounceKey, setBounceKey] = useState(0);
+
+  const handleInteract = () => {
+    // Retrigger an energetic interactive bounce on user click / tap
+    setBounceKey((k) => k + 1);
+  };
+
   return (
     <div
       role="status"
@@ -36,51 +47,91 @@ export function BrandLoadingScreen({}: BrandLoadingScreenProps = {}) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-[#fbfbf9] px-4 select-none"
     >
       <style>{`
-        /* Head bouncing animation: rises up (without joint) and lands back down onto the joint */
+        /* Continuous organic head bounce */
         @keyframes rfHeadBounce {
           0%, 100% {
-            /* Landed at resting joint */
             transform: translateY(0px);
             animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
           }
           32% {
             /* Apex of bounce: separated / without joint */
-            transform: translateY(-13px);
+            transform: translateY(-16px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.4);
           }
           54% {
             /* Impact down on joint with slight compression */
-            transform: translateY(0.8px) scale(1.02, 0.98);
+            transform: translateY(1.2px) scale(1.03, 0.97);
             animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
           }
           68% {
             /* Gentle secondary rebound */
-            transform: translateY(-3.5px);
+            transform: translateY(-4px);
             animation-timing-function: cubic-bezier(0.4, 0, 0.7, 0.4);
           }
-          80% {
-            /* Settling back onto joint */
+          82% {
             transform: translateY(0px);
+          }
+        }
+
+        /* Interactive pop bounce when user clicks / taps */
+        @keyframes rfInteractivePop {
+          0% {
+            transform: translateY(0px) scale(0.92);
+          }
+          35% {
+            transform: translateY(-24px) scale(1.08);
+          }
+          60% {
+            transform: translateY(2px) scale(1.04, 0.96);
+          }
+          80% {
+            transform: translateY(-5px);
+          }
+          100% {
+            transform: translateY(0px) scale(1);
           }
         }
 
         .rf-head-bounce {
           transform-origin: 50px 50px;
-          animation: rfHeadBounce 1.8s infinite;
+          animation: rfHeadBounce 1.7s infinite;
           will-change: transform;
+        }
+
+        .rf-head-pop {
+          transform-origin: 50px 50px;
+          animation: rfInteractivePop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
       `}</style>
 
-      {/* Brand Emblem inside the clean white squircle card (same as before) */}
-      <div className="w-16 h-16 rounded-2xl bg-white shadow-sm border border-slate-200/70 flex items-center justify-center relative">
+      {/* Prominent, freely floating interactive emblem — zero bounding box */}
+      <div
+        onClick={handleInteract}
+        className="relative cursor-pointer transition-transform duration-300 ease-out select-none active:scale-95 hover:scale-110 p-4"
+        title="ResumeFlow"
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleInteract();
+          }
+        }}
+      >
         <svg
-          viewBox="-10 -15 120 125"
+          viewBox="-10 -22 120 135"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-9 h-9 overflow-visible"
+          className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 overflow-visible"
         >
-          {/* Head Diamond: Bounces up (without joint) and lands (joint) */}
-          <g className="rf-head-bounce">
+          {/* Head Diamond: Bounces up (without joint) and lands (joint), reacts dynamically to click */}
+          <g
+            key={bounceKey}
+            className={bounceKey > 0 ? "rf-head-pop" : "rf-head-bounce"}
+            onAnimationEnd={() => {
+              if (bounceKey > 0) setBounceKey(0);
+            }}
+          >
             <path
               d={PATH_HEAD_COMPOUND}
               fill="#000000"
