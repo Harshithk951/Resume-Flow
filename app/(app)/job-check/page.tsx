@@ -341,7 +341,16 @@ export default function JobCheckPage() {
             {/* Saved Tab */}
             {resumeTab === "saved" && (
               <div className="space-y-2">
-                {!savedResumesData || savedResumesData.resumes.length === 0 ? (
+                {savedResumesData === undefined ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 p-1">
+                    {[0, 1].map((i) => (
+                      <div
+                        key={i}
+                        className="h-20 rounded-xl bg-[#F6F5FB] animate-pulse border border-slate-200/40"
+                      />
+                    ))}
+                  </div>
+                ) : savedResumesData.resumes.length === 0 ? (
                   <div className="text-center py-6 px-4 bg-slate-50 rounded-xl border border-slate-200">
                     <Bookmark className="w-6 h-6 text-slate-400 mx-auto mb-1 opacity-60" />
                     <p className="text-xs text-slate-600">No saved resumes found.</p>
