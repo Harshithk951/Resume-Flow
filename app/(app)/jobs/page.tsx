@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useQuery, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
@@ -164,7 +164,24 @@ export default function JobTrackerPage() {
   const jobsData = useMemo(() => rawJobs ?? [], [rawJobs]);
   const updateCrmStatusMutation = useMutation(api.jobs.updateCrmStatus);
   const deleteJobMutation = useMutation(api.jobs.deleteJobAndResume);
+  const clearAllJobsMutation = useMutation(api.jobs.clearAllMyJobs);
   const createManualJobMutation = useMutation(api.jobs.createManualJob);
+
+  // ─── Auto-purge legacy development/test jobs (e.g. RDS and test IBM records) ──
+  useEffect(() => {
+    if (rawJobs && rawJobs.length > 0) {
+      const legacyTestJobs = rawJobs.filter(
+        (j) =>
+          j.companyName === "RDS" ||
+          (j.companyName.toLowerCase().includes("ibm") && j.autoLogged)
+      );
+      if (legacyTestJobs.length > 0) {
+        legacyTestJobs.forEach((tj) => {
+          deleteJobMutation({ jobId: tj._id }).catch(console.error);
+        });
+      }
+    }
+  }, [rawJobs, deleteJobMutation]);
 
   // ─── Filters & Search State ─────────────────────────────────
   const [searchQuery, setSearchQuery] = useState("");
@@ -314,6 +331,25 @@ export default function JobTrackerPage() {
               Should I apply?
             </Link>
 
+            {jobsData.length > 0 && (
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await clearAllJobsMutation();
+                    toast.success("Job tracker reset to empty state.");
+                  } catch {
+                    toast.error("Failed to clear tracker.");
+                  }
+                }}
+                className="py-2 px-3 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-600 font-semibold text-xs transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
+                title="Clear all tracked applications"
+              >
+                <Trash2 className="w-3.5 h-3.5 text-slate-400" />
+                <span>Clear all</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => setIsAddModalOpen(true)}
@@ -427,20 +463,20 @@ export default function JobTrackerPage() {
                               </h4>
                             </div>
 
-                            {/* Delete Trigger */}
+                            {/* Delete Trigger - Always visible */}
                             {deleteConfirmId === job._id ? (
                               <div className="flex items-center gap-1 shrink-0">
                                 <button
                                   type="button"
                                   onClick={() => handleDelete(job._id)}
-                                  className="text-[9px] bg-red-600 text-white font-bold px-1.5 py-0.5 rounded cursor-pointer"
+                                  className="text-[9px] bg-red-600 hover:bg-red-700 text-white font-bold px-1.5 py-0.5 rounded cursor-pointer"
                                 >
                                   Del
                                 </button>
                                 <button
                                   type="button"
                                   onClick={() => setDeleteConfirmId(null)}
-                                  className="text-slate-400 text-xs px-1 cursor-pointer"
+                                  className="text-slate-400 hover:text-slate-600 text-xs px-1 cursor-pointer"
                                 >
                                   ✕
                                 </button>
@@ -449,7 +485,7 @@ export default function JobTrackerPage() {
                               <button
                                 type="button"
                                 onClick={() => setDeleteConfirmId(job._id)}
-                                className="text-slate-300 hover:text-red-600 p-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                                className="text-slate-400 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition-colors cursor-pointer shrink-0"
                                 title="Delete application"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />

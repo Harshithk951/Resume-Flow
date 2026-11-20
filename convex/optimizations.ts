@@ -167,7 +167,7 @@ export const createOptimization = mutation({
       expiresAt,
     });
 
-    // Auto-log into jobs table
+    // Link to jobs table if an existing jobId was explicitly passed
     let linkedJobId = args.jobId;
 
     if (linkedJobId) {
@@ -175,39 +175,10 @@ export const createOptimization = mutation({
       if (existingJob && existingJob.userId === user._id) {
         await ctx.db.patch(linkedJobId, {
           optimizationId: optId,
-          autoLogged: true,
           matchScore: args.score ?? args.atsCompatibilityScore ?? existingJob.matchScore,
           url: args.url ?? existingJob.url,
         });
       }
-    } else {
-      const createdJobId = await ctx.db.insert("jobs", {
-        userId: user._id,
-        tenantId: user.tenantId,
-        companyName: args.companyName.trim(),
-        jobTitle: args.roleTitle.trim(),
-        rawJdText:
-          args.jobDescriptionText?.trim() ||
-          `${args.roleTitle.trim()} at ${args.companyName.trim()}`,
-        inputType: "text",
-        pipelineState: "completed",
-        crmStatus: "Saved",
-        autoLogged: true,
-        optimizationId: optId,
-        url: args.url,
-        matchScore: args.score ?? args.atsCompatibilityScore,
-        statusHistory: [
-          {
-            oldStatus: "",
-            newStatus: "Saved",
-            updatedBy: "user",
-            timestamp: now,
-          },
-        ],
-      });
-
-      linkedJobId = createdJobId;
-      await ctx.db.patch(optId, { jobId: createdJobId });
     }
 
     return {

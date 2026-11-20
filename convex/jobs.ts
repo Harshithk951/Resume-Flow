@@ -217,6 +217,31 @@ export const deleteJobAndResume = mutation({
 });
 
 /**
+ * Clears all job tracker records for the authenticated user, resetting to the empty state.
+ */
+export const clearAllMyJobs = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireAuth(ctx);
+    const jobs = await ctx.db
+      .query("jobs")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .collect();
+    for (const job of jobs) {
+      const resumes = await ctx.db
+        .query("tailoredResumes")
+        .withIndex("by_jobId", (q) => q.eq("jobId", job._id))
+        .collect();
+      for (const r of resumes) {
+        await ctx.db.delete(r._id);
+      }
+      await ctx.db.delete(job._id);
+    }
+    return { count: jobs.length };
+  },
+});
+
+/**
  * Submits the user's answers to the gap questions and schedules tailoring.
  * Supports idempotencyKey for safe retries against duplicate submissions.
  */
