@@ -86,10 +86,15 @@ export default function PricingPage() {
 
         {/* ─── HIGHLIGHTED PAY-ONCE CARD: PRO 30-DAY PASS ──────────── */}
         <section className="max-w-4xl mx-auto mb-20">
-          <div className="rounded-3xl border-2 border-[#5B50E6] bg-white p-8 sm:p-10 shadow-xl shadow-purple-500/5 relative overflow-hidden">
-            <span className="text-xs font-bold uppercase tracking-wider text-purple-700 block mb-2">
-              PAY ONCE
-            </span>
+          <div className="rounded-3xl border border-slate-200/90 bg-white p-8 sm:p-10 shadow-lg shadow-purple-500/5 relative overflow-hidden">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-purple-700">
+                PAY ONCE
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                Coming Soon
+              </span>
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
               Pro 30–day pass
             </h2>
@@ -104,13 +109,14 @@ export default function PricingPage() {
 
             <RazorpayCheckout
               plan="pro_pass"
+              comingSoon={true}
               interval="once"
-              label="Get 30–day Pro pass — ₹249"
-              className="w-full py-4 rounded-xl bg-[#5B50E6] hover:bg-[#4E44D6] text-white font-bold text-base shadow-md transition-all text-center block cursor-pointer"
+              label="Coming Soon"
+              className="w-full py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-400 font-bold text-base shadow-2xs transition-all text-center block cursor-not-allowed"
             />
 
-            <p className="text-xs text-slate-500 mt-3 text-center sm:text-left">
-              One payment. Ends automatically. No recurring charges.
+            <p className="text-xs text-slate-400 mt-3 text-center sm:text-left">
+              One-time payment passes are coming soon for new subscribers. All core ATS resume optimization and exports remain 100% free!
             </p>
           </div>
         </section>

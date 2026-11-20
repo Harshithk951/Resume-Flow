@@ -6,7 +6,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "@/lib/toast";
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, CheckCircle, AlertCircle, Zap } from "lucide-react";
+import { Loader2, CheckCircle, AlertCircle, Zap, Clock } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export type Plan = "pro_pass" | "pro" | "power" | "team" | "campus";
@@ -95,6 +95,14 @@ export function RazorpayCheckout({
   }, []);
 
   const handlePayment = async () => {
+    if (comingSoon) {
+      toast.info(
+        `${formatPlanName(plan)} is coming soon! All core features and ATS resume optimizations remain 100% free.`,
+        { duration: 5000 }
+      );
+      return;
+    }
+
     if (!isLoaded) return;
     if (!isSignedIn || !userId) {
       toast.info("Please sign in to proceed with checkout");
@@ -103,14 +111,6 @@ export function RazorpayCheckout({
     }
 
     if (isProcessing) return;
-
-    if (comingSoon) {
-      toast.info(
-        `${formatPlanName(plan)} upgrades are coming soon for new subscribers! Existing accounts remain fully active.`,
-        { duration: 5000 }
-      );
-      return;
-    }
 
     setIsProcessing(true);
     setStatus("creating");
@@ -250,7 +250,12 @@ export function RazorpayCheckout({
   // ─── Render ─────────────────────────────────────────────────
   const buttonContent = (
     <span className="flex items-center justify-center gap-2">
-      {status === "creating" || status === "verifying" ? (
+      {comingSoon ? (
+        <>
+          <Clock className="h-4 w-4 text-slate-400" />
+          <span>{displayLabel || "Coming Soon"}</span>
+        </>
+      ) : status === "creating" || status === "verifying" ? (
         <>
           <Loader2 className="h-4 w-4 animate-spin" />
           <span>
