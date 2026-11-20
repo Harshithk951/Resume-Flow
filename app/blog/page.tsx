@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Sparkles, Clock, ArrowRight } from "lucide-react";
+import { Clock, ArrowRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogCalloutBanner from "@/components/BlogCalloutBanner";
@@ -40,14 +40,6 @@ export default function BlogHubPage() {
           />
 
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            {/* Eyebrow Tag */}
-            <div className="inline-flex items-center gap-2 bg-purple-50 border border-purple-200/60 rounded-full px-4 py-1.5 mb-5 shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5 text-[#5B50E6]" />
-              <span className="text-[11px] font-bold uppercase tracking-widest text-[#5B50E6]">
-                RESUMEFLOW RESOURCES
-              </span>
-            </div>
-
             {/* Title */}
             <h1 className="font-sans text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1] mb-5">
               Writing that actually helps

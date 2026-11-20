@@ -15,7 +15,6 @@ import {
   FileText,
   Code,
   Settings,
-  Sparkles,
   Copy,
   Check,
   Mail,
@@ -377,7 +376,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
             <div className="space-y-4">
               <div className="rounded-2xl border border-amber-200/90 bg-gradient-to-r from-amber-50 via-purple-50/50 to-amber-50 p-4 shadow-sm space-y-1.5">
                 <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs tracking-tight">
-                  <Sparkles className="w-4 h-4 text-purple-600 shrink-0" />
+                  <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
                   <span>Action Required: Verify Skill Gaps to Customize Resume</span>
                 </div>
                 <p className="text-[11px] text-amber-800/90 leading-relaxed font-medium">
@@ -524,7 +523,7 @@ export default function CompanySplitWorkspace({ params }: PageProps) {
           {([{ id: "PREVIEW" as const, label: "Visual Resume", icon: FileText },
              { id: "LATEX" as const, label: "LaTeX Source", icon: Code },
              { id: "JSON" as const, label: "JSON Payload", icon: Settings },
-             { id: "OUTREACH" as const, label: "Outreach & Letter", icon: Sparkles }
+             { id: "OUTREACH" as const, label: "Outreach & Letter", icon: Mail }
           ]).map(({ id, label, icon: TabIcon }) => (
             <button
               key={id}
@@ -678,7 +677,7 @@ function OutreachWorkspace({ jobId, resume }: OutreachWorkspaceProps) {
     return (
       <div className="h-[400px] flex flex-col items-center justify-center text-center p-8 border border-[var(--color-hairline)]/85 rounded-[32px] bg-[var(--color-canvas)] space-y-5 shadow-sm max-w-xl mx-auto my-6">
         <div className="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center text-purple-600 shadow-sm shadow-purple-500/5">
-          <Sparkles className="w-7 h-7" />
+          <Mail className="w-7 h-7" />
         </div>
         <div className="space-y-2">
           <h3 className="text-lg font-bold text-[var(--color-ink-soft)]">Generate Tailored Outreach Copy</h3>

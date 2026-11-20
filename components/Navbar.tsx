@@ -214,25 +214,25 @@ export default function Navbar() {
                 <Link
                   href="/optimize"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-lg shadow-rose-500/25 transition-all duration-300 px-6 py-3 text-sm w-full"
+                  className="flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-6 py-3 text-sm w-full"
                 >
-                  Go to Optimizer →
+                  Open optimizer →
                 </Link>
               ) : (
                 <>
                   <Link
                     href="/sign-in"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center w-full px-6 py-3 rounded-full border-2 border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors"
+                    className="flex items-center justify-center w-full px-6 py-3 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors"
                   >
                     Log in
                   </Link>
                   <Link
                     href="/sign-up"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-lg shadow-rose-500/25 transition-all duration-300 px-6 py-3 text-sm"
+                    className="flex items-center justify-center w-full bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-md transition-all duration-200 px-6 py-3 text-sm"
                   >
-                    Sign up
+                    Get Started Free →
                   </Link>
                 </>
               )}

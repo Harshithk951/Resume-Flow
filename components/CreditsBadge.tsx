@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Sparkles } from "lucide-react";
 
 interface CreditsBadgeProps {
   className?: string;
@@ -63,9 +62,8 @@ export function CreditsBadge({ className = "", onClick }: CreditsBadgeProps) {
       href="/pricing"
       onClick={onClick}
       title="View plans & credits"
-      className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full border transition-all cursor-pointer select-none ${pillStyle} ${className}`}
+      className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border transition-all cursor-pointer select-none ${pillStyle} ${className}`}
     >
-      <Sparkles className="w-3 h-3 shrink-0 opacity-70" />
       <span>{label}</span>
     </Link>
   );

@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
-  ScanSearch,
-
   Globe,
   Shield,
   Lock,
@@ -237,11 +235,6 @@ export function BentoGrid() {
           viewport={{ once: true, amount: 0.3 }}
           className="text-center max-w-2xl mx-auto mb-16"
         >
-          <motion.div variants={scrollRevealUp} className="mb-4">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100">
-              <ScanSearch size={10} /> Core Capabilities
-            </span>
-          </motion.div>
           <motion.h2 variants={scrollRevealUp} className="font-display text-3xl md:text-5xl font-extrabold text-[var(--color-ink)] tracking-[-0.02em]">
             Precision tools for career engineers
           </motion.h2>

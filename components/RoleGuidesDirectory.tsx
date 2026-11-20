@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { Search, Compass, Sparkles } from "lucide-react";
+import { Search, Compass } from "lucide-react";
 import { GROUPED_ROLES, ROLE_LETTERS, ALL_ROLES_RAW } from "@/lib/roleGuides";
 
 interface RoleGuidesDirectoryProps {
@@ -181,10 +181,9 @@ export function RoleGuidesDirectory({
         {/* Bottom Optimization Callout */}
         <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="space-y-1.5 text-center md:text-left">
-            <div className="inline-flex items-center gap-1.5 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Free ATS Tailoring Engine</span>
-            </div>
+            <span className="block text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+              Free ATS Tailoring Engine
+            </span>
             <h4 className="text-xl sm:text-2xl font-bold">
               Ready to optimize your resume for your target role?
             </h4>

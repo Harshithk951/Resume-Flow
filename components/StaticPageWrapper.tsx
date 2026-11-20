@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowLeft, Home, Sparkles } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
 import { BrandLogo } from "@/components/BrandLogo";
 import Footer from "@/components/Footer";
 
@@ -58,12 +58,11 @@ export function StaticPageWrapper({
 
         <div className="space-y-8">
           <div>
-            <div className="inline-flex items-center gap-2 bg-rose-50 border border-rose-100/60 rounded-full px-3.5 py-1 mb-4">
-              <Sparkles size={12} className="text-rose-600" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-rose-700">
+            {category && (
+              <span className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
                 {category}
               </span>
-            </div>
+            )}
             <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--color-ink)] tracking-tight leading-tight">
               {title}
             </h1>

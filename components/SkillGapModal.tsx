@@ -8,7 +8,7 @@
 // Designed with Design.md tokens (cream background, rounded-md, Pinterest red CTA).
 
 import React, { useState } from "react";
-import { Sparkles, Check } from "lucide-react";
+import { HelpCircle, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SkillQuestion {
@@ -81,7 +81,7 @@ export default function SkillGapModal({ questions, onSubmit, isSubmitting }: Ski
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--color-hairline)] bg-[var(--color-surface-soft)]">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-[var(--color-primary)]" />
+            <HelpCircle className="w-5 h-5 text-[var(--color-primary)]" />
             <h3 className="type-heading-md">Review Skill Gap Analysis</h3>
           </div>
         </div>

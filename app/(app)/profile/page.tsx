@@ -18,7 +18,7 @@ import {
   GraduationCap,
   Briefcase,
   Code,
-  Sparkles,
+  Layers,
   Award,
   Plus,
   Trash2,
@@ -465,7 +465,7 @@ export default function ProfilePage() {
 
                         <div>
                           <h3 className="text-sm font-bold text-[var(--color-ink-soft)] mb-3 flex items-center gap-2">
-                            <Sparkles className="w-4 h-4 text-purple-600" /> Skills
+                            <Layers className="w-4 h-4 text-purple-600" /> Skills
                           </h3>
                           <div className="flex flex-col gap-3">
                             {Object.entries(profile.skills).map(([key, value]: [string, any]) => {
@@ -653,7 +653,7 @@ export default function ProfilePage() {
                     { id: "education", label: "Education", icon: GraduationCap },
                     { id: "experience", label: "Experience", icon: Briefcase },
                     { id: "projects", label: "Projects", icon: Code },
-                    { id: "skills", label: "Skills", icon: Sparkles },
+                    { id: "skills", label: "Skills", icon: Layers },
                     { id: "extras", label: "Extras", icon: Award },
                   ].map((tab) => {
                     const Icon = tab.icon;

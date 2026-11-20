@@ -9,7 +9,6 @@ import {
   ALL_ROLES_RAW,
 } from "@/lib/roleGuides";
 import {
-  Sparkles,
   ArrowRight,
   CheckCircle,
   AlertTriangle,
@@ -99,11 +98,6 @@ export default async function RoleGuideDetailPage({ params }: PageProps) {
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-10 pb-14 sm:pt-16 sm:pb-20 border-b border-slate-200/60 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold tracking-wide">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
-              <span>{role.category} · 2026 Guide</span>
-            </div>
-
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-950 leading-tight">
               {role.title} Resume Guide:{" "}
               <span className="bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 bg-clip-text text-transparent">

@@ -193,11 +193,11 @@ export default function HowToBeatAtsBots2026() {
         <section className="text-sm md:text-base leading-relaxed space-y-4 mb-10">
           <p className="text-base md:text-lg text-slate-600 leading-relaxed">
             <strong>95% of Fortune 500 companies use Applicant Tracking Systems (ATS)</strong> to filter
-            resumes before they reach human eyes. If your resume isn't ATS-optimized, it may never be seen
+            resumes before they reach human eyes. If your resume isn&apos;t ATS-optimized, it may never be seen
             by a recruiter — regardless of your qualifications.
           </p>
           <p className="text-slate-600">
-            In this complete 2026 guide, you'll learn exactly how ATS software works, what formatting
+            In this complete 2026 guide, you&apos;ll learn exactly how ATS software works, what formatting
             rules guarantee 95%+ parsing accuracy, how to optimize keywords for specific job descriptions,
             and the common mistakes that get 75% of applicants rejected before a human even opens their file.
           </p>
@@ -206,7 +206,7 @@ export default function HowToBeatAtsBots2026() {
             from the job description, export as a text-based PDF or DOCX, and test your resume with an ATS
             simulator before submitting. For the easiest path, use{" "}
             <Link href="/free-resume-builder" className="text-rose-600 hover:text-rose-700 underline font-semibold">
-              ResumeFlow's free ATS-optimized resume builder
+              ResumeFlow&apos;s free ATS-optimized resume builder
             </Link>{" "}
             which handles all of this automatically.
           </p>
@@ -299,7 +299,7 @@ export default function HowToBeatAtsBots2026() {
           <div className="bg-slate-50 border-b border-slate-200 px-6 py-4">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <AlertTriangle size={18} className="text-rose-600" />
-              ATS Do's and Don'ts
+              ATS Do&apos;s and Don&apos;ts
             </h2>
           </div>
           <div className="divide-y divide-slate-100">
@@ -322,13 +322,13 @@ export default function HowToBeatAtsBots2026() {
         <section className="bg-gradient-to-br from-rose-50/30 to-white border border-rose-100/60 rounded-2xl p-6 md:p-8 mb-12">
           <h2 className="text-lg font-bold text-slate-900 mb-3">Why ATS Optimization Matters in 2026</h2>
           <div className="text-sm text-slate-600 leading-relaxed space-y-3">
-            <p>Applicant Tracking Systems have evolved significantly. Modern ATS platforms use AI and machine learning to rank candidates based on keyword relevance, not just parse text. Here's what that means for your resume:</p>
+            <p>Applicant Tracking Systems have evolved significantly. Modern ATS platforms use AI and machine learning to rank candidates based on keyword relevance, not just parse text. Here&apos;s what that means for your resume:</p>
             <ul className="space-y-2">
               <li className="flex gap-2"><span className="text-rose-600 font-bold">•</span> <strong>75% of applicants</strong> are rejected by ATS before a human sees their resume</li>
               <li className="flex gap-2"><span className="text-rose-600 font-bold">•</span> <strong>Keyword-optimized resumes</strong> get 3x more callbacks than non-optimized ones</li>
               <li className="flex gap-2"><span className="text-rose-600 font-bold">•</span> AI-powered ATS now score resumes on a 0-100 scale, not just pass/fail</li>
               <li className="flex gap-2"><span className="text-rose-600 font-bold">•</span> <strong>Formatting errors alone</strong> cause 40% of ATS rejections</li>
-              <li className="flex gap-2"><span className="text-rose-600 font-bold">•</span> Most ATS can't parse text in headers, footers, tables, or columns</li>
+              <li className="flex gap-2"><span className="text-rose-600 font-bold">•</span> Most ATS can&apos;t parse text in headers, footers, tables, or columns</li>
             </ul>
           </div>
         </section>
@@ -362,19 +362,19 @@ export default function HowToBeatAtsBots2026() {
             <h2 className="text-2xl font-bold text-slate-900">Build Your ATS-Resistant Resume Free</h2>
           </div>
           <p className="text-sm text-slate-600 leading-relaxed max-w-lg mx-auto mb-6">
-            ResumeFlow's free AI resume builder creates ATS-optimized resumes automatically. 
+            ResumeFlow&apos;s free AI resume builder creates ATS-optimized resumes automatically. 
             No credit card, no paywall, no hidden fees. Start in 30 seconds.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/free-resume-builder"
-              className="inline-flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 rounded-full px-8 py-3.5 shadow-md transition-all"
+              className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-white bg-[#5B50E6] hover:bg-[#4E44D6] rounded-xl px-7 py-3 shadow-sm transition-all"
             >
               Build Your ATS Resume Free <ArrowRight size={14} />
             </Link>
             <Link
               href="/resources/ats-best-practices"
-              className="inline-flex items-center justify-center gap-2 text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 rounded-full px-8 py-3.5 border border-slate-200 transition-all"
+              className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl px-7 py-3 border border-slate-200 transition-all shadow-2xs"
             >
               More ATS Best Practices
             </Link>

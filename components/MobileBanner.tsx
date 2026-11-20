@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Smartphone, Globe, ExternalLink, X, ArrowRight, Sparkles } from "lucide-react";
+import { Smartphone, Globe, ExternalLink, X, ArrowRight } from "lucide-react";
 
 type DeviceInfo = {
   isMobile: boolean;
@@ -70,6 +70,7 @@ export default function MobileBanner() {
 
   useEffect(() => {
     const info = detectDevice();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDevice(info);
 
     // Only show banner on actual mobile devices
@@ -137,8 +138,7 @@ export default function MobileBanner() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="inline-flex items-center gap-1.5 text-sm font-bold text-white">
-                        <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
+                      <span className="inline-flex items-center text-sm font-bold text-white">
                         Mobile App Coming Soon
                       </span>
                       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/15 text-[10px] font-bold text-white/80 border border-white/10 uppercase tracking-wider">

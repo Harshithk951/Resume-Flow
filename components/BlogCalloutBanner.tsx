@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface BlogCalloutBannerProps {
   ctaHref?: string;
@@ -21,10 +21,9 @@ export default function BlogCalloutBanner({
           />
 
           <div className="max-w-xl text-center md:text-left relative z-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#5B50E6] uppercase tracking-wider mb-2.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Take the next step</span>
-            </div>
+            <span className="block text-xs font-bold text-[#5B50E6] uppercase tracking-wider mb-2.5">
+              Take the next step
+            </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
               Reading is step one of two
             </h2>

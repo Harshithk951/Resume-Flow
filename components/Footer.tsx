@@ -27,7 +27,7 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
                 ORACLE
               </span>
               <span className="text-sm sm:text-base md:text-lg font-semibold tracking-tight text-slate-500 whitespace-nowrap">
-                Deloitte
+                Deloitte.
               </span>
               <span className="text-sm sm:text-base md:text-lg font-semibold tracking-tight lowercase text-slate-500 whitespace-nowrap">
                 salesforce
@@ -64,27 +64,27 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-500">
               <li>
-                <Link href="/optimize" className="hover:text-purple-600 transition-colors">
+                <Link href="/optimize" className="hover:text-slate-900 transition-colors">
                   Optimizer
                 </Link>
               </li>
               <li>
-                <Link href="/ats-resume-checker" className="hover:text-purple-600 transition-colors">
+                <Link href="/ats-resume-checker" className="hover:text-slate-900 transition-colors">
                   ATS checker
                 </Link>
               </li>
               <li>
-                <Link href="/free-resume-builder" className="hover:text-purple-600 transition-colors">
+                <Link href="/free-resume-builder" className="hover:text-slate-900 transition-colors">
                   Resume builder
                 </Link>
               </li>
               <li>
-                <Link href="/jobs" className="hover:text-purple-600 transition-colors">
+                <Link href="/jobs" className="hover:text-slate-900 transition-colors">
                   Job tracker
                 </Link>
               </li>
               <li>
-                <Link href="/resume-templates" className="hover:text-purple-600 transition-colors">
+                <Link href="/resume-templates" className="hover:text-slate-900 transition-colors">
                   Templates
                 </Link>
               </li>
@@ -98,27 +98,27 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-500">
               <li>
-                <Link href="/resume-optimizer/data-analyst" className="hover:text-purple-600 transition-colors">
+                <Link href="/resume-optimizer/data-analyst" className="hover:text-slate-900 transition-colors">
                   Data analyst
                 </Link>
               </li>
               <li>
-                <Link href="/resume-optimizer/software-engineer" className="hover:text-purple-600 transition-colors">
+                <Link href="/resume-optimizer/software-engineer" className="hover:text-slate-900 transition-colors">
                   Software engineer
                 </Link>
               </li>
               <li>
-                <Link href="/resume-optimizer/product-manager" className="hover:text-purple-600 transition-colors">
+                <Link href="/resume-optimizer/product-manager" className="hover:text-slate-900 transition-colors">
                   Product manager
                 </Link>
               </li>
               <li>
-                <Link href="/resume-optimizer/marketing-manager" className="hover:text-purple-600 transition-colors">
+                <Link href="/resume-optimizer/marketing-manager" className="hover:text-slate-900 transition-colors">
                   Marketing manager
                 </Link>
               </li>
               <li>
-                <Link href="/resume-optimizer" className="hover:text-purple-600 transition-colors font-bold text-slate-900">
+                <Link href="/resume-optimizer" className="hover:text-slate-900 transition-colors font-bold text-slate-900">
                   All 200+ roles
                 </Link>
               </li>
@@ -132,27 +132,27 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-500">
               <li>
-                <Link href="/pricing" className="hover:text-purple-600 transition-colors">
+                <Link href="/pricing" className="hover:text-slate-900 transition-colors">
                   Placement cells
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-purple-600 transition-colors">
+                <Link href="/pricing" className="hover:text-slate-900 transition-colors">
                   Shared billing
                 </Link>
               </li>
               <li>
-                <Link href="/pricing" className="hover:text-purple-600 transition-colors">
+                <Link href="/pricing" className="hover:text-slate-900 transition-colors">
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-purple-600 transition-colors">
+                <Link href="/blog" className="hover:text-slate-900 transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="/free-resume-builder" className="hover:text-purple-600 transition-colors">
+                <Link href="/free-resume-builder" className="hover:text-slate-900 transition-colors">
                   Resume builder India
                 </Link>
               </li>
@@ -166,27 +166,27 @@ export default function Footer({ showCompanyLogos = true, className = "" }: Foot
             </h4>
             <ul className="space-y-2.5 text-xs text-slate-500">
               <li>
-                <Link href="/legal/privacy" className="hover:text-purple-600 transition-colors">
+                <Link href="/legal/privacy" className="hover:text-slate-900 transition-colors">
                   Privacy policy
                 </Link>
               </li>
               <li>
-                <Link href="/legal/terms" className="hover:text-purple-600 transition-colors">
+                <Link href="/legal/terms" className="hover:text-slate-900 transition-colors">
                   Terms
                 </Link>
               </li>
               <li>
-                <Link href="/legal/refund" className="hover:text-purple-600 transition-colors">
+                <Link href="/legal/refund" className="hover:text-slate-900 transition-colors">
                   Refund policy
                 </Link>
               </li>
               <li>
-                <Link href="/legal/terms" className="hover:text-purple-600 transition-colors">
+                <Link href="/legal/terms" className="hover:text-slate-900 transition-colors">
                   Shipping &amp; delivery
                 </Link>
               </li>
               <li>
-                <Link href="/info/contact" className="hover:text-purple-600 transition-colors">
+                <Link href="/info/contact" className="hover:text-slate-900 transition-colors">
                   Contact support
                 </Link>
               </li>

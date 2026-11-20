@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
-import { ArrowRight, Layers } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { EASE_VANGUARD } from "@/lib/animations";
 
@@ -81,18 +81,6 @@ export default function TemplateCarousel({ templates }: { templates: CarouselTem
       <div className="max-w-[1280px] mx-auto px-6">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 md:mb-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: EASE_VANGUARD }}
-            className="mb-4"
-          >
-            <span className="eyebrow-pill">
-              <Layers size={10} className="text-rose-600" />
-              Purpose-Built Layouts
-            </span>
-          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

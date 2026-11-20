@@ -378,7 +378,7 @@ export default function BestFreeResumeBuilders2026() {
           </p>
           <Link
             href="/free-resume-builder"
-            className="inline-flex items-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 rounded-full px-6 py-3 shadow-md transition-all"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-[#5B50E6] hover:bg-[#4E44D6] rounded-xl px-6 py-3 shadow-sm transition-all"
           >
             Try ResumeFlow Free
             <ArrowRight size={14} />
@@ -602,14 +602,14 @@ export default function BestFreeResumeBuilders2026() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/free-resume-builder"
-              className="inline-flex items-center justify-center gap-2 text-sm font-bold text-white bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 rounded-full px-8 py-3.5 shadow-md transition-all"
+              className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-white bg-[#5B50E6] hover:bg-[#4E44D6] rounded-xl px-7 py-3 shadow-sm transition-all"
             >
               Try ResumeFlow Free
               <ArrowRight size={14} />
             </Link>
             <Link
               href="/resources/handbook"
-              className="inline-flex items-center justify-center gap-2 text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 rounded-full px-8 py-3.5 border border-slate-200 transition-all"
+              className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl px-7 py-3 border border-slate-200 transition-all shadow-2xs"
             >
               Resume Writing Guide
             </Link>

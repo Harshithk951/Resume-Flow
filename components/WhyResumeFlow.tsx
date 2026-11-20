@@ -11,12 +11,13 @@ import {
   EASE_VANGUARD,
 } from "@/lib/animations";
 import {
-  Sparkles,
   ShieldCheck,
   FileText,
   CheckCircle2,
   XCircle,
   MinusCircle,
+  Zap,
+  Check,
 } from "lucide-react";
 
 // ─── Comparison Data ─────────────────────────────────────
@@ -111,7 +112,7 @@ const STAT_CARDS: StatCard[] = [
     suffix: "x",
     label: "Faster Tailoring",
     description: "Job spec to PDF in seconds",
-    icon: <Sparkles className="w-5 h-5" />,
+    icon: <Zap className="w-5 h-5" />,
     gradient: "from-amber-400 to-orange-500",
   },
   {
@@ -143,20 +144,6 @@ function CrossIcon() {
 
 function DashIcon() {
   return <MinusCircle className="w-5 h-5 text-[var(--color-ash)]" strokeWidth={2} />;
-}
-
-function SparkleIndicator() {
-  return (
-    <motion.span
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 300, damping: 15 }}
-      className="inline-flex ml-1.5"
-      title="Best in class"
-    >
-      <Sparkles className="w-3 h-3 text-amber-400 fill-amber-400" />
-    </motion.span>
-  );
 }
 
 function getCellContent(value: string): React.ReactNode {
@@ -216,13 +203,6 @@ export function WhyResumeFlow() {
           viewport={{ once: true, amount: 0.3 }}
           className="text-center max-w-3xl mx-auto mb-16 lg:mb-20"
         >
-          <motion.div variants={scrollRevealUp} className="mb-5">
-            <span className="eyebrow-pill shimmer-pill">
-              <Sparkles size={10} />
-              <span>Why ResumeFlow</span>
-            </span>
-          </motion.div>
-
           <motion.h2
             variants={scrollRevealUp}
             className="font-display text-3xl md:text-5xl lg:text-[52px] font-extrabold text-[var(--color-ink)] tracking-[-0.02em] mb-6 leading-[1.1]"
@@ -272,8 +252,8 @@ export function WhyResumeFlow() {
                       <p className="text-[11px] text-[var(--color-stone)] mt-0.5">{row.description}</p>
                     </div>
                     {row.winnerIndex === 0 && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
-                        <Sparkles className="w-2.5 h-2.5" />
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                        <Check className="w-2.5 h-2.5" />
                         Best
                       </span>
                     )}
@@ -322,11 +302,6 @@ export function WhyResumeFlow() {
                       >
                         <span className="inline-flex items-center gap-1.5">
                           {header}
-                          {idx === 0 && (
-                            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-rose-100">
-                              <Sparkles className="w-3 h-3 text-rose-600" />
-                            </span>
-                          )}
                         </span>
                       </th>
                     ))}
@@ -351,7 +326,6 @@ export function WhyResumeFlow() {
                             <div>
                               <span className="font-bold text-[var(--color-ink-soft)] text-sm">
                                 {row.feature}
-                                {row.winnerIndex === 0 && <SparkleIndicator />}
                               </span>
                               <p className="text-[11px] text-[var(--color-stone)] mt-0.5">
                                 {row.description}
@@ -404,7 +378,8 @@ export function WhyResumeFlow() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 max-w-4xl mx-auto"
-        >              {STAT_CARDS.map((stat, _idx) => (
+        >
+          {STAT_CARDS.map((stat) => (
             <motion.div
               key={stat.label}
               variants={scrollRevealScale}

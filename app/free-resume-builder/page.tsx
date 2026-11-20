@@ -5,7 +5,6 @@ import { BrandLogo } from "@/components/BrandLogo";
 import {
   ArrowRight,
   Check,
-  Sparkles,
   Shield,
   Zap,
   FileText,
@@ -169,7 +168,7 @@ const comparisonData = [
 
 const features = [
   {
-    icon: <Sparkles className="w-6 h-6 text-rose-600" />,
+    icon: <Zap className="w-6 h-6 text-rose-600" />,
     title: "AI Resume Generator",
     desc: "Paste a job description and our AI rewrites your experience to match perfectly — using the Google XYZ formula.",
   },
@@ -215,7 +214,7 @@ export default function FreeResumeBuilderPage() {
           <BrandLogo href="/" className="gap-3.5" />
           <Link
             href="/sign-up"
-            className="inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white rounded-full font-semibold shadow-[0_8px_30px_rgba(225,29,72,0.25)] transition-all px-6 py-2 text-sm"
+            className="inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white rounded-xl font-semibold shadow-sm transition-all px-5 py-2 text-sm"
           >
             Sign up free
           </Link>
@@ -224,15 +223,9 @@ export default function FreeResumeBuilderPage() {
 
       {/* ─── HERO ─── */}
       <section className="pt-16 md:pt-24 pb-12 md:pb-16 px-6 max-w-[1280px] mx-auto text-center">
-        <div className="inline-flex items-center gap-2 rounded-full bg-rose-50 border border-rose-100/60 px-4 py-1.5 mb-6">
-          <Sparkles size={12} className="text-rose-600" />
-          <span className="text-[10px] font-bold uppercase tracking-wider text-rose-700">
-            100% Free — No Credit Card
-          </span>
-        </div>
         <h1 className="font-display text-4xl md:text-6xl lg:text-[72px] font-extrabold tracking-[-0.03em] max-w-[900px] mx-auto leading-[1.05] mb-6 text-slate-900">
           Free Resume Builder —{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-600 via-rose-600 to-red-500">
+          <span className="text-[#5B50E6]">
             AI-Powered & Free
           </span>
         </h1>
@@ -244,21 +237,17 @@ export default function FreeResumeBuilderPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/sign-up"
-            className="group inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold rounded-full shadow-[0_8px_30px_rgba(225,29,72,0.3)] transition-all px-10 h-14 text-base gap-3"
+            className="group inline-flex items-center justify-center bg-[#5B50E6] hover:bg-[#4E44D6] text-white font-semibold rounded-xl shadow-md transition-all px-8 h-12 text-sm gap-2"
           >
-            Build My Free Resume
-            <span className="icon-island icon-island-light">
-              <ArrowRight size={14} />
-            </span>
+            <span>Build My Free Resume</span>
+            <ArrowRight size={16} />
           </Link>
           <Link
-            href="/templates"
-            className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-full border border-slate-200 px-8 h-14 text-base transition-colors gap-2"
+            href="/resume-templates"
+            className="group inline-flex items-center justify-center bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-xl border border-slate-200 px-7 h-12 text-sm transition-colors gap-2 shadow-2xs"
           >
-            Browse Templates Free
-            <span className="icon-island">
-              <ArrowRight size={14} />
-            </span>
+            <span>Browse Templates Free</span>
+            <ArrowRight size={16} className="text-slate-400" />
           </Link>
         </div>
         <p className="text-slate-400 text-sm mt-4">

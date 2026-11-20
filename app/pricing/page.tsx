@@ -5,13 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { RazorpayCheckout } from "@/components/RazorpayCheckout";
-import {
-  Check,
-  Zap,
-  ShieldCheck,
-  CreditCard,
-  Clock,
-} from "lucide-react";
+import { Check } from "lucide-react";
 
 interface FAQItem {
   question: string;
@@ -499,45 +493,24 @@ export default function PricingPage() {
           </div>
         </section>
 
-        {/* ─── TRUST STRIP WITH RAZORPAY BADGES & LEGAL LINKS ────── */}
-        <section className="max-w-4xl mx-auto pt-8 border-t border-slate-200 text-center">
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-slate-500 mb-8">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span>256-bit SSL Bank-Grade Encryption</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-purple-600" />
-              <span>Powered by Razorpay</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-amber-500" />
-              <span>Instant Activation</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-sky-600" />
-              <span>Cancel Subscriptions Anytime</span>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500">
-            <Link href="/legal/terms" className="hover:text-slate-700 transition-colors">
-              Terms of Service
-            </Link>
-            <span>•</span>
-            <Link href="/legal/privacy" className="hover:text-slate-700 transition-colors">
+        {/* ─── SUB-FOOTER RAZORPAY & LEGAL LINKS (HireRaft Style) ─── */}
+        <div className="text-center pt-8 pb-16 text-xs text-slate-400 space-y-2">
+          <p>Powered by Razorpay · Secure payments · Cancel anytime</p>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-slate-400">
+            <Link href="/legal/privacy" className="hover:text-slate-600 transition-colors">
               Privacy Policy
             </Link>
-            <span>•</span>
-            <Link href="/legal/refund" className="hover:text-slate-700 transition-colors">
-              Refund Policy
+            <Link href="/legal/terms" className="hover:text-slate-600 transition-colors">
+              Terms &amp; Conditions
             </Link>
-            <span>•</span>
-            <Link href="/info/contact" className="hover:text-slate-700 transition-colors">
-              Support & Helpdesk
+            <Link href="/legal/refund" className="hover:text-slate-600 transition-colors">
+              Cancellation &amp; Refund
+            </Link>
+            <Link href="/legal/terms" className="hover:text-slate-600 transition-colors">
+              Shipping Policy
             </Link>
           </div>
-        </section>
+        </div>
       </main>
 
       <Footer />

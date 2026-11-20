@@ -68,9 +68,6 @@ export function FeatureGrid() {
     <section id="how-it-works" className="py-24 px-6 relative overflow-hidden">
       <div className="max-w-[1280px] mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-4 py-1.5 text-[11px] font-bold uppercase tracking-widest text-rose-600 border border-rose-100 mb-4">
-            <Zap size={10} /> Advanced Platform
-          </span>
           <h2 className="font-display text-3xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.02em]">
             Built different. Built to win.
           </h2>

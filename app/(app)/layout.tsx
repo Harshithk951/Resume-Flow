@@ -73,7 +73,7 @@ export default function AuthenticatedLayout({
                     aria-current={active ? "page" : undefined}
                     className={`relative flex items-center px-3 py-1.5 text-sm transition-all rounded-lg select-none ${
                       active
-                        ? "font-semibold text-purple-600"
+                        ? "font-semibold text-[#5B50E6]"
                         : "font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
                     }`}
                   >

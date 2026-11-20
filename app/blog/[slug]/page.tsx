@@ -9,7 +9,7 @@ import {
   HelpCircle,
   ArrowLeft,
   XCircle,
-  Sparkles,
+  BookOpen,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -214,7 +214,7 @@ export default async function GuideDetailPage({
           {/* ─── SNIPPET LEAD CALLOUT ───────────────────────────── */}
           <div className="relative overflow-hidden bg-gradient-to-br from-[#FAF9FE] via-white to-[#F6F3FF] border-l-4 border-[#5B50E6] border-y border-r border-purple-100/70 p-6 sm:p-8 rounded-r-2xl mb-12 shadow-2xs">
             <div className="flex items-start gap-3">
-              <Sparkles className="w-5 h-5 text-[#5B50E6] shrink-0 mt-0.5" />
+              <BookOpen className="w-5 h-5 text-[#5B50E6] shrink-0 mt-0.5" />
               <div>
                 <h3 className="text-xs font-bold text-[#5B50E6] uppercase tracking-wider mb-2">
                   Key Takeaway Summary

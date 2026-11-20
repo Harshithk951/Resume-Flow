@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { RoleGuidesDirectory } from "@/components/RoleGuidesDirectory";
-import { Sparkles, CheckCircle2, ShieldCheck, Zap } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Zap } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -31,11 +31,6 @@ export default function ResumeOptimizerHubPage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-slate-200/60 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100/70 border border-cyan-200 text-cyan-800 text-xs font-bold tracking-wide">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-600" />
-              <span>2026 Job Role Playbook</span>
-            </div>
-
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-slate-950 leading-tight">
               Resume guides for{" "}
               <span className="bg-gradient-to-r from-cyan-600 via-sky-600 to-indigo-600 bg-clip-text text-transparent">

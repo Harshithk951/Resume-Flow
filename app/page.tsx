@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { BrandLogo } from "@/components/BrandLogo";
 import {
-  Sparkles,
+  Tag,
   ArrowRight,
   Check,
   TrendingUp,
@@ -617,7 +617,7 @@ export default function HomePage() {
                     {
                       title: "Keyword tracker",
                       desc: "Know which terms you're missing — and if an edit drops one.",
-                      icon: Sparkles,
+                      icon: Tag,
                       iconBg: "bg-[#FFF1F2] text-[#E11D48]",
                     },
                     {

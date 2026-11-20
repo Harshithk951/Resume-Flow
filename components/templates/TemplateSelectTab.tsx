@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, ShieldCheck, Sparkles, Briefcase, Layout } from "lucide-react";
+import { Check, ShieldCheck, Zap, Briefcase, Layout } from "lucide-react";
 
 interface TemplateSelectTabProps {
   selectedTemplate: string;
@@ -31,7 +31,7 @@ const templates: TemplateOption[] = [
     id: "startup",
     label: "Startup",
     description: "Modern sans-serif typography with tight 0.6in margins. Engineered for SaaS, product companies, and high-growth startups.",
-    icon: Sparkles,
+    icon: Zap,
     accent: "#4f46e5",
     badge: "SaaS & Product",
   },
