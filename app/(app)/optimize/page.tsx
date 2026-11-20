@@ -233,8 +233,8 @@ export default function OptimizePage() {
     try {
       // Execute Convex record creation in parallel
       await createOptimizationMutation({
-        roleTitle: roleTitle.trim() || "Software Innovation Lab Intern - AI & Data",
-        companyName: companyName.trim() || "IBM",
+        roleTitle: roleTitle.trim() || "Target Role",
+        companyName: companyName.trim() || "Target Company",
         outputLength,
         additionalContext: additionalContext.trim() || undefined,
         score: 84,
@@ -269,13 +269,17 @@ export default function OptimizePage() {
   // ─── Add to Job Tracker Action ──────────────────────────────
   const handleAddToJobTracker = async () => {
     if (addedToTracker) return;
+    if (!companyName.trim() || !roleTitle.trim()) {
+      toast.error("Please enter a company name and job title to track.");
+      return;
+    }
     setIsAddingToTracker(true);
     try {
       await createManualJobMutation({
-        companyName: companyName || "IBM",
-        jobTitle: roleTitle || "Software Innovation Lab Intern - AI & Data",
+        companyName: companyName.trim(),
+        jobTitle: roleTitle.trim(),
         crmStatus: "Saved",
-        rawJdText: jobDescription,
+        rawJdText: jobDescription.trim() || undefined,
       });
       setAddedToTracker(true);
       toast.success("Application logged to your Job Tracker!");

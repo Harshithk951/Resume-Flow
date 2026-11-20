@@ -161,10 +161,18 @@ export default function JobTrackerPage() {
   // ─── Convex Data ────────────────────────────────────────────
   const rawJobs = useQuery(api.jobs.getMyJobs);
   const isLoading = rawJobs === undefined;
-  const jobsData = useMemo(() => rawJobs ?? [], [rawJobs]);
+  const jobsData = useMemo(() => {
+    if (!rawJobs) return [];
+    return rawJobs.filter(
+      (j) =>
+        j.companyName !== "RDS" &&
+        !j.companyName.toLowerCase().includes("ibm") &&
+        !j.jobTitle.toLowerCase().includes("software innovation") &&
+        !j.jobTitle.toLowerCase().includes("cloud sales")
+    );
+  }, [rawJobs]);
   const updateCrmStatusMutation = useMutation(api.jobs.updateCrmStatus);
   const deleteJobMutation = useMutation(api.jobs.deleteJobAndResume);
-  const clearAllJobsMutation = useMutation(api.jobs.clearAllMyJobs);
   const createManualJobMutation = useMutation(api.jobs.createManualJob);
 
   // ─── Auto-purge legacy development/test jobs (e.g. RDS and test IBM records) ──
@@ -173,7 +181,9 @@ export default function JobTrackerPage() {
       const legacyTestJobs = rawJobs.filter(
         (j) =>
           j.companyName === "RDS" ||
-          (j.companyName.toLowerCase().includes("ibm") && j.autoLogged)
+          j.companyName.toLowerCase().includes("ibm") ||
+          j.jobTitle.toLowerCase().includes("software innovation") ||
+          j.jobTitle.toLowerCase().includes("cloud sales")
       );
       if (legacyTestJobs.length > 0) {
         legacyTestJobs.forEach((tj) => {
@@ -330,25 +340,6 @@ export default function JobTrackerPage() {
             >
               Should I apply?
             </Link>
-
-            {jobsData.length > 0 && (
-              <button
-                type="button"
-                onClick={async () => {
-                  try {
-                    await clearAllJobsMutation();
-                    toast.success("Job tracker reset to empty state.");
-                  } catch {
-                    toast.error("Failed to clear tracker.");
-                  }
-                }}
-                className="py-2 px-3 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-600 font-semibold text-xs transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
-                title="Clear all tracked applications"
-              >
-                <Trash2 className="w-3.5 h-3.5 text-slate-400" />
-                <span>Clear all</span>
-              </button>
-            )}
 
             <button
               type="button"
