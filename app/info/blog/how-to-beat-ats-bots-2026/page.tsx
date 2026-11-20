@@ -373,7 +373,7 @@ export default function HowToBeatAtsBots2026() {
               Build Your ATS Resume Free <ArrowRight size={14} />
             </Link>
             <Link
-              href="/resources/ats-best-practices"
+              href="/blog/how-to-beat-ats-resume-screening-2025"
               className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl px-7 py-3 border border-slate-200 transition-all shadow-2xs"
             >
               More ATS Best Practices

@@ -280,7 +280,17 @@ export default function SavedResumesPage() {
 
       {/* ─── RESUMES LIST OR EMPTY STATE ─────────────────────── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        {!resumesData || resumesData.resumes.length === 0 ? (
+        {resumesData === undefined ? (
+          /* ─── SKELETON LOADING STATE (MATCHING BRAND DESIGN) ─── */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="h-52 rounded-2xl bg-[#F6F5FB] animate-pulse border border-slate-200/40"
+              />
+            ))}
+          </div>
+        ) : resumesData.resumes.length === 0 ? (
           /* EMPTY STATE */
           <div className="max-w-xl mx-auto my-12 text-center bg-white rounded-3xl border border-slate-200/80 p-8 sm:p-12 shadow-xs space-y-5">
             <div className="w-16 h-16 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto shadow-2xs border border-purple-100">

@@ -608,7 +608,7 @@ export default function BestFreeResumeBuilders2026() {
               <ArrowRight size={14} />
             </Link>
             <Link
-              href="/resources/handbook"
+              href="/blog/software-engineer-resume-guide"
               className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 rounded-xl px-7 py-3 border border-slate-200 transition-all shadow-2xs"
             >
               Resume Writing Guide

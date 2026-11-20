@@ -42,7 +42,9 @@ export default function OptimizationHistoryPage() {
   const router = useRouter();
 
   // ─── Convex Data ────────────────────────────────────────────
-  const optimizationsData = useQuery(api.optimizations.getMyOptimizations) ?? [];
+  const rawOptimizations = useQuery(api.optimizations.getMyOptimizations);
+  const isLoading = rawOptimizations === undefined;
+  const optimizationsData = rawOptimizations ?? [];
   const creditsStatus = useQuery(api.users.getCreditsStatus);
   const deleteOptimizationMutation = useMutation(api.optimizations.deleteOptimization);
 
@@ -89,7 +91,7 @@ export default function OptimizationHistoryPage() {
                   Your optimizations
                 </h1>
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 border border-slate-200 text-slate-700">
-                  {totalRuns} {totalRuns === 1 ? "run" : "runs"}
+                  {isLoading ? "Loading..." : `${totalRuns} ${totalRuns === 1 ? "run" : "runs"}`}
                 </span>
               </div>
               <p className="text-sm text-slate-600 mt-1 max-w-xl">
@@ -146,7 +148,17 @@ export default function OptimizationHistoryPage() {
         </div>
 
         {/* ─── OPTIMIZATION HISTORY OR EMPTY STATE ─────────────── */}
-        {optimizationsData.length === 0 ? (
+        {isLoading ? (
+          /* ─── SKELETON LOADING STATE (MATCHING BRAND DESIGN) ─── */
+          <div className="space-y-4">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-28 rounded-2xl bg-[#F6F5FB] animate-pulse border border-slate-200/40"
+              />
+            ))}
+          </div>
+        ) : optimizationsData.length === 0 ? (
           /* EMPTY STATE */
           <div className="max-w-xl mx-auto my-12 text-center bg-white rounded-3xl border border-slate-200/80 p-8 sm:p-12 shadow-xs space-y-5">
             <div className="w-16 h-16 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center mx-auto shadow-2xs border border-purple-100">

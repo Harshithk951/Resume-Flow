@@ -38,14 +38,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: slug === 'blog' ? 'weekly' as const : 'monthly' as const,
   }));
 
-  // Resource pages — handbooks, guides, best practices
-  const resourceSlugs = ['handbook', 'interview-prep', 'ats-best-practices', 'api-docs'];
-  const resourcePages = resourceSlugs.map((slug) => ({
-    url: `${baseUrl}/resources/${slug}` as const,
-    priority: 0.8,
-    changeFrequency: 'monthly' as const,
-  }));
-
   // Guides & Career Articles (/blog/[slug])
   const guideSlugs = getAllGuideSlugs();
   const guidePages = guideSlugs.map((slug) => ({
@@ -67,7 +59,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...rolePages,
     ...infoPages,
     ...blogPosts,
-    ...resourcePages,
     ...guidePages,
     ...legalPages,
   ];

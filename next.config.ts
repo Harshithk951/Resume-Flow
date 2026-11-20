@@ -62,6 +62,26 @@ const nextConfig: NextConfig = {
         destination: "/blog",
         permanent: true,
       },
+      {
+        source: "/resources/handbook",
+        destination: "/blog/software-engineer-resume-guide",
+        permanent: true,
+      },
+      {
+        source: "/resources/ats-best-practices",
+        destination: "/blog/how-to-beat-ats-resume-screening-2025",
+        permanent: true,
+      },
+      {
+        source: "/resources/interview-prep",
+        destination: "/blog/cover-letter-mistakes",
+        permanent: true,
+      },
+      {
+        source: "/resources/:path*",
+        destination: "/blog",
+        permanent: true,
+      },
     ];
   },
   async headers() {
@@ -107,15 +127,7 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      {
-        source: "/resources/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=1800, s-maxage=1800, stale-while-revalidate=43200",
-          },
-        ],
-      },
+
       {
         source: "/blog/:path*",
         headers: [

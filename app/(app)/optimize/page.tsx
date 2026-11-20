@@ -519,7 +519,16 @@ export default function OptimizePage() {
               {/* Tab 3: Saved resumes */}
               {resumeTab === "saved" && (
                 <div className="space-y-3">
-                  {!savedResumesData || savedResumesData.resumes.length === 0 ? (
+                  {savedResumesData === undefined ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-1">
+                      {[0, 1].map((i) => (
+                        <div
+                          key={i}
+                          className="h-24 rounded-xl bg-[#F6F5FB] animate-pulse border border-slate-200/40"
+                        />
+                      ))}
+                    </div>
+                  ) : savedResumesData.resumes.length === 0 ? (
                     <div className="text-center py-8 px-4 bg-slate-50 rounded-xl border border-slate-200">
                       <Bookmark className="w-8 h-8 text-slate-400 mx-auto mb-2 opacity-60" />
                       <p className="text-sm font-semibold text-slate-700">
