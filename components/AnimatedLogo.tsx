@@ -79,7 +79,7 @@ export function AnimatedLogo({
           style={{
             background:
               colorScheme === "brand"
-                ? "radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(14,165,233,0.18) 45%, transparent 72%)"
+                ? "radial-gradient(circle, rgba(139,92,246,0.35) 0%, rgba(109,40,217,0.18) 45%, transparent 72%)"
                 : "radial-gradient(circle, rgba(0,0,0,0.08) 0%, transparent 70%)",
             filter: "blur(10px)",
             transform: isHovered && animated ? "scale(1.4)" : "scale(1.0)",
@@ -101,9 +101,9 @@ export function AnimatedLogo({
       >
         <defs>
           <linearGradient id={`rf-brand-grad-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#00D2FF" />
-            <stop offset="45%" stopColor="#38BDF8" />
-            <stop offset="100%" stopColor="#6366F1" />
+            <stop offset="0%" stopColor="#C084FC" />
+            <stop offset="45%" stopColor="#8B5CF6" />
+            <stop offset="100%" stopColor="#6D28D9" />
           </linearGradient>
 
           <filter id={`rf-emblem-glow-${size}`} x="-20%" y="-20%" width="140%" height="140%">
@@ -221,7 +221,7 @@ export function AnimatedLogo({
 
   const wordmark = showText ? (
     <span
-      className={`font-sans tracking-tight transition-colors duration-300 ${config.text} ${
+      className={`font-sans tracking-tight ${config.text} ${
         textClassName || "text-[var(--color-ink)]"
       }`}
       style={{
@@ -229,17 +229,17 @@ export function AnimatedLogo({
         alignItems: "center",
       }}
     >
-      <span className="font-extrabold text-[var(--color-ink)] transition-colors duration-300 group-hover:text-cyan-500">
+      <span className="font-extrabold text-[var(--color-ink)]">
         Resume
       </span>
-      <span className="font-black bg-gradient-to-r from-cyan-500 via-sky-500 to-indigo-600 bg-clip-text text-transparent ml-0.5">
+      <span className="font-black text-violet-600 dark:text-violet-400 ml-0.5">
         Flow
       </span>
     </span>
   ) : null;
 
   const wrapperClass = `inline-flex items-center ${config.gap} ${
-    href ? "group cursor-pointer" : ""
+    href ? "cursor-pointer" : ""
   } ${className}`;
 
   if (href) {
