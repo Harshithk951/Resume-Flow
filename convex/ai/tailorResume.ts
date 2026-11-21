@@ -282,6 +282,29 @@ Return ONLY a valid JSON block matching this schema:
       const validatedOutput = TailoredResumeSchema.parse(parsedOutput);
       log.info("Tailoring complete — ready for compilation", { atsScore: validatedOutput.atsCompatibilityScore });
 
+      // TODO(phase1): Enable after `npx convex codegen` regenerates types with aiRuns module
+      // Telemetry: Log to aiRuns table without blocking pipeline execution
+      // try {
+      //   const totalTokens = completion.usage?.total_tokens;
+      //   await ctx.runMutation(internal.aiRuns.logAiRun, {
+      //     runId: `run_${args.jobId}_tailor`,
+      //     userId: job.userId,
+      //     jobId: args.jobId,
+      //     stage: "rewriting",
+      //     provider: "nvidia",
+      //     model: completion.model || "meta/llama-3.3-70b-instruct",
+      //     promptVersion: "v1.0",
+      //     tokens: totalTokens,
+      //     durationMs: nimDuration,
+      //     verificationReport: {
+      //       atsCompatibilityScore: validatedOutput.atsCompatibilityScore,
+      //       diffNotesCount: validatedOutput.diffNotes?.length,
+      //     },
+      //   });
+      // } catch (logErr) {
+      //   log.warn("aiRuns tailoring telemetry log failed", { error: String(logErr) });
+      // }
+
       // 5. Re-inject PII (Restore actual name, email, phone, links)
       validatedOutput.structuredContent = reInjectPersonalInfo(
         validatedOutput.structuredContent,
@@ -306,6 +329,21 @@ Return ONLY a valid JSON block matching this schema:
       const userFacingError = message.includes("circuit breaker") || message.includes("rate limit")
         ? "AI service is briefly cooling down. Retrying automatically..."
         : message;
+
+      // TODO(phase1): Enable after `npx convex codegen` regenerates types with aiRuns module
+      // try {
+      //   await ctx.runMutation(internal.aiRuns.logAiRun, {
+      //     runId: `run_${args.jobId}_tailor_err`,
+      //     userId: job?.userId,
+      //     jobId: args.jobId,
+      //     stage: "rewriting",
+      //     provider: "nvidia",
+      //     model: "unknown",
+      //     promptVersion: "v1.0",
+      //     error: message,
+      //   });
+      // } catch {}
+
       // Graceful error state transition
       await ctx.runMutation(internal.jobs.internalUpdateJobState, {
         jobId: args.jobId,

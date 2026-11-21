@@ -9,6 +9,7 @@ import { v, ConvexError } from "convex/values";
 import { requireAuth, requireOwnership } from "./lib/auth";
 import { api, internal } from "./_generated/api";
 import { enforceRateLimit } from "./lib/rateLimit";
+import { settleBillingHelper } from "./optimizations";
 
 // ─── API Endpoints (Public) ───────────────────────────────────
 
@@ -368,6 +369,20 @@ export const setCompilationCompleted = mutation({
       pipelineError: undefined,
     });
 
+    // Settle billing on completion
+    let optId = job.optimizationId;
+    if (!optId) {
+      const linkedOpt = await ctx.db
+        .query("optimizations")
+        .filter((q) => q.eq(q.field("jobId"), job._id))
+        .first();
+      if (linkedOpt) optId = linkedOpt._id;
+    }
+    if (optId) {
+      const runId = (job as any).runId || crypto.randomUUID();
+      await settleBillingHelper(ctx, optId, runId, "completed");
+    }
+
     const tenantId = job.tenantId || user.tenantId;
     if (tenantId) {
       try {
@@ -669,13 +684,59 @@ export const internalGetJobAndProfile = internalQuery({
   },
 });
 
+export const PIPELINE_STATES = [
+  "queued",
+  "parsing",
+  "extracting",
+  "planning",
+  "rewriting",
+  "verifying",
+  "rendering",
+  "needs_input",
+  "done",
+  "failed",
+] as const;
+
+export type PipelineState = (typeof PIPELINE_STATES)[number];
+
+export const ALLOWED_PIPELINE_TRANSITIONS: Record<string, string[]> = {
+  queued: ["parsing", "failed"],
+  parsing: ["extracting", "failed"],
+  extracting: ["planning", "needs_input", "failed"],
+  needs_input: ["planning", "rewriting", "failed"],
+  planning: ["rewriting", "failed"],
+  rewriting: ["verifying", "failed"],
+  verifying: ["rendering", "failed"],
+  rendering: ["done", "failed"],
+  done: [],
+  failed: [],
+};
+
+export function canonicalizePipelineState(state: string): string {
+  switch (state) {
+    case "uploaded":
+      return "queued";
+    case "tailoring":
+      return "rewriting";
+    case "compiling":
+      return "rendering";
+    case "needs_user_input":
+      return "needs_input";
+    case "completed":
+      return "done";
+    default:
+      return state;
+  }
+}
+
 /**
- * Internal mutation to transition job pipeline state.
+ * Internal mutation to transition job pipeline state with strict transition guards.
+ * Transitions into "done" or "failed" automatically trigger server-side billing settlement.
  */
 export const internalUpdateJobState = internalMutation({
   args: {
     jobId: v.id("jobs"),
-    expectedState: v.string(),
+    expectedState: v.optional(v.string()),
     newState: v.string(),
     error: v.optional(v.string()),
   },
@@ -683,17 +744,49 @@ export const internalUpdateJobState = internalMutation({
     const job = await ctx.db.get(args.jobId);
     if (!job) return { success: true, alreadyDeleted: true };
 
-    if (job.pipelineState !== args.expectedState) {
-      console.warn(
-        `State machine transition ignored. Expected: ${args.expectedState}, actual: ${job.pipelineState}`
+    const fromState = canonicalizePipelineState(job.pipelineState);
+    const toState = canonicalizePipelineState(args.newState);
+
+    if (args.expectedState) {
+      const canonicalExpected = canonicalizePipelineState(args.expectedState);
+      if (fromState !== canonicalExpected) {
+        console.warn(
+          `State machine transition ignored. Expected: ${args.expectedState} (${canonicalExpected}), actual: ${job.pipelineState} (${fromState})`
+        );
+        return { success: false, ignored: true };
+      }
+    }
+
+    const allowed = ALLOWED_PIPELINE_TRANSITIONS[fromState];
+    if (!allowed || !allowed.includes(toState)) {
+      throw new ConvexError(
+        `INVALID_STATE_TRANSITION: Cannot transition pipelineState from '${job.pipelineState}' (${fromState}) to '${args.newState}' (${toState}). Allowed targets: ${allowed?.join(", ") || "none"}`
       );
-      return;
     }
 
     await ctx.db.patch(args.jobId, {
-      pipelineState: args.newState as any,
+      pipelineState: toState,
       pipelineError: args.error,
     });
+
+    // Settle billing when entering done or failed terminal states
+    if (toState === "done" || toState === "failed") {
+      let optId = job.optimizationId;
+      if (!optId) {
+        const linkedOpt = await ctx.db
+          .query("optimizations")
+          .filter((q) => q.eq(q.field("jobId"), job._id))
+          .first();
+        if (linkedOpt) optId = linkedOpt._id;
+      }
+
+      if (optId) {
+        const runId = (job as any).runId || crypto.randomUUID();
+        await settleBillingHelper(ctx, optId, runId, toState === "done" ? "completed" : "failed");
+      }
+    }
+
+    return { success: true, fromState, toState };
   },
 });
 
@@ -996,6 +1089,20 @@ export const systemSetCompilationCompleted = mutation({
       pipelineError: undefined,
     });
 
+    // Settle billing on completion
+    let optId = job.optimizationId;
+    if (!optId) {
+      const linkedOpt = await ctx.db
+        .query("optimizations")
+        .filter((q) => q.eq(q.field("jobId"), job._id))
+        .first();
+      if (linkedOpt) optId = linkedOpt._id;
+    }
+    if (optId) {
+      const runId = (job as any).runId || crypto.randomUUID();
+      await settleBillingHelper(ctx, optId, runId, "completed");
+    }
+
     const tenantId = job.tenantId;
     if (tenantId) {
       try {
@@ -1038,11 +1145,25 @@ export const systemSetCompilationFailed = mutation({
     const job = await ctx.db.get(args.jobId);
     if (!job) throw new Error("Job instance not found");
 
-    if (job.pipelineState === "compiling") {
+    if (job.pipelineState === "compiling" || job.pipelineState === "rendering") {
       await ctx.db.patch(args.jobId, {
         pipelineState: "failed",
         pipelineError: args.errorMessage,
       });
+
+      let optId = job.optimizationId;
+      if (!optId) {
+        const linkedOpt = await ctx.db
+          .query("optimizations")
+          .filter((q) => q.eq(q.field("jobId"), job._id))
+          .first();
+        if (linkedOpt) optId = linkedOpt._id;
+      }
+      if (optId) {
+        const runId = (job as any).runId || crypto.randomUUID();
+        await settleBillingHelper(ctx, optId, runId, "failed");
+      }
+
       return { success: true, stateChanged: true };
     }
 

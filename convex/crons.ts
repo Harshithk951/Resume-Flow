@@ -9,4 +9,10 @@ crons.interval(
   internal.webhooks.processWebhookQueueWorker
 );
 
+crons.interval(
+  "cleanup-stuck-optimizations",
+  { minutes: 5 },
+  internal.optimizations.cleanupStuckOptimizations
+);
+
 export default crons;

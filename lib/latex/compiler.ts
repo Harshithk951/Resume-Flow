@@ -53,7 +53,11 @@ export async function compileLatexToPdf(
     const res = await fetch("/api/compile-latex", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ latex: latexCode, jobId }),
+      body: JSON.stringify({
+        resume: structuredContent,
+        template: templateId,
+        jobId,
+      }),
     });
 
     if (res.ok) {

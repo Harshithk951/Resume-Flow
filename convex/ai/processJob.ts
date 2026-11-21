@@ -388,6 +388,25 @@ Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary 
       const nimDuration = Date.now() - nimStart;
       log.info("NIM analysis complete", { durationMs: nimDuration });
 
+      // TODO(phase1): Enable after `npx convex codegen` regenerates types with aiRuns module
+      // Telemetry: Log to aiRuns table without blocking pipeline execution
+      // try {
+      //   const totalTokens = nimCompletion.usage?.total_tokens;
+      //   await ctx.runMutation(internal.aiRuns.logAiRun, {
+      //     runId: `run_${args.jobId}_extract`,
+      //     userId: job.userId,
+      //     jobId: args.jobId,
+      //     stage: "extracting",
+      //     provider: "nvidia",
+      //     model: nimCompletion.model || "meta/llama-3.3-70b-instruct",
+      //     promptVersion: "v1.0",
+      //     tokens: totalTokens,
+      //     durationMs: nimDuration,
+      //   });
+      // } catch (logErr) {
+      //   log.warn("aiRuns extraction telemetry log failed", { error: String(logErr) });
+      // }
+
       const responseText = nimCompletion.choices[0]?.message?.content || "";
       const analysisResult = cleanAndParseJSON(responseText);
 
@@ -422,6 +441,21 @@ Ensure to return ONLY the valid JSON structure. Do not wrap in extra commentary 
       const userFacingError = message.includes("circuit breaker") || message.includes("rate limit")
         ? "AI service is briefly cooling down. Retrying automatically..."
         : message;
+
+      // TODO(phase1): Enable after `npx convex codegen` regenerates types with aiRuns module
+      // try {
+      //   await ctx.runMutation(internal.aiRuns.logAiRun, {
+      //     runId: `run_${args.jobId}_extract_err`,
+      //     userId: job?.userId,
+      //     jobId: args.jobId,
+      //     stage: "extracting",
+      //     provider: "nvidia",
+      //     model: "unknown",
+      //     promptVersion: "v1.0",
+      //     error: message,
+      //   });
+      // } catch {}
+
       // Graceful error state transition
       await ctx.runMutation(internal.jobs.internalUpdateJobState, {
         jobId: args.jobId,

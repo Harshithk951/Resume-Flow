@@ -96,6 +96,7 @@ export default defineSchema({
       v.literal("completed"),
       v.literal("failed")
     ),
+    runId: v.optional(v.string()),
     billed: v.optional(v.boolean()),
     billedRunId: v.optional(v.string()),
     billedAt: v.optional(v.number()),
@@ -197,4 +198,23 @@ export default defineSchema({
     processedAt: v.number(),
     source: v.union(v.literal("webhook"), v.literal("client_verify")),
   }).index("by_paymentId", ["paymentId"]),
+
+  aiRuns: defineTable({
+    runId: v.string(),
+    userId: v.id("users"),
+    jobId: v.optional(v.id("jobs")),
+    stage: v.string(),
+    provider: v.string(),
+    model: v.string(),
+    promptVersion: v.string(),
+    tokens: v.optional(v.number()),
+    costEstimate: v.optional(v.number()),
+    durationMs: v.optional(v.number()),
+    verificationReport: v.optional(v.any()),
+    error: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_runId", ["runId"])
+    .index("by_userId", ["userId"])
+    .index("by_jobId", ["jobId"]),
 });

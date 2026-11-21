@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { auth } from "@clerk/nextjs/server";
 import { acquireCompileLock, releaseCompileLock, getCompileCache } from "@/lib/redis";
 import { applyRateLimit } from "@/lib/security/rateLimit";
 import { compileLatexSandboxed, validateLatexSecurity } from "@/lib/latex/sandbox";
+import { jsonToLatex } from "@/lib/latex/jsonToLatex";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -32,14 +34,50 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { latex, jobId: incomingJobId } = body as {
+    const {
+      latex: rawLatex,
+      resume,
+      template,
+      jobId: incomingJobId,
+    } = body as {
       latex?: string;
+      resume?: any;
+      template?: string;
       jobId?: string;
     };
     jobId = incomingJobId ?? null;
 
-    if (!latex) {
-      return NextResponse.json({ error: "Missing latex code payload" }, { status: 400 });
+    let latex = "";
+
+    if (resume) {
+      // Preferred path: build LaTeX server-side from structured JSON
+      latex = jsonToLatex(resume, template || "classic");
+    } else if (rawLatex) {
+      // Raw LaTeX is restricted to authenticated sessions
+      let authedUserId: string | null = null;
+      try {
+        const authData = await auth();
+        authedUserId = authData.userId;
+      } catch {
+        // auth extraction failed
+      }
+
+      const isTestBypass =
+        process.env.NODE_ENV === "test" &&
+        req.headers.get("x-test-auth-bypass") === "1";
+
+      if (!authedUserId && !isTestBypass) {
+        return NextResponse.json(
+          { error: "Authentication required for raw LaTeX compilation" },
+          { status: 401 }
+        );
+      }
+      latex = rawLatex;
+    } else {
+      return NextResponse.json(
+        { error: "Missing resume structured content or raw latex code" },
+        { status: 400 }
+      );
     }
 
     // ── Static Security Validation ──

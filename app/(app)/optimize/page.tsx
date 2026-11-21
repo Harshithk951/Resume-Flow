@@ -204,7 +204,6 @@ export default function OptimizePage() {
   const creditsStatus = useQuery(api.users.getCreditsStatus);
   const savedResumesData = useQuery(api.savedResumes.getMySavedResumes);
   const createOptimizationMutation = useMutation(api.optimizations.createOptimization);
-  const settleOptimizationBillingMutation = useMutation(api.optimizations.settleOptimizationBilling);
   const createManualJobMutation = useMutation(api.jobs.createManualJob);
 
   // ─── Top-level Page View State ──────────────────────────────
@@ -704,11 +703,8 @@ export default function OptimizePage() {
     setProgressPercent(100);
     setSecondsRemaining(0);
 
-    const runId = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `run_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-    let savedOptId: Id<"optimizations"> | null = null;
-
     try {
-      const optResult = await createOptimizationMutation({
+      await createOptimizationMutation({
         roleTitle: roleTitle.trim() || "Target Role",
         companyName: companyName.trim() || "Target Company",
         outputLength,
@@ -719,27 +715,10 @@ export default function OptimizePage() {
         missingKeywords: dynamicWantedSkills.map((s) => s.name),
         jobDescriptionText: jobDescription.trim(),
         url: jobUrl.trim() || undefined,
-        status: "processing",
+        status: "completed",
       });
-
-      savedOptId = optResult?.optimizationId ?? null;
-
-      if (savedOptId) {
-        await settleOptimizationBillingMutation({
-          optimizationId: savedOptId,
-          runId,
-          status: "completed",
-        });
-      }
     } catch (e) {
-      console.error("Optimization failed or billing settlement error:", e);
-      if (savedOptId) {
-        await settleOptimizationBillingMutation({
-          optimizationId: savedOptId,
-          runId,
-          status: "failed",
-        }).catch(() => {});
-      }
+      console.error("Optimization record creation failed:", e);
     }
 
     await new Promise((r) => setTimeout(r, 400));

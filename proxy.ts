@@ -7,6 +7,7 @@ const isProtectedRoute = createRouteMatcher([
   "/company(.*)",
   "/resume/(.*)",
   "/resumes(.*)",
+  "/api/compile-(.*)",
 ]);
 
 const isAuthRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
@@ -25,7 +26,14 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   if (isProtectedRoute(req)) {
-    await auth.protect();
+    // Test-only auth bypass: active strictly when NODE_ENV=test and bypass header is supplied
+    const isTestBypass =
+      process.env.NODE_ENV === "test" &&
+      req.headers.get("x-test-auth-bypass") === "1";
+
+    if (!isTestBypass) {
+      await auth.protect();
+    }
   }
 
   return NextResponse.next();
