@@ -203,13 +203,19 @@ export const PREAMBLES: Record<string, string> = {
 `,
 };
 
+PREAMBLES.classic = PREAMBLES.ats_strict;
+PREAMBLES.modern = PREAMBLES.startup;
+PREAMBLES.minimal = PREAMBLES.tech_modern;
+PREAMBLES["two-column"] = PREAMBLES.ats_strict;
+PREAMBLES.two_column = PREAMBLES.ats_strict;
+
 /**
  * Compiles structured JSON resume data into LaTeX using the requested preamble lookup.
  */
-export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"): string {
+export function jsonToLatex(resumeJSON: any, templateName: string = "classic"): string {
   if (!resumeJSON) return "";
 
-  const preamble = PREAMBLES[templateName] || PREAMBLES[resolveTemplateId(templateName)] || PREAMBLES.ats_strict;
+  const preamble = PREAMBLES[templateName] || PREAMBLES[resolveTemplateId(templateName)] || PREAMBLES.classic || PREAMBLES.ats_strict;
 
   const personalInfo = resumeJSON.personalInfo ?? {};
   const education = Array.isArray(resumeJSON.education) ? resumeJSON.education : [];
@@ -419,10 +425,15 @@ export function jsonToLatex(resumeJSON: any, templateName: string = "ats_strict"
 }
 
 function resolveTemplateId(id?: string): string {
-  if (!id) return "ats_strict";
-  const norm = id.toLowerCase();
-  if (norm === "startup" || norm === "modern_professional") return "startup";
-  if (norm === "finance_tech" || norm === "modern_executive") return "finance_tech";
-  if (norm === "tech_modern" || norm === "tech_innovator") return "tech_modern";
-  return id;
+  if (!id) return "classic";
+  const norm = id.toLowerCase().replace(/_/g, "-");
+  if (norm === "classic") return "classic";
+  if (norm === "modern") return "modern";
+  if (norm === "minimal") return "minimal";
+  if (norm === "two-column") return "two-column";
+  if (norm === "startup" || norm === "modern-professional") return "startup";
+  if (norm === "finance-tech" || norm === "modern-executive") return "finance_tech";
+  if (norm === "tech-modern" || norm === "tech-innovator") return "tech_modern";
+  if (norm === "ats-strict") return "ats_strict";
+  return "classic";
 }

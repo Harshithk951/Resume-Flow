@@ -8,6 +8,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { fetchRazorpayOrder, verifyOrderIntegrity } from "@/lib/security/razorpay";
 
 async function callConvexMutation(
   convexUrl: string,
@@ -74,6 +75,26 @@ export async function POST(req: NextRequest) {
       const amount = paymentEntity?.amount;
 
       if (paymentId && clerkId && plan) {
+        // Step 2.5: Verify order integrity via Razorpay API if orderId present
+        if (orderId) {
+          try {
+            const order = await fetchRazorpayOrder(orderId);
+            const integrity = verifyOrderIntegrity(order, clerkId, plan);
+            if (!integrity.valid) {
+              console.error("[Razorpay-Webhook] Order integrity check failed:", integrity.reason);
+              return NextResponse.json({ error: integrity.reason }, { status: 400 });
+            }
+          } catch (fetchErr: unknown) {
+            console.warn("[Razorpay-Webhook] Order fetch check warning:", fetchErr);
+            if (process.env.NODE_ENV === "production") {
+              return NextResponse.json(
+                { error: "Could not verify order integrity with Razorpay API" },
+                { status: 502 }
+              );
+            }
+          }
+        }
+
         const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
         const deployKey = process.env.CONVEX_DEPLOY_KEY;
 

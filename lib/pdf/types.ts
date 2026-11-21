@@ -1,7 +1,27 @@
+export type TemplateId = "minimal" | "modern" | "classic" | "two-column";
+export const DEFAULT_TEMPLATE_ID: TemplateId = "classic";
+export const VALID_TEMPLATE_IDS: TemplateId[] = [
+  "minimal",
+  "modern",
+  "classic",
+  "two-column",
+];
+
+export function normalizeTemplateId(templateId?: string): TemplateId {
+  if (!templateId) return DEFAULT_TEMPLATE_ID;
+  const lower = templateId.toLowerCase().replace(/_/g, "-");
+  if (lower === "minimal") return "minimal";
+  if (lower === "modern") return "modern";
+  if (lower === "classic") return "classic";
+  if (lower === "two-column" || lower === "twocolumn") return "two-column";
+  return DEFAULT_TEMPLATE_ID;
+}
+
 export interface PersonalInfo {
   name: string;
   email: string;
   phone: string;
+  location?: string;
   linkedin?: string;
   github?: string;
   portfolio?: string;
@@ -115,6 +135,7 @@ export function normalizeStructuredContent(
       name: data.personalInfo?.name ?? "Candidate",
       email: data.personalInfo?.email ?? "",
       phone: data.personalInfo?.phone ?? "",
+      location: data.personalInfo?.location,
       linkedin: data.personalInfo?.linkedin,
       github: data.personalInfo?.github,
       portfolio: data.personalInfo?.portfolio,

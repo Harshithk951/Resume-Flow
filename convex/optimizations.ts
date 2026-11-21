@@ -120,7 +120,21 @@ export const createOptimization = mutation({
     const user = await requireAuth(ctx);
     const now = Date.now();
 
-    // Eligibility verification (deduction occurs only upon successful pipeline completion)
+    // ── Per-user burst rate limit: max 5 optimization submissions per 60 seconds ──
+    const oneMinuteAgo = now - 60 * 1000;
+    const recentSubmissions = await ctx.db
+      .query("optimizations")
+      .withIndex("by_userId", (q) => q.eq("userId", user._id))
+      .filter((q) => q.gt(q.field("createdAt"), oneMinuteAgo))
+      .collect();
+
+    if (recentSubmissions.length >= 5) {
+      throw new ConvexError(
+        "RATE_LIMIT_EXCEEDED: You are submitting optimizations too fast. Please wait 60 seconds before submitting another."
+      );
+    }
+
+    // Eligibility verification with in-flight pre-check
     const isPaid =
       user.plan === "pro" ||
       user.plan === "power" ||
@@ -129,22 +143,30 @@ export const createOptimization = mutation({
       (user.plan === "pro_pass" && (!user.passExpiresAt || user.passExpiresAt > now));
 
     if (!isPaid) {
-      const currentUsed = user.freeOptimizationsUsed ?? 0;
-      if (currentUsed >= 2) {
+      const used = user.freeOptimizationsUsed ?? 0;
+      const fifteenMinutesAgo = now - 15 * 60 * 1000;
+      const inFlight = await ctx.db
+        .query("optimizations")
+        .withIndex("by_userId", (q) => q.eq("userId", user._id))
+        .filter((q) =>
+          q.and(
+            q.or(
+              q.eq(q.field("status"), "queued"),
+              q.eq(q.field("status"), "processing")
+            ),
+            q.gt(q.field("createdAt"), fifteenMinutesAgo)
+          )
+        )
+        .collect();
+
+      if (used + inFlight.length >= 2) {
         throw new ConvexError(
-          "NO_FREE_CREDITS_REMAINING: You have used your 2 lifetime free optimizations. Please upgrade to continue."
+          "NO_FREE_CREDITS_REMAINING: You have reached your allowance including in-flight optimizations. Please upgrade or wait for existing runs to finish."
         );
       }
     }
 
-    const isCompleted = (args.status ?? "completed") === "completed";
-    // Deduct only if the run is completed immediately
-    if (isCompleted && !isPaid) {
-      const currentUsed = user.freeOptimizationsUsed ?? 0;
-      await ctx.db.patch(user._id, {
-        freeOptimizationsUsed: currentUsed + 1,
-      });
-    }
+    const initialStatus = args.status ?? "processing";
 
     const retentionDays = getRetentionDays(user.plan, user.passExpiresAt);
     const expiresAt = now + retentionDays * 86400000;
@@ -168,9 +190,8 @@ export const createOptimization = mutation({
       missingKeywords: args.missingKeywords,
       pdfStorageId: args.pdfStorageId,
       docxStorageId: args.docxStorageId,
-      status: args.status ?? "completed",
-      billed: isCompleted,
-      billedAt: isCompleted ? now : undefined,
+      status: initialStatus,
+      billed: false,
       createdAt: now,
       expiresAt,
     });

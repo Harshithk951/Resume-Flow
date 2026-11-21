@@ -16,14 +16,15 @@ export const LATEX_COMPILE_TIMEOUT_MS = 10_000;
 
 /**
  * List of forbidden TeX commands and tokens that could lead to:
- * - Remote shell execution (\write18, etc.)
- * - File system traversal & arbitrary file reads (\input, \include, \openin, etc.)
+ * - Remote shell execution (\write18, \immediate, etc.)
+ * - File system traversal & arbitrary file reads (\input, \include, \openin, \@@input, \InputIfFileExists, \verbatiminput, \lstinputlisting, etc.)
  * - Arbitrary file writes (\openout, \write, etc.)
  * - Macro injection & endless loops (\csname, \catcode, etc.)
+ * - Potentially dangerous packages (\usepackage{catchfile}, \usepackage{shellesc})
  */
-const FORBIDDEN_LATEX_PATTERNS: Array<{ pattern: RegExp; description: string }> = [
+export const FORBIDDEN_LATEX_PATTERNS: Array<{ pattern: RegExp; description: string }> = [
   { pattern: /\\write18\b/i, description: "\\write18 shell execution is strictly prohibited" },
-  { pattern: /\\immediate\s*\\write/i, description: "\\immediate\\write is strictly prohibited" },
+  { pattern: /\\immediate\b/i, description: "\\immediate is strictly prohibited" },
   { pattern: /\\write\b/i, description: "\\write is strictly prohibited" },
   { pattern: /\\newwrite\b/i, description: "\\newwrite is strictly prohibited" },
   { pattern: /\\openout\b/i, description: "\\openout file creation is strictly prohibited" },
@@ -31,6 +32,11 @@ const FORBIDDEN_LATEX_PATTERNS: Array<{ pattern: RegExp; description: string }> 
   { pattern: /\\read\b/i, description: "\\read stream input is strictly prohibited" },
   { pattern: /\\input\b/i, description: "\\input file inclusion is strictly prohibited" },
   { pattern: /\\include\b/i, description: "\\include file inclusion is strictly prohibited" },
+  { pattern: /\\InputIfFileExists\b/i, description: "\\InputIfFileExists is strictly prohibited" },
+  { pattern: /\\@@input\b/i, description: "\\@@input low-level input is strictly prohibited" },
+  { pattern: /\\verbatiminput\b/i, description: "\\verbatiminput is strictly prohibited" },
+  { pattern: /\\lstinputlisting\b/i, description: "\\lstinputlisting is strictly prohibited" },
+  { pattern: /\\usepackage(\[[^\]]*\])?\s*\{\s*(catchfile|shellesc)\s*\}/i, description: "\\usepackage of catchfile/shellesc is strictly prohibited" },
   { pattern: /\\import\b/i, description: "\\import file inclusion is strictly prohibited" },
   { pattern: /\\subimport\b/i, description: "\\subimport is strictly prohibited" },
   { pattern: /\\catcode\b/i, description: "\\catcode redefinition is strictly prohibited" },
@@ -98,7 +104,8 @@ export interface SandboxedCompileOptions {
  *
  * Security Features:
  * - -no-shell-escape flag enforced
- * - openin_any=p and openout_any=p enforced
+ * - openin_any=p and openout_any=p enforced via env vars AND local texmf.cnf
+ * - shell_escape=f enforced
  * - Execution timeout (default 10s)
  * - Isolated unique directory per compilation with guaranteed cleanup
  */
@@ -123,9 +130,18 @@ export async function compileLatexSandboxed(
   const texFile = path.join(sandboxDir, "document.tex");
   const pdfFile = path.join(sandboxDir, "document.pdf");
   const logFile = path.join(sandboxDir, "document.log");
+  const texmfCnfFile = path.join(sandboxDir, "texmf.cnf");
 
   try {
+    // Write document source
     await fsPromises.writeFile(texFile, latex, { encoding: "utf-8", mode: 0o600 });
+
+    // Enforce paranoid security settings in local texmf.cnf as well as environment
+    await fsPromises.writeFile(
+      texmfCnfFile,
+      `openin_any = p\nopenout_any = p\nshell_escape = f\n`,
+      { encoding: "utf-8", mode: 0o600 }
+    );
 
     const pdflatexPath = getPdfLatexPath();
     const args = [
@@ -141,6 +157,7 @@ export async function compileLatexSandboxed(
       openin_any: "p",
       openout_any: "p",
       shell_escape: "f",
+      TEXMFCNF: `${sandboxDir}:`,
       TEXMFOUTPUT: sandboxDir,
     };
 

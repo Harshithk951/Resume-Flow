@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { fetchRazorpayOrder, verifyOrderIntegrity } from "@/lib/security/razorpay";
 
 /**
  * Calls a Convex internal mutation via the HTTP API using a deploy key.
@@ -74,6 +75,27 @@ export async function POST(req: NextRequest) {
         { error: "Payment signature verification failed" },
         { status: 400 }
       );
+    }
+
+    // ─── Step 1.5: Fetch order from Razorpay & Verify Integrity ───
+    try {
+      const order = await fetchRazorpayOrder(razorpay_order_id);
+      const integrity = verifyOrderIntegrity(order, clerkId, plan);
+      if (!integrity.valid) {
+        console.error("[Razorpay] Order integrity violation:", integrity.reason);
+        return NextResponse.json(
+          { error: `Payment verification rejected: ${integrity.reason}` },
+          { status: 400 }
+        );
+      }
+    } catch (fetchErr: unknown) {
+      console.warn("[Razorpay] Order fetch check warning:", fetchErr);
+      if (process.env.NODE_ENV === "production") {
+        return NextResponse.json(
+          { error: "Could not verify order integrity with Razorpay API" },
+          { status: 502 }
+        );
+      }
     }
 
     // ─── Step 2: Update user plan in Convex ─────────────────────

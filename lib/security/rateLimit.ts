@@ -1,8 +1,14 @@
+// lib/security/rateLimit.ts
+//
+// Rate Limiting Engine for App Router Endpoints
+// - Uses platform headers for trusted client IP extraction
+// - Redis-backed sliding window with atomic in-memory fallback
+// - Supports failClosed mode for expensive workloads
+
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { Redis } from "@upstash/redis";
 
-// In-memory sliding window cache for rate limiting when Redis is unavailable
 interface RateLimitRecord {
   count: number;
   resetAt: number;
@@ -41,6 +47,45 @@ export interface RateLimitResult {
   resetInSeconds: number;
 }
 
+export interface CheckRateLimitOptions {
+  failClosed?: boolean;
+}
+
+/**
+ * Extracts the real client IP from trusted platform-provided headers.
+ * Never trusts the first x-forwarded-for entry to prevent header spoofing.
+ */
+export function getClientIp(req: NextRequest | Headers): string {
+  const headers = req instanceof Headers ? req : req.headers;
+
+  // 1. Platform-provided edge headers (injected by Vercel / Cloudflare edge)
+  const vercelProxiedFor = headers.get("x-vercel-proxied-for");
+  if (vercelProxiedFor?.trim()) return vercelProxiedFor.trim();
+
+  const vercelForwardedFor = headers.get("x-vercel-forwarded-for");
+  if (vercelForwardedFor?.trim()) return vercelForwardedFor.trim();
+
+  const cfConnectingIp = headers.get("cf-connecting-ip");
+  if (cfConnectingIp?.trim()) return cfConnectingIp.trim();
+
+  const realIp = headers.get("x-real-ip");
+  if (realIp?.trim()) return realIp.trim();
+
+  // 2. Fall back to the LAST entry in X-Forwarded-For (added by the nearest proxy)
+  const xForwardedFor = headers.get("x-forwarded-for");
+  if (xForwardedFor) {
+    const parts = xForwardedFor
+      .split(",")
+      .map((p) => p.trim())
+      .filter(Boolean);
+    if (parts.length > 0) {
+      return parts[parts.length - 1]; // Nearest/last hop, not spoofed first hop
+    }
+  }
+
+  return "127.0.0.1";
+}
+
 /**
  * Checks and increments rate limit for a given key.
  * Backed by Redis when configured, with an atomic in-memory fallback.
@@ -48,7 +93,8 @@ export interface RateLimitResult {
 export async function checkRateLimit(
   key: string,
   limit: number,
-  windowSeconds: number
+  windowSeconds: number,
+  options: CheckRateLimitOptions = {}
 ): Promise<RateLimitResult> {
   const redis = getRedis();
 
@@ -69,7 +115,15 @@ export async function checkRateLimit(
         resetInSeconds: ttl > 0 ? ttl : windowSeconds,
       };
     } catch (redisErr) {
-      console.warn("[rate-limit] Redis error, falling back to memory store:", redisErr);
+      console.warn("[rate-limit] Redis error:", redisErr);
+      if (options.failClosed) {
+        return {
+          success: false,
+          limit,
+          remaining: 0,
+          resetInSeconds: windowSeconds,
+        };
+      }
     }
   }
 
@@ -109,7 +163,8 @@ export async function applyRateLimit(
   req: NextRequest,
   endpoint: string,
   limit: number,
-  windowSeconds: number
+  windowSeconds: number,
+  options: CheckRateLimitOptions = {}
 ): Promise<NextResponse | null> {
   let identifier: string = "anon";
 
@@ -123,13 +178,12 @@ export async function applyRateLimit(
   }
 
   if (identifier === "anon") {
-    const forwardedFor = req.headers.get("x-forwarded-for");
-    const ip = forwardedFor ? forwardedFor.split(",")[0].trim() : req.headers.get("x-real-ip") || "127.0.0.1";
+    const ip = getClientIp(req);
     identifier = `ip:${ip}`;
   }
 
   const rateKey = `${endpoint}:${identifier}`;
-  const result = await checkRateLimit(rateKey, limit, windowSeconds);
+  const result = await checkRateLimit(rateKey, limit, windowSeconds, options);
 
   if (!result.success) {
     return NextResponse.json(

@@ -1,20 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifySignatureAppRouter } from "@upstash/qstash/nextjs";
-import { exec } from "child_process";
-import fs from "fs";
-import fsPromises from "fs/promises";
-import path from "path";
-import os from "os";
+import { Receiver } from "@upstash/qstash";
 import crypto from "crypto";
-import { promisify } from "util";
 import { acquireCompileLock, releaseCompileLock, getCompileCache, setCompileCache } from "@/lib/redis";
-
-const execPromise = promisify(exec);
-
-function getPdfLatexPath(): string {
-  const customPath = "/Library/TeX/texbin/pdflatex";
-  return fs.existsSync(customPath) ? customPath : "pdflatex";
-}
+import { compileLatexSandboxed } from "@/lib/latex/sandbox";
 
 /**
  * Calls a Convex mutation via the HTTP API using a deploy key for auth.
@@ -43,28 +31,58 @@ async function callConvexMutation(
   return response.json();
 }
 
+export async function verifyQStashSignature(
+  signature: string | null,
+  body: string,
+  url: string
+): Promise<{ valid: boolean; reason?: string }> {
+  if (!signature) {
+    return { valid: false, reason: "Missing upstash-signature header" };
+  }
+
+  const currentSigningKey = process.env.QSTASH_CURRENT_SIGNING_KEY;
+  const nextSigningKey = process.env.QSTASH_NEXT_SIGNING_KEY;
+
+  if (!currentSigningKey || !nextSigningKey) {
+    return { valid: false, reason: "QStash signing keys not configured on server" };
+  }
+
+  const receiver = new Receiver({
+    currentSigningKey,
+    nextSigningKey,
+  });
+
+  try {
+    const isValid = await receiver.verify({
+      signature,
+      body,
+      url,
+    });
+    return { valid: isValid };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Invalid signature";
+    return { valid: false, reason: message };
+  }
+}
+
 /**
  * POST /api/compile-worker
  *
  * QStash worker endpoint for async LaTeX compilation.
  * Called by QStash after a compile is enqueued via POST /api/compile-latex.
- * Signature-verified via @upstash/qstash/nextjs verifySignatureAppRouter.
- *
- * Required env vars:
- *   - QSTASH_CURRENT_SIGNING_KEY, QSTASH_NEXT_SIGNING_KEY (Upstash console)
- *   - CONVEX_DEPLOY_KEY (Convex dashboard → Settings → Deploy Keys)
- *   - NEXT_PUBLIC_CONVEX_URL (set by Convex)
- *   - AUTOMATION_WEBHOOK_SECRET (your secret)
+ * Signature-verified via Upstash QStash Receiver.
  */
-const handler = async (req: NextRequest): Promise<Response> => {
-  const uniqueId = Math.random().toString(36).substring(7);
-  const tmpDir = os.tmpdir();
+export async function POST(req: NextRequest): Promise<Response> {
+  const rawBody = await req.text();
+  const signature = req.headers.get("upstash-signature");
 
-  const texFilePath = path.join(tmpDir, `worker_${uniqueId}.tex`);
-  const pdfFilePath = path.join(tmpDir, `worker_${uniqueId}.pdf`);
-  const auxFilePath = path.join(tmpDir, `worker_${uniqueId}.aux`);
-  const logFilePath = path.join(tmpDir, `worker_${uniqueId}.log`);
-  const outFilePath = path.join(tmpDir, `worker_${uniqueId}.out`);
+  const auth = await verifyQStashSignature(signature, rawBody, req.url);
+  if (!auth.valid) {
+    return NextResponse.json(
+      { error: `Unauthorized: ${auth.reason}` },
+      { status: 401 }
+    );
+  }
 
   const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
   const deployKey = process.env.CONVEX_DEPLOY_KEY;
@@ -81,7 +99,7 @@ const handler = async (req: NextRequest): Promise<Response> => {
   let lockAcquired = false;
 
   try {
-    const body = await req.json();
+    const body = JSON.parse(rawBody);
     const { latex, jobId: incomingJobId, latexHash } = body as {
       latex?: string;
       jobId?: string;
@@ -116,26 +134,8 @@ const handler = async (req: NextRequest): Promise<Response> => {
       return NextResponse.json({ cached: true, storageId: cachedStorageId });
     }
 
-    // ── Step 3: Run pdflatex ──
-    await fsPromises.writeFile(texFilePath, latex, "utf-8");
-
-    const pdflatexPath = getPdfLatexPath();
-    const compileCmd = `"${pdflatexPath}" -interaction=nonstopmode -output-directory="${tmpDir}" "${texFilePath}"`;
-
-    try {
-      await execPromise(compileCmd);
-    } catch (execErr: unknown) {
-      const err = execErr as { stdout?: string; message?: string };
-      throw new Error(`pdflatex failed: ${err.stdout || err.message}`);
-    }
-
-    if (!fs.existsSync(pdfFilePath)) {
-      let logContent = "";
-      try { logContent = await fsPromises.readFile(logFilePath, "utf-8"); } catch { /* ignore */ }
-      throw new Error(`PDF not generated. Log: ${logContent.substring(Math.max(0, logContent.length - 2000))}`);
-    }
-
-    const pdfBuffer = await fsPromises.readFile(pdfFilePath);
+    // ── Step 3: Run sandboxed pdflatex ──
+    const { pdfBuffer } = await compileLatexSandboxed(latex);
 
     // ── Step 4: Upload PDF to Convex storage ──
     // 4a. Get upload URL via system mutation
@@ -152,7 +152,7 @@ const handler = async (req: NextRequest): Promise<Response> => {
     const uploadRes = await fetch(uploadUrl, {
       method: "POST",
       headers: { "Content-Type": "application/pdf" },
-      body: pdfBuffer,
+      body: new Uint8Array(pdfBuffer),
     });
 
     if (!uploadRes.ok) {
@@ -196,27 +196,8 @@ const handler = async (req: NextRequest): Promise<Response> => {
 
     return NextResponse.json({ error: message }, { status: 500 });
   } finally {
-    await Promise.all([
-      fsPromises.unlink(texFilePath).catch(() => {}),
-      fsPromises.unlink(pdfFilePath).catch(() => {}),
-      fsPromises.unlink(auxFilePath).catch(() => {}),
-      fsPromises.unlink(logFilePath).catch(() => {}),
-      fsPromises.unlink(outFilePath).catch(() => {}),
-    ]);
-
     if (jobId && lockAcquired) {
       await releaseCompileLock(jobId);
     }
   }
-};
-
-// Wrap with QStash signature verification — rejects non-QStash callers.
-// Only wraps when env vars are available (they're set in production via Vercel,
-// but not during `next build` or local dev without QStash).
-const hasQStashKeys =
-  !!process.env.QSTASH_CURRENT_SIGNING_KEY &&
-  !!process.env.QSTASH_NEXT_SIGNING_KEY;
-
-export const POST = hasQStashKeys
-  ? verifySignatureAppRouter(handler)
-  : handler;
+}

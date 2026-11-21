@@ -7,7 +7,6 @@ const isProtectedRoute = createRouteMatcher([
   "/company(.*)",
   "/resume/(.*)",
   "/resumes(.*)",
-  "/api/compile-latex(.*)",
 ]);
 
 const isAuthRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);

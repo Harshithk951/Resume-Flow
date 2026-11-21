@@ -30,7 +30,10 @@ interface SavedResumeDoc {
 }
 
 const TEMPLATE_OPTIONS = [
-  { id: "ats_master", name: "ATS Master Standard", desc: "Single-column Harvard/HireRaft layout — 100% ATS score" },
+  { id: "classic", name: "Classic Professional", desc: "Traditional Harvard ATS layout (Default)" },
+  { id: "modern", name: "Modern", desc: "Clean accent header band & bullet formatting" },
+  { id: "minimal", name: "Minimal", desc: "Distraction-free layout with em-dash bullets" },
+  { id: "two-column", name: "Two-column", desc: "Best for sharing directly with recruiters" },
 ];
 
 export default function SavedResumesPage() {
@@ -50,7 +53,7 @@ export default function SavedResumesPage() {
   // Form Fields
   const [modalTitle, setModalTitle] = useState("");
   const [modalRole, setModalRole] = useState("");
-  const [modalTemplate, setModalTemplate] = useState("ats_master");
+  const [modalTemplate, setModalTemplate] = useState("classic");
   const [modalRawText, setModalRawText] = useState("");
   const [modalIsDefault, setModalIsDefault] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -86,7 +89,7 @@ export default function SavedResumesPage() {
     setEditingResumeId(resume._id);
     setModalTitle(resume.title);
     setModalRole(resume.targetRole || "");
-    setModalTemplate(resume.template || "ats_master");
+    setModalTemplate(resume.template || "classic");
     setModalRawText(resume.rawText || "");
     setModalIsDefault(resume.isDefault ?? false);
     setIsModalOpen(true);
@@ -355,7 +358,11 @@ export default function SavedResumesPage() {
                     </span>
                     <span>·</span>
                     <span className="capitalize text-slate-500">
-                      {resume.template?.replace("_", " ") || "Modern Clean"}
+                      {resume.template === "two-column"
+                        ? "Two-column"
+                        : resume.template
+                        ? resume.template.replace(/[-_]/g, " ")
+                        : "Classic"}
                     </span>
                   </div>
 

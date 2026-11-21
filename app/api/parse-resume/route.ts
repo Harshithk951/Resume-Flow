@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { applyRateLimit } from "@/lib/security/rateLimit";
 
 // Comprehensive catalog of common tech skills, languages, tools, frameworks, and methodologies
 const KNOWN_SKILLS_CATALOG = [
@@ -20,6 +21,9 @@ const KNOWN_SKILLS_CATALOG = [
 
 export async function POST(req: NextRequest) {
   try {
+    const rateLimitRes = await applyRateLimit(req, "parse-resume", 20, 60);
+    if (rateLimitRes) return rateLimitRes;
+
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
 

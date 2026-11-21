@@ -32,6 +32,34 @@ export interface TemplatePassProfile {
 }
 
 export const TEMPLATE_PASS_PROFILES: Record<TemplateId, TemplatePassProfile> = {
+  classic: {
+    minKeywordRecovery: 85,
+    minFormattingScore: 90,
+    minOverallScore: 80,
+    minLlmAtsScore: 80,
+    minLlmHmScore: 80,
+  },
+  modern: {
+    minKeywordRecovery: 80,
+    minFormattingScore: 75,
+    minOverallScore: 75,
+    minLlmAtsScore: 75,
+    minLlmHmScore: 80,
+  },
+  minimal: {
+    minKeywordRecovery: 80,
+    minFormattingScore: 75,
+    minOverallScore: 75,
+    minLlmAtsScore: 75,
+    minLlmHmScore: 80,
+  },
+  "two-column": {
+    minKeywordRecovery: 75,
+    minFormattingScore: 75,
+    minOverallScore: 75,
+    minLlmAtsScore: 75,
+    minLlmHmScore: 80,
+  },
   ats_strict: {
     minKeywordRecovery: 85,
     minFormattingScore: 90,

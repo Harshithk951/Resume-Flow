@@ -1,19 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { exec } from "child_process";
-import fs from "fs";
-import fsPromises from "fs/promises";
-import path from "path";
-import os from "os";
 import crypto from "crypto";
-import { promisify } from "util";
 import { acquireCompileLock, releaseCompileLock, getCompileCache } from "@/lib/redis";
+import { applyRateLimit } from "@/lib/security/rateLimit";
+import { compileLatexSandboxed, validateLatexSecurity } from "@/lib/latex/sandbox";
 
-const execPromise = promisify(exec);
-
-function getPdfLatexPath(): string {
-  const customPath = "/Library/TeX/texbin/pdflatex";
-  return fs.existsSync(customPath) ? customPath : "pdflatex";
-}
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 /**
  * POST /api/compile-latex
@@ -31,16 +23,12 @@ function getPdfLatexPath(): string {
  *    the original behavior). Used when QStash is not configured.
  */
 export async function POST(req: NextRequest) {
+  const rateLimitRes = await applyRateLimit(req, "compile-latex", 10, 60, { failClosed: true });
+  if (rateLimitRes) return rateLimitRes;
+
   let jobId: string | null = null;
   let lockAcquired = false;
   const uniqueId = Math.random().toString(36).substring(7);
-  const tmpDir = os.tmpdir();
-
-  const texFilePath = path.join(tmpDir, `resume_${uniqueId}.tex`);
-  const pdfFilePath = path.join(tmpDir, `resume_${uniqueId}.pdf`);
-  const auxFilePath = path.join(tmpDir, `resume_${uniqueId}.aux`);
-  const logFilePath = path.join(tmpDir, `resume_${uniqueId}.log`);
-  const outFilePath = path.join(tmpDir, `resume_${uniqueId}.out`);
 
   try {
     const body = await req.json();
@@ -52,6 +40,15 @@ export async function POST(req: NextRequest) {
 
     if (!latex) {
       return NextResponse.json({ error: "Missing latex code payload" }, { status: 400 });
+    }
+
+    // ── Static Security Validation ──
+    const security = validateLatexSecurity(latex);
+    if (!security.valid) {
+      return NextResponse.json(
+        { error: "Security validation rejected LaTeX input", reason: security.reason },
+        { status: 400 }
+      );
     }
 
     // ── Step 1: Check compile output cache ──
@@ -115,7 +112,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // ── Step 3: Synchronous path (fallback / unconfigured QStash) ──
+    // ── Step 3: Synchronous path (sandboxed pdflatex) ──
     if (jobId) {
       const lockSuccess = await acquireCompileLock(jobId);
       if (!lockSuccess) {
@@ -127,37 +124,13 @@ export async function POST(req: NextRequest) {
       lockAcquired = true;
     }
 
-    await fsPromises.writeFile(texFilePath, latex, "utf-8");
-
-    const pdflatexPath = getPdfLatexPath();
-    const compileCmd = `"${pdflatexPath}" -interaction=nonstopmode -output-directory="${tmpDir}" "${texFilePath}"`;
-
-    try {
-      await execPromise(compileCmd);
-    } catch (execErr: unknown) {
-      const err = execErr as { stdout?: string; message?: string };
-      return NextResponse.json(
-        { error: "pdflatex compilation failed", details: err.stdout || err.message },
-        { status: 500 }
-      );
-    }
-
-    if (!fs.existsSync(pdfFilePath)) {
-      let logContent = "";
-      try { logContent = await fsPromises.readFile(logFilePath, "utf-8"); } catch { /* ignore */ }
-      return NextResponse.json(
-        { error: "PDF was not generated", logs: logContent.substring(Math.max(0, logContent.length - 2000)) },
-        { status: 500 }
-      );
-    }
-
-    const pdfBuffer = await fsPromises.readFile(pdfFilePath);
+    const { pdfBuffer } = await compileLatexSandboxed(latex);
 
     // Seed the output cache for future requests
     // (The frontend will handle the upload — this just pre-seeds the hash)
     console.log(`[compile-api] Cache MISS — seeded hash ${latexHash.substring(0, 12)}... for future dedup`);
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="resume_${uniqueId}.pdf"`,
@@ -168,14 +141,6 @@ export async function POST(req: NextRequest) {
     console.error("[compile-api] Failed:", err);
     return NextResponse.json({ error: message }, { status: 500 });
   } finally {
-    await Promise.all([
-      fsPromises.unlink(texFilePath).catch(() => {}),
-      fsPromises.unlink(pdfFilePath).catch(() => {}),
-      fsPromises.unlink(auxFilePath).catch(() => {}),
-      fsPromises.unlink(logFilePath).catch(() => {}),
-      fsPromises.unlink(outFilePath).catch(() => {}),
-    ]);
-
     if (jobId && lockAcquired) {
       await releaseCompileLock(jobId);
     }

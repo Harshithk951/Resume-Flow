@@ -7,6 +7,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { tavily } from "@tavily/core";
+import { applyRateLimit } from "@/lib/security/rateLimit";
+import { validateUrlForSsrf, safeFetchWithSsrfProtection, sanitizeScrapedHtml } from "@/lib/security/ssrf";
 
 export const runtime = "nodejs";
 export const maxDuration = 30; // 30 seconds max timeout
@@ -96,42 +98,22 @@ function extractMetadataFromText(
 }
 
 /**
- * Fallback to direct HTML fetching and tag stripping.
+ * Fallback to direct HTML fetching and tag stripping using SSRF-safe connection.
  */
 async function fallbackDirectFetch(url: string): Promise<string> {
-  const res = await fetch(url, {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-      Accept: "text/html,application/xhtml+xml,text/plain",
-    },
-    signal: AbortSignal.timeout(8000),
+  const fetchRes = await safeFetchWithSsrfProtection(url, {
+    maxBytes: 2 * 1024 * 1024,
+    timeoutMs: 8000,
   });
 
-  if (!res.ok) {
-    throw new Error(`Direct fetch failed with HTTP ${res.status}`);
-  }
-
-  const html = await res.text();
-  // Strip scripts, styles, noscript, svg
-  let text = html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
-    .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, "")
-    .replace(/<svg\b[^<]*(?:(?!<\/svg>)<[^<]*)*<\/svg>/gi, "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  return text;
+  return sanitizeScrapedHtml(fetchRes.text);
 }
 
 export async function POST(req: NextRequest) {
   try {
+    const rateLimitRes = await applyRateLimit(req, "scrape-job", 20, 60);
+    if (rateLimitRes) return rateLimitRes;
+
     const body = await req.json();
     const { url } = body as { url?: string };
 
@@ -142,16 +124,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Validate URL syntax
-    let parsedUrl: URL;
-    try {
-      parsedUrl = new URL(url);
-      if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
-        throw new Error("Protocol must be http or https");
-      }
-    } catch {
+    // SSRF validation: strict protocol, loopback/private IP filtering, metadata blocking
+    const ssrfCheck = await validateUrlForSsrf(url);
+    if (!ssrfCheck.safe) {
       return NextResponse.json(
-        { error: "Invalid URL provided. Please provide a full URL including https://" },
+        { error: `URL blocked by SSRF security policy: ${ssrfCheck.reason}` },
         { status: 400 }
       );
     }

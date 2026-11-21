@@ -20,7 +20,7 @@ import {
 import { toast } from "@/lib/toast";
 import { PowerUpgradeModal } from "@/components/PowerUpgradeModal";
 import { compileStructuredContentToPdf } from "@/lib/pdf/compiler";
-import type { StructuredResumeContent } from "@/lib/pdf/types";
+import type { StructuredResumeContent, TemplateId } from "@/lib/pdf/types";
 
 interface SavedResumeDoc {
   _id: Id<"savedResumes">;
@@ -31,6 +31,21 @@ interface SavedResumeDoc {
   sections?: Record<string, unknown>;
   isDefault?: boolean;
 }
+
+const TEMPLATE_PICKER_OPTIONS: Array<{
+  id: TemplateId;
+  label: string;
+  note?: string;
+}> = [
+  { id: "classic", label: "Classic" },
+  { id: "modern", label: "Modern" },
+  { id: "minimal", label: "Minimal" },
+  {
+    id: "two-column",
+    label: "Two-column",
+    note: "Best for sharing directly with recruiters. Some ATS systems read two-column layouts less reliably.",
+  },
+];
 
 const OUTPUT_LENGTH_OPTIONS = [
   { id: "auto", label: "Auto-detect" },
@@ -189,6 +204,7 @@ export default function OptimizePage() {
   const creditsStatus = useQuery(api.users.getCreditsStatus);
   const savedResumesData = useQuery(api.savedResumes.getMySavedResumes);
   const createOptimizationMutation = useMutation(api.optimizations.createOptimization);
+  const settleOptimizationBillingMutation = useMutation(api.optimizations.settleOptimizationBilling);
   const createManualJobMutation = useMutation(api.jobs.createManualJob);
 
   // ─── Top-level Page View State ──────────────────────────────
@@ -218,6 +234,9 @@ export default function OptimizePage() {
 
   // ─── Section 4: Output length ───────────────────────────────
   const [outputLength, setOutputLength] = useState("auto");
+
+  // ─── Section 5: Resume template ─────────────────────────────
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>("classic");
 
   // ─── Pre-fill from Session Storage (Cross-page navigation) ───
   useEffect(() => {
@@ -685,8 +704,11 @@ export default function OptimizePage() {
     setProgressPercent(100);
     setSecondsRemaining(0);
 
+    const runId = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `run_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+    let savedOptId: Id<"optimizations"> | null = null;
+
     try {
-      await createOptimizationMutation({
+      const optResult = await createOptimizationMutation({
         roleTitle: roleTitle.trim() || "Target Role",
         companyName: companyName.trim() || "Target Company",
         outputLength,
@@ -697,10 +719,27 @@ export default function OptimizePage() {
         missingKeywords: dynamicWantedSkills.map((s) => s.name),
         jobDescriptionText: jobDescription.trim(),
         url: jobUrl.trim() || undefined,
-        status: "completed",
+        status: "processing",
       });
+
+      savedOptId = optResult?.optimizationId ?? null;
+
+      if (savedOptId) {
+        await settleOptimizationBillingMutation({
+          optimizationId: savedOptId,
+          runId,
+          status: "completed",
+        });
+      }
     } catch (e) {
-      console.error("Failed to save optimization to Convex:", e);
+      console.error("Optimization failed or billing settlement error:", e);
+      if (savedOptId) {
+        await settleOptimizationBillingMutation({
+          optimizationId: savedOptId,
+          runId,
+          status: "failed",
+        }).catch(() => {});
+      }
     }
 
     await new Promise((r) => setTimeout(r, 400));
@@ -848,7 +887,7 @@ export default function OptimizePage() {
         ],
       };
 
-      const pdfBlob = await compileStructuredContentToPdf(structuredPayload, "ats_strict");
+      const pdfBlob = await compileStructuredContentToPdf(structuredPayload, selectedTemplate);
       const downloadUrl = URL.createObjectURL(pdfBlob);
       const link = document.createElement("a");
       link.href = downloadUrl;
@@ -1287,6 +1326,11 @@ export default function OptimizePage() {
                       Word · paid
                     </Link>
                   </div>
+                  {selectedTemplate === "two-column" && (
+                    <div className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200/60 rounded-lg px-2.5 py-1 text-right sm:text-left mt-2">
+                      Best for sharing directly with recruiters. Some ATS systems read two-column layouts less reliably.
+                    </div>
+                  )}
                 </div>
 
                 {/* Dynamic Harvard Resume Document Container */}
@@ -2421,6 +2465,42 @@ ${candidateDisplayName.trim() || "Candidate"}`}
               <p className="text-[11px] text-slate-400 mt-3">
                 We pick from your experience: PDF downloads are formatted cleanly to fit the chosen page length.
               </p>
+            </section>
+
+            <section className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+              <div className="mb-3">
+                <h2 className="text-base font-bold text-slate-900">5 · Resume template</h2>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {TEMPLATE_PICKER_OPTIONS.map((opt) => {
+                  const isSelected = selectedTemplate === opt.id;
+                  return (
+                    <button
+                      key={opt.id}
+                      type="button"
+                      onClick={() => setSelectedTemplate(opt.id)}
+                      className={`py-3 px-4 rounded-xl border text-xs font-semibold transition-all cursor-pointer text-center ${
+                        isSelected
+                          ? "border-[#5B50E6] bg-[#EDE9FE]/50 text-[#5B50E6] ring-1 ring-[#5B50E6]"
+                          : "border-slate-200 bg-white hover:bg-slate-50 text-slate-700"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {selectedTemplate === "two-column" ? (
+                <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200/60 rounded-lg p-2.5 mt-3">
+                  Best for sharing directly with recruiters. Some ATS systems read two-column layouts less reliably.
+                </p>
+              ) : (
+                <p className="text-[11px] text-slate-400 mt-3">
+                  Single-column Harvard/ATS layouts guaranteed to achieve 95%+ parsing accuracy across applicant tracking systems.
+                </p>
+              )}
             </section>
 
             <div className="pt-2">
