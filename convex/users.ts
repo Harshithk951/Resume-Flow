@@ -537,3 +537,92 @@ export const upgradeUserPlan = internalMutation({
     return { success: true, userId: user._id, plan: args.plan };
   },
 });
+
+/**
+ * Idempotent mutation to record a verified payment and upgrade the user's plan.
+ * Callable by both the webhook handler and client verification route.
+ * De-duplicates by razorpay paymentId.
+ */
+export const upgradeUserPlanWithPayment = internalMutation({
+  args: {
+    clerkId: v.string(),
+    plan: v.union(
+      v.literal("pro_pass"),
+      v.literal("pro"),
+      v.literal("power"),
+      v.literal("team"),
+      v.literal("campus")
+    ),
+    paymentId: v.string(),
+    orderId: v.string(),
+    amount: v.optional(v.number()),
+    source: v.union(v.literal("webhook"), v.literal("client_verify")),
+  },
+  handler: async (ctx, args) => {
+    // 1. Check idempotency table
+    const existing = await ctx.db
+      .query("processedPayments")
+      .withIndex("by_paymentId", (q) => q.eq("paymentId", args.paymentId))
+      .unique();
+
+    if (existing) {
+      return {
+        success: true,
+        alreadyProcessed: true,
+        plan: existing.plan,
+      };
+    }
+
+    // 2. Find target user
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerkId", (q) => q.eq("clerkId", args.clerkId))
+      .unique();
+
+    if (!user) {
+      throw new Error(`User not found for clerkId: ${args.clerkId}`);
+    }
+
+    // 3. Insert into processedPayments table
+    await ctx.db.insert("processedPayments", {
+      paymentId: args.paymentId,
+      orderId: args.orderId,
+      clerkId: args.clerkId,
+      plan: args.plan,
+      amount: args.amount,
+      processedAt: Date.now(),
+      source: args.source,
+    });
+
+    // 4. Upgrade user plan
+    const patchData: {
+      plan: "pro_pass" | "pro" | "power" | "team" | "campus";
+      credits: number;
+      passExpiresAt?: number;
+      teamWalletBalance?: number;
+    } = {
+      plan: args.plan,
+      credits: 100000,
+    };
+
+    if (args.plan === "pro_pass") {
+      patchData.passExpiresAt = Date.now() + 30 * 86400000;
+    } else if (args.plan === "team") {
+      patchData.teamWalletBalance = (user.teamWalletBalance ?? 0) + 500;
+    }
+
+    await ctx.db.patch(user._id, patchData);
+
+    console.log(
+      `[Razorpay] Idempotently processed payment ${args.paymentId} for user ${user.email} (${user._id}) via ${args.source}`
+    );
+
+    return {
+      success: true,
+      alreadyProcessed: false,
+      userId: user._id,
+      plan: args.plan,
+    };
+  },
+});
+

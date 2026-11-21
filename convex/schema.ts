@@ -96,6 +96,9 @@ export default defineSchema({
       v.literal("completed"),
       v.literal("failed")
     ),
+    billed: v.optional(v.boolean()),
+    billedRunId: v.optional(v.string()),
+    billedAt: v.optional(v.number()),
     createdAt: v.number(),
     expiresAt: v.number(),
   }).index("by_userId", ["userId"]),
@@ -184,4 +187,14 @@ export default defineSchema({
     role: v.union(v.literal("user"), v.literal("assistant")),
     content: v.string(),
   }).index("by_userId", ["userId"]),
+
+  processedPayments: defineTable({
+    paymentId: v.string(),
+    orderId: v.string(),
+    clerkId: v.string(),
+    plan: v.string(),
+    amount: v.optional(v.number()),
+    processedAt: v.number(),
+    source: v.union(v.literal("webhook"), v.literal("client_verify")),
+  }).index("by_paymentId", ["paymentId"]),
 });

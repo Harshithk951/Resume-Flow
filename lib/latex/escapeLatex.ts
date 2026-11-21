@@ -28,8 +28,8 @@ export function escapeLatex(input: string | undefined | null): string {
 
   // Step 1: Normalize smart quotes and em/en-dashes
   const normalized = String(input)
-    .replace(/[""]/g, '"')
-    .replace(/['']/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/[\u2018\u2019]/g, "'")
     .replace(/—/g, "---")
     .replace(/–/g, "--");
 

@@ -120,7 +120,7 @@ export const createOptimization = mutation({
     const user = await requireAuth(ctx);
     const now = Date.now();
 
-    // Deduct credit for free tier users
+    // Eligibility verification (deduction occurs only upon successful pipeline completion)
     const isPaid =
       user.plan === "pro" ||
       user.plan === "power" ||
@@ -135,6 +135,12 @@ export const createOptimization = mutation({
           "NO_FREE_CREDITS_REMAINING: You have used your 2 lifetime free optimizations. Please upgrade to continue."
         );
       }
+    }
+
+    const isCompleted = (args.status ?? "completed") === "completed";
+    // Deduct only if the run is completed immediately
+    if (isCompleted && !isPaid) {
+      const currentUsed = user.freeOptimizationsUsed ?? 0;
       await ctx.db.patch(user._id, {
         freeOptimizationsUsed: currentUsed + 1,
       });
@@ -163,6 +169,8 @@ export const createOptimization = mutation({
       pdfStorageId: args.pdfStorageId,
       docxStorageId: args.docxStorageId,
       status: args.status ?? "completed",
+      billed: isCompleted,
+      billedAt: isCompleted ? now : undefined,
       createdAt: now,
       expiresAt,
     });
@@ -221,3 +229,70 @@ export const deleteOptimization = mutation({
     return { success: true };
   },
 });
+
+/**
+ * Idempotently settles billing for an optimization run ONLY AFTER successful completion.
+ * Ensures:
+ * 1. No deduction occurs on pipeline failure
+ * 2. Idempotent per runId to prevent double-deductions
+ */
+export const settleOptimizationBilling = mutation({
+  args: {
+    optimizationId: v.id("optimizations"),
+    runId: v.string(),
+    status: v.union(v.literal("completed"), v.literal("failed")),
+  },
+  handler: async (ctx, args) => {
+    const user = await requireAuth(ctx);
+    const optimization = await ctx.db.get(args.optimizationId);
+
+    if (!optimization) {
+      throw new ConvexError("Optimization record not found");
+    }
+
+    await requireOwnership(ctx, optimization);
+
+    // Idempotency: If already billed with this runId or marked billed, return early
+    if (optimization.billed || optimization.billedRunId === args.runId) {
+      return { success: true, alreadyBilled: true };
+    }
+
+    const now = Date.now();
+
+    // If failed, record status and never deduct credits or free count
+    if (args.status === "failed") {
+      await ctx.db.patch(args.optimizationId, {
+        status: "failed",
+      });
+      return { success: true, deducted: false, status: "failed" };
+    }
+
+    // Pipeline succeeded: deduct if free
+    const isPaid =
+      user.plan === "pro" ||
+      user.plan === "power" ||
+      user.plan === "team" ||
+      user.plan === "campus" ||
+      (user.plan === "pro_pass" && (!user.passExpiresAt || user.passExpiresAt > now));
+
+    if (!isPaid) {
+      const currentUsed = user.freeOptimizationsUsed ?? 0;
+      if (currentUsed >= 2) {
+        throw new ConvexError("NO_FREE_CREDITS_REMAINING: Lifetime free optimization limit reached.");
+      }
+      await ctx.db.patch(user._id, {
+        freeOptimizationsUsed: currentUsed + 1,
+      });
+    }
+
+    await ctx.db.patch(args.optimizationId, {
+      status: "completed",
+      billed: true,
+      billedRunId: args.runId,
+      billedAt: now,
+    });
+
+    return { success: true, deducted: !isPaid, status: "completed" };
+  },
+});
+

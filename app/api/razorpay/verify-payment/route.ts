@@ -90,10 +90,16 @@ export async function POST(req: NextRequest) {
 
     const result = (await callConvexMutation(
       convexUrl,
-      "users:upgradeUserPlan",
-      { clerkId, plan },
+      "users:upgradeUserPlanWithPayment",
+      {
+        clerkId,
+        plan,
+        paymentId: razorpay_payment_id,
+        orderId: razorpay_order_id,
+        source: "client_verify",
+      },
       deployKey,
-    )) as { success: boolean; plan: string };
+    )) as { success: boolean; plan: string; alreadyProcessed?: boolean };
 
     if (!result.success) {
       throw new Error("Failed to upgrade user plan");

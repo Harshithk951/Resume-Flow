@@ -4,7 +4,7 @@ import { escapeLatex } from "../escapeLatex";
 describe("escapeLatex", () => {
   it("escapes special LaTeX characters in company names and text", () => {
     const input = "AT&T % Growth #1 $100k C_PROG {tag} ~tilde ^caret";
-    const expected = "AT\\&T \\% Growth \\#1 \\$100k C\\_PROG \\{tag\\} \\textasciitilde{} \\textasciicircum{}";
+    const expected = "AT\\&T \\% Growth \\#1 \\$100k C\\_PROG \\{tag\\} \\textasciitilde{}tilde \\textasciicircum{}caret";
     expect(escapeLatex(input)).toBe(expected);
   });
 
